@@ -25,63 +25,34 @@ const navItems: NavItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: "Grammar",
+    title: "Pre-School",
     icon: BookOpen,
-    items: [
-      {
-        title: "Beginner (A1-A2)",
-        items: [
-          { title: "Nouns & Articles", href: "/grammar/a1/nouns" },
-          { title: "Present Tense", href: "/grammar/a1/present" },
-          { title: "Past Simple", href: "/grammar/a1/past" },
-        ],
-      },
-      {
-        title: "Intermediate (B1-B2)",
-        items: [
-          { title: "Conditionals", href: "/grammar/b1/conditionals" },
-          { title: "Passive Voice", href: "/grammar/b1/passive" },
-          { title: "Modal Verbs", href: "/grammar/b1/modals" },
-        ],
-      },
-      {
-        title: "Advanced (C1-C2)",
-        items: [
-          { title: "Inversion", href: "/grammar/c1/inversion" },
-          { title: "Subjunctive", href: "/grammar/c1/subjunctive" },
-        ],
-      },
-    ],
+    href: "/pre-school",
   },
   {
-    title: "Vocabulary",
-    icon: Globe,
-    items: [
-      {
-        title: "Topics",
-        items: [
-          { title: "Business English", href: "/vocab/business" },
-          { title: "Travel & Culture", href: "/vocab/travel" },
-          { title: "Academic", href: "/vocab/academic" },
-        ],
-      },
-      {
-        title: "Word Lists",
-        items: [
-          { title: "Top 1000 Words", href: "/vocab/top-1000" },
-          { title: "Phrasal Verbs", href: "/vocab/phrasal-verbs" },
-        ],
-      },
-    ],
+    title: "Primary School",
+    icon: BookOpen,
+    href: "/primary-school",
   },
   {
-    title: "Skills",
+    title: "Secondary School",
+    icon: BookOpen,
+    href: "/secondary-school",
+  },
+  {
+    title: "High School",
     icon: GraduationCap,
-    items: [
-      { title: "Reading", icon: FileText, href: "/skills/reading" },
-      { title: "Listening", icon: Headphones, href: "/skills/listening" },
-      { title: "Speaking", icon: Mic, href: "/skills/speaking" },
-    ],
+    href: "/high-school",
+  },
+  {
+    title: "University",
+    icon: GraduationCap,
+    href: "/university",
+  },
+  {
+    title: "Business English",
+    icon: Globe,
+    href: "/business-english",
   },
   {
     title: "My Account",
