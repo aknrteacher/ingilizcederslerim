@@ -234,19 +234,15 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                       <a 
                         onClick={() => handleSubmenuItemClick(subItem)}
                         className={cn(
-                          "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
-                          "transition-all duration-300 backdrop-blur-sm group",
+                          "flex w-full items-center gap-3 px-4 py-4 rounded-xl font-bold text-sm",
+                          "transition-all duration-300 group",
                           "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                           activeSubmenuTheme && levelColors[activeSubmenuTheme]
-                            ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} bg-opacity-10 hover:bg-opacity-20 border-2 border-transparent hover:border-opacity-30`
+                            ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
                             : (location === subItem.href
                                 ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
                                 : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
                         )}
-                        style={activeSubmenuTheme && levelColors[activeSubmenuTheme] ? {
-                          backgroundSize: "200% 200%",
-                          opacity: 0.9,
-                        } : {}}
                       >
                         {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
                         <span className="flex-1 truncate">{subItem.title}</span>
