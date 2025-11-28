@@ -124,8 +124,8 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
       {/* Logo Section */}
       <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
         <h1 className={cn(
-          "text-2xl font-extrabold text-center leading-tight transition-all duration-500 hover:scale-105 cursor-pointer",
-          levelColors[currentTheme] ? levelColors[currentTheme].text : "text-primary"
+          "text-2xl font-extrabold text-center leading-tight transition-all duration-500 hover:scale-105 cursor-pointer font-serif tracking-wide",
+          levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary"
         )}>
           İngilizce<br/>Derslerim
         </h1>
