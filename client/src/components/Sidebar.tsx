@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/collapsible"
 import logo from "@assets/logo1_1764347479542.png"
 import { Link, useLocation } from "wouter"
-import { useTheme, type LevelTheme, themeLogos } from "@/context/ThemeContext"
+import { useTheme, type LevelTheme, themeFilters } from "@/context/ThemeContext"
 
 // --- Types ---
 type NavItem = {
@@ -125,7 +125,7 @@ const SidebarItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; depth?:
 
 export function Sidebar() {
   const { currentTheme, setCurrentTheme } = useTheme()
-  const currentLogo = themeLogos[currentTheme]
+  const logoFilter = themeFilters[currentTheme]
 
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
@@ -134,7 +134,7 @@ export function Sidebar() {
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground transition-colors duration-300">
       <div className="flex h-32 items-center justify-center border-b border-sidebar-border px-4 py-4">
-        <img src={currentLogo} alt="LinguaLearn Logo" className="h-full w-auto object-contain transition-all duration-300" />
+        <img src={logo} alt="LinguaLearn Logo" className="h-full w-auto object-contain transition-all duration-500" style={{ filter: logoFilter }} />
       </div>
       <div className="flex-1 overflow-y-auto p-4">
         <nav className="flex flex-col gap-1">

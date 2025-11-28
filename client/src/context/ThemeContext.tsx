@@ -1,10 +1,4 @@
 import React, { createContext, useContext, useState } from "react"
-import logoYellow from "@assets/generated_images/logo_in_pastel_yellow.png"
-import logoBlue from "@assets/generated_images/logo_in_pastel_blue.png"
-import logoOrange from "@assets/generated_images/logo_in_pastel_orange.png"
-import logoGreen from "@assets/generated_images/logo_in_pastel_green.png"
-import logoPurple from "@assets/generated_images/logo_in_purple.png"
-import logoGray from "@assets/generated_images/logo_in_gray.png"
 
 export type LevelTheme = "pre-school" | "primary-school" | "secondary-school" | "high-school" | "university" | "business-english"
 
@@ -38,13 +32,13 @@ export function useTheme() {
   return context
 }
 
-export const themeLogos: Record<LevelTheme, string> = {
-  "pre-school": logoYellow,
-  "primary-school": logoBlue,
-  "secondary-school": logoOrange,
-  "high-school": logoGreen,
-  "university": logoPurple,
-  "business-english": logoGray,
+export const themeFilters: Record<LevelTheme, string> = {
+  "pre-school": "hue-rotate(45deg) saturate(1.2) brightness(1.1)",
+  "primary-school": "hue-rotate(200deg) saturate(1.3) brightness(1.05)",
+  "secondary-school": "hue-rotate(25deg) saturate(1.4) brightness(1.08)",
+  "high-school": "hue-rotate(120deg) saturate(1.2) brightness(1.08)",
+  "university": "hue-rotate(270deg) saturate(1.3) brightness(0.95)",
+  "business-english": "saturate(0.5) brightness(0.9) contrast(1.1)",
 }
 
 export const themeColors: Record<LevelTheme, Record<string, string>> = {
