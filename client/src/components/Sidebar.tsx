@@ -15,6 +15,30 @@ type NavItem = {
 }
 
 // --- Navigation Data ---
+const activityItems = [
+  { title: "Kelime Kartları", href: "vocabulary-cards" },
+  { title: "Şarkılar", href: "songs" },
+  { title: "Oyunlar", href: "games" },
+  { title: "Hikayeler", href: "stories" },
+  { title: "Alıştırmalar", href: "exercises" },
+  { title: "Çalışma Kağıtları", href: "worksheets" },
+]
+
+const grade2Themes = Array.from({ length: 6 }, (_, i) => ({
+  title: `Tema ${i + 1}`,
+  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-2/theme-${i + 1}/${act.href}` }))
+}))
+
+const grade3Units = Array.from({ length: 10 }, (_, i) => ({
+  title: `Ünite ${i + 1}`,
+  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-3/unit-${i + 1}/${act.href}` }))
+}))
+
+const grade4Units = Array.from({ length: 10 }, (_, i) => ({
+  title: `Ünite ${i + 1}`,
+  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-4/unit-${i + 1}/${act.href}` }))
+}))
+
 const levelItems = [
   { 
     title: "Okul Öncesi & 1. Sınıf", 
@@ -30,9 +54,9 @@ const levelItems = [
     title: "İlkokul", 
     theme: "primary-school" as LevelTheme,
     items: [
-      { title: "2. Sınıf", href: "/primary-school/grade-2" },
-      { title: "3. Sınıf", href: "/primary-school/grade-3" },
-      { title: "4. Sınıf", href: "/primary-school/grade-4" },
+      { title: "2. Sınıf", items: grade2Themes },
+      { title: "3. Sınıf", items: grade3Units },
+      { title: "4. Sınıf", items: grade4Units },
     ]
   },
   { title: "Ortaokul", theme: "secondary-school" as LevelTheme },
@@ -83,11 +107,8 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const { currentTheme, setCurrentTheme } = useTheme()
   const logoFilter = themeFilters[currentTheme]
   const [location] = useLocation()
-  const [activeSubmenu, setActiveSubmenu] = React.useState<string | null>(null)
-  const [submenuTitle, setSubmenuTitle] = React.useState<string>("")
-  const [submenuItems, setSubmenuItems] = React.useState<NavItem[]>([])
-
-  const [activeSubmenuTheme, setActiveSubmenuTheme] = React.useState<LevelTheme | null>(null)
+  // Stack for nested menus
+  const [menuStack, setMenuStack] = React.useState<{ title: string, items: NavItem[], theme?: LevelTheme }[]>([])
 
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
@@ -96,28 +117,41 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
 
   const handleOpenSubmenu = (item: NavItem) => {
     if (item.items && item.items.length > 0) {
-      setActiveSubmenu(item.title)
-      setSubmenuTitle(item.title)
-      setSubmenuItems(item.items)
+      setMenuStack(prev => [...prev, { 
+        title: item.title, 
+        items: item.items!, 
+        theme: item.theme || (prev.length > 0 ? prev[prev.length - 1].theme : undefined)
+      }])
+      
       if (item.theme) {
-        setActiveSubmenuTheme(item.theme)
+        setCurrentTheme(item.theme)
       }
     }
   }
 
-  const handleBackToMain = () => {
-    setActiveSubmenu(null)
-    setSubmenuTitle("")
-    setSubmenuItems([])
-    setActiveSubmenuTheme(null)
+  const handleBack = () => {
+    setMenuStack(prev => prev.slice(0, -1))
   }
 
   const handleSubmenuItemClick = (item: NavItem) => {
-    if (item.theme) {
-      handleLevelClick(item.theme)
+    if (item.items && item.items.length > 0) {
+      // If item has sub-items, open them instead of navigating
+      handleOpenSubmenu(item)
+    } else {
+      // Regular navigation
+      if (item.theme) {
+        handleLevelClick(item.theme)
+      }
+      onItemClick?.()
     }
-    onItemClick?.()
   }
+
+  // Derived state for rendering
+  const activeMenu = menuStack.length > 0 ? menuStack[menuStack.length - 1] : null
+  const activeSubmenu = !!activeMenu
+  const submenuTitle = activeMenu?.title || ""
+  const submenuItems = activeMenu?.items || []
+  const activeSubmenuTheme = activeMenu?.theme
 
   return (
     <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar text-sidebar-foreground transition-colors duration-300 backdrop-blur-xl`}>
@@ -149,8 +183,26 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                     <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
                   )}
                   
-                  {item.href ? (
-                    <Link href={item.href}>
+                  {item.items && !item.href ? (
+                     // Item with submenu (Level items or items with children)
+                    <button
+                      onClick={() => handleOpenSubmenu(item)}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+                        "transition-all duration-300 group",
+                         item.theme 
+                          ? `bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
+                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                        "cursor-pointer"
+                      )}
+                    >
+                      <span className="truncate flex-1 text-left">{item.title}</span>
+                      <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                    </button>
+                  ) : (
+                    // Regular link item
+                    <Link href={item.href || "#"}>
                       <a className={cn(
                         "flex w-full items-center gap-3 rounded-xl transition-all duration-300 group",
                         item.theme 
@@ -167,50 +219,13 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                         <span className={cn("truncate", item.theme ? "" : "flex-1")}>{item.title}</span>
                       </a>
                     </Link>
-                  ) : item.theme ? (
-                    // Level item with submenu
-                    <button
-                      onClick={() => handleOpenSubmenu(item)}
-                      className={cn(
-                        "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
-                        "transition-all duration-300 group",
-                        `bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text}`,
-                        "border-2 border-opacity-30 hover:border-opacity-60",
-                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-                        item.items && item.items.length > 0 && "cursor-pointer"
-                      )}
-                    >
-                      <span className="truncate flex-1">{item.title}</span>
-                      {item.items && item.items.length > 0 && (
-                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
-                      )}
-                    </button>
-                  ) : (
-                    // Regular item with submenu
-                    <button
-                      onClick={() => handleOpenSubmenu(item)}
-                      className={cn(
-                        "flex w-full items-center justify-between gap-2 px-4 py-3 rounded-xl font-medium text-sm",
-                        "transition-all duration-300 backdrop-blur-sm",
-                        "hover:shadow-lg hover:scale-105",
-                        location?.startsWith(`/${item.title.toLowerCase().replace(/\s/g, '-')}`) 
-                          ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
-                      )}
-                    >
-                      <div className="flex items-center gap-2 flex-1">
-                        {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
-                        <span className="truncate">{item.title}</span>
-                      </div>
-                      <ChevronDown className="h-4 w-4 transition-transform duration-300 flex-shrink-0" />
-                    </button>
                   )}
                 </React.Fragment>
               ))}
             </nav>
           </div>
 
-          {/* Submenu */}
+          {/* Submenu (Recursive / Stack) */}
           {activeSubmenu && (
             <div className={cn(
               "absolute inset-0 transition-all duration-500 ease-out",
@@ -219,7 +234,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
               <div className="flex flex-col h-full">
                 {/* Submenu Header */}
                 <button
-                  onClick={handleBackToMain}
+                  onClick={handleBack}
                   className={cn(
                     "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 transition-all duration-300 group",
                     activeSubmenuTheme && levelColors[activeSubmenuTheme] 
@@ -234,24 +249,46 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                 {/* Submenu Items */}
                 <nav className="flex-1 overflow-y-auto flex flex-col gap-2">
                   {submenuItems.map((subItem, index) => (
-                    <Link key={index} href={subItem.href || "#"}>
-                      <a 
-                        onClick={() => handleSubmenuItemClick(subItem)}
-                        className={cn(
-                          "flex w-full items-center gap-3 px-4 py-4 rounded-xl font-bold text-sm",
-                          "transition-all duration-300 group",
-                          "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-                          activeSubmenuTheme && levelColors[activeSubmenuTheme]
-                            ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
-                            : (location === subItem.href
-                                ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
-                        )}
-                      >
-                        {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                        <span className="flex-1 truncate">{subItem.title}</span>
-                      </a>
-                    </Link>
+                    <React.Fragment key={index}>
+                      {subItem.items ? (
+                         // Nested Submenu Item
+                         <button
+                           onClick={() => handleSubmenuItemClick(subItem)}
+                           className={cn(
+                             "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+                             "transition-all duration-300 group",
+                             activeSubmenuTheme && levelColors[activeSubmenuTheme]
+                               ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                               : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
+                             "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                             "cursor-pointer"
+                           )}
+                         >
+                           <span className="truncate flex-1 text-left">{subItem.title}</span>
+                           <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                         </button>
+                      ) : (
+                        // Link Item
+                        <Link href={subItem.href || "#"}>
+                          <a 
+                            onClick={() => handleSubmenuItemClick(subItem)}
+                            className={cn(
+                              "flex w-full items-center gap-3 px-4 py-4 rounded-xl font-bold text-sm",
+                              "transition-all duration-300 group",
+                              "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                              activeSubmenuTheme && levelColors[activeSubmenuTheme]
+                                ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                                : (location === subItem.href
+                                    ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                                    : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
+                            )}
+                          >
+                            {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
+                            <span className="flex-1 truncate">{subItem.title}</span>
+                          </a>
+                        </Link>
+                      )}
+                    </React.Fragment>
                   ))}
                 </nav>
               </div>
