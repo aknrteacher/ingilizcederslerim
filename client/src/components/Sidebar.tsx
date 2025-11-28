@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/collapsible"
 import logo from "@assets/logo1_1764347479542.png"
 import { Link, useLocation } from "wouter"
+import { useTheme, type LevelTheme, themeLogos } from "@/context/ThemeContext"
 
 // --- Types ---
 type NavItem = {
@@ -18,42 +19,26 @@ type NavItem = {
 }
 
 // --- Navigation Data ---
+const levelItems = [
+  { title: "Pre-School", icon: BookOpen, theme: "pre-school" as LevelTheme },
+  { title: "Primary School", icon: BookOpen, theme: "primary-school" as LevelTheme },
+  { title: "Secondary School", icon: BookOpen, theme: "secondary-school" as LevelTheme },
+  { title: "High School", icon: GraduationCap, theme: "high-school" as LevelTheme },
+  { title: "University", icon: GraduationCap, theme: "university" as LevelTheme },
+  { title: "Business English", icon: Globe, theme: "business-english" as LevelTheme },
+]
+
 const navItems: NavItem[] = [
   {
     title: "Dashboard",
     href: "/",
     icon: LayoutDashboard,
   },
-  {
-    title: "Pre-School",
-    icon: BookOpen,
-    href: "/pre-school",
-  },
-  {
-    title: "Primary School",
-    icon: BookOpen,
-    href: "/primary-school",
-  },
-  {
-    title: "Secondary School",
-    icon: BookOpen,
-    href: "/secondary-school",
-  },
-  {
-    title: "High School",
-    icon: GraduationCap,
-    href: "/high-school",
-  },
-  {
-    title: "University",
-    icon: GraduationCap,
-    href: "/university",
-  },
-  {
-    title: "Business English",
-    icon: Globe,
-    href: "/business-english",
-  },
+  ...levelItems.map(item => ({
+    title: item.title,
+    icon: item.icon,
+    href: `/${item.theme}`,
+  })),
   {
     title: "My Account",
     icon: User,
@@ -66,7 +51,7 @@ const navItems: NavItem[] = [
 ]
 
 // --- Recursive Sidebar Item Component ---
-const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => {
+const SidebarItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; depth?: number; onLevelClick?: (theme: LevelTheme) => void }) => {
   const [isOpen, setIsOpen] = React.useState(false)
   const [location] = useLocation();
   const isActive = item.href === location || (item.items && item.items.some(subItem => subItem.href === location));
@@ -75,6 +60,9 @@ const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => 
   React.useEffect(() => {
     if (isActive) setIsOpen(true);
   }, [isActive]);
+
+  // Check if this is a level item
+  const levelItem = levelItems.find(l => item.title === l.title);
 
   if (item.items) {
     return (
@@ -103,7 +91,7 @@ const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => 
         <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
           <div className="mt-1 flex flex-col gap-1">
             {item.items.map((subItem, index) => (
-              <SidebarItem key={index} item={subItem} depth={depth + 1} />
+              <SidebarItem key={index} item={subItem} depth={depth + 1} onLevelClick={onLevelClick} />
             ))}
           </div>
         </CollapsibleContent>
@@ -111,9 +99,16 @@ const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => 
     )
   }
 
+  const handleClick = () => {
+    if (levelItem && onLevelClick) {
+      onLevelClick(levelItem.theme);
+    }
+  }
+
   return (
     <Link href={item.href || "#"}>
       <a
+        onClick={handleClick}
         className={cn(
           "flex w-full items-center gap-2 rounded-md p-2 text-sm font-medium transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
           isActive ? "bg-sidebar-primary text-sidebar-primary-foreground" : "text-sidebar-foreground",
@@ -129,26 +124,33 @@ const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => 
 }
 
 export function Sidebar() {
+  const { currentTheme, setCurrentTheme } = useTheme()
+  const currentLogo = themeLogos[currentTheme]
+
+  const handleLevelClick = (theme: LevelTheme) => {
+    setCurrentTheme(theme)
+  }
+
   return (
-    <div className="flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground">
+    <div className="flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground transition-colors duration-300">
       <div className="flex h-32 items-center justify-center border-b border-sidebar-border px-4 py-4">
-        <img src={logo} alt="LinguaLearn Logo" className="h-full w-auto object-contain" />
+        <img src={currentLogo} alt="LinguaLearn Logo" className="h-full w-auto object-contain transition-all duration-300" />
       </div>
       <div className="flex-1 overflow-y-auto p-4">
         <nav className="flex flex-col gap-1">
           {navItems.map((item, index) => (
-            <SidebarItem key={index} item={item} />
+            <SidebarItem key={index} item={item} onLevelClick={handleLevelClick} />
           ))}
         </nav>
       </div>
       <div className="border-t border-sidebar-border p-4">
         <div className="flex items-center gap-3 rounded-md bg-sidebar-accent/50 p-3">
-          <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
+          <div className="h-8 w-8 rounded-full bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground font-bold">
             JS
           </div>
           <div className="flex flex-col overflow-hidden">
             <span className="text-xs font-medium truncate">John Student</span>
-            <span className="text-[10px] text-muted-foreground truncate">Premium Plan</span>
+            <span className="text-[10px] text-sidebar-foreground/60 truncate">Premium Plan</span>
           </div>
         </div>
       </div>

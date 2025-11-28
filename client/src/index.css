@@ -9,7 +9,7 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   
-  /* Brand Colors - Modern Academic */
+  /* Brand Colors - Dynamic based on theme */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   
@@ -51,101 +51,192 @@
   --font-serif: 'Libre Baskerville', serif;
   
   --radius: 0.5rem;
-  
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-/* LIGHT MODE - Academic Paper Theme */
-:root {
-  /* Base: Warm White Paper */
-  --background: 40 20% 99%;
-  --foreground: 220 20% 20%; /* Deep Slate Text */
-
-  /* Card: Pure White */
+/* Pre-School Theme - Pastel Yellow */
+:root[data-theme="pre-school"] {
+  --background: 45 60% 97%;
+  --foreground: 30 30% 25%;
   --card: 0 0% 100%;
-  --card-foreground: 220 20% 20%;
-
-  /* Popover */
+  --card-foreground: 30 30% 25%;
   --popover: 0 0% 100%;
-  --popover-foreground: 220 20% 20%;
-
-  /* Primary: Indigo/Teal Mix - Intelligent & Trustworthy */
-  --primary: 215 60% 45%;
-  --primary-foreground: 0 0% 100%;
-
-  /* Secondary: Soft Sage/Grey */
-  --secondary: 210 20% 96%;
-  --secondary-foreground: 220 20% 30%;
-
-  /* Muted: Subdued Text */
-  --muted: 210 20% 96%;
-  --muted-foreground: 220 10% 50%;
-
-  /* Accent: Light Highlight */
-  --accent: 215 60% 96%;
-  --accent-foreground: 215 60% 45%;
-
-  /* Destructive */
+  --popover-foreground: 30 30% 25%;
+  --primary: 45 100% 70%;
+  --primary-foreground: 30 30% 25%;
+  --secondary: 45 100% 95%;
+  --secondary-foreground: 30 30% 30%;
+  --muted: 45 100% 95%;
+  --muted-foreground: 30 30% 50%;
+  --accent: 45 100% 75%;
+  --accent-foreground: 30 30% 25%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-
-  /* Borders */
-  --border: 220 15% 90%;
-  --input: 220 15% 90%;
-  --ring: 215 60% 45%;
-
-  /* Sidebar: Dark Navigation (Classic LMS feel) */
-  --sidebar: 220 30% 12%;
-  --sidebar-foreground: 220 10% 90%;
-  --sidebar-primary: 215 60% 50%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 220 25% 20%;
-  --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-border: 220 30% 20%;
-  --sidebar-ring: 215 60% 50%;
+  --border: 45 100% 90%;
+  --input: 45 100% 90%;
+  --ring: 45 100% 70%;
+  --sidebar: 30 30% 20%;
+  --sidebar-foreground: 45 100% 97%;
+  --sidebar-primary: 45 100% 75%;
+  --sidebar-primary-foreground: 30 30% 20%;
+  --sidebar-accent: 30 30% 30%;
+  --sidebar-accent-foreground: 45 100% 97%;
+  --sidebar-border: 30 30% 28%;
+  --sidebar-ring: 45 100% 75%;
 }
 
-.dark {
-  /* Dark Mode: Deep Navy */
-  --background: 222.2 84% 4.9%;
-  --foreground: 210 40% 98%;
+/* Primary School Theme - Pastel Light Blue */
+:root[data-theme="primary-school"] {
+  --background: 200 60% 97%;
+  --foreground: 210 20% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 210 20% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 20% 20%;
+  --primary: 200 100% 70%;
+  --primary-foreground: 210 20% 20%;
+  --secondary: 200 60% 96%;
+  --secondary-foreground: 210 20% 30%;
+  --muted: 200 60% 96%;
+  --muted-foreground: 210 10% 50%;
+  --accent: 200 100% 75%;
+  --accent-foreground: 210 20% 20%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 200 60% 90%;
+  --input: 200 60% 90%;
+  --ring: 200 100% 70%;
+  --sidebar: 210 30% 12%;
+  --sidebar-foreground: 200 60% 90%;
+  --sidebar-primary: 200 100% 75%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 30% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 210 30% 20%;
+  --sidebar-ring: 200 100% 75%;
+}
 
-  --card: 222.2 84% 4.9%;
-  --card-foreground: 210 40% 98%;
+/* Secondary School Theme - Pastel Orange */
+:root[data-theme="secondary-school"] {
+  --background: 25 80% 97%;
+  --foreground: 20 30% 25%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 30% 25%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 30% 25%;
+  --primary: 25 100% 70%;
+  --primary-foreground: 20 30% 25%;
+  --secondary: 25 80% 96%;
+  --secondary-foreground: 20 30% 30%;
+  --muted: 25 80% 96%;
+  --muted-foreground: 20 20% 50%;
+  --accent: 25 100% 75%;
+  --accent-foreground: 20 30% 25%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 25 80% 90%;
+  --input: 25 80% 90%;
+  --ring: 25 100% 70%;
+  --sidebar: 20 40% 15%;
+  --sidebar-foreground: 25 80% 90%;
+  --sidebar-primary: 25 100% 75%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 20 40% 25%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 20 40% 23%;
+  --sidebar-ring: 25 100% 75%;
+}
 
-  --popover: 222.2 84% 4.9%;
-  --popover-foreground: 210 40% 98%;
+/* High School Theme - Pastel Green */
+:root[data-theme="high-school"] {
+  --background: 120 50% 97%;
+  --foreground: 140 20% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 140 20% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 140 20% 20%;
+  --primary: 120 80% 65%;
+  --primary-foreground: 140 20% 20%;
+  --secondary: 120 50% 96%;
+  --secondary-foreground: 140 20% 30%;
+  --muted: 120 50% 96%;
+  --muted-foreground: 140 10% 50%;
+  --accent: 120 80% 70%;
+  --accent-foreground: 140 20% 20%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 120 50% 90%;
+  --input: 120 50% 90%;
+  --ring: 120 80% 65%;
+  --sidebar: 140 30% 12%;
+  --sidebar-foreground: 120 50% 90%;
+  --sidebar-primary: 120 80% 70%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 140 30% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 140 30% 20%;
+  --sidebar-ring: 120 80% 70%;
+}
 
-  --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 47.4% 11.2%;
+/* University Theme - Purple Shades */
+:root[data-theme="university"] {
+  --background: 270 60% 97%;
+  --foreground: 260 20% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 260 20% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 260 20% 20%;
+  --primary: 270 70% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 270 60% 96%;
+  --secondary-foreground: 260 20% 30%;
+  --muted: 270 60% 96%;
+  --muted-foreground: 260 10% 50%;
+  --accent: 270 70% 65%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 270 60% 90%;
+  --input: 270 60% 90%;
+  --ring: 270 70% 60%;
+  --sidebar: 260 30% 12%;
+  --sidebar-foreground: 270 60% 90%;
+  --sidebar-primary: 270 70% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 260 30% 20%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 260 30% 20%;
+  --sidebar-ring: 270 70% 65%;
+}
 
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
-
-  --muted: 217.2 32.6% 17.5%;
-  --muted-foreground: 215 20.2% 65.1%;
-
-  --accent: 217.2 32.6% 17.5%;
-  --accent-foreground: 210 40% 98%;
-
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 217.2 32.6% 17.5%;
-  --input: 217.2 32.6% 17.5%;
-  --ring: 224.3 76.3% 48%;
-  
-  --sidebar: 222.2 84% 4.9%;
-  --sidebar-foreground: 210 40% 98%;
-  --sidebar-primary: 217.2 91.2% 59.8%;
-  --sidebar-primary-foreground: 222.2 47.4% 11.2%;
-  --sidebar-accent: 217.2 32.6% 17.5%;
-  --sidebar-accent-foreground: 210 40% 98%;
-  --sidebar-border: 217.2 32.6% 17.5%;
-  --sidebar-ring: 217.2 91.2% 59.8%;
+/* Business English Theme - Gray Shades */
+:root[data-theme="business-english"] {
+  --background: 200 10% 97%;
+  --foreground: 200 10% 20%;
+  --card: 0 0% 100%;
+  --card-foreground: 200 10% 20%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 200 10% 20%;
+  --primary: 200 20% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 200 10% 96%;
+  --secondary-foreground: 200 10% 30%;
+  --muted: 200 10% 96%;
+  --muted-foreground: 200 5% 50%;
+  --accent: 200 20% 65%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 200 10% 90%;
+  --input: 200 10% 90%;
+  --ring: 200 20% 60%;
+  --sidebar: 200 15% 15%;
+  --sidebar-foreground: 200 10% 90%;
+  --sidebar-primary: 200 20% 65%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 200 15% 25%;
+  --sidebar-accent-foreground: 0 0% 100%;
+  --sidebar-border: 200 15% 23%;
+  --sidebar-ring: 200 20% 65%;
 }
 
 @layer base {
