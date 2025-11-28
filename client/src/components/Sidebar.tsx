@@ -87,6 +87,8 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const [submenuTitle, setSubmenuTitle] = React.useState<string>("")
   const [submenuItems, setSubmenuItems] = React.useState<NavItem[]>([])
 
+  const [activeSubmenuTheme, setActiveSubmenuTheme] = React.useState<LevelTheme | null>(null)
+
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
     onItemClick?.()
@@ -97,6 +99,9 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
       setActiveSubmenu(item.title)
       setSubmenuTitle(item.title)
       setSubmenuItems(item.items)
+      if (item.theme) {
+        setActiveSubmenuTheme(item.theme)
+      }
     }
   }
 
@@ -104,6 +109,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
     setActiveSubmenu(null)
     setSubmenuTitle("")
     setSubmenuItems([])
+    setActiveSubmenuTheme(null)
   }
 
   const handleSubmenuItemClick = (item: NavItem) => {
@@ -210,7 +216,12 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                 {/* Submenu Header */}
                 <button
                   onClick={handleBackToMain}
-                  className="flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30 transition-all duration-300 group"
+                  className={cn(
+                    "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 transition-all duration-300 group",
+                    activeSubmenuTheme && levelColors[activeSubmenuTheme] 
+                      ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30`
+                      : "bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30"
+                  )}
                 >
                   <ChevronLeft className="h-5 w-5 flex-shrink-0 group-hover:-translate-x-1 transition-transform" />
                   <span className="flex-1 text-left truncate">{submenuTitle}</span>
@@ -226,10 +237,16 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                           "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
                           "transition-all duration-300 backdrop-blur-sm group",
                           "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-                          location === subItem.href
-                            ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                            : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+                          activeSubmenuTheme && levelColors[activeSubmenuTheme]
+                            ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} bg-opacity-10 hover:bg-opacity-20 border-2 border-transparent hover:border-opacity-30`
+                            : (location === subItem.href
+                                ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
                         )}
+                        style={activeSubmenuTheme && levelColors[activeSubmenuTheme] ? {
+                          backgroundSize: "200% 200%",
+                          opacity: 0.9,
+                        } : {}}
                       >
                         {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
                         <span className="flex-1 truncate">{subItem.title}</span>
