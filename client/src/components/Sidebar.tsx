@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronDown, LayoutDashboard, Settings, User, Sparkles, BookMarked, Zap, Brain, Briefcase, UserCircle, TrendingUp, GraduationCap } from "lucide-react"
+import { ChevronDown, LayoutDashboard, Settings, User, UserCircle, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Collapsible,
@@ -16,17 +16,28 @@ type NavItem = {
   icon?: React.ElementType
   href?: string
   items?: NavItem[]
+  theme?: LevelTheme
 }
 
 // --- Navigation Data ---
 const levelItems = [
-  { title: "Pre-School", icon: Sparkles, theme: "pre-school" as LevelTheme },
-  { title: "Primary School", icon: BookMarked, theme: "primary-school" as LevelTheme },
-  { title: "Secondary School", icon: Zap, theme: "secondary-school" as LevelTheme },
-  { title: "High School", icon: GraduationCap, theme: "high-school" as LevelTheme },
-  { title: "University", icon: Brain, theme: "university" as LevelTheme },
-  { title: "Business English", icon: Briefcase, theme: "business-english" as LevelTheme },
+  { title: "Pre-School", theme: "pre-school" as LevelTheme },
+  { title: "Primary School", theme: "primary-school" as LevelTheme },
+  { title: "Secondary School", theme: "secondary-school" as LevelTheme },
+  { title: "High School", theme: "high-school" as LevelTheme },
+  { title: "University", theme: "university" as LevelTheme },
+  { title: "Business English", theme: "business-english" as LevelTheme },
 ]
+
+// --- Theme Color Mapping ---
+const levelColors: Record<LevelTheme, { bg: string; text: string }> = {
+  "pre-school": { bg: "from-yellow-300 to-yellow-400", text: "text-amber-900" },
+  "primary-school": { bg: "from-blue-300 to-blue-400", text: "text-blue-900" },
+  "secondary-school": { bg: "from-orange-300 to-orange-400", text: "text-orange-900" },
+  "high-school": { bg: "from-green-300 to-green-400", text: "text-green-900" },
+  "university": { bg: "from-purple-300 to-purple-400", text: "text-purple-900" },
+  "business-english": { bg: "from-gray-400 to-gray-500", text: "text-gray-900" },
+}
 
 const navItems: NavItem[] = [
   {
@@ -36,7 +47,7 @@ const navItems: NavItem[] = [
   },
   ...levelItems.map(item => ({
     title: item.title,
-    icon: item.icon,
+    theme: item.theme,
     href: `/${item.theme}`,
   })),
   {
@@ -60,7 +71,7 @@ const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; dep
     if (isActive) setIsOpen(true);
   }, [isActive]);
 
-  const levelItem = levelItems.find(l => item.title === l.title);
+  const isLevelItem = item.theme && levelColors[item.theme];
 
   if (item.items) {
     return (
@@ -100,11 +111,34 @@ const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; dep
   }
 
   const handleClick = () => {
-    if (levelItem && onLevelClick) {
-      onLevelClick(levelItem.theme);
+    if (item.theme && onLevelClick) {
+      onLevelClick(item.theme);
     }
   }
 
+  // Level items with theme colors
+  if (isLevelItem) {
+    const colors = levelColors[item.theme!];
+    return (
+      <Link href={item.href || "#"}>
+        <a
+          onClick={handleClick}
+          className={cn(
+            "flex w-full items-center justify-center px-4 py-4 rounded-xl font-bold text-sm",
+            "transition-all duration-300 group",
+            "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+            `bg-gradient-to-r ${colors.bg} ${colors.text}`,
+            "border-2 border-opacity-30 hover:border-opacity-60",
+            isActive && "ring-2 ring-offset-2 ring-opacity-50"
+          )}
+        >
+          <span className="truncate">{item.title}</span>
+        </a>
+      </Link>
+    )
+  }
+
+  // Regular items with icons
   return (
     <Link href={item.href || "#"}>
       <a
