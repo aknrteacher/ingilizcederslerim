@@ -123,17 +123,23 @@ const SidebarItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; depth?:
   )
 }
 
-export function Sidebar() {
+interface SidebarProps {
+  isMobile?: boolean
+  onItemClick?: () => void
+}
+
+export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const { currentTheme, setCurrentTheme } = useTheme()
   const logoFilter = themeFilters[currentTheme]
 
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
+    onItemClick?.()
   }
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground transition-colors duration-300">
-      <div className="flex h-32 items-center justify-center border-b border-sidebar-border px-4 py-4">
+    <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col bg-sidebar text-sidebar-foreground transition-colors duration-300`}>
+      <div className={`flex items-center justify-center border-b border-sidebar-border px-4 py-4 ${isMobile ? 'h-20' : 'h-32'}`}>
         <img src={logo} alt="LinguaLearn Logo" className="h-full w-auto object-contain transition-all duration-500" style={{ filter: logoFilter }} />
       </div>
       <div className="flex-1 overflow-y-auto p-4">
@@ -145,10 +151,10 @@ export function Sidebar() {
       </div>
       <div className="border-t border-sidebar-border p-4">
         <div className="flex items-center gap-3 rounded-md bg-sidebar-accent/50 p-3">
-          <div className="h-8 w-8 rounded-full bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground font-bold">
+          <div className="h-8 w-8 rounded-full bg-sidebar-primary flex items-center justify-center text-sidebar-primary-foreground font-bold text-sm">
             JS
           </div>
-          <div className="flex flex-col overflow-hidden">
+          <div className="flex flex-col overflow-hidden min-w-0">
             <span className="text-xs font-medium truncate">John Student</span>
             <span className="text-[10px] text-sidebar-foreground/60 truncate">Premium Plan</span>
           </div>
