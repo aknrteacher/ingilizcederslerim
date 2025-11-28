@@ -21,7 +21,16 @@ type NavItem = {
 
 // --- Navigation Data ---
 const levelItems = [
-  { title: "Okul Öncesi & 1. Sınıf", theme: "pre-school" as LevelTheme },
+  { 
+    title: "Okul Öncesi & 1. Sınıf", 
+    theme: "pre-school" as LevelTheme,
+    items: [
+      { title: "Oyunlar", href: "/pre-school/games" },
+      { title: "Şarkılar", href: "/pre-school/songs" },
+      { title: "Hikayeler", href: "/pre-school/stories" },
+      { title: "El İşi", href: "/pre-school/crafts" },
+    ]
+  },
   { title: "İlkokul", theme: "primary-school" as LevelTheme },
   { title: "Ortaokul", theme: "secondary-school" as LevelTheme },
   { title: "Lise", theme: "high-school" as LevelTheme },
@@ -48,7 +57,8 @@ const navItems: NavItem[] = [
   ...levelItems.map(item => ({
     title: item.title,
     theme: item.theme,
-    href: `/${item.theme}`,
+    href: item.items ? undefined : `/${item.theme}`,
+    items: item.items,
   })),
   {
     title: "Hesabım",
@@ -72,8 +82,46 @@ const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; dep
   }, [isActive]);
 
   const isLevelItem = item.theme && levelColors[item.theme];
+  const hasSubmenu = item.items && item.items.length > 0;
 
-  if (item.items) {
+  // Level items with submenus (like Okul Öncesi & 1. Sınıf)
+  if (isLevelItem && hasSubmenu) {
+    const colors = levelColors[item.theme!];
+    return (
+      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
+        <CollapsibleTrigger asChild>
+          <button
+            className={cn(
+              "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+              "transition-all duration-300 group",
+              `bg-gradient-to-r ${colors.bg} ${colors.text}`,
+              "border-2 border-opacity-30 hover:border-opacity-60",
+              "hover:shadow-lg",
+              isOpen ? "hover:scale-105" : "hover:scale-105 hover:-translate-y-0.5"
+            )}
+          >
+            <span className="truncate flex-1 text-left">{item.title}</span>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 transition-transform duration-300 flex-shrink-0",
+                isOpen ? "rotate-180" : ""
+              )}
+            />
+          </button>
+        </CollapsibleTrigger>
+        <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+          <div className="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-opacity-30 pl-2" style={{ borderColor: `hsl(${colors.text === 'text-amber-900' ? '45' : colors.text === 'text-blue-900' ? '200' : colors.text === 'text-orange-900' ? '25' : colors.text === 'text-green-900' ? '120' : colors.text === 'text-purple-900' ? '270' : '200'})` }}>
+            {item.items!.map((subItem, index) => (
+              <FloatingNavItem key={index} item={subItem} depth={depth + 1} onLevelClick={onLevelClick} />
+            ))}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    )
+  }
+
+  // Regular items with submenu (like Hesabım)
+  if (hasSubmenu) {
     return (
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
         <CollapsibleTrigger asChild>
@@ -101,7 +149,7 @@ const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; dep
         </CollapsibleTrigger>
         <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
           <div className="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-sidebar-primary/30 pl-2">
-            {item.items.map((subItem, index) => (
+            {item.items!.map((subItem, index) => (
               <FloatingNavItem key={index} item={subItem} depth={depth + 1} onLevelClick={onLevelClick} />
             ))}
           </div>
@@ -116,7 +164,7 @@ const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; dep
     }
   }
 
-  // Level items with theme colors
+  // Level items with theme colors (without submenu)
   if (isLevelItem) {
     const colors = levelColors[item.theme!];
     return (
