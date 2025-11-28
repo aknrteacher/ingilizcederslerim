@@ -1,4 +1,10 @@
 import React, { createContext, useContext, useState } from "react"
+import logoYellow from "@assets/generated_images/logo_in_pastel_yellow.png"
+import logoBlue from "@assets/generated_images/logo_in_pastel_blue.png"
+import logoOrange from "@assets/generated_images/logo_in_pastel_orange.png"
+import logoGreen from "@assets/generated_images/logo_in_pastel_green.png"
+import logoPurple from "@assets/generated_images/logo_in_purple.png"
+import logoGray from "@assets/generated_images/logo_in_gray.png"
 
 export type LevelTheme = "pre-school" | "primary-school" | "secondary-school" | "high-school" | "university" | "business-english"
 
@@ -33,12 +39,12 @@ export function useTheme() {
 }
 
 export const themeLogos: Record<LevelTheme, string> = {
-  "pre-school": "/attached_assets/generated_images/logo_in_pastel_yellow.png",
-  "primary-school": "/attached_assets/generated_images/logo_in_pastel_blue.png",
-  "secondary-school": "/attached_assets/generated_images/logo_in_pastel_orange.png",
-  "high-school": "/attached_assets/generated_images/logo_in_pastel_green.png",
-  "university": "/attached_assets/generated_images/logo_in_purple.png",
-  "business-english": "/attached_assets/generated_images/logo_in_gray.png",
+  "pre-school": logoYellow,
+  "primary-school": logoBlue,
+  "secondary-school": logoOrange,
+  "high-school": logoGreen,
+  "university": logoPurple,
+  "business-english": logoGray,
 }
 
 export const themeColors: Record<LevelTheme, Record<string, string>> = {
