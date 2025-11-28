@@ -31,7 +31,15 @@ const levelItems = [
       { title: "El İşi", href: "/pre-school/crafts" },
     ]
   },
-  { title: "İlkokul", theme: "primary-school" as LevelTheme },
+  { 
+    title: "İlkokul", 
+    theme: "primary-school" as LevelTheme,
+    items: [
+      { title: "2. Sınıf", href: "/primary-school/grade-2" },
+      { title: "3. Sınıf", href: "/primary-school/grade-3" },
+      { title: "4. Sınıf", href: "/primary-school/grade-4" },
+    ]
+  },
   { title: "Ortaokul", theme: "secondary-school" as LevelTheme },
   { title: "Lise", theme: "high-school" as LevelTheme },
   { title: "Üniversite", theme: "university" as LevelTheme },
