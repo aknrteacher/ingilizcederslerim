@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronDown, BookOpen, GraduationCap, Globe, LayoutDashboard, Settings, User } from "lucide-react"
+import { ChevronDown, LayoutDashboard, Settings, User, Sparkles, BookMarked, Zap, Brain, Briefcase, UserCircle, TrendingUp, GraduationCap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Collapsible,
@@ -20,12 +20,12 @@ type NavItem = {
 
 // --- Navigation Data ---
 const levelItems = [
-  { title: "Pre-School", icon: BookOpen, theme: "pre-school" as LevelTheme },
-  { title: "Primary School", icon: BookOpen, theme: "primary-school" as LevelTheme },
-  { title: "Secondary School", icon: BookOpen, theme: "secondary-school" as LevelTheme },
+  { title: "Pre-School", icon: Sparkles, theme: "pre-school" as LevelTheme },
+  { title: "Primary School", icon: BookMarked, theme: "primary-school" as LevelTheme },
+  { title: "Secondary School", icon: Zap, theme: "secondary-school" as LevelTheme },
   { title: "High School", icon: GraduationCap, theme: "high-school" as LevelTheme },
-  { title: "University", icon: GraduationCap, theme: "university" as LevelTheme },
-  { title: "Business English", icon: Globe, theme: "business-english" as LevelTheme },
+  { title: "University", icon: Brain, theme: "university" as LevelTheme },
+  { title: "Business English", icon: Briefcase, theme: "business-english" as LevelTheme },
 ]
 
 const navItems: NavItem[] = [
@@ -43,8 +43,8 @@ const navItems: NavItem[] = [
     title: "My Account",
     icon: User,
     items: [
-      { title: "Profile", href: "/account/profile" },
-      { title: "Progress", href: "/account/progress" },
+      { title: "Profile", href: "/account/profile", icon: UserCircle },
+      { title: "Progress", href: "/account/progress", icon: TrendingUp },
       { title: "Settings", icon: Settings, href: "/account/settings" },
     ],
   },
