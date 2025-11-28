@@ -160,7 +160,7 @@ const SidebarItem = ({ item, depth = 0 }: { item: NavItem; depth?: number }) => 
 export function Sidebar() {
   return (
     <div className="flex h-screen w-64 flex-col border-r bg-sidebar text-sidebar-foreground">
-      <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4 py-2">
+      <div className="flex h-32 items-center justify-center border-b border-sidebar-border px-4 py-4">
         <img src={logo} alt="LinguaLearn Logo" className="h-full w-auto object-contain" />
       </div>
       <div className="flex-1 overflow-y-auto p-4">
