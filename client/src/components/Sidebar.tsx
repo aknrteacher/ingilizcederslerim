@@ -123,12 +123,12 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
     <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar text-sidebar-foreground transition-colors duration-300 backdrop-blur-xl`}>
       {/* Logo Section */}
       <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
-        <img 
-          src={logo} 
-          alt="LinguaLearn Logo" 
-          className="h-full w-auto object-contain transition-all duration-500 hover:scale-105 drop-shadow-lg" 
-          style={{ filter: logoFilter }} 
-        />
+        <h1 className={cn(
+          "text-2xl font-extrabold text-center leading-tight transition-all duration-500 hover:scale-105 cursor-pointer",
+          levelColors[currentTheme] ? levelColors[currentTheme].text : "text-primary"
+        )}>
+          İngilizce<br/>Derslerim
+        </h1>
       </div>
 
       {/* Sliding Navigation */}
