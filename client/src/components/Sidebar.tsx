@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ChevronDown, ChevronLeft, LayoutDashboard, Settings, User, UserCircle, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
-import logo from "@assets/logo1_1764347479542.png"
+import logo from "@assets/generated_images/modern_english_learning_logo_with_speech_bubble_and_book.png"
 import { Link, useLocation } from "wouter"
 import { useTheme, type LevelTheme, themeFilters } from "@/context/ThemeContext"
 
