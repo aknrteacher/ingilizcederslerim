@@ -1,11 +1,6 @@
 import * as React from "react"
-import { ChevronDown, LayoutDashboard, Settings, User, UserCircle, TrendingUp } from "lucide-react"
+import { ChevronDown, ChevronLeft, LayoutDashboard, Settings, User, UserCircle, TrendingUp } from "lucide-react"
 import { cn } from "@/lib/utils"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import logo from "@assets/logo1_1764347479542.png"
 import { Link, useLocation } from "wouter"
 import { useTheme, type LevelTheme, themeFilters } from "@/context/ThemeContext"
@@ -79,142 +74,6 @@ const navItems: NavItem[] = [
   },
 ]
 
-// --- Floating Button Item Component ---
-const FloatingNavItem = ({ item, depth = 0, onLevelClick }: { item: NavItem; depth?: number; onLevelClick?: (theme: LevelTheme) => void }) => {
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [location] = useLocation();
-  const isActive = item.href === location || (item.items && item.items.some(subItem => subItem.href === location));
-
-  React.useEffect(() => {
-    if (isActive) setIsOpen(true);
-  }, [isActive]);
-
-  const isLevelItem = item.theme && levelColors[item.theme];
-  const hasSubmenu = item.items && item.items.length > 0;
-
-  // Level items with submenus (like Okul Öncesi & 1. Sınıf)
-  if (isLevelItem && hasSubmenu) {
-    const colors = levelColors[item.theme!];
-    return (
-      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
-        <CollapsibleTrigger asChild>
-          <button
-            className={cn(
-              "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
-              "transition-all duration-300 group",
-              `bg-gradient-to-r ${colors.bg} ${colors.text}`,
-              "border-2 border-opacity-30 hover:border-opacity-60",
-              "hover:shadow-lg",
-              isOpen ? "hover:scale-105" : "hover:scale-105 hover:-translate-y-0.5"
-            )}
-          >
-            <span className="truncate flex-1 text-left">{item.title}</span>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 transition-transform duration-300 flex-shrink-0",
-                isOpen ? "rotate-180" : ""
-              )}
-            />
-          </button>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-          <div className="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-opacity-30 pl-2" style={{ borderColor: `hsl(${colors.text === 'text-amber-900' ? '45' : colors.text === 'text-blue-900' ? '200' : colors.text === 'text-orange-900' ? '25' : colors.text === 'text-green-900' ? '120' : colors.text === 'text-purple-900' ? '270' : '200'})` }}>
-            {item.items!.map((subItem, index) => (
-              <FloatingNavItem key={index} item={subItem} depth={depth + 1} onLevelClick={onLevelClick} />
-            ))}
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
-    )
-  }
-
-  // Regular items with submenu (like Hesabım)
-  if (hasSubmenu) {
-    return (
-      <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
-        <CollapsibleTrigger asChild>
-          <button
-            className={cn(
-              "flex w-full items-center justify-between gap-2 px-4 py-3 rounded-xl font-medium text-sm",
-              "transition-all duration-300 backdrop-blur-sm",
-              "hover:shadow-lg hover:scale-105",
-              isActive
-                ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
-            )}
-          >
-            <div className="flex items-center gap-2 flex-1">
-              {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
-              <span className="truncate">{item.title}</span>
-            </div>
-            <ChevronDown
-              className={cn(
-                "h-4 w-4 transition-transform duration-300 flex-shrink-0",
-                isOpen ? "rotate-180" : ""
-              )}
-            />
-          </button>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-          <div className="mt-2 ml-4 flex flex-col gap-2 border-l-2 border-sidebar-primary/30 pl-2">
-            {item.items!.map((subItem, index) => (
-              <FloatingNavItem key={index} item={subItem} depth={depth + 1} onLevelClick={onLevelClick} />
-            ))}
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
-    )
-  }
-
-  const handleClick = () => {
-    if (item.theme && onLevelClick) {
-      onLevelClick(item.theme);
-    }
-  }
-
-  // Level items with theme colors (without submenu)
-  if (isLevelItem) {
-    const colors = levelColors[item.theme!];
-    return (
-      <Link href={item.href || "#"}>
-        <a
-          onClick={handleClick}
-          className={cn(
-            "flex w-full items-center justify-center px-4 py-4 rounded-xl font-bold text-sm",
-            "transition-all duration-300 group",
-            "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-            `bg-gradient-to-r ${colors.bg} ${colors.text}`,
-            "border-2 border-opacity-30 hover:border-opacity-60",
-            isActive && "ring-2 ring-offset-2 ring-opacity-50"
-          )}
-        >
-          <span className="truncate">{item.title}</span>
-        </a>
-      </Link>
-    )
-  }
-
-  // Regular items with icons
-  return (
-    <Link href={item.href || "#"}>
-      <a
-        onClick={handleClick}
-        className={cn(
-          "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
-          "transition-all duration-300 backdrop-blur-sm group",
-          "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-          isActive
-            ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-            : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
-        )}
-      >
-        {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-        <span className="flex-1 truncate">{item.title}</span>
-      </a>
-    </Link>
-  )
-}
-
 interface SidebarProps {
   isMobile?: boolean
   onItemClick?: () => void
@@ -223,9 +82,34 @@ interface SidebarProps {
 export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const { currentTheme, setCurrentTheme } = useTheme()
   const logoFilter = themeFilters[currentTheme]
+  const [location] = useLocation()
+  const [activeSubmenu, setActiveSubmenu] = React.useState<string | null>(null)
+  const [submenuTitle, setSubmenuTitle] = React.useState<string>("")
+  const [submenuItems, setSubmenuItems] = React.useState<NavItem[]>([])
 
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
+    onItemClick?.()
+  }
+
+  const handleOpenSubmenu = (item: NavItem) => {
+    if (item.items && item.items.length > 0) {
+      setActiveSubmenu(item.title)
+      setSubmenuTitle(item.title)
+      setSubmenuItems(item.items)
+    }
+  }
+
+  const handleBackToMain = () => {
+    setActiveSubmenu(null)
+    setSubmenuTitle("")
+    setSubmenuItems([])
+  }
+
+  const handleSubmenuItemClick = (item: NavItem) => {
+    if (item.theme) {
+      handleLevelClick(item.theme)
+    }
     onItemClick?.()
   }
 
@@ -241,21 +125,122 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
         />
       </div>
 
-      {/* Floating Navigation Buttons */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-2">
-        <nav className="flex flex-col gap-2">
-          {navItems.map((item, index) => (
-            <React.Fragment key={index}>
-              {index === 1 && (
-                <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
-              )}
-              {index === navItems.length - 1 && (
-                <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
-              )}
-              <FloatingNavItem item={item} onLevelClick={handleLevelClick} />
-            </React.Fragment>
-          ))}
-        </nav>
+      {/* Sliding Navigation */}
+      <div className="flex-1 overflow-hidden p-3 sm:p-4">
+        <div className="relative w-full h-full">
+          {/* Main Menu */}
+          <div className={cn(
+            "absolute inset-0 transition-all duration-500 ease-out",
+            activeSubmenu ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
+          )}>
+            <nav className="flex flex-col gap-2 h-full overflow-y-auto">
+              {navItems.map((item, index) => (
+                <React.Fragment key={index}>
+                  {index === 1 && (
+                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
+                  )}
+                  {index === navItems.length - 1 && (
+                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
+                  )}
+                  
+                  {item.href ? (
+                    <Link href={item.href}>
+                      <a className={cn(
+                        "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
+                        "transition-all duration-300 backdrop-blur-sm group",
+                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                        location === item.href
+                          ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+                      )}>
+                        {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
+                        <span className="flex-1 truncate">{item.title}</span>
+                      </a>
+                    </Link>
+                  ) : item.theme ? (
+                    // Level item with submenu
+                    <button
+                      onClick={() => handleOpenSubmenu(item)}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+                        "transition-all duration-300 group",
+                        `bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text}`,
+                        "border-2 border-opacity-30 hover:border-opacity-60",
+                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                        item.items && item.items.length > 0 && "cursor-pointer"
+                      )}
+                    >
+                      <span className="truncate flex-1">{item.title}</span>
+                      {item.items && item.items.length > 0 && (
+                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                      )}
+                    </button>
+                  ) : (
+                    // Regular item with submenu
+                    <button
+                      onClick={() => handleOpenSubmenu(item)}
+                      className={cn(
+                        "flex w-full items-center justify-between gap-2 px-4 py-3 rounded-xl font-medium text-sm",
+                        "transition-all duration-300 backdrop-blur-sm",
+                        "hover:shadow-lg hover:scale-105",
+                        location?.startsWith(`/${item.title.toLowerCase().replace(/\s/g, '-')}`) 
+                          ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+                      )}
+                    >
+                      <div className="flex items-center gap-2 flex-1">
+                        {item.icon && <item.icon className="h-5 w-5 flex-shrink-0" />}
+                        <span className="truncate">{item.title}</span>
+                      </div>
+                      <ChevronDown className="h-4 w-4 transition-transform duration-300 flex-shrink-0" />
+                    </button>
+                  )}
+                </React.Fragment>
+              ))}
+            </nav>
+          </div>
+
+          {/* Submenu */}
+          {activeSubmenu && (
+            <div className={cn(
+              "absolute inset-0 transition-all duration-500 ease-out",
+              activeSubmenu ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+            )}>
+              <div className="flex flex-col h-full">
+                {/* Submenu Header */}
+                <button
+                  onClick={handleBackToMain}
+                  className="flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30 transition-all duration-300 group"
+                >
+                  <ChevronLeft className="h-5 w-5 flex-shrink-0 group-hover:-translate-x-1 transition-transform" />
+                  <span className="flex-1 text-left truncate">{submenuTitle}</span>
+                </button>
+
+                {/* Submenu Items */}
+                <nav className="flex-1 overflow-y-auto flex flex-col gap-2">
+                  {submenuItems.map((subItem, index) => (
+                    <Link key={index} href={subItem.href || "#"}>
+                      <a 
+                        onClick={() => handleSubmenuItemClick(subItem)}
+                        className={cn(
+                          "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
+                          "transition-all duration-300 backdrop-blur-sm group",
+                          "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                          location === subItem.href
+                            ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                            : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+                        )}
+                      >
+                        {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
+                        <span className="flex-1 truncate">{subItem.title}</span>
+                      </a>
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* User Profile Floating Card */}
