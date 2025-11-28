@@ -16,7 +16,7 @@ export function Header({ mobileMenuTrigger }: HeaderProps) {
           </div>
         )}
         <h2 className="text-sm sm:text-lg font-semibold text-foreground/80 hidden sm:block">
-          Welcome back, John
+          Tekrar hoş geldiniz, John
         </h2>
       </div>
 
@@ -25,7 +25,7 @@ export function Header({ mobileMenuTrigger }: HeaderProps) {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="Search lessons..."
+            placeholder="Dersleri ara..."
             className="h-9 w-48 sm:w-64 rounded-md border border-input bg-background pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>

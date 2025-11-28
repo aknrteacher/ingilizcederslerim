@@ -21,12 +21,12 @@ type NavItem = {
 
 // --- Navigation Data ---
 const levelItems = [
-  { title: "Pre-School", theme: "pre-school" as LevelTheme },
-  { title: "Primary School", theme: "primary-school" as LevelTheme },
-  { title: "Secondary School", theme: "secondary-school" as LevelTheme },
-  { title: "High School", theme: "high-school" as LevelTheme },
-  { title: "University", theme: "university" as LevelTheme },
-  { title: "Business English", theme: "business-english" as LevelTheme },
+  { title: "Okul Öncesi & 1. Sınıf", theme: "pre-school" as LevelTheme },
+  { title: "İlkokul", theme: "primary-school" as LevelTheme },
+  { title: "Ortaokul", theme: "secondary-school" as LevelTheme },
+  { title: "Lise", theme: "high-school" as LevelTheme },
+  { title: "Üniversite", theme: "university" as LevelTheme },
+  { title: "İş İngilizcesi", theme: "business-english" as LevelTheme },
 ]
 
 // --- Theme Color Mapping ---
@@ -41,7 +41,7 @@ const levelColors: Record<LevelTheme, { bg: string; text: string }> = {
 
 const navItems: NavItem[] = [
   {
-    title: "Dashboard",
+    title: "Kontrol Paneli",
     href: "/",
     icon: LayoutDashboard,
   },
@@ -51,12 +51,12 @@ const navItems: NavItem[] = [
     href: `/${item.theme}`,
   })),
   {
-    title: "My Account",
+    title: "Hesabım",
     icon: User,
     items: [
-      { title: "Profile", href: "/account/profile", icon: UserCircle },
-      { title: "Progress", href: "/account/progress", icon: TrendingUp },
-      { title: "Settings", icon: Settings, href: "/account/settings" },
+      { title: "Profil", href: "/account/profile", icon: UserCircle },
+      { title: "İlerleme", href: "/account/progress", icon: TrendingUp },
+      { title: "Ayarlar", icon: Settings, href: "/account/settings" },
     ],
   },
 ]
