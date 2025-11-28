@@ -152,15 +152,19 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                   {item.href ? (
                     <Link href={item.href}>
                       <a className={cn(
-                        "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm",
-                        "transition-all duration-300 backdrop-blur-sm group",
-                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-                        location === item.href
-                          ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
-                      )}>
+                        "flex w-full items-center gap-3 rounded-xl transition-all duration-300 group",
+                        item.theme 
+                          ? `px-4 py-4 font-bold text-sm justify-center bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text} border-2 border-opacity-30 hover:border-opacity-60 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5`
+                          : `px-4 py-3 font-medium text-sm backdrop-blur-sm hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 ${
+                              location === item.href
+                                ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+                            }`
+                      )}
+                      onClick={() => item.theme && handleLevelClick(item.theme)}
+                      >
                         {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                        <span className="flex-1 truncate">{item.title}</span>
+                        <span className={cn("truncate", item.theme ? "" : "flex-1")}>{item.title}</span>
                       </a>
                     </Link>
                   ) : item.theme ? (
