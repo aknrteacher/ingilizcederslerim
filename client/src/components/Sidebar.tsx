@@ -147,52 +147,52 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
           "text-3xl font-black text-center leading-none transition-all duration-500 hover:scale-105 cursor-pointer font-serif tracking-tight",
           levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary"
         )}>
-          İngilizce<br/>Derslerim
+          ingilizce<br/>derslerim
         </h1>
       </div>
 
       {/* Top Icon Buttons */}
-      <div className="flex items-center justify-center gap-2 px-3 sm:px-4 py-3 border-b border-sidebar-primary/20">
+      <div className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 border-b border-sidebar-primary/20">
         <Link href="/account/profile">
-          <a className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group" title="Hesabım">
-            <User className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          <a className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group" title="Hesabım">
+            <User className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
           </a>
         </Link>
         <button 
           onClick={() => {
             setMenuStack([])
           }}
-          className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group" 
+          className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group" 
           title="Ana Sayfa"
         >
-          <Home className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          <Home className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
         </button>
         <button 
           onClick={handleBack}
           disabled={menuStack.length === 0}
-          className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group disabled:opacity-50 disabled:cursor-not-allowed" 
+          className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group disabled:opacity-50 disabled:cursor-not-allowed" 
           title="Geri"
         >
-          <ChevronLeft className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          <ChevronLeft className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
         </button>
       </div>
 
       {/* Sliding Navigation */}
-      <div className="flex-1 overflow-hidden p-3 sm:p-4">
+      <div className="flex-1 overflow-hidden p-2 sm:p-3">
         <div className="relative w-full h-full">
           {/* Main Menu */}
           <div className={cn(
             "absolute inset-0 transition-all duration-500 ease-out",
             activeSubmenu ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
           )}>
-            <nav className="flex flex-col gap-2 h-full overflow-y-auto">
+            <nav className="flex flex-col gap-1 h-full overflow-y-auto">
               {navItems.map((item, index) => (
                 <React.Fragment key={index}>
                   {index === 1 && (
-                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
+                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-1"></div>
                   )}
                   {index === navItems.length - 1 && (
-                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-2"></div>
+                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-1"></div>
                   )}
                   
                   {item.items && !item.href ? (
@@ -258,7 +258,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                 </button>
 
                 {/* Submenu Items */}
-                <nav className="flex-1 overflow-y-auto flex flex-col gap-2">
+                <nav className="flex-1 overflow-y-auto flex flex-col gap-1">
                   {submenuItems.map((subItem, index) => (
                     <React.Fragment key={index}>
                       {subItem.items ? (
