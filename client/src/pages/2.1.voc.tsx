@@ -26,7 +26,7 @@ export default function VocabularyCards() {
   const imageFiles = [
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
-    { word: "How are you", file: "goodbye.png", turkish: "nasılsın" },
+    { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
     { word: "I am fine", file: "I m fine.png", turkish: "iyiyim" },
     { word: "school", file: "school.png", turkish: "okul" },
     { word: "classroom", file: "classroom.png", turkish: "sınıf" },
