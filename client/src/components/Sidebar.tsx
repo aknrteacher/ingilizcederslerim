@@ -185,7 +185,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
             "absolute inset-0 transition-all duration-500 ease-out",
             activeSubmenu ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"
           )}>
-            <nav className="flex flex-col gap-1 h-full overflow-y-auto">
+            <nav className="flex flex-col gap-1 h-full overflow-y-auto overflow-x-hidden">
               {navItems.map((item, index) => (
                 <React.Fragment key={index}>
                   {index === 1 && (
@@ -258,7 +258,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                 </button>
 
                 {/* Submenu Items */}
-                <nav className="flex-1 overflow-y-auto flex flex-col gap-1">
+                <nav className="flex-1 overflow-y-auto overflow-x-hidden flex flex-col gap-1">
                   {submenuItems.map((subItem, index) => (
                     <React.Fragment key={index}>
                       {subItem.items ? (
