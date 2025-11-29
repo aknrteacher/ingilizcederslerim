@@ -43,6 +43,7 @@ export default function VocabularyCards() {
       word: item.word,
       imageUrl: `images/${item.file}`,
     }));
+    console.log("Vocabulary loaded:", vocabData);
     setVocabulary(vocabData);
   }, []);
 
@@ -199,6 +200,9 @@ export default function VocabularyCards() {
                 src={currentCard.imageUrl}
                 alt={currentCard.word}
                 onClick={handleImageClick}
+                onLoad={() => console.log("Image loaded:", currentCard.imageUrl)}
+                onError={(e) => console.log("Image failed to load:", currentCard.imageUrl, e)}
+                style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }}
               />
             </div>
           </div>
