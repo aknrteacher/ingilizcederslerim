@@ -27,7 +27,7 @@ export default function VocabularyCards() {
     { word: "How are you", file: "how_are_you.png" },
     { word: "I'm fine", file: "im_fine.png" },
     { word: "School", file: "school.png" },
-    { word: "Classroom", file: "classroom.png" },
+    { word: "Classroom", file: "classroom1.png" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
