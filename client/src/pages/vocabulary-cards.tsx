@@ -24,7 +24,6 @@ export default function VocabularyCards() {
   const imageFiles = [
     { word: "Hello", file: "hello.png" },
     { word: "Goodbye", file: "goodbye.png" },
-
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
