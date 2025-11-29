@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChevronDown, ChevronLeft, LayoutDashboard, Settings, User, UserCircle, TrendingUp } from "lucide-react"
+import { ChevronDown, ChevronLeft, LayoutDashboard, Settings, User, UserCircle, TrendingUp, Home } from "lucide-react"
 import { cn } from "@/lib/utils"
 import logo from "@assets/generated_images/modern_english_learning_logo_with_speech_bubble_and_book.png"
 import { Link, useLocation } from "wouter"
@@ -76,26 +76,12 @@ const levelColors: Record<LevelTheme, { bg: string; text: string; dark: string; 
 }
 
 const navItems: NavItem[] = [
-  {
-    title: "Kontrol Paneli",
-    href: "/",
-    icon: LayoutDashboard,
-  },
   ...levelItems.map(item => ({
     title: item.title,
     theme: item.theme,
     href: item.items ? undefined : `/${item.theme}`,
     items: item.items,
   })),
-  {
-    title: "Hesabım",
-    icon: User,
-    items: [
-      { title: "Profil", href: "/account/profile", icon: UserCircle },
-      { title: "İlerleme", href: "/account/progress", icon: TrendingUp },
-      { title: "Ayarlar", icon: Settings, href: "/account/settings" },
-    ],
-  },
 ]
 
 interface SidebarProps {
@@ -165,6 +151,32 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
         </h1>
       </div>
 
+      {/* Top Icon Buttons */}
+      <div className="flex items-center justify-center gap-2 px-3 sm:px-4 py-3 border-b border-sidebar-primary/20">
+        <Link href="/account/profile">
+          <a className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group" title="Hesabım">
+            <User className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          </a>
+        </Link>
+        <button 
+          onClick={() => {
+            setMenuStack([])
+          }}
+          className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group" 
+          title="Ana Sayfa"
+        >
+          <Home className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+        </button>
+        <button 
+          onClick={handleBack}
+          disabled={menuStack.length === 0}
+          className="p-2 rounded-lg transition-all duration-300 hover:bg-sidebar-primary/25 hover:shadow-md group disabled:opacity-50 disabled:cursor-not-allowed" 
+          title="Geri"
+        >
+          <ChevronLeft className="h-5 w-5 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+        </button>
+      </div>
+
       {/* Sliding Navigation */}
       <div className="flex-1 overflow-hidden p-3 sm:p-4">
         <div className="relative w-full h-full">
@@ -188,7 +200,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                     <button
                       onClick={() => handleOpenSubmenu(item)}
                       className={cn(
-                        "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+                        "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
                         "transition-all duration-300 group",
                          item.theme 
                           ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
@@ -203,10 +215,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                     // Regular link item
                     <Link href={item.href || "#"}>
                       <a className={cn(
-                        "flex w-full items-center gap-3 rounded-xl transition-all duration-300 group",
+                        "flex w-full items-center gap-3 rounded-lg transition-all duration-300 group",
                         item.theme 
-                          ? `px-4 py-4 font-bold text-sm justify-center ${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
-                          : `px-4 py-3 font-medium text-sm backdrop-blur-sm hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 ${
+                          ? `px-4 py-2 font-bold text-sm justify-center ${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
+                          : `px-4 py-2 font-medium text-sm backdrop-blur-sm hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 ${
                               location === item.href
                                 ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
                                 : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
@@ -235,7 +247,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                 <button
                   onClick={handleBack}
                   className={cn(
-                    "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 transition-all duration-300 group",
+                    "flex w-full items-center gap-3 px-4 py-2 rounded-lg font-semibold text-sm mb-4 transition-all duration-300 group",
                     activeSubmenuTheme && levelColors[activeSubmenuTheme] 
                       ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg backdrop-blur-sm bg-opacity-80 hover:shadow-xl`
                       : "bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30"
@@ -254,7 +266,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                          <button
                            onClick={() => handleSubmenuItemClick(subItem)}
                            className={cn(
-                             "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
+                             "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
                              "transition-all duration-300 group submenu-item",
                              activeSubmenuTheme && levelColors[activeSubmenuTheme]
                                ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
@@ -272,7 +284,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                           <a 
                             onClick={() => handleSubmenuItemClick(subItem)}
                             className={cn(
-                              "flex w-full items-center gap-3 px-4 py-4 rounded-xl font-bold text-sm",
+                              "flex w-full items-center gap-3 px-4 py-2 rounded-lg font-bold text-sm",
                               "transition-all duration-300 group submenu-item",
                               "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                               activeSubmenuTheme && levelColors[activeSubmenuTheme]
