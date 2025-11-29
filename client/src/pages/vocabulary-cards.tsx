@@ -23,11 +23,8 @@ export default function VocabularyCards() {
   // Sample vocabulary data - replace with your own
   const imageFiles = [
     { word: "Hello", file: "hello.png" },
-    { word: "Goodbye", file: "goodbye_waving_illustration.png" },
-    { word: "How are you", file: "how_are_you_illustration.png" },
-    { word: "I'm fine", file: "i'm_fine_happy_expression.png" },
-    { word: "School", file: "school_building_illustration.png" },
-    { word: "Classroom", file: "classroom_interior_illustration.png" },
+    { word: "Goodbye", file: "goodbye.png" },
+
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
