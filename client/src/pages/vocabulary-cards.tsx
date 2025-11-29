@@ -31,11 +31,11 @@ export default function VocabularyCards() {
   const SOUND_CHANCE = 0.25;
 
   const reactionSounds = [
-    "sounds/yay.mp3",
-    "sounds/woosh.mp3",
-    "sounds/tennis.mp3",
-    "sounds/tap.mp3",
-    "sounds/tada.mp3",
+    "/sounds/yay.mp3",
+    "/sounds/woosh.mp3",
+    "/sounds/tennis.mp3",
+    "/sounds/tap.mp3",
+    "/sounds/tada.mp3",
   ];
 
   useEffect(() => {
