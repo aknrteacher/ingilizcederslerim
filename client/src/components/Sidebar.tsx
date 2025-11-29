@@ -188,12 +188,6 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
             <nav className="flex flex-col gap-1 h-full overflow-y-auto overflow-x-hidden">
               {navItems.map((item, index) => (
                 <React.Fragment key={index}>
-                  {index === 1 && (
-                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-1"></div>
-                  )}
-                  {index === navItems.length - 1 && (
-                    <div className="h-px bg-gradient-to-r from-transparent via-sidebar-primary/20 to-transparent my-1"></div>
-                  )}
                   
                   {item.items && !item.href ? (
                      // Item with submenu (Level items or items with children)
