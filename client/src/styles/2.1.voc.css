@@ -20,18 +20,20 @@
 }
 
 .title-container p {
-  font-size: clamp(14px, 4vw, 20px);
-  font-weight: 600;
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(18px, 5vw, 26px);
+  font-weight: 700;
   color: hsl(var(--foreground));
   margin: 0;
   line-height: 1.4;
 }
 
 .title-container p:first-child {
-  font-family: 'Libre Baskerville', serif;
-  font-size: clamp(20px, 6vw, 28px);
-  font-weight: 700;
   margin-bottom: 8px;
+}
+
+.title-container p:last-child {
+  color: hsl(var(--primary));
 }
 
 .center-layout {
