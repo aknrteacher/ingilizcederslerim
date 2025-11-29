@@ -16,7 +16,7 @@ type NavItem = {
 
 // --- Navigation Data ---
 const activityItems = [
-  { title: "Kelime Kartları", href: "vocabulary-cards" },
+  { title: "Kelime Kartları", href: "2.1-vocab" },
   { title: "Şarkılar", href: "songs" },
   { title: "Oyunlar", href: "games" },
   { title: "Hikayeler", href: "stories" },

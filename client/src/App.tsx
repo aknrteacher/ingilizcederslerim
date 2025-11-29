@@ -6,13 +6,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/ThemeContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
-import VocabularyCards from "@/pages/vocabulary-cards";
+import VocabularyCards from "@/pages/2.1.voc";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/primary-school/grade-2/theme-1/vocabulary-cards" component={VocabularyCards} />
+      <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 

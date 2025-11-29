@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
-import "@/styles/vocabulary-cards.css";
+import "@/styles/2.1.voc.css";
 
 declare global {
   interface Window {
