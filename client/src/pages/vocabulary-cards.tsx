@@ -149,11 +149,11 @@ export default function VocabularyCards() {
     <Layout>
       <div className="vocabulary-container">
         <div className="title-container">
-          <p>2nd Grade</p>
-          <p>Theme 1: School Life</p>
+          <p>2. Sınıf</p>
+          <p>Tema 1: Okul Hayatı</p>
         </div>
 
-      <div className="main-content">
+        <div className="main-content">
         {/* Number Reel */}
         <div className="number-reel-container">
           <div className="number-reel">
