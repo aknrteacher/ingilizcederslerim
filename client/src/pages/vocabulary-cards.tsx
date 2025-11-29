@@ -41,7 +41,7 @@ export default function VocabularyCards() {
   useEffect(() => {
     const vocabData = imageFiles.map((item) => ({
       word: item.word,
-      imageUrl: `/images/${item.file}`,
+      imageUrl: `/images/2.1/${item.file}`,
     }));
     console.log("Vocabulary loaded:", vocabData);
     setVocabulary(vocabData);
