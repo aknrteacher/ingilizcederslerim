@@ -233,7 +233,7 @@ export default function VocabularyCards() {
         </div>
 
         <div className="center-layout" data-testid="layout-center">
-          {/* Left Counter and Controls */}
+          {/* Left Counter */}
           <div className="left-side">
             <div className="counter-section">
               <div className="counter-display">
@@ -253,56 +253,6 @@ export default function VocabularyCards() {
                   {currentCardIndex < vocabulary.length - 2 ? currentCardIndex + 3 : ''}
                 </div>
               </div>
-            </div>
-            
-            <div className="controls-section">
-              <button
-                className="icon-control-btn"
-                onClick={handleStartOver}
-                title="Start Over"
-                data-testid="button-start-over"
-              >
-                &lt;&lt;
-              </button>
-              <button
-                className="icon-control-btn"
-                onClick={handlePrev}
-                title="Previous Card"
-                data-testid="button-previous"
-              >
-                &lt;
-              </button>
-              <button
-                className="icon-control-btn"
-                onClick={handleNext}
-                title="Next Card"
-                data-testid="button-next"
-              >
-                &gt;
-              </button>
-              <button
-                className="icon-control-btn"
-                onClick={handleFlip}
-                title="Flip Card"
-                data-testid="button-flip"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="20px"
-                  viewBox="0 0 24 24"
-                  width="20px"
-                >
-                  <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
-                </svg>
-              </button>
-              <button
-                className={`icon-control-btn ${showTranslation ? 'active' : ''}`}
-                onClick={handleToggleTranslation}
-                title="Show Translation"
-                data-testid="button-translation"
-              >
-                ?
-              </button>
             </div>
           </div>
 
@@ -357,6 +307,58 @@ export default function VocabularyCards() {
             )}
           </div>
 
+          {/* Right Controls */}
+          <div className="right-side">
+            <div className="controls-section">
+              <button
+                className="icon-control-btn"
+                onClick={handleStartOver}
+                title="Start Over"
+                data-testid="button-start-over"
+              >
+                &lt;&lt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handlePrev}
+                title="Previous Card"
+                data-testid="button-previous"
+              >
+                &lt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handleNext}
+                title="Next Card"
+                data-testid="button-next"
+              >
+                &gt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handleFlip}
+                title="Flip Card"
+                data-testid="button-flip"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+                </svg>
+              </button>
+              <button
+                className={`icon-control-btn ${showTranslation ? 'active' : ''}`}
+                onClick={handleToggleTranslation}
+                title="Show Translation"
+                data-testid="button-translation"
+              >
+                ?
+              </button>
+            </div>
+          </div>
         </div>
 
       {/* Image Overlay */}

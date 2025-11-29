@@ -44,7 +44,7 @@
   max-width: 1400px;
 }
 
-/* Left Side - Counter and Controls */
+/* Left Side - Counter */
 .left-side {
   display: flex;
   flex-direction: column;
@@ -84,61 +84,6 @@
   font-weight: 700;
   color: hsl(var(--primary));
   transform: scale(1.2);
-}
-
-.controls-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(8px, 1.5vw, 12px);
-  justify-content: center;
-}
-
-.icon-control-btn {
-  background-color: hsl(var(--card));
-  border: 1.5px solid hsl(var(--border));
-  color: hsl(var(--foreground));
-  width: clamp(40px, 7vw, 48px);
-  height: clamp(40px, 7vw, 48px);
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-  flex-shrink: 0;
-  font-size: clamp(18px, 3vw, 22px);
-  font-weight: 600;
-  font-family: inherit;
-}
-
-.icon-control-btn:hover {
-  background-color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  transform: scale(1.12);
-  box-shadow: 0 6px 20px hsl(var(--primary) / 0.35);
-}
-
-.icon-control-btn svg {
-  fill: hsl(var(--foreground));
-  width: clamp(16px, 3.5vw, 20px);
-  height: clamp(16px, 3.5vw, 20px);
-  transition: fill 0.3s;
-}
-
-.icon-control-btn:hover svg {
-  fill: hsl(var(--primary-foreground));
-}
-
-.icon-control-btn.active {
-  background-color: hsl(var(--primary));
-  border-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-
-.icon-control-btn.active svg {
-  fill: hsl(var(--primary-foreground));
 }
 
 /* Center Card */
@@ -267,6 +212,72 @@ img {
   animation: slideIn 0.3s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
+/* Right Side - Controls */
+.right-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 3vw, 40px);
+  flex-shrink: 0;
+  height: 100%;
+  justify-content: center;
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 12px);
+  justify-content: center;
+}
+
+.icon-control-btn {
+  background-color: hsl(var(--card));
+  border: 1.5px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  width: clamp(40px, 7vw, 48px);
+  height: clamp(40px, 7vw, 48px);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.icon-control-btn:hover {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px hsl(var(--primary) / 0.35);
+}
+
+.icon-control-btn svg {
+  fill: hsl(var(--foreground));
+  width: clamp(16px, 3.5vw, 20px);
+  height: clamp(16px, 3.5vw, 20px);
+  transition: fill 0.3s;
+}
+
+.icon-control-btn:hover svg {
+  fill: hsl(var(--primary-foreground));
+}
+
+.icon-control-btn.active {
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+.icon-control-btn.active svg {
+  fill: hsl(var(--primary-foreground));
+}
+
 .image-overlay {
   position: fixed;
   top: 0;
@@ -362,13 +373,15 @@ img {
     height: auto;
   }
 
-  .counter-section {
-    order: 1;
+  .right-side {
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    height: auto;
   }
 
   .controls-section {
     flex-direction: row;
-    order: 2;
   }
 }
 
@@ -378,6 +391,10 @@ img {
   }
 
   .left-side {
+    gap: 20px;
+  }
+
+  .right-side {
     gap: 20px;
   }
 
@@ -408,6 +425,11 @@ img {
   }
 
   .left-side {
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .right-side {
     flex-direction: row;
     gap: 15px;
   }
