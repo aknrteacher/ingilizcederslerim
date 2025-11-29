@@ -230,6 +230,9 @@ export default function VocabularyCards() {
     for (let i = currentCardIndex - 3; i <= currentCardIndex + 1; i++) {
       if (i < 0) {
         items.push({ type: 'dash', value: '-' });
+      } else if (i >= vocabulary.length) {
+        // Cap at vocabulary length - show dashes for beyond the total
+        items.push({ type: 'dash', value: '-' });
       } else {
         items.push({ type: 'number', value: i + 1 });
       }

@@ -15,8 +15,8 @@
 
 .title-container {
   text-align: center;
-  margin-bottom: 30px;
-  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-top: 10px;
 }
 
 .title-container p {
@@ -42,6 +42,7 @@
   flex: 1;
   width: 100%;
   max-width: 1400px;
+  margin-top: -40px;
 }
 
 /* Left Side - Counter */
@@ -99,11 +100,27 @@
   transform: scale(1.1);
 }
 
-/* Separator arrow styling */
+/* Separator arrow styling - styled like control buttons */
+.counter-display > div:nth-child(6) {
+  background-color: hsl(var(--card));
+  border: 1.5px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  width: clamp(40px, 7vw, 48px);
+  height: clamp(40px, 7vw, 48px);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 600;
+}
+
 .counter-display > div:nth-child(6) {
   color: hsl(var(--primary));
   font-weight: 700;
-  font-size: clamp(16px, 2.5vw, 20px);
 }
 
 /* Center Card */
