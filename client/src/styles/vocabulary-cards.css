@@ -307,6 +307,44 @@ img {
   animation: zoomIn 0.3s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
+.bonus-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+}
+
+.bonus-card:hover {
+  transform: none !important;
+}
+
+.bonus-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 3vw, 20px);
+  text-align: center;
+}
+
+.bonus-emoji {
+  font-size: clamp(48px, 12vw, 80px);
+  animation: bounce 2s infinite;
+}
+
+.bonus-title {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(20px, 5vw, 28px);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+.bonus-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 3vw, 18px);
+  font-weight: 500;
+  color: hsl(var(--primary));
+}
+
 .flying-reaction {
   position: absolute;
   font-size: clamp(24px, 5vw, 32px);
@@ -356,6 +394,15 @@ img {
   to {
     opacity: 0;
     transform: translateY(-80px) scale(0.8);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
   }
 }
 
@@ -434,13 +481,24 @@ img {
     gap: 15px;
   }
 
+  .counter-section {
+    order: 1;
+  }
+
+  .counter-display {
+    flex-direction: row;
+    gap: 10px;
+  }
+
   .counter-item {
     font-size: 11px;
-    min-width: 28px;
+    min-width: 24px;
+    min-height: auto;
+    padding: 4px 0;
   }
 
   .counter-item.active {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .icon-control-btn {

@@ -161,7 +161,7 @@ export default function VocabularyCards() {
     spawnFlyingEmoji(e);
     playRandomSound();
 
-    const newIndex = (currentCardIndex + 1) % vocabulary.length;
+    const newIndex = (currentCardIndex + 1) % totalCards;
 
     if (currentCardIndex === vocabulary.length - 1 && window.confetti) {
       window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
@@ -176,7 +176,7 @@ export default function VocabularyCards() {
     playRandomSound();
 
     const newIndex =
-      (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
+      (currentCardIndex - 1 + totalCards) % totalCards;
     setCurrentCardIndex(newIndex);
     setIsFlipped(false);
   };
@@ -218,11 +218,9 @@ export default function VocabularyCards() {
     return <div className="loading">Loading...</div>;
   }
 
-  const currentCard = vocabulary[currentCardIndex];
-  const windowSize = 2;
-  const start = Math.max(0, currentCardIndex - windowSize);
-  const end = Math.min(vocabulary.length - 1, currentCardIndex + windowSize);
-  const visibleNumbers = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  const totalCards = vocabulary.length + 1; // +1 for bonus card
+  const isBonusCard = currentCardIndex === vocabulary.length;
+  const currentCard = isBonusCard ? { word: "Review", imageUrl: "", turkish: "" } : vocabulary[currentCardIndex];
 
   return (
     <Layout>
@@ -247,10 +245,10 @@ export default function VocabularyCards() {
                   {currentCardIndex + 1}
                 </div>
                 <div className="counter-item" data-testid="text-counter-p1">
-                  {currentCardIndex < vocabulary.length - 1 ? currentCardIndex + 2 : ''}
+                  {currentCardIndex < totalCards - 1 ? currentCardIndex + 2 : ''}
                 </div>
                 <div className="counter-item" data-testid="text-counter-p2">
-                  {currentCardIndex < vocabulary.length - 2 ? currentCardIndex + 3 : ''}
+                  {currentCardIndex < totalCards - 2 ? currentCardIndex + 3 : ''}
                 </div>
               </div>
             </div>
@@ -259,45 +257,55 @@ export default function VocabularyCards() {
           {/* Center Card */}
           <div className="center-card">
             <div className="flashcard-container">
-              <div
-                className={`flashcard ${isFlipped ? "flipped" : ""}`}
-                onClick={(e) => handleFlip(e)}
-                data-testid="card-flashcard"
-              >
-                {/* Front */}
-                <div className="flashcard-front">
-                  <button
-                    className="pronunciation-btn"
-                    onClick={handlePronounce}
-                    title="Pronounce"
-                    data-testid="button-pronounce"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      width="24px"
-                      fill="#5f6368"
+              {isBonusCard ? (
+                <div className="flashcard bonus-card" data-testid="card-bonus">
+                  <div className="bonus-content">
+                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-title">Review & Practice</div>
+                    <div className="bonus-subtitle">Videos & Games coming soon!</div>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className={`flashcard ${isFlipped ? "flipped" : ""}`}
+                  onClick={(e) => handleFlip(e)}
+                  data-testid="card-flashcard"
+                >
+                  {/* Front */}
+                  <div className="flashcard-front">
+                    <button
+                      className="pronunciation-btn"
+                      onClick={handlePronounce}
+                      title="Pronounce"
+                      data-testid="button-pronounce"
                     >
-                      <path d="M0 0h24v24H0z" fill="none" />
-                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                    </svg>
-                  </button>
-                  <div className="word" data-testid="text-word">{currentCard.word}</div>
-                </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#5f6368"
+                      >
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                      </svg>
+                    </button>
+                    <div className="word" data-testid="text-word">{currentCard.word}</div>
+                  </div>
 
-                {/* Back */}
-                <div className="flashcard-back">
-                  <img
-                    src={currentCard.imageUrl}
-                    alt={currentCard.word}
-                    onClick={handleImageClick}
-                    onLoad={() => console.log("Image loaded:", currentCard.imageUrl)}
-                    onError={(e) => console.log("Image failed to load:", currentCard.imageUrl, e)}
-                    style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }}
-                  />
+                  {/* Back */}
+                  <div className="flashcard-back">
+                    <img
+                      src={currentCard.imageUrl}
+                      alt={currentCard.word}
+                      onClick={handleImageClick}
+                      onLoad={() => console.log("Image loaded:", currentCard.imageUrl)}
+                      onError={(e) => console.log("Image failed to load:", currentCard.imageUrl, e)}
+                      style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {showTranslation && (
