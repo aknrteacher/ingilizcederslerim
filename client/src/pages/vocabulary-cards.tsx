@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
+import { Layout } from "@/components/Layout";
 import "@/styles/vocabulary-cards.css";
 
 declare global {
@@ -145,11 +146,12 @@ export default function VocabularyCards() {
   const visibleNumbers = Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
   return (
-    <div className="vocabulary-container">
-      <div className="title-container">
-        <p>2nd Grade</p>
-        <p>Theme 1: School Life</p>
-      </div>
+    <Layout>
+      <div className="vocabulary-container">
+        <div className="title-container">
+          <p>2nd Grade</p>
+          <p>Theme 1: School Life</p>
+        </div>
 
       <div className="main-content">
         {/* Number Reel */}
@@ -261,6 +263,7 @@ export default function VocabularyCards() {
           alt="Zoomed view"
         />
       </div>
-    </div>
+      </div>
+    </Layout>
   );
 }
