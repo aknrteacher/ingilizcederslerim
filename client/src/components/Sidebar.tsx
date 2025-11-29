@@ -255,12 +255,13 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                            onClick={() => handleSubmenuItemClick(subItem)}
                            className={cn(
                              "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
-                             "transition-all duration-300 group",
+                             "transition-all duration-300 group submenu-item",
                              activeSubmenuTheme && levelColors[activeSubmenuTheme]
                                ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
                              "cursor-pointer"
                            )}
+                           style={{ animationDelay: `${index * 50}ms` }}
                          >
                            <span className="truncate flex-1 text-left">{subItem.title}</span>
                            <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
@@ -272,7 +273,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                             onClick={() => handleSubmenuItemClick(subItem)}
                             className={cn(
                               "flex w-full items-center gap-3 px-4 py-4 rounded-xl font-bold text-sm",
-                              "transition-all duration-300 group",
+                              "transition-all duration-300 group submenu-item",
                               "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                               activeSubmenuTheme && levelColors[activeSubmenuTheme]
                                 ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl backdrop-blur-sm bg-opacity-80`
@@ -280,6 +281,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                                     ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
                                     : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
                             )}
+                            style={{ animationDelay: `${index * 50}ms` }}
                           >
                             {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
                             <span className="flex-1 truncate">{subItem.title}</span>
