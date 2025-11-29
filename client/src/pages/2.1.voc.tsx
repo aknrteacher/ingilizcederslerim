@@ -222,6 +222,30 @@ export default function VocabularyCards() {
   const isBonusCard = currentCardIndex === vocabulary.length;
   const currentCard = isBonusCard ? { word: "Review", imageUrl: "", turkish: "" } : vocabulary[currentCardIndex];
 
+  // Generate 7-item counter display
+  const generateCounterItems = () => {
+    const items: Array<{ type: 'number' | 'dash' | 'separator' | 'total'; value: number | string; }> = [];
+    
+    // First 5 items: show previous card numbers or dashes
+    for (let i = currentCardIndex - 3; i <= currentCardIndex + 1; i++) {
+      if (i < 0) {
+        items.push({ type: 'dash', value: '-' });
+      } else {
+        items.push({ type: 'number', value: i + 1 });
+      }
+    }
+    
+    // Add separator
+    items.push({ type: 'separator', value: '..' });
+    
+    // Add total (not clickable)
+    items.push({ type: 'total', value: vocabulary.length });
+    
+    return items;
+  };
+
+  const counterItems = generateCounterItems();
+
   return (
     <Layout>
       <div className="vocabulary-container">
@@ -235,21 +259,29 @@ export default function VocabularyCards() {
           <div className="left-side">
             <div className="counter-section">
               <div className="counter-display">
-                <div className="counter-item" data-testid="text-counter-n2">
-                  {currentCardIndex > 1 ? currentCardIndex - 1 : ''}
-                </div>
-                <div className="counter-item" data-testid="text-counter-n1">
-                  {currentCardIndex > 0 ? currentCardIndex : ''}
-                </div>
-                <div className="counter-item active" data-testid="text-counter-current">
-                  {currentCardIndex + 1}
-                </div>
-                <div className="counter-item" data-testid="text-counter-p1">
-                  {currentCardIndex < totalCards - 1 ? currentCardIndex + 2 : ''}
-                </div>
-                <div className="counter-item" data-testid="text-counter-p2">
-                  {currentCardIndex < totalCards - 2 ? currentCardIndex + 3 : ''}
-                </div>
+                {counterItems.map((item, index) => {
+                  const isActive = index === 3; // Current card is at position 3 (0-indexed)
+                  const isClickable = item.type === 'number' && index < 5; // Only numbers in first 5 positions are clickable
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
+                      onClick={(e) => {
+                        if (isClickable && item.type === 'number') {
+                          const cardNumber = item.value as number;
+                          spawnFlyingEmoji(e);
+                          playRandomSound();
+                          handleCardSelect(cardNumber - 1, e);
+                        }
+                      }}
+                      data-testid={`text-counter-${index}`}
+                      style={{ cursor: isClickable ? 'pointer' : 'default' }}
+                    >
+                      {item.value}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

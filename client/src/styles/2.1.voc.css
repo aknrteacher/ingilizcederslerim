@@ -86,6 +86,19 @@
   transform: scale(1.2);
 }
 
+.counter-item.clickable {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.320, 1);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.counter-item.clickable:hover {
+  color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+  transform: scale(1.1);
+}
+
 /* Center Card */
 .center-card {
   display: flex;
