@@ -99,6 +99,18 @@
   transform: scale(1.1);
 }
 
+/* Total card count styling - highlighted */
+.counter-item.total {
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 700;
+  color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 8px;
+  padding: 6px 12px;
+  min-width: auto;
+  border: 1.5px solid hsl(var(--primary) / 0.3);
+}
+
 /* Separator button styling - styled like control buttons */
 .counter-item.separator-button {
   background-color: hsl(var(--card));

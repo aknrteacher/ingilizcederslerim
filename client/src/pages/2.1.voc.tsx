@@ -314,7 +314,7 @@ export default function VocabularyCards() {
                   return (
                     <div
                       key={index}
-                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
+                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''}`}
                       onClick={(e) => {
                         if (isClickable && item.type === 'number') {
                           const cardNumber = item.value as number;
