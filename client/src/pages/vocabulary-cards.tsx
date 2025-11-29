@@ -22,8 +22,19 @@ export default function VocabularyCards() {
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
-    { word: "Hello", file: "hello.png" },
-    { word: "Goodbye", file: "goodbye.png" },
+    { word: "hello", file: "hello.png" },
+    { word: "goodbye", file: "goodbye.png" },
+    { word: "How are you", file: "goodbye.png" },
+    { word: "I am fine", file: "I m fine.png" },
+    { word: "school", file: "school.png" },
+    { word: "classroom", file: "classroom.png" },
+    { word: "library", file: "library.png" },
+    { word: "canteen", file: "canteen.png" },
+    { word: "sports hall", file: "sport hall.png" },
+    { word: "playground", file: "playground.png" },
+    { word: "No", file: "No.png" },
+    { word: "Maybe", file: "Maybe.png" },
+    { word: "I don't know", file: "I don't know.png" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
