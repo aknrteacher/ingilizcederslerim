@@ -1,12 +1,11 @@
 .vocabulary-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 100%;
   min-height: calc(100vh - 120px);
-  overflow: visible;
-  padding: 20px 0;
+  overflow-x: hidden;
+  padding: 20px;
 }
 
 .loading {
@@ -17,10 +16,11 @@
 .title-container {
   text-align: center;
   margin-bottom: 40px;
+  margin-top: 20px;
 }
 
 .title-container p {
-  font-size: 20px;
+  font-size: clamp(14px, 4vw, 20px);
   font-weight: 600;
   color: hsl(var(--foreground));
   margin: 0;
@@ -29,7 +29,7 @@
 
 .title-container p:first-child {
   font-family: 'Libre Baskerville', serif;
-  font-size: 28px;
+  font-size: clamp(20px, 6vw, 28px);
   font-weight: 700;
   margin-bottom: 8px;
 }
@@ -37,14 +37,24 @@
 .main-content {
   display: flex;
   align-items: center;
-  gap: 30px;
   justify-content: center;
+  gap: clamp(15px, 5vw, 40px);
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .number-reel-container {
-  width: 50px;
-  height: 320px;
+  width: clamp(40px, 10vw, 60px);
+  height: clamp(250px, 50vh, 400px);
   overflow: hidden;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .number-reel-container {
+    display: block;
+  }
 }
 
 .number-reel {
@@ -61,12 +71,13 @@
 }
 
 .number-item {
-  font-size: 16px;
+  font-size: clamp(12px, 2.5vw, 16px);
   color: hsl(var(--muted-foreground));
   font-weight: 500;
-  padding: 12px 0;
+  padding: clamp(8px, 2vw, 12px) 0;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
 }
 
 .number-item:hover {
@@ -74,7 +85,7 @@
 }
 
 .number-item.active {
-  font-size: 20px;
+  font-size: clamp(16px, 3.5vw, 22px);
   font-weight: 700;
   color: hsl(var(--primary));
   transform: scale(1.1);
@@ -82,11 +93,15 @@
 
 .flashcard-container {
   perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 
 .flashcard {
-  width: 480px;
-  height: 300px;
+  width: clamp(300px, 80vw, 480px);
+  height: clamp(200px, 50vw, 300px);
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.320, 1);
@@ -108,7 +123,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 18px;
+  border-radius: clamp(12px, 2.5vw, 18px);
   background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.98) 100%);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
   border: 1px solid hsl(var(--border));
@@ -125,32 +140,35 @@
 
 .flashcard-back img {
   cursor: pointer;
-  border-radius: 14px;
+  border-radius: clamp(10px, 2vw, 14px);
+  object-fit: contain;
 }
 
 .word {
   font-family: 'Libre Baskerville', serif;
-  font-size: 42px;
+  font-size: clamp(28px, 8vw, 42px);
   font-weight: 700;
-  padding: 0 28px;
+  padding: clamp(15px, 4vw, 28px);
   text-align: center;
   color: hsl(var(--foreground));
+  word-break: break-word;
 }
 
 .pronunciation-btn {
   position: absolute;
-  top: 18px;
-  right: 18px;
+  top: clamp(12px, 2vw, 18px);
+  right: clamp(12px, 2vw, 18px);
   background-color: hsl(var(--card));
   border: 1.5px solid hsl(var(--primary));
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
+  width: clamp(38px, 8vw, 46px);
+  height: clamp(38px, 8vw, 46px);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
 }
 
 .pronunciation-btn:hover {
@@ -161,8 +179,8 @@
 
 .pronunciation-btn svg {
   fill: hsl(var(--primary));
-  width: 22px;
-  height: 22px;
+  width: clamp(16px, 4vw, 22px);
+  height: clamp(16px, 4vw, 22px);
   transition: fill 0.3s;
 }
 
@@ -173,29 +191,36 @@
 img {
   max-width: 95%;
   max-height: 95%;
-  border-radius: 12px;
+  border-radius: clamp(8px, 2vw, 12px);
 }
 
 .side-controls {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 300px;
-  gap: 14px;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 14px);
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .side-controls {
+    display: flex;
+  }
 }
 
 .control-btn {
   background-color: hsl(var(--card));
   border: 1.5px solid hsl(var(--border));
   color: hsl(var(--foreground));
-  width: 52px;
-  height: 52px;
+  width: clamp(44px, 8vw, 52px);
+  height: clamp(44px, 8vw, 52px);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
 }
 
 .control-btn:hover {
@@ -207,13 +232,49 @@ img {
 
 .control-btn svg {
   fill: hsl(var(--foreground));
-  width: 22px;
-  height: 22px;
+  width: clamp(18px, 4vw, 22px);
+  height: clamp(18px, 4vw, 22px);
   transition: fill 0.3s;
 }
 
 .control-btn:hover svg {
   fill: hsl(var(--primary-foreground));
+}
+
+.bottom-controls {
+  display: flex;
+  gap: clamp(10px, 3vw, 20px);
+  margin-top: clamp(30px, 5vw, 50px);
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.bottom-btn {
+  padding: clamp(10px, 2vw, 14px) clamp(16px, 4vw, 24px);
+  font-size: clamp(12px, 2.5vw, 16px);
+  font-weight: 600;
+  border: 1.5px solid hsl(var(--primary));
+  border-radius: clamp(8px, 1.5vw, 12px);
+  background-color: hsl(var(--card));
+  color: hsl(var(--primary));
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  white-space: nowrap;
+}
+
+.bottom-btn:hover {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px hsl(var(--primary) / 0.3);
+}
+
+.translation-btn.active {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  box-shadow: 0 6px 20px hsl(var(--primary) / 0.3);
 }
 
 .image-overlay {
@@ -247,7 +308,7 @@ img {
 
 .flying-reaction {
   position: absolute;
-  font-size: 32px;
+  font-size: clamp(24px, 5vw, 32px);
   z-index: 9999;
   user-select: none;
   pointer-events: none;
@@ -283,5 +344,16 @@ img {
   to {
     opacity: 0;
     transform: translateY(-80px) scale(0.8);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .vocabulary-container {
+    padding: 15px;
   }
 }

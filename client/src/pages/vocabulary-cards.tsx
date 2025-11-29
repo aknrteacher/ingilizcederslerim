@@ -12,6 +12,7 @@ declare global {
 interface VocabularyCard {
   word: string;
   imageUrl: string;
+  turkish: string;
 }
 
 export default function VocabularyCards() {
@@ -19,37 +20,38 @@ export default function VocabularyCards() {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [vocabulary, setVocabulary] = useState<VocabularyCard[]>([]);
+  const [showTranslation, setShowTranslation] = useState(false);
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
-    { word: "hello", file: "hello.png" },
-    { word: "goodbye", file: "goodbye.png" },
-    { word: "How are you", file: "goodbye.png" },
-    { word: "I am fine", file: "I m fine.png" },
-    { word: "school", file: "school.png" },
-    { word: "classroom", file: "classroom.png" },
-    { word: "library", file: "library.png" },
-    { word: "canteen", file: "canteen.png" },
-    { word: "sports hall", file: "sports hall.png" },
-    { word: "playground", file: "playground.png" },
-    { word: "garden", file: "garden.png" },
-    { word: "teacher", file: "teacher.png" },
-    { word: "student", file: "student.png" },
-    { word: "girl", file: "girl.png" },
-    { word: "boy", file: "boy.png" },
-    { word: "friend", file: "friend.png" },
-    { word: "day", file: "day.png" },
-    { word: "week", file: "week.png" },
-    { word: "Monday", file: "Monday.png" },
-    { word: "Tuesday", file: "Tuesday.png" },
-    { word: "Wednesday", file: "Wednesday.png" },
-    { word: "Thursday", file: "Thursday.png" },
-    { word: "Friday", file: "Friday.png" },
-    { word: "Saturday", file: "Saturday.png" },
-    { word: "Sunday", file: "Sunday.png" },
-    { word: "what", file: "what.png" },
-    { word: "where", file: "where.png" },
-    { word: "who", file: "who.png" },
+    { word: "hello", file: "hello.png", turkish: "merhaba" },
+    { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
+    { word: "How are you", file: "goodbye.png", turkish: "nasılsın" },
+    { word: "I am fine", file: "I m fine.png", turkish: "iyiyim" },
+    { word: "school", file: "school.png", turkish: "okul" },
+    { word: "classroom", file: "classroom.png", turkish: "sınıf" },
+    { word: "library", file: "library.png", turkish: "kütüphane" },
+    { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
+    { word: "sports hall", file: "sports hall.png", turkish: "spor salonu" },
+    { word: "playground", file: "playground.png", turkish: "oyun alanı" },
+    { word: "garden", file: "garden.png", turkish: "bahçe" },
+    { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
+    { word: "student", file: "student.png", turkish: "öğrenci" },
+    { word: "girl", file: "girl.png", turkish: "kız" },
+    { word: "boy", file: "boy.png", turkish: "erkek" },
+    { word: "friend", file: "friend.png", turkish: "arkadaş" },
+    { word: "day", file: "day.png", turkish: "gün" },
+    { word: "week", file: "week.png", turkish: "hafta" },
+    { word: "Monday", file: "Monday.png", turkish: "Pazartesi" },
+    { word: "Tuesday", file: "Tuesday.png", turkish: "Salı" },
+    { word: "Wednesday", file: "Wednesday.png", turkish: "Çarşamba" },
+    { word: "Thursday", file: "Thursday.png", turkish: "Perşembe" },
+    { word: "Friday", file: "Friday.png", turkish: "Cuma" },
+    { word: "Saturday", file: "Saturday.png", turkish: "Cumartesi" },
+    { word: "Sunday", file: "Sunday.png", turkish: "Pazar" },
+    { word: "what", file: "what.png", turkish: "ne" },
+    { word: "where", file: "where.png", turkish: "nerede" },
+    { word: "who", file: "who.png", turkish: "kim" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
@@ -109,6 +111,7 @@ export default function VocabularyCards() {
     const vocabData = imageFiles.map((item) => ({
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
+      turkish: item.turkish,
     }));
     console.log("Vocabulary loaded:", vocabData);
     setVocabulary(vocabData);
@@ -199,6 +202,17 @@ export default function VocabularyCards() {
     }
   };
 
+  const handleStartOver = () => {
+    setCurrentCardIndex(0);
+    setIsFlipped(false);
+    setShowTranslation(false);
+  };
+
+  const handleToggleTranslation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowTranslation(!showTranslation);
+  };
+
   if (vocabulary.length === 0) {
     return <div className="loading">Loading...</div>;
   }
@@ -213,8 +227,8 @@ export default function VocabularyCards() {
     <Layout>
       <div className="vocabulary-container">
         <div className="title-container">
-          <p>2. Sınıf</p>
-          <p>Tema 1: Okul Hayatı</p>
+          <p>Grade 2</p>
+          <p>Theme 1: School Life</p>
         </div>
 
         <div className="main-content">
@@ -318,6 +332,24 @@ export default function VocabularyCards() {
             >
               <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
             </svg>
+          </button>
+        </div>
+
+        {/* Bottom Controls */}
+        <div className="bottom-controls">
+          <button 
+            className="bottom-btn start-over-btn"
+            onClick={handleStartOver}
+            title="Start Over"
+          >
+            🔄 Start Over
+          </button>
+          <button 
+            className={`bottom-btn translation-btn ${showTranslation ? 'active' : ''}`}
+            onClick={handleToggleTranslation}
+            title="Show Translation"
+          >
+            🇹🇷 {showTranslation ? currentCard.turkish : 'Translation'}
           </button>
         </div>
       </div>
