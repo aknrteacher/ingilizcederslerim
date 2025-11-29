@@ -99,6 +99,13 @@
   transform: scale(1.1);
 }
 
+/* Separator arrow styling */
+.counter-display > div:nth-child(6) {
+  color: hsl(var(--primary));
+  font-weight: 700;
+  font-size: clamp(16px, 2.5vw, 20px);
+}
+
 /* Center Card */
 .center-card {
   display: flex;

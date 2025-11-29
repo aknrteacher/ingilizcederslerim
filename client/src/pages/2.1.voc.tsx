@@ -235,8 +235,8 @@ export default function VocabularyCards() {
       }
     }
     
-    // Add separator
-    items.push({ type: 'separator', value: '..' });
+    // Add separator (down arrow)
+    items.push({ type: 'separator', value: '↓' });
     
     // Add total (not clickable)
     items.push({ type: 'total', value: vocabulary.length });
