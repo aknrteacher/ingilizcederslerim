@@ -66,13 +66,13 @@ const levelItems = [
 ]
 
 // --- Theme Color Mapping ---
-const levelColors: Record<LevelTheme, { bg: string; text: string }> = {
-  "pre-school": { bg: "from-yellow-300 to-yellow-400", text: "text-amber-900" },
-  "primary-school": { bg: "from-blue-300 to-blue-400", text: "text-blue-900" },
-  "secondary-school": { bg: "from-orange-300 to-orange-400", text: "text-orange-900" },
-  "high-school": { bg: "from-green-300 to-green-400", text: "text-green-900" },
-  "university": { bg: "from-purple-300 to-purple-400", text: "text-purple-900" },
-  "business-english": { bg: "from-gray-400 to-gray-500", text: "text-gray-900" },
+const levelColors: Record<LevelTheme, { bg: string; text: string; dark: string; light: string; darkText: string }> = {
+  "pre-school": { bg: "from-yellow-300 to-yellow-400", text: "text-amber-900", dark: "bg-yellow-700", light: "border-yellow-200", darkText: "text-yellow-100" },
+  "primary-school": { bg: "from-blue-300 to-blue-400", text: "text-blue-900", dark: "bg-blue-700", light: "border-blue-200", darkText: "text-blue-100" },
+  "secondary-school": { bg: "from-orange-300 to-orange-400", text: "text-orange-900", dark: "bg-orange-700", light: "border-orange-200", darkText: "text-orange-100" },
+  "high-school": { bg: "from-green-300 to-green-400", text: "text-green-900", dark: "bg-green-700", light: "border-green-200", darkText: "text-green-100" },
+  "university": { bg: "from-purple-300 to-purple-400", text: "text-purple-900", dark: "bg-purple-700", light: "border-purple-200", darkText: "text-purple-100" },
+  "business-english": { bg: "from-gray-400 to-gray-500", text: "text-gray-900", dark: "bg-gray-700", light: "border-gray-200", darkText: "text-gray-100" },
 }
 
 const navItems: NavItem[] = [
@@ -191,9 +191,8 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                         "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
                         "transition-all duration-300 group",
                          item.theme 
-                          ? `bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                          ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
                           : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
-                        "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                         "cursor-pointer"
                       )}
                     >
@@ -206,7 +205,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                       <a className={cn(
                         "flex w-full items-center gap-3 rounded-xl transition-all duration-300 group",
                         item.theme 
-                          ? `px-4 py-4 font-bold text-sm justify-center bg-gradient-to-r ${levelColors[item.theme].bg} ${levelColors[item.theme].text} border-2 border-opacity-30 hover:border-opacity-60 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5`
+                          ? `px-4 py-4 font-bold text-sm justify-center ${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
                           : `px-4 py-3 font-medium text-sm backdrop-blur-sm hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 ${
                               location === item.href
                                 ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
@@ -228,7 +227,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
           {/* Submenu (Recursive / Stack) */}
           {activeSubmenu && (
             <div className={cn(
-              "absolute inset-0 transition-all duration-500 ease-out",
+              "absolute inset-0 transition-all duration-700 ease-out",
               activeSubmenu ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
             )}>
               <div className="flex flex-col h-full">
@@ -238,7 +237,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                   className={cn(
                     "flex w-full items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm mb-4 transition-all duration-300 group",
                     activeSubmenuTheme && levelColors[activeSubmenuTheme] 
-                      ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30`
+                      ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg backdrop-blur-sm bg-opacity-80 hover:shadow-xl`
                       : "bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30"
                   )}
                 >
@@ -258,9 +257,8 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                              "flex w-full items-center justify-between px-4 py-4 rounded-xl font-bold text-sm",
                              "transition-all duration-300 group",
                              activeSubmenuTheme && levelColors[activeSubmenuTheme]
-                               ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                               ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
-                             "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                              "cursor-pointer"
                            )}
                          >
@@ -277,7 +275,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                               "transition-all duration-300 group",
                               "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
                               activeSubmenuTheme && levelColors[activeSubmenuTheme]
-                                ? `bg-gradient-to-r ${levelColors[activeSubmenuTheme].bg} ${levelColors[activeSubmenuTheme].text} border-2 border-opacity-30 hover:border-opacity-60`
+                                ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl backdrop-blur-sm bg-opacity-80`
                                 : (location === subItem.href
                                     ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
                                     : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
