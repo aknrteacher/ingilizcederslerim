@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import VocabularyCards from "@/pages/vocabulary-cards";
+import "canvas-confetti";
 
 function Router() {
   return (

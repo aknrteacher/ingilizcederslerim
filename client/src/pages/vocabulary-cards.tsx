@@ -1,90 +1,269 @@
+import { useState, useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
-import { ArrowLeft } from "lucide-react";
-import { Link } from "wouter";
-import { cn } from "@/lib/utils";
+import "@/styles/vocabulary-cards.css";
 
-const vocabularyCards = [
-  { word: "Apple", turkish: "Elma", color: "bg-red-100" },
-  { word: "Ball", turkish: "Top", color: "bg-blue-100" },
-  { word: "Cat", turkish: "Kedi", color: "bg-yellow-100" },
-  { word: "Dog", turkish: "Köpek", color: "bg-orange-100" },
-  { word: "Elephant", turkish: "Fil", color: "bg-pink-100" },
-  { word: "Flower", turkish: "Çiçek", color: "bg-purple-100" },
-];
+declare global {
+  interface Window {
+    confetti: typeof import("canvas-confetti").default;
+  }
+}
 
-const levelColors: Record<string, { dark: string; light: string; darkText: string }> = {
-  "primary-school": { dark: "bg-blue-700", light: "border-blue-200", darkText: "text-blue-100" },
-};
+interface VocabularyCard {
+  word: string;
+  imageUrl: string;
+}
 
 export default function VocabularyCards() {
   const { currentTheme } = useTheme();
-  const themeColor = levelColors[currentTheme] || levelColors["primary-school"];
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [vocabulary, setVocabulary] = useState<VocabularyCard[]>([]);
+
+  // Sample vocabulary data - replace with your own
+  const imageFiles = [
+    "hello.png",
+    "goodbye.png",
+    "how are you.png",
+    "I m fine.png",
+    "school.png",
+    "classroom.png",
+    "library.png",
+    "canteen.png",
+    "sports hall.png",
+    "playground.png",
+  ];
+
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const EMOJI_CHANCE = 0.5;
+  const SOUND_CHANCE = 0.25;
+
+  const reactionSounds = [
+    "sounds/yay.mp3",
+    "sounds/woosh.mp3",
+    "sounds/tennis.mp3",
+    "sounds/tap.mp3",
+    "sounds/tada.mp3",
+  ];
+
+  useEffect(() => {
+    const vocabData = imageFiles.map((filename) => ({
+      word: filename.substring(0, filename.lastIndexOf(".")),
+      imageUrl: `images/${filename}`,
+    }));
+    setVocabulary(vocabData);
+  }, []);
+
+  const spawnFlyingEmoji = (event: React.MouseEvent) => {
+    if (Math.random() > EMOJI_CHANCE) return;
+
+    const reaction = document.createElement("span");
+    reaction.classList.add("flying-reaction");
+    reaction.textContent =
+      reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
+    reaction.style.left = `${event.pageX}px`;
+    reaction.style.top = `${event.pageY}px`;
+    document.body.appendChild(reaction);
+
+    reaction.addEventListener("animationend", () => {
+      reaction.remove();
+    });
+  };
+
+  const playRandomSound = () => {
+    if (reactionSounds.length === 0 || Math.random() > SOUND_CHANCE) return;
+
+    const soundToPlay =
+      reactionSounds[Math.floor(Math.random() * reactionSounds.length)];
+    const audio = new Audio(soundToPlay);
+    audio.play().catch((e) => console.error("Error playing sound:", e));
+  };
+
+  const handleFlip = (e: React.MouseEvent) => {
+    spawnFlyingEmoji(e);
+    playRandomSound();
+    setIsFlipped(!isFlipped);
+  };
+
+  const handlePronounce = (e: React.MouseEvent) => {
+    spawnFlyingEmoji(e);
+    e.stopPropagation();
+    if (vocabulary[currentCardIndex]) {
+      const utterance = new SpeechSynthesisUtterance(vocabulary[currentCardIndex].word);
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    spawnFlyingEmoji(e);
+    playRandomSound();
+
+    const newIndex = (currentCardIndex + 1) % vocabulary.length;
+
+    if (currentCardIndex === vocabulary.length - 1 && window.confetti) {
+      window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
+    }
+
+    setCurrentCardIndex(newIndex);
+    setIsFlipped(false);
+  };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    spawnFlyingEmoji(e);
+    playRandomSound();
+
+    const newIndex =
+      (currentCardIndex - 1 + vocabulary.length) % vocabulary.length;
+    setCurrentCardIndex(newIndex);
+    setIsFlipped(false);
+  };
+
+  const handleCardSelect = (index: number, e: React.MouseEvent) => {
+    spawnFlyingEmoji(e);
+    playRandomSound();
+    setCurrentCardIndex(index);
+    setIsFlipped(false);
+  };
+
+  const handleImageClick = () => {
+    const overlay = document.getElementById("image-overlay");
+    if (overlay) {
+      overlay.classList.add("visible");
+    }
+  };
+
+  const handleOverlayClick = () => {
+    const overlay = document.getElementById("image-overlay");
+    if (overlay) {
+      overlay.classList.remove("visible");
+    }
+  };
+
+  if (vocabulary.length === 0) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  const currentCard = vocabulary[currentCardIndex];
+  const windowSize = 2;
+  const start = Math.max(0, currentCardIndex - windowSize);
+  const end = Math.min(vocabulary.length - 1, currentCardIndex + windowSize);
+  const visibleNumbers = Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 p-6">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-12">
-        <Link href="/primary-school/grade-2/theme-1">
-          <a className="flex items-center gap-2 text-blue-700 hover:text-blue-900 transition-colors mb-6 group">
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Geri Dön
-          </a>
-        </Link>
-        
-        <div className="mb-8">
-          <h1 className="text-4xl font-serif font-black text-blue-900 mb-2">Kelime Kartları</h1>
-          <p className="text-lg text-blue-700">2. Sınıf - Tema 1</p>
-          <p className="text-sm text-blue-600 mt-2">İngilizce kelimelerini öğren ve tekrar et!</p>
-        </div>
+    <div className="vocabulary-container">
+      <div className="title-container">
+        <p>2nd Grade</p>
+        <p>Theme 1: School Life</p>
       </div>
 
-      {/* Cards Grid */}
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {vocabularyCards.map((card, index) => (
-            <div
-              key={index}
-              className={cn(
-                "group relative h-64 rounded-2xl overflow-hidden cursor-pointer perspective transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:-translate-y-2",
-                card.color
-              )}
-              data-testid={`card-vocabulary-${index}`}
-            >
-              {/* Card Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-transparent to-black/5">
-                <div className="text-center">
-                  <p className="text-5xl font-serif font-black text-gray-800 mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {card.word}
-                  </p>
-                  <div className="h-1 w-12 bg-blue-400 mx-auto mb-4 group-hover:w-16 transition-all duration-300"></div>
-                  <p className="text-2xl font-bold text-blue-700">
-                    {card.turkish}
-                  </p>
-                </div>
+      <div className="main-content">
+        {/* Number Reel */}
+        <div className="number-reel-container">
+          <div className="number-reel">
+            {visibleNumbers.map((num) => (
+              <div
+                key={num}
+                className={`number-item ${num === currentCardIndex ? "active" : ""}`}
+                data-index={num}
+                onClick={(e) => handleCardSelect(num, e)}
+              >
+                {num + 1}
               </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Hover Accent Border */}
-              <div className="absolute inset-0 border-4 border-transparent group-hover:border-blue-300 rounded-2xl transition-all duration-300 pointer-events-none"></div>
-
-              {/* Index Badge */}
-              <div className={cn(
-                "absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm",
-                themeColor.dark,
-                themeColor.darkText,
-                "shadow-lg group-hover:shadow-xl transition-all"
-              )}>
-                {index + 1}
-              </div>
+        {/* Flashcard */}
+        <div className="flashcard-container">
+          <div
+            className={`flashcard ${isFlipped ? "flipped" : ""}`}
+            onClick={(e) => handleFlip(e)}
+          >
+            {/* Front */}
+            <div className="flashcard-front">
+              <button
+                className="pronunciation-btn"
+                onClick={handlePronounce}
+                title="Pronounce"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#5f6368"
+                >
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                </svg>
+              </button>
+              <div className="word">{currentCard.word}</div>
             </div>
-          ))}
+
+            {/* Back */}
+            <div className="flashcard-back">
+              <img
+                src={currentCard.imageUrl}
+                alt={currentCard.word}
+                onClick={handleImageClick}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Side Controls */}
+        <div className="side-controls">
+          <button
+            className="control-btn"
+            onClick={handlePrev}
+            title="Previous Card"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 0 24 24"
+              width="24px"
+            >
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+          </button>
+          <button
+            className="control-btn"
+            onClick={handleFlip}
+            title="Flip Card"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 0 24 24"
+              width="24px"
+            >
+              <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+            </svg>
+          </button>
+          <button
+            className="control-btn"
+            onClick={handleNext}
+            title="Next Card"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 0 24 24"
+              width="24px"
+            >
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+          </button>
         </div>
       </div>
 
-      {/* Bottom Info */}
-      <div className="max-w-6xl mx-auto mt-16 text-center">
-        <p className="text-blue-600 text-sm">
-          💡 Kartlara tıkla ve kelimeyi öğren. Düzenli olarak tekrar et!
-        </p>
+      {/* Image Overlay */}
+      <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
+        <img
+          className="zoomed-image"
+          src={currentCard.imageUrl}
+          alt="Zoomed view"
+        />
       </div>
     </div>
   );

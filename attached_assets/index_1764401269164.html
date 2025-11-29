@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vocabulary Flashcards</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Library for Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="title-container">
+        <p>2nd Grades</p>
+        <p>Theme 1: School Life</p>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="number-reel-container">
+            <div class="number-reel" id="number-reel"></div>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-front">
+                    <button class="pronunciation-btn" id="pronunciation-btn" title="Pronounce">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#5f6368"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    </button>
+                    <div class="word" id="word"></div>
+                </div>
+                <div class="flashcard-back">
+                    <img id="image" src="" alt="Word Image">
+                </div>
+            </div>
+        </div>
+
+        <div class="side-controls">
+            <button class="control-btn" id="prev-btn" title="Previous Card">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button class="control-btn" id="flip-btn" title="Flip Card">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+            </button>
+            <button class="control-btn" id="next-btn" title="Next Card">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="image-overlay" id="image-overlay">
+        <img class="zoomed-image" id="zoomed-image" src="" alt="Zoomed view">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
