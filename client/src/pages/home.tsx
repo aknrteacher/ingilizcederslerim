@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, Clock, Trophy, Star } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, Trophy, Star, Sparkles } from "lucide-react";
 
 export default function Home() {
   return (
@@ -107,6 +107,34 @@ export default function Home() {
 
           {/* Sidebar - Recommended */}
           <div className="space-y-4 sm:space-y-6">
+            {/* Recently Added */}
+            <Card className="shadow-sm border-l-4 border-l-primary">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                  <CardTitle className="text-base sm:text-lg">Son Eklenenler</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-2 sm:space-y-3">
+                {[
+                  { title: "Kelime Kartları", subtitle: "2. Sınıf - Tema 1", icon: "📚" },
+                  { title: "Okul Hayatı Aktiviteleri", subtitle: "İlkokul", icon: "🏫" },
+                  { title: "Konuşma Pratikleri", subtitle: "Ortaokul", icon: "🎤" },
+                  { title: "Dinleme Egzersizleri", subtitle: "Lise", icon: "🎧" },
+                ].map((item, idx) => (
+                  <div key={idx} className="rounded-lg border p-2 sm:p-3 hover:bg-secondary/50 transition-colors cursor-pointer group">
+                    <div className="flex items-start gap-3">
+                      <span className="text-lg sm:text-xl flex-shrink-0">{item.icon}</span>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-xs sm:text-sm font-semibold text-foreground truncate">{item.title}</h4>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{item.subtitle}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
             <Card className="shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base sm:text-lg">Günlük Kelimeler</CardTitle>
