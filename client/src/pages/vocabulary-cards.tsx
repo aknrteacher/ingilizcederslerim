@@ -4,7 +4,7 @@ import "@/styles/vocabulary-cards.css";
 
 declare global {
   interface Window {
-    confetti: typeof import("canvas-confetti").default;
+    confetti?: (options: any) => void;
   }
 }
 
