@@ -21,16 +21,12 @@ export default function VocabularyCards() {
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
-    "hello.png",
-    "goodbye.png",
-    "how are you.png",
-    "I m fine.png",
-    "school.png",
-    "classroom.png",
-    "library.png",
-    "canteen.png",
-    "sports hall.png",
-    "playground.png",
+    { word: "Hello", file: "hello_greeting_illustration.png" },
+    { word: "Goodbye", file: "goodbye_waving_illustration.png" },
+    { word: "How are you", file: "how_are_you_illustration.png" },
+    { word: "I'm fine", file: "i'm_fine_happy_expression.png" },
+    { word: "School", file: "school_building_illustration.png" },
+    { word: "Classroom", file: "classroom_interior_illustration.png" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
@@ -46,9 +42,9 @@ export default function VocabularyCards() {
   ];
 
   useEffect(() => {
-    const vocabData = imageFiles.map((filename) => ({
-      word: filename.substring(0, filename.lastIndexOf(".")),
-      imageUrl: `images/${filename}`,
+    const vocabData = imageFiles.map((item) => ({
+      word: item.word,
+      imageUrl: `images/${item.file}`,
     }));
     setVocabulary(vocabData);
   }, []);
