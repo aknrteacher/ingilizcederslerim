@@ -227,23 +227,23 @@ export default function VocabularyCards() {
   const isBonusCard = currentCardIndex === vocabulary.length;
   const currentCard = isBonusCard ? { word: "Review", imageUrl: "", turkish: "" } : vocabulary[currentCardIndex];
 
-  // Generate 7-item counter display with universal rule
+  // Generate 6-item counter display with universal rule
   const generateCounterItems = () => {
     const items: Array<{ type: 'number' | 'dash' | 'separator' | 'total'; value: number | string; }> = [];
     
-    // Universal rule: Show 5 card positions
-    // - Current card ideally at position 2 (showing 2 before, current, 2 after)
+    // Universal rule: Show 4 card positions
+    // - Current card ideally at position 1 or 2 (showing 1-2 before, current, 1-2 after)
     // - Adjust window at boundaries to keep current card visible
     // - Minimize dashes at the end
     
-    let windowStart = Math.max(0, currentCardIndex - 2);
+    let windowStart = Math.max(0, currentCardIndex - 1);
     // If near the end, shift window to show more past cards instead of future dashes
-    if (windowStart + 4 >= vocabulary.length) {
-      windowStart = Math.max(0, vocabulary.length - 5);
+    if (windowStart + 3 >= vocabulary.length) {
+      windowStart = Math.max(0, vocabulary.length - 4);
     }
     
-    // Generate 5 items for the window
-    for (let i = 0; i < 5; i++) {
+    // Generate 4 items for the window
+    for (let i = 0; i < 4; i++) {
       const cardIndex = windowStart + i;
       if (cardIndex < 0) {
         items.push({ type: 'dash', value: '-' });
@@ -280,13 +280,13 @@ export default function VocabularyCards() {
               <div className="counter-display">
                 {counterItems.map((item, index) => {
                   // Calculate which card index this position represents
-                  let windowStart = Math.max(0, currentCardIndex - 2);
-                  if (windowStart + 4 >= vocabulary.length) {
-                    windowStart = Math.max(0, vocabulary.length - 5);
+                  let windowStart = Math.max(0, currentCardIndex - 1);
+                  if (windowStart + 3 >= vocabulary.length) {
+                    windowStart = Math.max(0, vocabulary.length - 4);
                   }
                   const cardAtThisPosition = windowStart + index;
                   const isActive = cardAtThisPosition === currentCardIndex; // Active is wherever current card is in the window
-                  const isClickable = item.type === 'number' && index < 5; // Only numbers in first 5 positions are clickable
+                  const isClickable = item.type === 'number' && index < 4; // Only numbers in first 4 positions are clickable
                   
                   if (item.type === 'separator') {
                     // Render next button rotated 90 degrees
