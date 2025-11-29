@@ -161,7 +161,12 @@ export default function VocabularyCards() {
     spawnFlyingEmoji(e);
     playRandomSound();
 
-    const newIndex = (currentCardIndex + 1) % totalCards;
+    // Don't loop - stay on review/practice card if already there
+    if (currentCardIndex === vocabulary.length) {
+      return; // Already on bonus card, don't move
+    }
+
+    const newIndex = currentCardIndex + 1;
 
     if (currentCardIndex === vocabulary.length - 1 && window.confetti) {
       window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
@@ -238,8 +243,8 @@ export default function VocabularyCards() {
       }
     }
     
-    // Add separator (down arrow)
-    items.push({ type: 'separator', value: '↓' });
+    // Add separator (next icon placeholder)
+    items.push({ type: 'separator', value: 'next' });
     
     // Add total (not clickable)
     items.push({ type: 'total', value: vocabulary.length });
@@ -265,6 +270,29 @@ export default function VocabularyCards() {
                 {counterItems.map((item, index) => {
                   const isActive = index === 3; // Current card is at position 3 (0-indexed)
                   const isClickable = item.type === 'number' && index < 5; // Only numbers in first 5 positions are clickable
+                  
+                  if (item.type === 'separator') {
+                    // Render next button rotated 90 degrees
+                    return (
+                      <div
+                        key={index}
+                        className="counter-item separator-button"
+                        data-testid={`text-counter-${index}`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="24px"
+                          viewBox="0 0 24 24"
+                          width="24px"
+                          fill="currentColor"
+                          style={{ transform: 'rotate(90deg)', width: 'clamp(16px, 3.5vw, 20px)', height: 'clamp(16px, 3.5vw, 20px)' }}
+                        >
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                        </svg>
+                      </div>
+                    );
+                  }
                   
                   return (
                     <div

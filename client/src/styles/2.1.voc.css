@@ -84,7 +84,6 @@
   font-size: clamp(18px, 3.5vw, 24px);
   font-weight: 700;
   color: hsl(var(--primary));
-  transform: scale(1.2);
 }
 
 .counter-item.clickable {
@@ -100,11 +99,11 @@
   transform: scale(1.1);
 }
 
-/* Separator arrow styling - styled like control buttons */
-.counter-display > div:nth-child(6) {
+/* Separator button styling - styled like control buttons */
+.counter-item.separator-button {
   background-color: hsl(var(--card));
   border: 1.5px solid hsl(var(--border));
-  color: hsl(var(--foreground));
+  color: hsl(var(--primary));
   width: clamp(40px, 7vw, 48px);
   height: clamp(40px, 7vw, 48px);
   border-radius: 50%;
@@ -116,11 +115,8 @@
   flex-shrink: 0;
   font-size: clamp(18px, 3vw, 22px);
   font-weight: 600;
-}
-
-.counter-display > div:nth-child(6) {
-  color: hsl(var(--primary));
-  font-weight: 700;
+  min-width: auto;
+  min-height: auto;
 }
 
 /* Center Card */
