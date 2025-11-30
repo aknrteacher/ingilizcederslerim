@@ -129,7 +129,7 @@
 }
 
 .counter-item.total.pulse {
-  animation: pulseGlow 1.5s ease-in-out infinite;
+  animation: pulseGlow 1.5s ease-in-out 1;
 }
 
 
@@ -443,7 +443,7 @@
 }
 
 .fullscreen-counter-item.total.pulse {
-  animation: pulseGlow 1.5s ease-in-out infinite;
+  animation: pulseGlow 1.5s ease-in-out 1;
 }
 
 /* Center Card */
