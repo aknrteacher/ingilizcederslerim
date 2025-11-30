@@ -25,6 +25,7 @@ export default function VocabularyCards() {
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [autoplaySpeed, setAutoplaySpeed] = useState(1);
   const autoplayRef = useRef(false);
 
   // Sample vocabulary data - replace with your own
@@ -139,24 +140,24 @@ export default function VocabularyCards() {
         setIsFlipped(false);
         setIsImageZoomed(false);
 
-        // Listen for 6 seconds
+        // Listen for 6 seconds (adjusted by speed)
         if (vocabulary[index]) {
           const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
           speechSynthesis.speak(utterance);
         }
-        await new Promise(resolve => setTimeout(resolve, 6000));
+        await new Promise(resolve => setTimeout(resolve, 6000 / autoplaySpeed));
 
         if (!autoplayRef.current) break;
 
-        // Flip for 2 seconds
+        // Flip for 2 seconds (adjusted by speed)
         setIsFlipped(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 2000 / autoplaySpeed));
 
         if (!autoplayRef.current) break;
 
-        // Zoom image for 2 seconds
+        // Zoom image for 2 seconds (adjusted by speed)
         setIsImageZoomed(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 2000 / autoplaySpeed));
 
         if (!autoplayRef.current) break;
 
@@ -857,6 +858,23 @@ export default function VocabularyCards() {
                 >
                   <path d="M8 5v14l11-7z" />
                 </svg>
+              </button>
+              <button
+                className="fullscreen-speed-btn"
+                onClick={() => setAutoplaySpeed(Math.max(0.5, autoplaySpeed - 0.25))}
+                title="Decrease Speed"
+                data-testid="button-speed-decrease-fs"
+              >
+                −
+              </button>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <button
+                className="fullscreen-speed-btn"
+                onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
+                title="Increase Speed"
+                data-testid="button-speed-increase-fs"
+              >
+                +
               </button>
             </div>
           </div>
