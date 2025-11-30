@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Gamepad2 } from "lucide-react";
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import "../styles/oyunlar.css";
 
 interface Game {
@@ -16,6 +16,8 @@ interface Game {
 }
 
 export default function Oyunlar() {
+  const [, setLocation] = useLocation();
+  
   const games: Game[] = [
     {
       id: "2.1.matching",
@@ -66,14 +68,13 @@ export default function Oyunlar() {
                   <CardDescription className="game-description">
                     {game.description}
                   </CardDescription>
-                  <Link href={game.path}>
-                    <Button
-                      className="w-full game-button"
-                      data-testid={`button-play-${game.id}`}
-                    >
-                      Oyna <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
+                  <Button
+                    onClick={() => setLocation(game.path)}
+                    className="w-full game-button"
+                    data-testid={`button-play-${game.id}`}
+                  >
+                    Oyna <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
                 </CardContent>
               </Card>
             ))}
