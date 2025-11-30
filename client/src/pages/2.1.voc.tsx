@@ -682,9 +682,9 @@ export default function VocabularyCards() {
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          height="16px"
+                          height="14px"
                           viewBox="0 0 24 24"
-                          width="16px"
+                          width="14px"
                           fill="currentColor"
                           style={{ transform: 'rotate(90deg)' }}
                         >
@@ -709,13 +709,10 @@ export default function VocabularyCards() {
                       }}
                       style={{ cursor: isClickable ? 'pointer' : 'default' }}
                     >
-                      {item.value}
+                      {item.type === 'total' ? `of ${item.value}` : item.value}
                     </div>
                   );
                 })}
-              </div>
-              <div className="fullscreen-of-display">
-                of {vocabulary.length}
               </div>
             </div>
 
