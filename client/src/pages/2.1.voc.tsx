@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/2.1.voc.css";
@@ -24,6 +24,8 @@ export default function VocabularyCards() {
   const [showShareDrawer, setShowShareDrawer] = useState(false);
   const [isAutoplay, setIsAutoplay] = useState(false);
   const [isImageZoomed, setIsImageZoomed] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const autoplayRef = useRef(false);
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
@@ -119,6 +121,61 @@ export default function VocabularyCards() {
     console.log("Vocabulary loaded:", vocabData);
     setVocabulary(vocabData);
   }, []);
+
+  // Autoplay sequence handler
+  useEffect(() => {
+    if (!isAutoplay) {
+      autoplayRef.current = false;
+      speechSynthesis.cancel();
+      return;
+    }
+
+    autoplayRef.current = true;
+    let index = currentCardIndex;
+
+    const runSequence = async () => {
+      while (autoplayRef.current && index < vocabulary.length) {
+        setCurrentCardIndex(index);
+        setIsFlipped(false);
+        setIsImageZoomed(false);
+
+        // Listen for 6 seconds
+        if (vocabulary[index]) {
+          const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
+          speechSynthesis.speak(utterance);
+        }
+        await new Promise(resolve => setTimeout(resolve, 6000));
+
+        if (!autoplayRef.current) break;
+
+        // Flip for 2 seconds
+        setIsFlipped(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (!autoplayRef.current) break;
+
+        // Zoom image for 2 seconds
+        setIsImageZoomed(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (!autoplayRef.current) break;
+
+        index++;
+      }
+      
+      if (autoplayRef.current) {
+        setIsAutoplay(false);
+        autoplayRef.current = false;
+      }
+    };
+
+    runSequence();
+
+    return () => {
+      autoplayRef.current = false;
+      speechSynthesis.cancel();
+    };
+  }, [isAutoplay, vocabulary]);
 
   const spawnFlyingEmoji = (event: React.MouseEvent) => {
     if (Math.random() > EMOJI_CHANCE) return;
@@ -227,53 +284,14 @@ export default function VocabularyCards() {
     setShowShareDrawer(!showShareDrawer);
   };
 
-  const handleToggleAutoplay = (e: React.MouseEvent) => {
+  const handleAutoplayStart = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsAutoplay(!isAutoplay);
   };
 
-  const autoplaySequence = async (startIndex: number) => {
-    let index = startIndex;
-    while (isAutoplay && index < vocabulary.length) {
-      setCurrentCardIndex(index);
-      setIsFlipped(false);
-      setIsImageZoomed(false);
-
-      // Listen for 6 seconds
-      if (vocabulary[index]) {
-        const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
-        speechSynthesis.speak(utterance);
-      }
-      await new Promise(resolve => setTimeout(resolve, 6000));
-
-      if (!isAutoplay) break;
-
-      // Flip for 2 seconds
-      setIsFlipped(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      if (!isAutoplay) break;
-
-      // Zoom image for 2 seconds
-      setIsImageZoomed(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      if (!isAutoplay) break;
-
-      index++;
-    }
-    setIsAutoplay(false);
-  };
-
-  const handleAutoplayStart = (e: React.MouseEvent) => {
+  const handleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isAutoplay) {
-      setIsAutoplay(true);
-      autoplaySequence(currentCardIndex);
-    } else {
-      setIsAutoplay(false);
-      speechSynthesis.cancel();
-    }
+    setIsFullscreen(!isFullscreen);
   };
 
   const handleShareOption = async (option: 'copy' | 'native') => {
@@ -418,7 +436,7 @@ export default function VocabularyCards() {
                   );
                 })}
               </div>
-              {/* "of" Display */}
+              {/* "of" Display integrated with total */}
               <div className="of-display" data-testid="text-of-total">
                 of {vocabulary.length}
               </div>
@@ -477,10 +495,10 @@ export default function VocabularyCards() {
                     />
                   </div>
 
-                  {/* Bottom Left Fullscreen Button */}
+                  {/* Bottom Right Fullscreen Button */}
                   <button
                     className="fullscreen-btn"
-                    onClick={handleImageClick}
+                    onClick={handleFullscreen}
                     title="Fullscreen"
                     data-testid="button-fullscreen"
                   >
@@ -630,6 +648,67 @@ export default function VocabularyCards() {
           </div>
         )}
       </div>
+
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fullscreen-modal-overlay" onClick={() => setIsFullscreen(false)}>
+          <button 
+            className="fullscreen-modal-close-btn"
+            onClick={() => setIsFullscreen(false)}
+            data-testid="button-fullscreen-close"
+          >
+            ✕
+          </button>
+          <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div
+              className={`fullscreen-modal-card ${isFlipped ? "flipped" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFlipped(!isFlipped);
+              }}
+            >
+              {/* Front */}
+              <div className="fullscreen-modal-front">
+                <button
+                  className="pronunciation-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePronounce(e);
+                  }}
+                  title="Pronounce"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#5f6368"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                  </svg>
+                </button>
+                <div className="word">{currentCard.word}</div>
+              </div>
+
+              {/* Back */}
+              <div className="fullscreen-modal-back">
+                <img
+                  src={currentCard.imageUrl}
+                  alt={currentCard.word}
+                  style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </div>
+            </div>
+            
+            {showTranslation && (
+              <div className="translation-display">
+                {currentCard.turkish}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Image Overlay */}
       <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
