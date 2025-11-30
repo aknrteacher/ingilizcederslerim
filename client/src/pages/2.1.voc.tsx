@@ -662,6 +662,63 @@ export default function VocabularyCards() {
             ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* Fullscreen Counter */}
+            <div className="fullscreen-counter-section">
+              <div className="fullscreen-counter-display">
+                {counterItems.map((item, index) => {
+                  let windowStart = Math.max(0, currentCardIndex - 1);
+                  if (windowStart + 3 >= vocabulary.length) {
+                    windowStart = Math.max(0, vocabulary.length - 4);
+                  }
+                  const cardAtThisPosition = windowStart + index;
+                  const isActive = cardAtThisPosition === currentCardIndex;
+                  const isClickable = item.type === 'number' && index < 4;
+                  
+                  if (item.type === 'separator') {
+                    return (
+                      <div
+                        key={index}
+                        className="fullscreen-counter-item separator-button"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="16px"
+                          viewBox="0 0 24 24"
+                          width="16px"
+                          fill="currentColor"
+                          style={{ transform: 'rotate(90deg)' }}
+                        >
+                          <path d="M0 0h24v24H0z" fill="none" />
+                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                        </svg>
+                      </div>
+                    );
+                  }
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''}`}
+                      onClick={(e) => {
+                        if (isClickable && item.type === 'number') {
+                          const cardNumber = item.value as number;
+                          spawnFlyingEmoji(e);
+                          playRandomSound();
+                          handleCardSelect(cardNumber - 1, e);
+                        }
+                      }}
+                      style={{ cursor: isClickable ? 'pointer' : 'default' }}
+                    >
+                      {item.value}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="fullscreen-of-display">
+                of {vocabulary.length}
+              </div>
+            </div>
+
             <div
               className={`fullscreen-modal-card ${isFlipped ? "flipped" : ""}`}
               onClick={(e) => {

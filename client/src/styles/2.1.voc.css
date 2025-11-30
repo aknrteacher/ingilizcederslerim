@@ -324,6 +324,89 @@
   fill: hsl(var(--primary-foreground));
 }
 
+/* Fullscreen Counter */
+.fullscreen-counter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 0.8vw, 6px);
+}
+
+.fullscreen-counter-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 0.8vw, 6px);
+}
+
+.fullscreen-counter-item {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(10px, 1.4vw, 12px);
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  min-width: 24px;
+  text-align: center;
+  min-height: 16px;
+}
+
+.fullscreen-counter-item.active {
+  font-size: clamp(12px, 1.8vw, 14px);
+  font-weight: 700;
+  color: hsl(var(--primary));
+}
+
+.fullscreen-counter-item.clickable {
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.320, 1);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.fullscreen-counter-item.clickable:hover {
+  color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+  transform: scale(1.1);
+}
+
+.fullscreen-counter-item.total {
+  font-size: clamp(10px, 1.6vw, 12px);
+  font-weight: 700;
+  color: hsl(var(--primary));
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 6px;
+  padding: 4px 8px;
+  min-width: auto;
+  border: 1px solid hsl(var(--primary) / 0.3);
+}
+
+.fullscreen-counter-item.separator-button {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--primary));
+  width: clamp(28px, 5vw, 32px);
+  height: clamp(28px, 5vw, 32px);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  flex-shrink: 0;
+  font-size: clamp(12px, 2vw, 14px);
+  font-weight: 600;
+  min-width: auto;
+  min-height: auto;
+}
+
+.fullscreen-of-display {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(8px, 1vw, 10px);
+  font-weight: 600;
+  color: hsl(var(--muted-foreground));
+  margin-top: clamp(2px, 0.5vw, 4px);
+}
+
 /* Center Card */
 .center-card {
   display: flex;
