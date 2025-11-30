@@ -104,7 +104,7 @@
 
 /* Total card count styling - highlighted */
 .counter-item.total {
-  font-size: clamp(16px, 2.5vw, 20px);
+  font-size: clamp(8px, 1.25vw, 10px);
   font-weight: 700;
   color: hsl(var(--primary));
   background-color: hsl(var(--primary) / 0.1);
@@ -112,6 +112,22 @@
   padding: 6px 12px;
   min-width: auto;
   border: 1.5px solid hsl(var(--primary) / 0.3);
+  transition: all 0.3s ease;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.8;
+  }
+}
+
+.counter-item.total.pulse {
+  animation: pulseGlow 1.5s ease-in-out infinite;
 }
 
 
@@ -366,7 +382,7 @@
 }
 
 .fullscreen-counter-item.total {
-  font-size: clamp(10px, 1.6vw, 12px);
+  font-size: clamp(5px, 0.8vw, 6px);
   font-weight: 700;
   color: hsl(var(--primary));
   background-color: hsl(var(--primary) / 0.1);
@@ -374,6 +390,11 @@
   padding: 4px 8px;
   min-width: auto;
   border: 1px solid hsl(var(--primary) / 0.3);
+  transition: all 0.3s ease;
+}
+
+.fullscreen-counter-item.total.pulse {
+  animation: pulseGlow 1.5s ease-in-out infinite;
 }
 
 .fullscreen-counter-item.separator-button {

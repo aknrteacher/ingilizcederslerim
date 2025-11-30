@@ -419,7 +419,7 @@ export default function VocabularyCards() {
                   return (
                     <div
                       key={index}
-                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''}`}
+                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''} ${item.type === 'total' && currentCardIndex < 3 ? 'pulse' : ''}`}
                       onClick={(e) => {
                         if (isClickable && item.type === 'number') {
                           const cardNumber = item.value as number;
@@ -694,7 +694,7 @@ export default function VocabularyCards() {
                   return (
                     <div
                       key={index}
-                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''}`}
+                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''} ${item.type === 'total' && currentCardIndex < 3 ? 'pulse' : ''}`}
                       onClick={(e) => {
                         if (isClickable && item.type === 'number') {
                           const cardNumber = item.value as number;
