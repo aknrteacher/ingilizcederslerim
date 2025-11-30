@@ -21,6 +21,7 @@ export default function VocabularyCards() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [vocabulary, setVocabulary] = useState<VocabularyCard[]>([]);
   const [showTranslation, setShowTranslation] = useState(false);
+  const [showShareDrawer, setShowShareDrawer] = useState(false);
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
@@ -219,23 +220,15 @@ export default function VocabularyCards() {
     setShowTranslation(!showTranslation);
   };
 
-  const handleShare = async (e: React.MouseEvent) => {
+  const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
+    setShowShareDrawer(!showShareDrawer);
+  };
+
+  const handleShareOption = async (option: 'copy' | 'native') => {
     const currentUrl = window.location.href;
     
-    // Try native share API first
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'İngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
-          url: currentUrl,
-        });
-      } catch (err) {
-        console.log('Share cancelled or failed');
-      }
-    } else {
-      // Fallback: Copy to clipboard
+    if (option === 'copy') {
       try {
         await navigator.clipboard.writeText(currentUrl);
         // Show toast notification
@@ -244,8 +237,20 @@ export default function VocabularyCards() {
         toast.textContent = 'Link copied to clipboard!';
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2000);
+        setShowShareDrawer(false);
       } catch (err) {
         console.error('Failed to copy:', err);
+      }
+    } else if (option === 'native' && navigator.share) {
+      try {
+        await navigator.share({
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          url: currentUrl,
+        });
+        setShowShareDrawer(false);
+      } catch (err) {
+        console.log('Share cancelled or failed');
       }
     }
   };
@@ -481,24 +486,60 @@ export default function VocabularyCards() {
         </div>
 
       {/* Share Button */}
-      <button 
-        className="share-button" 
-        onClick={handleShare}
-        data-testid="button-share"
-        title="Share This Page"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="20px"
-          viewBox="0 0 24 24"
-          width="20px"
-          fill="currentColor"
+      <div className="share-container">
+        <button 
+          className="share-button" 
+          onClick={handleShare}
+          data-testid="button-share"
+          title="Share This Page"
         >
-          <path d="M0 0h24v24H0z" fill="none" />
-          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.15c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.56 9.31 6.88 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.88 0 1.56-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
-        </svg>
-        <span className="share-tooltip">Share This Page</span>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 0 24 24"
+            width="20px"
+            fill="currentColor"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.15c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.56 9.31 6.88 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.88 0 1.56-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+          </svg>
+          <span className="share-tooltip">Share This Page</span>
+        </button>
+
+        {/* Share Drawer */}
+        {showShareDrawer && (
+          <div className="share-drawer-overlay" onClick={() => setShowShareDrawer(false)}>
+            <div className="share-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="share-drawer-content">
+                <button
+                  className="share-option"
+                  onClick={() => handleShareOption('copy')}
+                  data-testid="share-option-copy"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" />
+                  </svg>
+                  <span>Copy Link</span>
+                </button>
+                {typeof navigator !== 'undefined' && navigator.share && (
+                  <button
+                    className="share-option"
+                    onClick={() => handleShareOption('native')}
+                    data-testid="share-option-native"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor">
+                      <path d="M0 0h24v24H0z" fill="none" />
+                      <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.15c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.56 9.31 6.88 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.88 0 1.56-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+                    </svg>
+                    <span>Share</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Image Overlay */}
       <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>

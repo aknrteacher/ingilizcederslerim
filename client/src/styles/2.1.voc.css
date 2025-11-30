@@ -504,11 +504,16 @@ img {
   }
 }
 
-/* Share Button */
-.share-button {
+/* Share Container */
+.share-container {
   position: fixed;
   bottom: clamp(20px, 5vw, 40px);
   left: clamp(20px, 5vw, 40px);
+  z-index: 500;
+}
+
+/* Share Button */
+.share-button {
   width: clamp(44px, 8vw, 56px);
   height: clamp(44px, 8vw, 56px);
   border-radius: 50%;
@@ -520,7 +525,6 @@ img {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-  z-index: 500;
   flex-shrink: 0;
   position: relative;
 }
@@ -558,11 +562,79 @@ img {
   font-family: 'Inter', sans-serif;
 }
 
+/* Share Drawer Overlay */
+.share-drawer-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-out;
+  z-index: 499;
+}
+
+/* Share Drawer */
+.share-drawer {
+  position: fixed;
+  bottom: clamp(80px, 12vw, 120px);
+  left: clamp(20px, 5vw, 40px);
+  background-color: hsl(var(--card) / 0.95);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid hsl(var(--primary) / 0.3);
+  border-radius: 12px;
+  padding: clamp(12px, 2.5vw, 18px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  animation: slideInUp 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  z-index: 501;
+}
+
+.share-drawer-content {
+  display: flex;
+  gap: clamp(12px, 2vw, 18px);
+  flex-wrap: wrap;
+  max-width: 300px;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.5vw, 10px);
+  background: none;
+  border: none;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(11px, 1.8vw, 13px);
+  font-weight: 600;
+  transition: all 0.2s ease-out;
+  padding: clamp(8px, 1.5vw, 12px);
+  border-radius: 8px;
+}
+
+.share-option:hover {
+  background-color: hsl(var(--primary) / 0.15);
+  color: hsl(var(--primary));
+  transform: scale(1.08);
+}
+
+.share-option svg {
+  width: clamp(20px, 4vw, 28px);
+  height: clamp(20px, 4vw, 28px);
+  color: hsl(var(--primary));
+  transition: all 0.2s ease-out;
+}
+
+.share-option:hover svg {
+  transform: scale(1.15);
+}
+
 .share-toast {
   position: fixed;
-  bottom: clamp(20px, 5vw, 40px);
+  bottom: clamp(100px, 18vw, 160px);
   left: clamp(20px, 5vw, 40px);
-  bottom: clamp(80px, 15vw, 120px);
   background-color: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
   padding: clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px);
@@ -570,7 +642,7 @@ img {
   font-size: clamp(12px, 2vw, 14px);
   font-weight: 600;
   animation: slideInUp 0.3s ease-out forwards;
-  z-index: 501;
+  z-index: 502;
 }
 
 @keyframes slideInUp {
