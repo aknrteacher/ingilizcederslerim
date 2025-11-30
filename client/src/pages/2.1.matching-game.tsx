@@ -24,7 +24,8 @@ export default function MatchingGame() {
     { word: "playground", file: "playground.png" },
   ];
 
-  const [cards, setCards] = useState<GameCard[]>([]);
+  const [wordCards, setWordCards] = useState<GameCard[]>([]);
+  const [pictureCards, setPictureCards] = useState<GameCard[]>([]);
   const [matches, setMatches] = useState<string[]>([]);
   const [draggedCard, setDraggedCard] = useState<string | null>(null);
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -33,30 +34,23 @@ export default function MatchingGame() {
 
   // Initialize game
   useEffect(() => {
-    const gameCards: GameCard[] = [];
-    
-    // Add word cards
-    allWords.forEach((item, idx) => {
-      gameCards.push({
-        id: `word-${idx}`,
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        type: "word",
-      });
-    });
+    const words: GameCard[] = allWords.map((item, idx) => ({
+      id: `word-${idx}`,
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
+      type: "word",
+    }));
 
-    // Add picture cards
-    allWords.forEach((item, idx) => {
-      gameCards.push({
-        id: `picture-${idx}`,
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        type: "picture",
-      });
-    });
+    const pictures: GameCard[] = allWords.map((item, idx) => ({
+      id: `picture-${idx}`,
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
+      type: "picture",
+    }));
 
-    // Shuffle all cards
-    setCards(gameCards.sort(() => Math.random() - 0.5));
+    // Shuffle both
+    setWordCards(words.sort(() => Math.random() - 0.5));
+    setPictureCards(pictures.sort(() => Math.random() - 0.5));
     setStartTime(Date.now());
   }, []);
 
@@ -71,10 +65,10 @@ export default function MatchingGame() {
 
   // Check for completion
   useEffect(() => {
-    if (cards.length > 0 && matches.length === allWords.length) {
+    if (allWords.length > 0 && matches.length === allWords.length) {
       setGameComplete(true);
     }
-  }, [matches, cards.length]);
+  }, [matches]);
 
   const handleDragStart = (cardId: string) => {
     setDraggedCard(cardId);
@@ -90,8 +84,19 @@ export default function MatchingGame() {
       return;
     }
 
-    const draggedCard_ = cards.find((c) => c.id === draggedCard);
-    const targetCard = cards.find((c) => c.id === targetCardId);
+    const draggedFromWords = wordCards.some((c) => c.id === draggedCard);
+    const draggedFromPictures = pictureCards.some((c) => c.id === draggedCard);
+
+    let draggedCard_: GameCard | undefined;
+    let targetCard: GameCard | undefined;
+
+    if (draggedFromWords) {
+      draggedCard_ = wordCards.find((c) => c.id === draggedCard);
+      targetCard = pictureCards.find((c) => c.id === targetCardId);
+    } else {
+      draggedCard_ = pictureCards.find((c) => c.id === draggedCard);
+      targetCard = wordCards.find((c) => c.id === targetCardId);
+    }
 
     if (draggedCard_ && targetCard && draggedCard_.word === targetCard.word) {
       // Correct match
@@ -106,28 +111,23 @@ export default function MatchingGame() {
     setDraggedCard(null);
     setGameComplete(false);
     setElapsedTime(0);
-    
-    const gameCards: GameCard[] = [];
-    
-    allWords.forEach((item, idx) => {
-      gameCards.push({
-        id: `word-${idx}`,
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        type: "word",
-      });
-    });
 
-    allWords.forEach((item, idx) => {
-      gameCards.push({
-        id: `picture-${idx}`,
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        type: "picture",
-      });
-    });
+    const words: GameCard[] = allWords.map((item, idx) => ({
+      id: `word-${idx}`,
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
+      type: "word",
+    }));
 
-    setCards(gameCards.sort(() => Math.random() - 0.5));
+    const pictures: GameCard[] = allWords.map((item, idx) => ({
+      id: `picture-${idx}`,
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
+      type: "picture",
+    }));
+
+    setWordCards(words.sort(() => Math.random() - 0.5));
+    setPictureCards(pictures.sort(() => Math.random() - 0.5));
     setStartTime(Date.now());
   };
 
@@ -191,30 +191,51 @@ export default function MatchingGame() {
         )}
 
         <div className="game-board">
-          {cards.map((card) => {
-            const isMatched = matches.includes(card.word);
-            return (
-              <div
-                key={card.id}
-                draggable={!isMatched}
-                onDragStart={() => handleDragStart(card.id)}
-                onDragOver={handleDragOver}
-                onDrop={() => handleDrop(card.id)}
-                className={`game-card ${isMatched ? "matched" : ""} ${
-                  draggedCard === card.id ? "dragging" : ""
-                }`}
-                data-testid={`card-${card.word}-${card.type}-${card.id}`}
-              >
-                <div className="card-content">
-                  {card.type === "word" ? (
-                    <span className="card-text">{card.word}</span>
-                  ) : (
-                    <img src={card.imageUrl} alt={card.word} className="card-image" />
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          <div className="pictures-section">
+            <h3 className="section-label">Resimler</h3>
+            <div className="pictures-grid">
+              {pictureCards.map((card) => {
+                const isMatched = matches.includes(card.word);
+                if (isMatched) return null;
+                return (
+                  <div
+                    key={card.id}
+                    draggable={true}
+                    onDragStart={() => handleDragStart(card.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDrop(card.id)}
+                    className={`picture-card ${draggedCard === card.id ? "dragging" : ""}`}
+                    data-testid={`card-picture-${card.word}-${card.id}`}
+                  >
+                    <img src={card.imageUrl} alt={card.word} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="words-section">
+            <h3 className="section-label">Kelimeler</h3>
+            <div className="words-grid">
+              {wordCards.map((card) => {
+                const isMatched = matches.includes(card.word);
+                if (isMatched) return null;
+                return (
+                  <div
+                    key={card.id}
+                    draggable={true}
+                    onDragStart={() => handleDragStart(card.id)}
+                    onDragOver={handleDragOver}
+                    onDrop={() => handleDrop(card.id)}
+                    className={`word-card ${draggedCard === card.id ? "dragging" : ""}`}
+                    data-testid={`card-word-${card.word}-${card.id}`}
+                  >
+                    <span>{card.word}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         <div className="game-footer">
