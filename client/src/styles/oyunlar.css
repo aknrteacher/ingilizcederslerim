@@ -56,6 +56,11 @@
   gap: 20px;
 }
 
+.game-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .game-card {
   background: white;
   border: 1px solid rgba(59, 130, 246, 0.2);

@@ -53,30 +53,29 @@ export default function Oyunlar() {
 
           <div className="games-grid">
             {grade2Theme1Games.map((game) => (
-              <Card
+              <a
                 key={game.id}
-                className="game-card"
+                href={game.path}
+                className="game-link"
                 data-testid={`card-game-${game.id}`}
               >
-                <CardHeader>
-                  <div className="game-header-content">
-                    <span className="game-icon">{game.icon}</span>
-                    <CardTitle className="game-title">{game.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription className="game-description">
-                    {game.description}
-                  </CardDescription>
-                  <Button
-                    onClick={() => setLocation(game.path)}
-                    className="w-full game-button"
-                    data-testid={`button-play-${game.id}`}
-                  >
-                    Oyna <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
+                <Card className="game-card">
+                  <CardHeader>
+                    <div className="game-header-content">
+                      <span className="game-icon">{game.icon}</span>
+                      <CardTitle className="game-title">{game.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="game-description">
+                      {game.description}
+                    </CardDescription>
+                    <div className="game-button" data-testid={`button-play-${game.id}`}>
+                      Oyna <ArrowRight className="ml-2 h-4 w-4" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </a>
             ))}
           </div>
 
