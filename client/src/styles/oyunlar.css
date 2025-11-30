@@ -104,6 +104,10 @@
   border: none;
   font-weight: 600;
   transition: all 0.2s ease;
+  padding: 12px 24px !important;
+  height: auto !important;
+  min-width: 100% !important;
+  white-space: nowrap;
 }
 
 .game-button:hover {
