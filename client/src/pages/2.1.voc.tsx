@@ -398,7 +398,7 @@ export default function VocabularyCards() {
                     return (
                       <div
                         key={index}
-                        className={`counter-item separator-button ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                        className="counter-item separator-button"
                         data-testid={`text-counter-${index}`}
                       >
                         <div className="separator-content">
@@ -420,11 +420,12 @@ export default function VocabularyCards() {
                   }
                   
                   if (item.type === 'total') {
-                    // Render total count separately
+                    // Pulse at start and every 7 cards
+                    const shouldPulse = currentCardIndex === 0 || currentCardIndex % 7 === 0;
                     return (
                       <div
                         key={index}
-                        className={`counter-item total ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                        className={`counter-item total ${shouldPulse ? 'pulse' : ''}`}
                         data-testid={`text-counter-${index}`}
                       >
                         {item.value}
@@ -690,7 +691,7 @@ export default function VocabularyCards() {
                     return (
                       <div
                         key={index}
-                        className={`fullscreen-counter-item separator-button ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                        className="fullscreen-counter-item separator-button"
                       >
                         <div className="separator-content">
                           <svg
@@ -711,10 +712,11 @@ export default function VocabularyCards() {
                   }
                   
                   if (item.type === 'total') {
+                    const shouldPulse = currentCardIndex === 0 || currentCardIndex % 7 === 0;
                     return (
                       <div
                         key={index}
-                        className={`fullscreen-counter-item total ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                        className={`fullscreen-counter-item total ${shouldPulse ? 'pulse' : ''}`}
                       >
                         {item.value}
                       </div>

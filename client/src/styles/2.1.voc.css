@@ -181,25 +181,23 @@
   right: clamp(8px, 1.5vw, 12px);
   width: clamp(36px, 6.5vw, 44px);
   height: clamp(36px, 6.5vw, 44px);
-  background-color: hsl(var(--card) / 0.85);
-  border: 1.5px solid hsl(var(--primary) / 0.4);
+  background-color: hsl(var(--primary));
+  border: 1.5px solid hsl(var(--primary));
   border-radius: 8px;
-  color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.2s ease-out;
-  backdrop-filter: blur(4px);
   z-index: 10;
 }
 
 .fullscreen-btn:hover {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary) / 0.9);
   border-color: hsl(var(--primary));
   transform: scale(1.1);
-  box-shadow: 0 4px 12px hsl(var(--primary) / 0.25);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.35);
 }
 
 /* Fullscreen Modal */
