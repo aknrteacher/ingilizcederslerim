@@ -1,0 +1,170 @@
+.oyunlar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 24px;
+  min-height: calc(100vh - 120px);
+}
+
+.oyunlar-header {
+  margin-bottom: 16px;
+}
+
+.oyunlar-title {
+  font-family: "Libre Baskerville", serif;
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+  line-height: 1.2;
+}
+
+.oyunlar-subtitle {
+  font-size: 16px;
+  color: hsl(var(--muted-foreground));
+  margin: 8px 0 0 0;
+}
+
+.games-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-header {
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: "Libre Baskerville", serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+  line-height: 1.3;
+}
+
+.section-description {
+  font-size: 14px;
+  color: hsl(var(--muted-foreground));
+  margin: 8px 0 0 0;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  background: white;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  transform: translateY(-4px);
+}
+
+.game-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.game-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.game-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+}
+
+.game-description {
+  color: hsl(var(--muted-foreground));
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.game-button {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.game-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+}
+
+.game-button:active {
+  transform: translateY(0);
+}
+
+.coming-soon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.coming-soon-card {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 1.5px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: rgba(59, 130, 246, 0.05);
+  border-radius: 12px;
+  border: 1px dashed rgba(59, 130, 246, 0.2);
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .oyunlar-container {
+    gap: 32px;
+    padding: 16px;
+  }
+
+  .games-grid,
+  .coming-soon-grid {
+    grid-template-columns: 1fr;
+  }
+}
