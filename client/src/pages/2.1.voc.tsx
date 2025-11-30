@@ -359,8 +359,11 @@ export default function VocabularyCards() {
       }
     }
     
-    // Add separator with total count inside
-    items.push({ type: 'separator', value: vocabulary.length });
+    // Add separator (next icon)
+    items.push({ type: 'separator', value: 'next' });
+    
+    // Add total (not clickable)
+    items.push({ type: 'total', value: vocabulary.length });
     
     return items;
   };
@@ -391,7 +394,7 @@ export default function VocabularyCards() {
                   const isClickable = item.type === 'number' && index < 4; // Only numbers in first 4 positions are clickable
                   
                   if (item.type === 'separator') {
-                    // Render separator button with "of {total}" inside
+                    // Render separator button with arrow and "of" text
                     return (
                       <div
                         key={index}
@@ -410,8 +413,21 @@ export default function VocabularyCards() {
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
                           </svg>
-                          <span className="separator-text">of {item.value}</span>
+                          <span className="separator-text">of</span>
                         </div>
+                      </div>
+                    );
+                  }
+                  
+                  if (item.type === 'total') {
+                    // Render total count separately
+                    return (
+                      <div
+                        key={index}
+                        className={`counter-item total ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                        data-testid={`text-counter-${index}`}
+                      >
+                        {item.value}
                       </div>
                     );
                   }
@@ -688,8 +704,19 @@ export default function VocabularyCards() {
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
                           </svg>
-                          <span className="separator-text">of {item.value}</span>
+                          <span className="separator-text">of</span>
                         </div>
+                      </div>
+                    );
+                  }
+                  
+                  if (item.type === 'total') {
+                    return (
+                      <div
+                        key={index}
+                        className={`fullscreen-counter-item total ${currentCardIndex < 3 ? 'pulse' : ''}`}
+                      >
+                        {item.value}
                       </div>
                     );
                   }
