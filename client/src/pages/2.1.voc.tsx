@@ -708,6 +708,75 @@ export default function VocabularyCards() {
                 {currentCard.turkish}
               </div>
             )}
+
+            {/* Fullscreen Controls */}
+            <div className="fullscreen-controls-section">
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handleStartOver}
+                title="Start Over"
+                data-testid="button-start-over-fs"
+              >
+                &lt;&lt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handlePrev}
+                title="Previous Card"
+                data-testid="button-previous-fs"
+              >
+                &lt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handleNext}
+                title="Next Card"
+                data-testid="button-next-fs"
+              >
+                &gt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsFlipped(!isFlipped);
+                }}
+                title="Flip Card"
+                data-testid="button-flip-fs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+                </svg>
+              </button>
+              <button
+                className={`fullscreen-icon-control-btn ${showTranslation ? 'active' : ''}`}
+                onClick={handleToggleTranslation}
+                title="Show Translation"
+                data-testid="button-translation-fs"
+              >
+                ?
+              </button>
+              <button
+                className={`fullscreen-icon-control-btn ${isAutoplay ? 'active' : ''}`}
+                onClick={handleAutoplayStart}
+                title={isAutoplay ? "Stop Autoplay" : "Start Autoplay"}
+                data-testid="button-autoplay-fs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       )}
