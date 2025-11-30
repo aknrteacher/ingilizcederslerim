@@ -6,6 +6,7 @@
   min-height: calc(100vh - 120px);
   overflow-x: hidden;
   padding: 20px;
+  position: relative;
 }
 
 .loading {
@@ -506,7 +507,7 @@ img {
 
 /* Share Container */
 .share-container {
-  position: fixed;
+  position: absolute;
   bottom: clamp(20px, 5vw, 40px);
   left: clamp(20px, 5vw, 40px);
   z-index: 500;
@@ -577,7 +578,7 @@ img {
 
 /* Share Drawer */
 .share-drawer {
-  position: fixed;
+  position: absolute;
   bottom: clamp(80px, 12vw, 120px);
   left: clamp(20px, 5vw, 40px);
   background-color: hsl(var(--card) / 0.95);
