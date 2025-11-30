@@ -359,11 +359,8 @@ export default function VocabularyCards() {
       }
     }
     
-    // Add separator (next icon placeholder)
-    items.push({ type: 'separator', value: 'next' });
-    
-    // Add total (not clickable)
-    items.push({ type: 'total', value: vocabulary.length });
+    // Add separator with total count inside
+    items.push({ type: 'separator', value: vocabulary.length });
     
     return items;
   };
@@ -394,24 +391,27 @@ export default function VocabularyCards() {
                   const isClickable = item.type === 'number' && index < 4; // Only numbers in first 4 positions are clickable
                   
                   if (item.type === 'separator') {
-                    // Render next button rotated 90 degrees
+                    // Render separator button with "of {total}" inside
                     return (
                       <div
                         key={index}
-                        className="counter-item separator-button"
+                        className={`counter-item separator-button ${currentCardIndex < 3 ? 'pulse' : ''}`}
                         data-testid={`text-counter-${index}`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24px"
-                          viewBox="0 0 24 24"
-                          width="24px"
-                          fill="currentColor"
-                          style={{ transform: 'rotate(90deg)', width: 'clamp(16px, 3.5vw, 20px)', height: 'clamp(16px, 3.5vw, 20px)' }}
-                        >
-                          <path d="M0 0h24v24H0z" fill="none" />
-                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                        </svg>
+                        <div className="separator-content">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 0 24 24"
+                            width="24px"
+                            fill="currentColor"
+                            style={{ transform: 'rotate(90deg)', width: 'clamp(16px, 3.5vw, 20px)', height: 'clamp(16px, 3.5vw, 20px)' }}
+                          >
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                          </svg>
+                          <span className="separator-text">of {item.value}</span>
+                        </div>
                       </div>
                     );
                   }
@@ -419,7 +419,7 @@ export default function VocabularyCards() {
                   return (
                     <div
                       key={index}
-                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''} ${item.type === 'total' && currentCardIndex < 3 ? 'pulse' : ''}`}
+                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
                       onClick={(e) => {
                         if (isClickable && item.type === 'number') {
                           const cardNumber = item.value as number;
@@ -431,7 +431,7 @@ export default function VocabularyCards() {
                       data-testid={`text-counter-${index}`}
                       style={{ cursor: isClickable ? 'pointer' : 'default' }}
                     >
-                      {item.type === 'total' ? `of ${item.value}` : item.value}
+                      {item.value}
                     </div>
                   );
                 })}
@@ -674,19 +674,22 @@ export default function VocabularyCards() {
                     return (
                       <div
                         key={index}
-                        className="fullscreen-counter-item separator-button"
+                        className={`fullscreen-counter-item separator-button ${currentCardIndex < 3 ? 'pulse' : ''}`}
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="14px"
-                          viewBox="0 0 24 24"
-                          width="14px"
-                          fill="currentColor"
-                          style={{ transform: 'rotate(90deg)' }}
-                        >
-                          <path d="M0 0h24v24H0z" fill="none" />
-                          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                        </svg>
+                        <div className="separator-content">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="14px"
+                            viewBox="0 0 24 24"
+                            width="14px"
+                            fill="currentColor"
+                            style={{ transform: 'rotate(90deg)' }}
+                          >
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                          </svg>
+                          <span className="separator-text">of {item.value}</span>
+                        </div>
                       </div>
                     );
                   }
@@ -694,7 +697,7 @@ export default function VocabularyCards() {
                   return (
                     <div
                       key={index}
-                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''} ${item.type === 'total' ? 'total' : ''} ${item.type === 'total' && currentCardIndex < 3 ? 'pulse' : ''}`}
+                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
                       onClick={(e) => {
                         if (isClickable && item.type === 'number') {
                           const cardNumber = item.value as number;
@@ -705,7 +708,7 @@ export default function VocabularyCards() {
                       }}
                       style={{ cursor: isClickable ? 'pointer' : 'default' }}
                     >
-                      {item.type === 'total' ? `of ${item.value}` : item.value}
+                      {item.value}
                     </div>
                   );
                 })}
