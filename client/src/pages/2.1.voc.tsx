@@ -27,6 +27,7 @@ export default function VocabularyCards() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [autoplaySpeed, setAutoplaySpeed] = useState(1);
   const autoplayRef = useRef(false);
+  const speedRef = useRef(1);
 
   // Sample vocabulary data - replace with your own
   const imageFiles = [
@@ -125,6 +126,10 @@ export default function VocabularyCards() {
 
   // Autoplay sequence handler
   useEffect(() => {
+    speedRef.current = autoplaySpeed;
+  }, [autoplaySpeed]);
+
+  useEffect(() => {
     if (!isAutoplay) {
       autoplayRef.current = false;
       speechSynthesis.cancel();
@@ -145,19 +150,19 @@ export default function VocabularyCards() {
           const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
           speechSynthesis.speak(utterance);
         }
-        await new Promise(resolve => setTimeout(resolve, 6000 / autoplaySpeed));
+        await new Promise(resolve => setTimeout(resolve, 6000 / speedRef.current));
 
         if (!autoplayRef.current) break;
 
         // Flip for 2 seconds (adjusted by speed)
         setIsFlipped(true);
-        await new Promise(resolve => setTimeout(resolve, 2000 / autoplaySpeed));
+        await new Promise(resolve => setTimeout(resolve, 2000 / speedRef.current));
 
         if (!autoplayRef.current) break;
 
         // Zoom image for 2 seconds (adjusted by speed)
         setIsImageZoomed(true);
-        await new Promise(resolve => setTimeout(resolve, 2000 / autoplaySpeed));
+        await new Promise(resolve => setTimeout(resolve, 2000 / speedRef.current));
 
         if (!autoplayRef.current) break;
 
@@ -176,7 +181,7 @@ export default function VocabularyCards() {
       autoplayRef.current = false;
       speechSynthesis.cancel();
     };
-  }, [isAutoplay, vocabulary, autoplaySpeed]);
+  }, [isAutoplay, vocabulary]);
 
   const spawnFlyingEmoji = (event: React.MouseEvent) => {
     if (Math.random() > EMOJI_CHANCE) return;
