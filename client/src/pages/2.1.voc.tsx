@@ -176,7 +176,7 @@ export default function VocabularyCards() {
       autoplayRef.current = false;
       speechSynthesis.cancel();
     };
-  }, [isAutoplay, vocabulary]);
+  }, [isAutoplay, vocabulary, autoplaySpeed]);
 
   const spawnFlyingEmoji = (event: React.MouseEvent) => {
     if (Math.random() > EMOJI_CHANCE) return;
