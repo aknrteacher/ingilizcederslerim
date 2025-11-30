@@ -431,14 +431,10 @@ export default function VocabularyCards() {
                       data-testid={`text-counter-${index}`}
                       style={{ cursor: isClickable ? 'pointer' : 'default' }}
                     >
-                      {item.value}
+                      {item.type === 'total' ? `of ${item.value}` : item.value}
                     </div>
                   );
                 })}
-              </div>
-              {/* "of" Display integrated with total */}
-              <div className="of-display" data-testid="text-of-total">
-                of {vocabulary.length}
               </div>
             </div>
           </div>

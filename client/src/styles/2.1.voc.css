@@ -114,14 +114,6 @@
   border: 1.5px solid hsl(var(--primary) / 0.3);
 }
 
-/* "of" Display */
-.of-display {
-  font-family: 'Libre Baskerville', serif;
-  font-size: clamp(10px, 1.4vw, 12px);
-  font-weight: 600;
-  color: hsl(var(--muted-foreground));
-  margin-top: clamp(4px, 1vw, 8px);
-}
 
 /* Separator button styling - styled like control buttons */
 .counter-item.separator-button {
