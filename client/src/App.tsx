@@ -15,6 +15,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/oyunlar" component={Oyunlar} />
+      <Route path="/primary-school/grade-2/theme-1/games" component={Oyunlar} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
