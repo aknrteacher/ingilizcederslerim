@@ -219,6 +219,37 @@ export default function VocabularyCards() {
     setShowTranslation(!showTranslation);
   };
 
+  const handleShare = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const currentUrl = window.location.href;
+    
+    // Try native share API first
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          url: currentUrl,
+        });
+      } catch (err) {
+        console.log('Share cancelled or failed');
+      }
+    } else {
+      // Fallback: Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        // Show toast notification
+        const toast = document.createElement('div');
+        toast.className = 'share-toast';
+        toast.textContent = 'Link copied to clipboard!';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
+  };
+
   if (vocabulary.length === 0) {
     return <div className="loading">Loading...</div>;
   }
@@ -448,6 +479,26 @@ export default function VocabularyCards() {
             </div>
           </div>
         </div>
+
+      {/* Share Button */}
+      <button 
+        className="share-button" 
+        onClick={handleShare}
+        data-testid="button-share"
+        title="Share This Page"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20px"
+          viewBox="0 0 24 24"
+          width="20px"
+          fill="currentColor"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.15c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.56 9.31 6.88 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.88 0 1.56-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+        </svg>
+        <span className="share-tooltip">Share This Page</span>
+      </button>
 
       {/* Image Overlay */}
       <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
