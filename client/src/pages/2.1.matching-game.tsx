@@ -2,31 +2,21 @@ import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useLocation } from "wouter";
 import "../styles/2.1.matching-game.css";
 
-interface VocabularyCard {
+interface VocabularyItem {
   word: string;
-  imageUrl: string;
+  file: string;
   turkish: string;
 }
 
-interface GamePair {
-  id: string;
-  word: VocabularyCard;
-  matched: boolean;
+interface MatchPair {
+  word: string;
+  imageUrl: string;
 }
 
 export default function MatchingGame() {
-  const [, setLocation] = useLocation();
-  const [gameCards, setGameCards] = useState<GamePair[]>([]);
-  const [selectedCards, setSelectedCards] = useState<string[]>([]);
-  const [matchedPairs, setMatchedPairs] = useState<string[]>([]);
-  const [moves, setMoves] = useState(0);
-  const [score, setScore] = useState(0);
-  const [gameWon, setGameWon] = useState(false);
-
-  const imageFiles = [
+  const allWords = [
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
     { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
@@ -57,139 +47,112 @@ export default function MatchingGame() {
     { word: "who", file: "who.png", turkish: "kim" },
   ];
 
-  // Initialize game
+  const [wordList, setWordList] = useState<MatchPair[]>([]);
+  const [pictureList, setPictureList] = useState<MatchPair[]>([]);
+  const [selectedWord, setSelectedWord] = useState<string | null>(null);
+  const [matches, setMatches] = useState<string[]>([]);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [gameComplete, setGameComplete] = useState(false);
+
+  // Initialize game with 10 random words
   useEffect(() => {
-    const shuffled = [...imageFiles].sort(() => Math.random() - 0.5);
-    const cards: GamePair[] = shuffled.map((item, idx) => ({
-      id: `${idx}`,
-      word: {
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        turkish: item.turkish,
-      },
-      matched: false,
+    const shuffled = [...allWords].sort(() => Math.random() - 0.5).slice(0, 10);
+    const words = shuffled.map((item) => ({
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
     }));
-    setGameCards(cards);
+    setWordList(words);
+    
+    // Shuffle pictures
+    const pictures = [...words].sort(() => Math.random() - 0.5);
+    setPictureList(pictures);
+    
+    setStartTime(Date.now());
   }, []);
 
-  // Check for matches
+  // Timer
   useEffect(() => {
-    if (selectedCards.length === 2) {
-      const [card1Id, card2Id] = selectedCards;
-      const card1 = gameCards.find((c) => c.id === card1Id);
-      const card2 = gameCards.find((c) => c.id === card2Id);
+    if (!startTime || gameComplete) return;
+    const interval = setInterval(() => {
+      setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 100);
+    return () => clearInterval(interval);
+  }, [startTime, gameComplete]);
 
-      if (card1 && card2) {
-        if (card1.word.word === card2.word.word) {
-          // Match found!
-          setMatchedPairs([...matchedPairs, card1Id, card2Id]);
-          setScore(score + 10);
-          setSelectedCards([]);
-        } else {
-          // No match, deselect after delay
-          setTimeout(() => {
-            setSelectedCards([]);
-          }, 800);
-        }
-        setMoves(moves + 1);
-      }
-    }
-  }, [selectedCards, gameCards, matchedPairs, moves, score]);
-
-  // Check for win
+  // Check for game completion
   useEffect(() => {
-    if (
-      gameCards.length > 0 &&
-      matchedPairs.length === gameCards.length &&
-      gameCards.length > 0
-    ) {
-      setGameWon(true);
+    if (wordList.length > 0 && matches.length === wordList.length) {
+      setGameComplete(true);
     }
-  }, [matchedPairs, gameCards.length]);
+  }, [matches, wordList.length]);
 
-  const toggleCard = (id: string) => {
-    if (
-      selectedCards.includes(id) ||
-      matchedPairs.includes(id) ||
-      selectedCards.length === 2
-    ) {
-      return;
+  const handleWordClick = (word: string) => {
+    if (matches.includes(word)) return;
+    setSelectedWord(selectedWord === word ? null : word);
+  };
+
+  const handlePictureClick = (imageUrl: string) => {
+    if (!selectedWord || gameComplete) return;
+    
+    // Find the matching word
+    const matchingWord = wordList.find((w) => w.imageUrl === imageUrl);
+    if (matchingWord && matchingWord.word === selectedWord) {
+      setMatches([...matches, selectedWord]);
+      setSelectedWord(null);
+    } else {
+      setSelectedWord(null);
     }
-    setSelectedCards([...selectedCards, id]);
   };
 
   const resetGame = () => {
-    const shuffled = [...imageFiles].sort(() => Math.random() - 0.5);
-    const cards: GamePair[] = shuffled.map((item, idx) => ({
-      id: `${idx}`,
-      word: {
-        word: item.word,
-        imageUrl: `/images/2.1/${item.file}`,
-        turkish: item.turkish,
-      },
-      matched: false,
+    setMatches([]);
+    setSelectedWord(null);
+    setGameComplete(false);
+    setElapsedTime(0);
+    setStartTime(Date.now());
+    
+    const shuffled = [...allWords].sort(() => Math.random() - 0.5).slice(0, 10);
+    const words = shuffled.map((item) => ({
+      word: item.word,
+      imageUrl: `/images/2.1/${item.file}`,
     }));
-    setGameCards(cards);
-    setSelectedCards([]);
-    setMatchedPairs([]);
-    setMoves(0);
-    setScore(0);
-    setGameWon(false);
+    setWordList(words);
+    
+    const pictures = [...words].sort(() => Math.random() - 0.5);
+    setPictureList(pictures);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
     <Layout>
       <div className="matching-game-container">
         <div className="game-header">
-          <div className="header-top">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setLocation("/oyunlar")}
-              className="back-button"
-              data-testid="button-back"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="header-title">
-              <h1>Kelime Eşleştirme Oyunu</h1>
-              <p>Kelimeyi resmiyle eşleştir</p>
-            </div>
+          <div>
+            <h1 className="game-title">Kelime - Resim Eşleştir</h1>
+            <p className="game-subtitle">Kelimeleri doğru resimle eşleştir</p>
           </div>
-
-          <div className="game-stats">
-            <div className="stat">
-              <span className="stat-label">Hamle:</span>
-              <span className="stat-value" data-testid="text-moves">
-                {moves}
-              </span>
-            </div>
-            <div className="stat">
-              <span className="stat-label">Puan:</span>
-              <span className="stat-value" data-testid="text-score">
-                {score}
-              </span>
-            </div>
-            <div className="stat">
-              <span className="stat-label">Eşleşti:</span>
-              <span className="stat-value" data-testid="text-matched">
-                {matchedPairs.length / 2} / {gameCards.length}
-              </span>
-            </div>
+          <div className="game-timer" data-testid="text-timer">
+            ⏱️ {formatTime(elapsedTime)}
           </div>
         </div>
 
-        {gameWon && (
+        {gameComplete && (
           <div className="win-modal">
             <div className="win-content">
               <h2>🎉 Tebrikler! 🎉</h2>
-              <p>Tüm kelimeyi eşleştirdin!</p>
+              <p>Tüm kelimeleri eşleştirdin!</p>
               <div className="win-stats">
                 <p>
-                  <strong>Toplam Hamle:</strong> {moves}
+                  <strong>Süre:</strong> {formatTime(elapsedTime)}
                 </p>
                 <p>
-                  <strong>Puan:</strong> {score}
+                  <strong>Eşleşen Kelimeler:</strong> {matches.length} / {wordList.length}
                 </p>
               </div>
               <div className="win-buttons">
@@ -200,50 +163,54 @@ export default function MatchingGame() {
                 >
                   Tekrar Oyna
                 </Button>
-                <Button
-                  onClick={() => setLocation("/oyunlar")}
-                  variant="outline"
-                  data-testid="button-back-to-games"
-                >
+                <a href="/oyunlar" className="btn-secondary">
                   Oyunlara Dön
-                </Button>
+                </a>
               </div>
             </div>
           </div>
         )}
 
         <div className="game-board">
-          {gameCards.map((card) => (
-            <div
-              key={card.id}
-              className={`game-card ${
-                selectedCards.includes(card.id) ? "selected" : ""
-              } ${matchedPairs.includes(card.id) ? "matched" : ""}`}
-              onClick={() => toggleCard(card.id)}
-              data-testid={`card-${card.word.word}-${card.id}`}
-            >
-              <div className="card-inner">
-                <div className="card-front">
-                  <span className="card-number">?</span>
-                </div>
-                <div className="card-back">
-                  {selectedCards.includes(card.id) ||
-                  matchedPairs.includes(card.id) ? (
-                    <>
-                      <img
-                        src={card.word.imageUrl}
-                        alt={card.word.word}
-                        className="card-image"
-                      />
-                      <span className="card-text">{card.word.word}</span>
-                    </>
-                  ) : (
-                    <span className="card-number">?</span>
-                  )}
-                </div>
-              </div>
+          <div className="game-column">
+            <h3 className="column-title">Kelimeler</h3>
+            <div className="cards-container">
+              {wordList.map((item) => (
+                <button
+                  key={item.word}
+                  onClick={() => handleWordClick(item.word)}
+                  className={`word-card ${
+                    selectedWord === item.word ? "selected" : ""
+                  } ${matches.includes(item.word) ? "matched" : ""}`}
+                  data-testid={`card-word-${item.word}`}
+                  disabled={matches.includes(item.word)}
+                >
+                  {item.word}
+                </button>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="game-column">
+            <h3 className="column-title">Resimler</h3>
+            <div className="cards-container">
+              {pictureList.map((item) => (
+                <button
+                  key={item.imageUrl}
+                  onClick={() => handlePictureClick(item.imageUrl)}
+                  className={`picture-card ${
+                    matches.find((m) => wordList.find((w) => w.word === m)?.imageUrl === item.imageUrl)
+                      ? "matched"
+                      : ""
+                  }`}
+                  data-testid={`card-picture-${item.word}`}
+                  disabled={matches.find((m) => wordList.find((w) => w.word === m)?.imageUrl === item.imageUrl) !== undefined}
+                >
+                  <img src={item.imageUrl} alt={item.word} />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="game-footer">
@@ -255,6 +222,9 @@ export default function MatchingGame() {
           >
             Oyunu Sıfırla
           </Button>
+          <a href="/oyunlar" className="back-link">
+            <ArrowLeft className="h-4 w-4" /> Oyunlara Dön
+          </a>
         </div>
       </div>
     </Layout>
