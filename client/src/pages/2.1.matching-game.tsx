@@ -122,8 +122,25 @@ export default function MatchingGame() {
     }
   }, [matches, gameStarted, selectedCards]);
 
+  const speakWord = (word: string) => {
+    // Cancel any ongoing speech
+    window.speechSynthesis?.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    window.speechSynthesis?.speak(utterance);
+  };
+
   const handleDragStart = (cardId: string) => {
     setDraggedCard(cardId);
+    
+    // Speak the word if it's from word cards
+    const wordCard = wordCards.find((c) => c.id === cardId);
+    if (wordCard) {
+      speakWord(wordCard.word);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent) => {
