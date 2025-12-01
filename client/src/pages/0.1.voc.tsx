@@ -29,6 +29,7 @@ export default function ColorsVocabulary() {
   const autoplayRef = useRef(false);
   const speedRef = useRef(1);
 
+  // Colors vocabulary data
   const imageFiles = [
     { word: "red", file: "red.png", turkish: "kırmızı" },
     { word: "blue", file: "blue.png", turkish: "mavi" },
@@ -40,6 +41,7 @@ export default function ColorsVocabulary() {
     { word: "brown", file: "brown.png", turkish: "kahverengi" },
     { word: "gray", file: "gray.png", turkish: "gri" },
     { word: "white", file: "white.png", turkish: "beyaz" },
+    { word: "black", file: "black.png", turkish: "siyah" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
@@ -47,18 +49,52 @@ export default function ColorsVocabulary() {
   const SOUND_CHANCE = 0.25;
 
   const reactionSounds = [
-    "/sounds/yay.mp3", "/sounds/woosh.mp3", "/sounds/tennis.mp3", "/sounds/tap.mp3",
-    "/sounds/tada.mp3", "/sounds/among us.mp3", "/sounds/arcade.mp3", "/sounds/bell.mp3",
-    "/sounds/blip.mp3", "/sounds/bubble.mp3", "/sounds/button.mp3", "/sounds/cash.mp3",
-    "/sounds/click1.mp3", "/sounds/click2.mp3", "/sounds/click3.mp3", "/sounds/click5.mp3",
-    "/sounds/click6.mp3", "/sounds/eating.mp3", "/sounds/error.mp3", "/sounds/fall.mp3",
-    "/sounds/fist.mp3", "/sounds/flip.mp3", "/sounds/game.mp3", "/sounds/hit.mp3",
-    "/sounds/interface.mp3", "/sounds/keyboard.mp3", "/sounds/level.mp3", "/sounds/levelup.mp3",
-    "/sounds/low.mp3", "/sounds/mouse.mp3", "/sounds/multipop.mp3", "/sounds/notice.mp3",
-    "/sounds/pen.mp3", "/sounds/pick.mp3", "/sounds/pop.mp3", "/sounds/radio.mp3",
-    "/sounds/rclick.mp3", "/sounds/select2.mp3", "/sounds/select.mp3", "/sounds/shutter.mp3",
-    "/sounds/sparkle.mp3", "/sounds/swipe.mp3", "/sounds/switch2.mp3", "/sounds/switch.mp3",
-    "/sounds/swoosh.mp3", "/sounds/sword.mp3",
+    "/sounds/yay.mp3",
+    "/sounds/woosh.mp3",
+    "/sounds/tennis.mp3",
+    "/sounds/tap.mp3",
+    "/sounds/tada.mp3",
+    "/sounds/among us.mp3",
+    "/sounds/arcade.mp3",
+    "/sounds/bell.mp3",
+    "/sounds/blip.mp3",
+    "/sounds/bubble.mp3",
+    "/sounds/button.mp3",
+    "/sounds/cash.mp3",
+    "/sounds/click1.mp3",
+    "/sounds/click2.mp3",
+    "/sounds/click3.mp3",
+    "/sounds/click5.mp3",
+    "/sounds/click6.mp3",
+    "/sounds/eating.mp3",
+    "/sounds/error.mp3",
+    "/sounds/fall.mp3",
+    "/sounds/fist.mp3",
+    "/sounds/flip.mp3",
+    "/sounds/game.mp3",
+    "/sounds/hit.mp3",
+    "/sounds/interface.mp3",
+    "/sounds/keyboard.mp3",
+    "/sounds/level.mp3",
+    "/sounds/levelup.mp3",
+    "/sounds/low.mp3",
+    "/sounds/mouse.mp3",
+    "/sounds/multipop.mp3",
+    "/sounds/notice.mp3",
+    "/sounds/pen.mp3",
+    "/sounds/pick.mp3",
+    "/sounds/pop.mp3",
+    "/sounds/radio.mp3",
+    "/sounds/rclick.mp3",
+    "/sounds/select2.mp3",
+    "/sounds/select.mp3",
+    "/sounds/shutter.mp3",
+    "/sounds/sparkle.mp3",
+    "/sounds/swipe.mp3",
+    "/sounds/switch2.mp3",
+    "/sounds/switch.mp3",
+    "/sounds/swoosh.mp3",
+    "/sounds/sword.mp3",
   ];
 
   useEffect(() => {
@@ -67,9 +103,11 @@ export default function ColorsVocabulary() {
       imageUrl: `/images/0.1/${item.file}`,
       turkish: item.turkish,
     }));
+    console.log("Vocabulary loaded:", vocabData);
     setVocabulary(vocabData);
   }, []);
 
+  // Autoplay sequence handler
   useEffect(() => {
     speedRef.current = autoplaySpeed;
   }, [autoplaySpeed]);
@@ -90,6 +128,7 @@ export default function ColorsVocabulary() {
         setIsFlipped(false);
         setIsImageZoomed(false);
 
+        // Listen for 6 seconds (adjusted by speed)
         if (vocabulary[index]) {
           const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
           speechSynthesis.speak(utterance);
@@ -98,11 +137,13 @@ export default function ColorsVocabulary() {
 
         if (!autoplayRef.current) break;
 
+        // Flip for 2 seconds (adjusted by speed)
         setIsFlipped(true);
         await new Promise(resolve => setTimeout(resolve, 2000 / speedRef.current));
 
         if (!autoplayRef.current) break;
 
+        // Zoom image for 2 seconds (adjusted by speed)
         setIsImageZoomed(true);
         await new Promise(resolve => setTimeout(resolve, 2000 / speedRef.current));
 
@@ -130,7 +171,8 @@ export default function ColorsVocabulary() {
 
     const reaction = document.createElement("span");
     reaction.classList.add("flying-reaction");
-    reaction.textContent = reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
+    reaction.textContent =
+      reactionEmojis[Math.floor(Math.random() * reactionEmojis.length)];
     reaction.style.left = `${event.pageX}px`;
     reaction.style.top = `${event.pageY}px`;
     document.body.appendChild(reaction);
@@ -143,7 +185,8 @@ export default function ColorsVocabulary() {
   const playRandomSound = () => {
     if (reactionSounds.length === 0 || Math.random() > SOUND_CHANCE) return;
 
-    const soundToPlay = reactionSounds[Math.floor(Math.random() * reactionSounds.length)];
+    const soundToPlay =
+      reactionSounds[Math.floor(Math.random() * reactionSounds.length)];
     const audio = new Audio(soundToPlay);
     audio.play().catch((e) => console.error("Error playing sound:", e));
   };
@@ -167,8 +210,9 @@ export default function ColorsVocabulary() {
     spawnFlyingEmoji(e);
     playRandomSound();
 
+    // Don't loop - stay on review/practice card if already there
     if (currentCardIndex === vocabulary.length) {
-      return;
+      return; // Already on bonus card, don't move
     }
 
     const newIndex = currentCardIndex + 1;
@@ -185,7 +229,8 @@ export default function ColorsVocabulary() {
     spawnFlyingEmoji(e);
     playRandomSound();
 
-    const newIndex = (currentCardIndex - 1 + totalCards) % totalCards;
+    const newIndex =
+      (currentCardIndex - 1 + totalCards) % totalCards;
     setCurrentCardIndex(newIndex);
     setIsFlipped(false);
   };
@@ -244,6 +289,7 @@ export default function ColorsVocabulary() {
     if (option === 'copy') {
       try {
         await navigator.clipboard.writeText(currentUrl);
+        // Show toast notification
         const toast = document.createElement('div');
         toast.className = 'share-toast';
         toast.textContent = 'Link copied to clipboard!';
@@ -256,8 +302,8 @@ export default function ColorsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Colors',
-          text: `Check out this colors vocabulary lesson!`,
+          title: 'İngilizce Derslerim - Colours',
+          text: `Check out this colours vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -271,18 +317,26 @@ export default function ColorsVocabulary() {
     return <div className="loading">Loading...</div>;
   }
 
-  const totalCards = vocabulary.length + 1;
+  const totalCards = vocabulary.length + 1; // +1 for bonus card
   const isBonusCard = currentCardIndex === vocabulary.length;
   const currentCard = isBonusCard ? { word: "Review", imageUrl: "", turkish: "" } : vocabulary[currentCardIndex];
 
+  // Generate 6-item counter display with universal rule
   const generateCounterItems = () => {
     const items: Array<{ type: 'number' | 'dash' | 'separator' | 'total'; value: number | string; }> = [];
     
+    // Universal rule: Show 4 card positions
+    // - Current card ideally at position 1 or 2 (showing 1-2 before, current, 1-2 after)
+    // - Adjust window at boundaries to keep current card visible
+    // - Minimize dashes at the end
+    
     let windowStart = Math.max(0, currentCardIndex - 1);
+    // If near the end, shift window to show more past cards instead of future dashes
     if (windowStart + 3 >= vocabulary.length) {
       windowStart = Math.max(0, vocabulary.length - 4);
     }
     
+    // Generate 4 items for the window
     for (let i = 0; i < 4; i++) {
       const cardIndex = windowStart + i;
       if (cardIndex < 0) {
@@ -294,7 +348,10 @@ export default function ColorsVocabulary() {
       }
     }
     
+    // Add separator (next icon)
     items.push({ type: 'separator', value: 'next' });
+    
+    // Add total (not clickable)
     items.push({ type: 'total', value: vocabulary.length });
     
     return items;
@@ -311,23 +368,37 @@ export default function ColorsVocabulary() {
         </div>
 
         <div className="center-layout" data-testid="layout-center">
+          {/* Left Counter */}
           <div className="left-side">
             <div className="counter-section">
               <div className="counter-display">
                 {counterItems.map((item, index) => {
+                  // Calculate which card index this position represents
                   let windowStart = Math.max(0, currentCardIndex - 1);
                   if (windowStart + 3 >= vocabulary.length) {
                     windowStart = Math.max(0, vocabulary.length - 4);
                   }
                   const cardAtThisPosition = windowStart + index;
-                  const isActive = cardAtThisPosition === currentCardIndex;
-                  const isClickable = item.type === 'number' && index < 4;
+                  const isActive = cardAtThisPosition === currentCardIndex; // Active is wherever current card is in the window
+                  const isClickable = item.type === 'number' && index < 4; // Only numbers in first 4 positions are clickable
                   
                   if (item.type === 'separator') {
+                    // Render separator button with arrow and "of" text
                     return (
-                      <div key={index} className="counter-item separator-button" data-testid={`text-counter-${index}`}>
+                      <div
+                        key={index}
+                        className="counter-item separator-button"
+                        data-testid={`text-counter-${index}`}
+                      >
                         <div className="separator-content">
-                          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" style={{ transform: 'rotate(90deg)', width: 'clamp(16px, 3.5vw, 20px)', height: 'clamp(16px, 3.5vw, 20px)' }}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24px"
+                            viewBox="0 0 24 24"
+                            width="24px"
+                            fill="currentColor"
+                            style={{ transform: 'rotate(90deg)', width: 'clamp(16px, 3.5vw, 20px)', height: 'clamp(16px, 3.5vw, 20px)' }}
+                          >
                             <path d="M0 0h24v24H0z" fill="none" />
                             <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
                           </svg>
@@ -336,75 +407,282 @@ export default function ColorsVocabulary() {
                       </div>
                     );
                   }
+                  
                   if (item.type === 'total') {
+                    // Pulse at start and every 7 cards
+                    const shouldPulse = currentCardIndex === 0 || currentCardIndex % 7 === 0;
                     return (
-                      <div key={index} className="counter-item total-display" data-testid={`text-total-${index}`}>
-                        <span className="total-value">{item.value}</span>
+                      <div
+                        key={index}
+                        className={`counter-item total ${shouldPulse ? 'pulse' : ''}`}
+                        data-testid={`text-counter-${index}`}
+                      >
+                        {item.value}
                       </div>
                     );
                   }
+                  
                   return (
-                    <button key={index} onClick={() => isClickable && handleCardSelect(cardAtThisPosition, {} as React.MouseEvent)} disabled={!isClickable} className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? '' : 'disabled'}`} data-testid={`button-card-${index}`}>
+                    <div
+                      key={index}
+                      className={`counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
+                      onClick={(e) => {
+                        if (isClickable && item.type === 'number') {
+                          const cardNumber = item.value as number;
+                          spawnFlyingEmoji(e);
+                          playRandomSound();
+                          handleCardSelect(cardNumber - 1, e);
+                        }
+                      }}
+                      data-testid={`text-counter-${index}`}
+                      style={{ cursor: isClickable ? 'pointer' : 'default' }}
+                    >
                       {item.value}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
             </div>
           </div>
 
-          <div className="card-section">
-            <div className="card-wrapper" onClick={handleFlip} data-testid="card-wrapper">
-              <div className={`card ${isFlipped ? 'flipped' : ''}`} data-testid="card-content">
-                <div className="card-front">
-                  <img src={currentCard.imageUrl} alt={currentCard.word} style={{ filter: isImageZoomed ? 'brightness(1.1)' : 'brightness(1)' }} onClick={handleImageClick} data-testid="card-image" />
+          {/* Center Card */}
+          <div className="center-card">
+            <div className="flashcard-container">
+              {isBonusCard ? (
+                <div className="flashcard bonus-card" data-testid="card-bonus">
+                  <div className="bonus-content">
+                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-title">Review & Practice</div>
+                    <div className="bonus-subtitle">Videos & Games coming soon!</div>
+                  </div>
                 </div>
-                <div className="card-back">
-                  <span className="word-display">{currentCard.word}</span>
-                  <span className={`translation ${showTranslation ? 'visible' : ''}`}>{currentCard.turkish}</span>
+              ) : (
+                <div
+                  className={`flashcard ${isFlipped ? "flipped" : ""}`}
+                  onClick={(e) => handleFlip(e)}
+                  data-testid="card-flashcard"
+                >
+                  {/* Front */}
+                  <div className="flashcard-front">
+                    <button
+                      className="pronunciation-btn"
+                      onClick={handlePronounce}
+                      title="Pronounce"
+                      data-testid="button-pronounce"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        fill="#5f6368"
+                      >
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                      </svg>
+                    </button>
+                    <div className="word" data-testid="text-word">{currentCard.word}</div>
+                  </div>
+
+                  {/* Back */}
+                  <div className="flashcard-back">
+                    <img
+                      src={currentCard.imageUrl}
+                      alt={currentCard.word}
+                      onClick={handleImageClick}
+                      onLoad={() => console.log("Image loaded:", currentCard.imageUrl)}
+                      onError={(e) => console.log("Image failed to load:", currentCard.imageUrl, e)}
+                      style={{ display: 'block', maxWidth: '100%', maxHeight: '100%', transform: isImageZoomed ? 'scale(1.15)' : 'scale(1)' }}
+                      className="card-image"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
+              
+              {/* Bottom Right Fullscreen Button - Outside card so it doesn't flip */}
+              {!isBonusCard && (
+                <button
+                  className="fullscreen-btn"
+                  onClick={handleFullscreen}
+                  title="Fullscreen"
+                  data-testid="button-fullscreen"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="20px"
+                    viewBox="0 0 24 24"
+                    width="20px"
+                    fill="currentColor"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                  </svg>
+                </button>
+              )}
             </div>
 
-            <div className="button-group">
-              <button onClick={handlePrev} className="nav-button" data-testid="button-previous">←</button>
-              <button onClick={handlePronounce} className="nav-button" data-testid="button-pronounce">🔊</button>
-              <button onClick={handleToggleTranslation} className="nav-button" data-testid="button-translation">TR</button>
-              <button onClick={handleNext} className="nav-button" data-testid="button-next">→</button>
-            </div>
-
-            <div className="bottom-button-group">
-              <button onClick={handleStartOver} className="control-button start-over-button" data-testid="button-start-over">Start Over</button>
-              <button onClick={handleAutoplayStart} className={`control-button autoplay-button ${isAutoplay ? 'active' : ''}`} data-testid="button-autoplay">
-                {isAutoplay ? '⏸ Autoplay' : '▶ Autoplay'}
-              </button>
-              <button onClick={handleFullscreen} className="control-button fullscreen-button" data-testid="button-fullscreen">⛶</button>
-              <button onClick={handleShare} className="control-button share-button" data-testid="button-share">📤</button>
-            </div>
-
-            {showShareDrawer && (
-              <div className="share-drawer">
-                <button onClick={() => handleShareOption('copy')} className="share-option" data-testid="button-share-copy">📋 Copy Link</button>
-                <button onClick={() => handleShareOption('native')} className="share-option" data-testid="button-share-native">🔗 Share</button>
+            {showTranslation && (
+              <div className="translation-display" data-testid="text-translation">
+                {currentCard.turkish}
               </div>
             )}
           </div>
 
+          {/* Right Controls */}
           <div className="right-side">
-            <div className="card-thumbnails">
-              {vocabulary.map((card, index) => (
-                <div key={index} onClick={(e) => handleCardSelect(index, e)} className={`thumbnail ${index === currentCardIndex ? 'active' : ''}`} data-testid={`thumbnail-card-${index}`}>
-                  <img src={card.imageUrl} alt={card.word} />
-                  <span className="thumbnail-label">{index + 1}</span>
-                </div>
-              ))}
+            <div className="controls-section">
+              <button
+                className="icon-control-btn"
+                onClick={handleStartOver}
+                title="Start Over"
+                data-testid="button-start-over"
+              >
+                &lt;&lt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handlePrev}
+                title="Previous Card"
+                data-testid="button-previous"
+              >
+                &lt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handleNext}
+                title="Next Card"
+                data-testid="button-next"
+              >
+                &gt;
+              </button>
+              <button
+                className="icon-control-btn"
+                onClick={handleFlip}
+                title="Flip Card"
+                data-testid="button-flip"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+                </svg>
+              </button>
+              <button
+                className={`icon-control-btn ${showTranslation ? 'active' : ''}`}
+                onClick={handleToggleTranslation}
+                title="Show Translation"
+                data-testid="button-translation"
+              >
+                ?
+              </button>
+              <button
+                className={`icon-control-btn ${isAutoplay ? 'active' : ''}`}
+                onClick={handleAutoplayStart}
+                title={isAutoplay ? "Stop Autoplay" : "Start Autoplay"}
+                data-testid="button-autoplay"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
 
-        <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
-          {currentCard && <img src={currentCard.imageUrl} alt={currentCard.word} className="overlay-image" data-testid="overlay-image" />}
+      {/* Share Button */}
+      <div className="share-container">
+        <button 
+          className="share-button" 
+          onClick={handleShare}
+          data-testid="button-share"
+          title="Share This Page"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="20px"
+            viewBox="0 0 24 24"
+            width="20px"
+            fill="currentColor"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.15c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.56 9.31 6.88 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.88 0 1.56-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Share Drawer */}
+      {showShareDrawer && (
+        <div className="share-drawer">
+          <div className="share-drawer-header">
+            <h3>Share</h3>
+          </div>
+          <button 
+            className="share-drawer-option"
+            onClick={() => handleShareOption('copy')}
+            data-testid="button-share-copy"
+          >
+            📋 Copy Link
+          </button>
+          {navigator.share && (
+            <button 
+              className="share-drawer-option"
+              onClick={() => handleShareOption('native')}
+              data-testid="button-share-native"
+            >
+              🔗 Share
+            </button>
+          )}
         </div>
+      )}
+
+      {/* Autoplay Speed Controls - shown when autoplay is active */}
+      {isAutoplay && (
+        <div className="autoplay-controls">
+          <label>Speed: </label>
+          <input 
+            type="range" 
+            min="0.5" 
+            max="2" 
+            step="0.25" 
+            value={autoplaySpeed}
+            onChange={(e) => setAutoplaySpeed(parseFloat(e.target.value))}
+            data-testid="slider-autoplay-speed"
+          />
+          <span>{autoplaySpeed}x</span>
+        </div>
+      )}
+
+      {/* Image Overlay for fullscreen view */}
+      <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
+        {currentCard && <img src={currentCard.imageUrl} alt={currentCard.word} className="overlay-image" data-testid="overlay-image" />}
+      </div>
+
+      {/* Right Side - Card Thumbnails */}
+      {!isFullscreen && (
+        <div className="thumbnail-panel">
+          <div className="card-thumbnails">
+            {vocabulary.map((card, index) => (
+              <div 
+                key={index} 
+                onClick={(e) => handleCardSelect(index, e)} 
+                className={`thumbnail ${index === currentCardIndex ? 'active' : ''}`}
+                data-testid={`thumbnail-card-${index}`}
+              >
+                <img src={card.imageUrl} alt={card.word} />
+                <span className="thumbnail-label">{index + 1}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       </div>
     </Layout>
   );
