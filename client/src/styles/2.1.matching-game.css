@@ -545,7 +545,7 @@
 }
 
 .fullscreen-active .picture-card {
-  min-height: clamp(22px, 3vh, 45px);
+  min-height: clamp(20px, 2.3vh, 32px);
 }
 
 .picture-card:hover {
@@ -651,13 +651,13 @@
 }
 
 .fullscreen-active .word-card {
-  min-height: clamp(20px, 2.5vh, 35px);
-  padding: clamp(2px, 0.5vw, 4px) clamp(2px, 0.4vw, 3px);
+  min-height: clamp(16px, 1.8vh, 24px);
+  padding: clamp(2px, 0.4vw, 3px) clamp(2px, 0.3vw, 2px);
 }
 
 .fullscreen-active .word-card span {
-  font-size: clamp(9px, 1.5vw, 11px);
-  line-height: 1.1;
+  font-size: clamp(8px, 1.2vw, 10px);
+  line-height: 1;
 }
 
 .word-card:hover {
