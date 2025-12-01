@@ -664,25 +664,6 @@ export default function ColorsVocabulary() {
       <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
         {currentCard && <img src={currentCard.imageUrl} alt={currentCard.word} className="overlay-image" data-testid="overlay-image" />}
       </div>
-
-      {/* Right Side - Card Thumbnails */}
-      {!isFullscreen && (
-        <div className="thumbnail-panel">
-          <div className="card-thumbnails">
-            {vocabulary.map((card, index) => (
-              <div 
-                key={index} 
-                onClick={(e) => handleCardSelect(index, e)} 
-                className={`thumbnail ${index === currentCardIndex ? 'active' : ''}`}
-                data-testid={`thumbnail-card-${index}`}
-              >
-                <img src={card.imageUrl} alt={card.word} />
-                <span className="thumbnail-label">{index + 1}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
       </div>
     </Layout>
   );
