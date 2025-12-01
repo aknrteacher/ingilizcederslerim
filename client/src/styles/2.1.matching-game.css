@@ -30,7 +30,7 @@
   width: 100vw;
   height: 100vh;
   max-width: none;
-  padding: 14px;
+  padding: 14px 60px;
   z-index: 9999;
   border-radius: 0;
   overflow: hidden;
@@ -540,8 +540,12 @@
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
   user-select: none;
   overflow: hidden;
-  min-height: clamp(40px, 8vw, 120px);
+  min-height: clamp(40px, 8vw, 100px);
   position: relative;
+}
+
+.fullscreen-active .picture-card {
+  min-height: clamp(35px, 5vh, 80px);
 }
 
 .picture-card:hover {
