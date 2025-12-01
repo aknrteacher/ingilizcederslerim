@@ -20,6 +20,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/oyunlar" component={Oyunlar} />
       <Route path="/oyunlar/okul-oncesi" component={PreSchoolGamesMenu} />
+      <Route path="/pre-school/games" component={PreSchoolGamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/games" component={Oyunlar} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
