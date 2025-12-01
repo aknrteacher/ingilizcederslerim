@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap } from "lucide-react";
 import { FullscreenButton } from "@/components/FullscreenButton";
@@ -219,9 +218,13 @@ export default function MatchingGame() {
               </div>
 
               <button
-                onClick={() => setGameStarted(true)}
+                onClick={() => {
+                  console.log("Start button clicked");
+                  setGameStarted(true);
+                }}
                 className="btn-start"
                 data-testid="button-start-game"
+                type="button"
               >
                 Start Game
               </button>
