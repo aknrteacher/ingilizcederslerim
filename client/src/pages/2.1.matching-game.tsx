@@ -15,7 +15,7 @@ interface GameCard {
 }
 
 export default function MatchingGame() {
-  const allWords = [
+  const allVocabulary = [
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
     { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
@@ -26,7 +26,32 @@ export default function MatchingGame() {
     { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
     { word: "sports hall", file: "sports hall.png", turkish: "spor salonu" },
     { word: "playground", file: "playground.png", turkish: "oyun alanı" },
+    { word: "garden", file: "garden.png", turkish: "bahçe" },
+    { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
+    { word: "student", file: "student.png", turkish: "öğrenci" },
+    { word: "girl", file: "girl.png", turkish: "kız" },
+    { word: "boy", file: "boy.png", turkish: "erkek" },
+    { word: "friend", file: "friend.png", turkish: "arkadaş" },
+    { word: "day", file: "day.png", turkish: "gün" },
+    { word: "week", file: "week.png", turkish: "hafta" },
+    { word: "Monday", file: "Monday.png", turkish: "Pazartesi" },
+    { word: "Tuesday", file: "Tuesday.png", turkish: "Salı" },
+    { word: "Wednesday", file: "Wednesday.png", turkish: "Çarşamba" },
+    { word: "Thursday", file: "Thursday.png", turkish: "Perşembe" },
+    { word: "Friday", file: "Friday.png", turkish: "Cuma" },
+    { word: "Saturday", file: "Saturday.png", turkish: "Cumartesi" },
+    { word: "Sunday", file: "Sunday.png", turkish: "Pazar" },
+    { word: "what", file: "what.png", turkish: "ne" },
+    { word: "where", file: "where.png", turkish: "nerede" },
+    { word: "who", file: "who.png", turkish: "kim" },
   ];
+
+  const selectRandomCards = (count: number) => {
+    const shuffled = [...allVocabulary].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  };
+
+  const [selectedCards, setSelectedCards] = useState(selectRandomCards(10));
 
   const [wordCards, setWordCards] = useState<GameCard[]>([]);
   const [pictureCards, setPictureCards] = useState<GameCard[]>([]);
@@ -45,7 +70,7 @@ export default function MatchingGame() {
 
   // Initialize game
   useEffect(() => {
-    const words: GameCard[] = allWords.map((item, idx) => ({
+    const words: GameCard[] = selectedCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
@@ -53,7 +78,7 @@ export default function MatchingGame() {
       type: "word",
     }));
 
-    const pictures: GameCard[] = allWords.map((item, idx) => ({
+    const pictures: GameCard[] = selectedCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
@@ -76,7 +101,7 @@ export default function MatchingGame() {
         }, 1000);
       }
     }, 800);
-  }, []);
+  }, [selectedCards]);
 
   // Timer
   useEffect(() => {
@@ -89,13 +114,13 @@ export default function MatchingGame() {
 
   // Check for completion
   useEffect(() => {
-    if (gameStarted && allWords.length > 0 && matches.length === allWords.length) {
+    if (gameStarted && selectedCards.length > 0 && matches.length === selectedCards.length) {
       setShowHatchingSequence(true);
       setTimeout(() => {
         setGameComplete(true);
       }, 3500);
     }
-  }, [matches, gameStarted]);
+  }, [matches, gameStarted, selectedCards]);
 
   const handleDragStart = (cardId: string) => {
     setDraggedCard(cardId);
@@ -140,7 +165,10 @@ export default function MatchingGame() {
     setShowHatchingSequence(false);
     setHintCardId(null);
 
-    const words: GameCard[] = allWords.map((item, idx) => ({
+    const newCards = selectRandomCards(10);
+    setSelectedCards(newCards);
+
+    const words: GameCard[] = newCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
@@ -148,7 +176,7 @@ export default function MatchingGame() {
       type: "word",
     }));
 
-    const pictures: GameCard[] = allWords.map((item, idx) => ({
+    const pictures: GameCard[] = newCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
