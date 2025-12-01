@@ -65,16 +65,16 @@ export default function MatchingGame() {
     setPictureCards(pictures.sort(() => Math.random() - 0.5));
     setStartTime(Date.now());
 
-    // Show hint animation after a short delay
+    // Show hint animation on first word after a short delay
     setTimeout(() => {
-      const allCards = [...words, ...pictures];
-      const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-      setHintCardId(randomCard.id);
-      
-      // Clear hint after animation
-      setTimeout(() => {
-        setHintCardId(null);
-      }, 1000);
+      if (words.length > 0) {
+        setHintCardId(words[0].id);
+        
+        // Clear hint after animation
+        setTimeout(() => {
+          setHintCardId(null);
+        }, 1000);
+      }
     }, 800);
   }, []);
 
@@ -163,16 +163,16 @@ export default function MatchingGame() {
     setPictureCards(shuffledPictures);
     setStartTime(Date.now());
 
-    // Show hint animation after a short delay
+    // Show hint animation on first word after a short delay
     setTimeout(() => {
-      const allCards = [...shuffledWords, ...shuffledPictures];
-      const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
-      setHintCardId(randomCard.id);
-      
-      // Clear hint after animation
-      setTimeout(() => {
-        setHintCardId(null);
-      }, 1000);
+      if (shuffledWords.length > 0) {
+        setHintCardId(shuffledWords[0].id);
+        
+        // Clear hint after animation
+        setTimeout(() => {
+          setHintCardId(null);
+        }, 1000);
+      }
     }, 800);
   };
 
