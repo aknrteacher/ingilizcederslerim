@@ -21,7 +21,7 @@ export default function Oyunlar() {
   const games: Game[] = [
     {
       id: "2.1.matching",
-      title: "Mathlings",
+      title: "Matchlings",
       description: "Drag to match words with pictures. Hatch cute characters!",
       icon: "🎮",
       grade: 2,

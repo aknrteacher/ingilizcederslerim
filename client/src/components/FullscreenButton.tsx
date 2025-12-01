@@ -13,19 +13,14 @@ export function FullscreenButton({ containerId }: FullscreenButtonProps) {
     const element = document.getElementById(containerId);
     if (!element) return;
 
+    const container = element.querySelector(".matching-game-container") as HTMLElement;
+    if (!container) return;
+
     if (!isFullscreen) {
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if ((element as any).webkitRequestFullscreen) {
-        (element as any).webkitRequestFullscreen();
-      }
+      container.classList.add("fullscreen-active");
       setIsFullscreen(true);
     } else {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else if ((document as any).webkitFullscreenElement) {
-        (document as any).webkitExitFullscreen();
-      }
+      container.classList.remove("fullscreen-active");
       setIsFullscreen(false);
     }
   };
