@@ -643,26 +643,229 @@ export default function ColorsVocabulary() {
         </div>
       )}
 
-      {/* Autoplay Speed Controls - shown when autoplay is active */}
-      {isAutoplay && (
-        <div className="autoplay-controls">
-          <label>Speed: </label>
-          <input 
-            type="range" 
-            min="0.5" 
-            max="2" 
-            step="0.25" 
-            value={autoplaySpeed}
-            onChange={(e) => setAutoplaySpeed(parseFloat(e.target.value))}
-            data-testid="slider-autoplay-speed"
-          />
-          <span>{autoplaySpeed}x</span>
+      {/* Fullscreen Modal */}
+      {isFullscreen && (
+        <div className="fullscreen-modal-overlay" onClick={() => setIsFullscreen(false)}>
+          <button 
+            className="fullscreen-modal-close-btn"
+            onClick={() => setIsFullscreen(false)}
+            data-testid="button-fullscreen-close"
+          >
+            ✕
+          </button>
+          <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
+            {/* Fullscreen Counter */}
+            <div className="fullscreen-counter-section">
+              <div className="fullscreen-counter-display">
+                {counterItems.map((item, index) => {
+                  let windowStart = Math.max(0, currentCardIndex - 1);
+                  if (windowStart + 3 >= vocabulary.length) {
+                    windowStart = Math.max(0, vocabulary.length - 4);
+                  }
+                  const cardAtThisPosition = windowStart + index;
+                  const isActive = cardAtThisPosition === currentCardIndex;
+                  const isClickable = item.type === 'number' && index < 4;
+                  
+                  if (item.type === 'separator') {
+                    return (
+                      <div
+                        key={index}
+                        className="fullscreen-counter-item separator-button"
+                      >
+                        <div className="separator-content">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="14px"
+                            viewBox="0 0 24 24"
+                            width="14px"
+                            fill="currentColor"
+                            style={{ transform: 'rotate(90deg)' }}
+                          >
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                          </svg>
+                          <span className="separator-text">of</span>
+                        </div>
+                      </div>
+                    );
+                  }
+                  
+                  if (item.type === 'total') {
+                    const shouldPulse = currentCardIndex === 0 || currentCardIndex % 7 === 0;
+                    return (
+                      <div
+                        key={index}
+                        className={`fullscreen-counter-item total ${shouldPulse ? 'pulse' : ''}`}
+                      >
+                        {item.value}
+                      </div>
+                    );
+                  }
+                  
+                  return (
+                    <div
+                      key={index}
+                      className={`fullscreen-counter-item ${isActive ? 'active' : ''} ${isClickable ? 'clickable' : ''}`}
+                      onClick={(e) => {
+                        if (isClickable && item.type === 'number') {
+                          const cardNumber = item.value as number;
+                          spawnFlyingEmoji(e);
+                          playRandomSound();
+                          handleCardSelect(cardNumber - 1, e);
+                        }
+                      }}
+                      style={{ cursor: isClickable ? 'pointer' : 'default' }}
+                    >
+                      {item.value}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div
+              className={`fullscreen-modal-card ${isFlipped ? "flipped" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFlipped(!isFlipped);
+              }}
+            >
+              {/* Front */}
+              <div className="fullscreen-modal-front">
+                <button
+                  className="pronunciation-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePronounce(e);
+                  }}
+                  title="Pronounce"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#5f6368"
+                  >
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                  </svg>
+                </button>
+                <div className="word">{currentCard.word}</div>
+              </div>
+
+              {/* Back */}
+              <div className="fullscreen-modal-back">
+                <img
+                  src={currentCard.imageUrl}
+                  alt={currentCard.word}
+                  style={{ display: 'block', maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </div>
+            </div>
+            
+            {showTranslation && (
+              <div className="translation-display">
+                {currentCard.turkish}
+              </div>
+            )}
+
+            {/* Fullscreen Controls */}
+            <div className="fullscreen-controls-section">
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handleStartOver}
+                title="Start Over"
+                data-testid="button-start-over-fs"
+              >
+                &lt;&lt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handlePrev}
+                title="Previous Card"
+                data-testid="button-previous-fs"
+              >
+                &lt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={handleNext}
+                title="Next Card"
+                data-testid="button-next-fs"
+              >
+                &gt;
+              </button>
+              <button
+                className="fullscreen-icon-control-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsFlipped(!isFlipped);
+                }}
+                title="Flip Card"
+                data-testid="button-flip-fs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+                </svg>
+              </button>
+              <button
+                className={`fullscreen-icon-control-btn ${showTranslation ? 'active' : ''}`}
+                onClick={handleToggleTranslation}
+                title="Show Translation"
+                data-testid="button-translation-fs"
+              >
+                ?
+              </button>
+              <button
+                className={`fullscreen-icon-control-btn ${isAutoplay ? 'active' : ''}`}
+                onClick={handleAutoplayStart}
+                title={isAutoplay ? "Stop Autoplay" : "Start Autoplay"}
+                data-testid="button-autoplay-fs"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 0 24 24"
+                  width="20px"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+              <button
+                className="fullscreen-speed-btn"
+                onClick={() => setAutoplaySpeed(Math.max(0.5, autoplaySpeed - 0.25))}
+                title="Decrease Speed"
+                data-testid="button-speed-decrease-fs"
+              >
+                −
+              </button>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <button
+                className="fullscreen-speed-btn"
+                onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
+                title="Increase Speed"
+                data-testid="button-speed-increase-fs"
+              >
+                +
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Image Overlay for fullscreen view */}
+      {/* Image Overlay */}
       <div id="image-overlay" className="image-overlay" onClick={handleOverlayClick}>
-        {currentCard && <img src={currentCard.imageUrl} alt={currentCard.word} className="overlay-image" data-testid="overlay-image" />}
+        <img
+          className="zoomed-image"
+          src={currentCard.imageUrl}
+          alt="Zoomed view"
+        />
       </div>
       </div>
     </Layout>
