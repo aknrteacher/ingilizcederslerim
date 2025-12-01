@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap } from "lucide-react";
 import { FullscreenButton } from "@/components/FullscreenButton";
@@ -180,217 +181,218 @@ export default function MatchingGame() {
   };
 
   return (
-    <div className="matching-game-fullscreen" id="matchlings-game">
-      <div className="matching-game-container">
-        {/* Opening Tutorial Animation */}
-        {!gameStarted && (
-          <div className="tutorial-animation">
-            <div className="tutorial-inner">
-              <h1 className="tutorial-title">Matchlings</h1>
-              <p className="tutorial-subtitle">Match words to pictures and hatch your creature!</p>
+    <Layout>
+      <div className="matching-game-wrapper" id="matchlings-game">
+        <div className="matching-game-container">
+          {/* Opening Tutorial Animation */}
+          {!gameStarted && (
+            <div className="tutorial-animation">
+              <div className="tutorial-inner">
+                <h1 className="tutorial-title">Matchlings</h1>
+                <p className="tutorial-subtitle">Match words to pictures and hatch your creature!</p>
 
-              <div className="tutorial-steps-animated">
-                <div className="tutorial-step-card">
-                  <div className="step-number">1</div>
-                  <div className="step-icon">👆</div>
-                  <p>Drag a word</p>
+                <div className="tutorial-steps-animated">
+                  <div className="tutorial-step-card">
+                    <div className="step-number">1</div>
+                    <div className="step-icon">👆</div>
+                    <p>Drag a word</p>
+                  </div>
+
+                  <div className="tutorial-arrow">↓</div>
+
+                  <div className="tutorial-step-card">
+                    <div className="step-number">2</div>
+                    <div className="step-icon">📸</div>
+                    <p>Drop on picture</p>
+                  </div>
+
+                  <div className="tutorial-arrow">↓</div>
+
+                  <div className="tutorial-step-card">
+                    <div className="step-number">3</div>
+                    <div className="step-icon">🐣</div>
+                    <p>Watch it hatch!</p>
+                  </div>
                 </div>
 
-                <div className="tutorial-arrow">↓</div>
-
-                <div className="tutorial-step-card">
-                  <div className="step-number">2</div>
-                  <div className="step-icon">📸</div>
-                  <p>Drop on picture</p>
+                <div className="tutorial-hint">
+                  💡 Hover over pictures to see the meaning in Turkish
                 </div>
 
-                <div className="tutorial-arrow">↓</div>
-
-                <div className="tutorial-step-card">
-                  <div className="step-number">3</div>
-                  <div className="step-icon">🐣</div>
-                  <p>Watch it hatch!</p>
-                </div>
-              </div>
-
-              <div className="tutorial-hint">
-                💡 Hover over pictures to see the meaning in Turkish
-              </div>
-
-              <button
-                onClick={() => {
-                  console.log("Start button clicked");
-                  setGameStarted(true);
-                }}
-                className="btn-start"
-                data-testid="button-start-game"
-                type="button"
-              >
-                Start Game
-              </button>
-            </div>
-          </div>
-        )}
-
-        {gameStarted && (
-          <>
-            <div className="game-header">
-              <div className="header-left">
-                <h1 className="game-title">Matchlings</h1>
-                <p className="game-subtitle">Drag to match and hatch!</p>
-              </div>
-
-              <div className="egg-hatching">
-                <div className={`egg egg-stage-${Math.max(0, currentStage)}`}>
-                  <div className="egg-crack egg-crack-1"></div>
-                  <div className="egg-crack egg-crack-2"></div>
-                  <div className="egg-crack egg-crack-3"></div>
-                  <div className="egg-crack egg-crack-4"></div>
-                  <div className="egg-crack egg-crack-5"></div>
-                </div>
-                <span className="hatch-progress">{matches.length} / {allWords.length}</span>
-              </div>
-
-              <div className="game-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Time</span>
-                  <span className="stat-value" data-testid="text-timer">
-                    {formatTime(elapsedTime)}
-                  </span>
-                </div>
-                <FullscreenButton containerId="matchlings-game" />
-              </div>
-            </div>
-
-            <div className="game-board">
-              <div className="pictures-section">
-                <div className="pictures-grid">
-                  {pictureCards.map((card) => {
-                    const isMatched = matches.includes(card.word);
-                    if (isMatched) return null;
-                    return (
-                      <div
-                        key={card.id}
-                        draggable={true}
-                        onDragStart={() => handleDragStart(card.id)}
-                        onDragOver={handleDragOver}
-                        onDrop={() => handleDrop(card.id)}
-                        className={`picture-card ${draggedCard === card.id ? "dragging" : ""}`}
-                        onMouseEnter={() => setHoveredPictureWord(card.word)}
-                        onMouseLeave={() => setHoveredPictureWord(null)}
-                        data-testid={`card-picture-${card.word}-${card.id}`}
-                      >
-                        <img src={card.imageUrl} alt={card.word} />
-                        {hoveredPictureWord === card.word && (
-                          <div className="hint-tooltip">{card.turkish}</div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="words-section">
-                <div className="words-grid">
-                  {wordCards.map((card) => {
-                    const isMatched = matches.includes(card.word);
-                    if (isMatched) return null;
-                    return (
-                      <div
-                        key={card.id}
-                        draggable={true}
-                        onDragStart={() => handleDragStart(card.id)}
-                        onDragOver={handleDragOver}
-                        onDrop={() => handleDrop(card.id)}
-                        className={`word-card ${draggedCard === card.id ? "dragging" : ""}`}
-                        data-testid={`card-word-${card.word}-${card.id}`}
-                      >
-                        <span>{card.word}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            <div className="game-footer">
-              <div className="footer-buttons">
-                <Button
-                  onClick={shareGame}
-                  variant="outline"
-                  className="footer-button"
-                  data-testid="button-share"
+                <button
+                  onClick={() => {
+                    setGameStarted(true);
+                  }}
+                  className="btn-start"
+                  data-testid="button-start-game"
+                  type="button"
                 >
-                  <Share2 className="h-4 w-4" /> Share
-                </Button>
-                <Button
-                  onClick={challengeFriend}
-                  variant="outline"
-                  className="footer-button"
-                  data-testid="button-challenge"
-                >
-                  <Zap className="h-4 w-4" /> Challenge
-                </Button>
-                <Button
-                  onClick={resetGame}
-                  variant="outline"
-                  className="footer-button"
-                  data-testid="button-reset-game"
-                >
-                  New Game
-                </Button>
-              </div>
-              <a href="/oyunlar" className="back-link">
-                ← Back
-              </a>
-            </div>
-          </>
-        )}
-
-        {/* Hatching Sequence */}
-        {showHatchingSequence && (
-          <div className="hatching-sequence">
-            <div className="hatching-background"></div>
-            <div className="egg-large">
-              <div className="egg-crack egg-crack-1"></div>
-              <div className="egg-crack egg-crack-2"></div>
-              <div className="egg-crack egg-crack-3"></div>
-              <div className="egg-crack egg-crack-4"></div>
-              <div className="egg-crack egg-crack-5"></div>
-              <div className="egg-crack egg-crack-6"></div>
-              <div className="egg-shatter"></div>
-            </div>
-            <div className="hatchling-reveal">
-              <img src={hatchlingImage} alt="Hatchling!" />
-            </div>
-          </div>
-        )}
-
-        {gameComplete && (
-          <div className="win-modal">
-            <div className="win-content">
-              <h2>🎉 Perfect! 🎉</h2>
-              <p>You hatched the Matchling!</p>
-              <div className="win-stats">
-                <p>
-                  <strong>Time:</strong> {formatTime(elapsedTime)}
-                </p>
-                <p className="score-note">
-                  {elapsedTime < 120 ? "⭐ Amazing speed!" : "✨ Great job!"}
-                </p>
-              </div>
-              <div className="win-buttons">
-                <button onClick={resetGame} className="btn-primary" data-testid="button-play-again">
-                  Play Again
+                  Start Game
                 </button>
-                <a href="/oyunlar" className="btn-secondary">
-                  Back to Games
+              </div>
+            </div>
+          )}
+
+          {gameStarted && (
+            <>
+              <div className="game-header">
+                <div className="header-left">
+                  <h1 className="game-title">Matchlings</h1>
+                  <p className="game-subtitle">Drag to match and hatch!</p>
+                </div>
+
+                <div className="egg-hatching">
+                  <div className={`egg egg-stage-${Math.max(0, currentStage)}`}>
+                    <div className="egg-crack egg-crack-1"></div>
+                    <div className="egg-crack egg-crack-2"></div>
+                    <div className="egg-crack egg-crack-3"></div>
+                    <div className="egg-crack egg-crack-4"></div>
+                    <div className="egg-crack egg-crack-5"></div>
+                  </div>
+                  <span className="hatch-progress">{matches.length} / {allWords.length}</span>
+                </div>
+
+                <div className="game-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">Time</span>
+                    <span className="stat-value" data-testid="text-timer">
+                      {formatTime(elapsedTime)}
+                    </span>
+                  </div>
+                  <FullscreenButton containerId="matchlings-game" />
+                </div>
+              </div>
+
+              <div className="game-board">
+                <div className="pictures-section">
+                  <div className="pictures-grid">
+                    {pictureCards.map((card) => {
+                      const isMatched = matches.includes(card.word);
+                      if (isMatched) return null;
+                      return (
+                        <div
+                          key={card.id}
+                          draggable={true}
+                          onDragStart={() => handleDragStart(card.id)}
+                          onDragOver={handleDragOver}
+                          onDrop={() => handleDrop(card.id)}
+                          className={`picture-card ${draggedCard === card.id ? "dragging" : ""}`}
+                          onMouseEnter={() => setHoveredPictureWord(card.word)}
+                          onMouseLeave={() => setHoveredPictureWord(null)}
+                          data-testid={`card-picture-${card.word}-${card.id}`}
+                        >
+                          <img src={card.imageUrl} alt={card.word} />
+                          {hoveredPictureWord === card.word && (
+                            <div className="hint-tooltip">{card.turkish}</div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="words-section">
+                  <div className="words-grid">
+                    {wordCards.map((card) => {
+                      const isMatched = matches.includes(card.word);
+                      if (isMatched) return null;
+                      return (
+                        <div
+                          key={card.id}
+                          draggable={true}
+                          onDragStart={() => handleDragStart(card.id)}
+                          onDragOver={handleDragOver}
+                          onDrop={() => handleDrop(card.id)}
+                          className={`word-card ${draggedCard === card.id ? "dragging" : ""}`}
+                          data-testid={`card-word-${card.word}-${card.id}`}
+                        >
+                          <span>{card.word}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="game-footer">
+                <div className="footer-buttons">
+                  <Button
+                    onClick={shareGame}
+                    variant="outline"
+                    className="footer-button"
+                    data-testid="button-share"
+                  >
+                    <Share2 className="h-4 w-4" /> Share
+                  </Button>
+                  <Button
+                    onClick={challengeFriend}
+                    variant="outline"
+                    className="footer-button"
+                    data-testid="button-challenge"
+                  >
+                    <Zap className="h-4 w-4" /> Challenge
+                  </Button>
+                  <Button
+                    onClick={resetGame}
+                    variant="outline"
+                    className="footer-button"
+                    data-testid="button-reset-game"
+                  >
+                    New Game
+                  </Button>
+                </div>
+                <a href="/oyunlar" className="back-link">
+                  ← Back
                 </a>
               </div>
+            </>
+          )}
+
+          {/* Hatching Sequence */}
+          {showHatchingSequence && (
+            <div className="hatching-sequence">
+              <div className="hatching-background"></div>
+              <div className="egg-large">
+                <div className="egg-crack egg-crack-1"></div>
+                <div className="egg-crack egg-crack-2"></div>
+                <div className="egg-crack egg-crack-3"></div>
+                <div className="egg-crack egg-crack-4"></div>
+                <div className="egg-crack egg-crack-5"></div>
+                <div className="egg-crack egg-crack-6"></div>
+                <div className="egg-shatter"></div>
+              </div>
+              <div className="hatchling-reveal">
+                <img src={hatchlingImage} alt="Hatchling!" />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {gameComplete && (
+            <div className="win-modal">
+              <div className="win-content">
+                <h2>🎉 Perfect! 🎉</h2>
+                <p>You hatched the Matchling!</p>
+                <div className="win-stats">
+                  <p>
+                    <strong>Time:</strong> {formatTime(elapsedTime)}
+                  </p>
+                  <p className="score-note">
+                    {elapsedTime < 120 ? "⭐ Amazing speed!" : "✨ Great job!"}
+                  </p>
+                </div>
+                <div className="win-buttons">
+                  <button onClick={resetGame} className="btn-primary" data-testid="button-play-again">
+                    Play Again
+                  </button>
+                  <a href="/oyunlar" className="btn-secondary">
+                    Back to Games
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
