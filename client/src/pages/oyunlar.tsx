@@ -28,19 +28,10 @@ export default function Oyunlar() {
       theme: 1,
       path: "/primary-school/grade-2/theme-1/2.1-matching-game",
     },
-    {
-      id: "0.1.matching",
-      title: "Matchlings - Colours",
-      description: "Match colours with their English names. Drag and hatch!",
-      icon: "🌈",
-      grade: 0,
-      theme: 1,
-      path: "/pre-school/0.1-matching-game",
-    },
   ];
 
   const grade2Theme1Games = games.filter((g) => g.grade === 2 && g.theme === 1);
-  const preSchoolGames = games.filter((g) => g.grade === 0);
+  const preSchoolMenuPath = "/oyunlar/okul-oncesi";
 
   return (
     <Layout>
@@ -107,39 +98,29 @@ export default function Oyunlar() {
           </div>
 
           <div className="games-grid">
-            {preSchoolGames.map((game) => (
-              <a
-                key={game.id}
-                href={game.path}
-                className="game-link"
-                data-testid={`card-game-${game.id}`}
-              >
-                <Card className="game-card">
-                  <CardHeader>
-                    <div className="game-header-content">
-                      <span className="game-icon">{game.icon}</span>
-                      <CardTitle className="game-title">{game.title}</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <CardDescription className="game-description">
-                      {game.description}
-                    </CardDescription>
-                    <div className="game-button" data-testid={`button-play-${game.id}`}>
-                      Oyna <ArrowRight className="ml-2 h-4 w-4" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </a>
-            ))}
+            <a
+              href={preSchoolMenuPath}
+              className="game-link"
+              data-testid="card-preschool-menu"
+            >
+              <Card className="game-card">
+                <CardHeader>
+                  <div className="game-header-content">
+                    <span className="game-icon">🎮</span>
+                    <CardTitle className="game-title">Okul Öncesi Oyunları</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <CardDescription className="game-description">
+                    Okul öncesi seviyesi için hazırlanmış oyunları keşfet
+                  </CardDescription>
+                  <div className="game-button" data-testid="button-play-preschool">
+                    Gir <ArrowRight className="ml-2 h-4 w-4" />
+                  </div>
+                </CardContent>
+              </Card>
+            </a>
           </div>
-
-          {preSchoolGames.length === 0 && (
-            <div className="empty-state">
-              <Gamepad2 className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">Yakında yeni oyunlar eklenecek!</p>
-            </div>
-          )}
         </section>
 
         {/* Coming Soon Section */}

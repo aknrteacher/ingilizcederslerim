@@ -10,6 +10,7 @@ import VocabularyCards from "@/pages/2.1.voc";
 import ColorsVocabulary from "@/pages/0.1.voc";
 import PreSchoolVocabMenu from "@/pages/pre-school-vocab-menu";
 import Oyunlar from "@/pages/oyunlar";
+import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import MatchingGame from "@/pages/2.1.matching-game";
 import ColorsMatchingGame from "@/pages/0.1.matching-game";
 
@@ -18,6 +19,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/oyunlar" component={Oyunlar} />
+      <Route path="/oyunlar/okul-oncesi" component={PreSchoolGamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/games" component={Oyunlar} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
