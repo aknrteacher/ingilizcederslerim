@@ -35,9 +35,10 @@ export default function MatchingGame() {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameStarted, setGameStarted] = useState(true);
   const [hoveredPictureWord, setHoveredPictureWord] = useState<string | null>(null);
   const [showHatchingSequence, setShowHatchingSequence] = useState(false);
+  const [hintCardId, setHintCardId] = useState<string | null>(null);
 
   const eggHatchStages = [0, 3, 5, 7, 10];
   const currentStage = eggHatchStages.findIndex((stage) => matches.length <= stage) - 1;
@@ -63,6 +64,18 @@ export default function MatchingGame() {
     setWordCards(words.sort(() => Math.random() - 0.5));
     setPictureCards(pictures.sort(() => Math.random() - 0.5));
     setStartTime(Date.now());
+
+    // Show hint animation after a short delay
+    setTimeout(() => {
+      const allCards = [...words, ...pictures];
+      const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+      setHintCardId(randomCard.id);
+      
+      // Clear hint after animation
+      setTimeout(() => {
+        setHintCardId(null);
+      }, 2000);
+    }, 500);
   }, []);
 
   // Timer
@@ -123,9 +136,9 @@ export default function MatchingGame() {
     setMatches([]);
     setDraggedCard(null);
     setGameComplete(false);
-    setGameStarted(false);
     setElapsedTime(0);
     setShowHatchingSequence(false);
+    setHintCardId(null);
 
     const words: GameCard[] = allWords.map((item, idx) => ({
       id: `word-${idx}`,
@@ -143,9 +156,24 @@ export default function MatchingGame() {
       type: "picture",
     }));
 
-    setWordCards(words.sort(() => Math.random() - 0.5));
-    setPictureCards(pictures.sort(() => Math.random() - 0.5));
+    const shuffledWords = words.sort(() => Math.random() - 0.5);
+    const shuffledPictures = pictures.sort(() => Math.random() - 0.5);
+    
+    setWordCards(shuffledWords);
+    setPictureCards(shuffledPictures);
     setStartTime(Date.now());
+
+    // Show hint animation after a short delay
+    setTimeout(() => {
+      const allCards = [...shuffledWords, ...shuffledPictures];
+      const randomCard = allCards[Math.floor(Math.random() * allCards.length)];
+      setHintCardId(randomCard.id);
+      
+      // Clear hint after animation
+      setTimeout(() => {
+        setHintCardId(null);
+      }, 2000);
+    }, 500);
   };
 
   const formatTime = (seconds: number) => {
@@ -184,58 +212,8 @@ export default function MatchingGame() {
     <Layout>
       <div className="matching-game-wrapper" id="matchlings-game">
         <div className="matching-game-container">
-          {/* Opening Tutorial Animation */}
-          {!gameStarted && (
-            <div className="tutorial-animation">
-              <div className="tutorial-inner">
-                <h1 className="tutorial-title">Matchlings</h1>
-                <p className="tutorial-subtitle">Match words to pictures and hatch your creature!</p>
-
-                <div className="tutorial-steps-animated">
-                  <div className="tutorial-step-card">
-                    <div className="step-number">1</div>
-                    <div className="step-icon">👆</div>
-                    <p>Drag a word</p>
-                  </div>
-
-                  <div className="tutorial-arrow">↓</div>
-
-                  <div className="tutorial-step-card">
-                    <div className="step-number">2</div>
-                    <div className="step-icon">📸</div>
-                    <p>Drop on picture</p>
-                  </div>
-
-                  <div className="tutorial-arrow">↓</div>
-
-                  <div className="tutorial-step-card">
-                    <div className="step-number">3</div>
-                    <div className="step-icon">🐣</div>
-                    <p>Watch it hatch!</p>
-                  </div>
-                </div>
-
-                <div className="tutorial-hint">
-                  💡 Hover over pictures to see the meaning in Turkish
-                </div>
-
-                <button
-                  onClick={() => {
-                    setGameStarted(true);
-                  }}
-                  className="btn-start"
-                  data-testid="button-start-game"
-                  type="button"
-                >
-                  Start Game
-                </button>
-              </div>
-            </div>
-          )}
-
-          {gameStarted && (
-            <>
-              <div className="game-header">
+          <>
+            <div className="game-header">
                 <div className="header-left">
                   <h1 className="game-title">Matchlings</h1>
                   <p className="game-subtitle">Drag to match and hatch!</p>
@@ -276,7 +254,7 @@ export default function MatchingGame() {
                           onDragStart={() => handleDragStart(card.id)}
                           onDragOver={handleDragOver}
                           onDrop={() => handleDrop(card.id)}
-                          className={`picture-card ${draggedCard === card.id ? "dragging" : ""}`}
+                          className={`picture-card ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
                           onMouseEnter={() => setHoveredPictureWord(card.word)}
                           onMouseLeave={() => setHoveredPictureWord(null)}
                           data-testid={`card-picture-${card.word}-${card.id}`}
@@ -303,7 +281,7 @@ export default function MatchingGame() {
                           onDragStart={() => handleDragStart(card.id)}
                           onDragOver={handleDragOver}
                           onDrop={() => handleDrop(card.id)}
-                          className={`word-card ${draggedCard === card.id ? "dragging" : ""}`}
+                          className={`word-card ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
                           data-testid={`card-word-${card.word}-${card.id}`}
                         >
                           <span>{card.word}</span>
@@ -346,7 +324,6 @@ export default function MatchingGame() {
                 </a>
               </div>
             </>
-          )}
 
           {/* Hatching Sequence */}
           {showHatchingSequence && (

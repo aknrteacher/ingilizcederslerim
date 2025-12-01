@@ -553,6 +553,33 @@
   object-fit: contain;
 }
 
+/* Hint drag animation */
+.picture-card.hint-drag,
+.word-card.hint-drag {
+  animation: hintDragAnimation 1.2s ease-in-out;
+}
+
+@keyframes hintDragAnimation {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translateX(15px) translateY(-5px);
+  }
+  50% {
+    transform: translateX(30px) translateY(-10px);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateX(15px) translateY(-5px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
+
 .hint-tooltip {
   position: absolute;
   bottom: -30px;
