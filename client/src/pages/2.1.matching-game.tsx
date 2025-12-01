@@ -3,7 +3,6 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap } from "lucide-react";
 import { FullscreenButton } from "@/components/FullscreenButton";
-import hatchlingImage from "@assets/generated_images/cute_anime_character_mascot.png";
 import "../styles/2.1.matching-game.css";
 
 interface GameCard {
@@ -13,6 +12,12 @@ interface GameCard {
   turkish: string;
   type: "word" | "picture";
 }
+
+const getRandomHatchling = () => {
+  const hatchlingCount = 16;
+  const randomNum = Math.floor(Math.random() * hatchlingCount) + 1;
+  return new URL(`/attached_assets/generated_images/hatchlings/hatchling${randomNum}.png`, import.meta.url).href;
+};
 
 export default function MatchingGame() {
   const allVocabulary = [
@@ -64,6 +69,7 @@ export default function MatchingGame() {
   const [hoveredPictureWord, setHoveredPictureWord] = useState<string | null>(null);
   const [showHatchingSequence, setShowHatchingSequence] = useState(false);
   const [hintCardId, setHintCardId] = useState<string | null>(null);
+  const [selectedHatchling, setSelectedHatchling] = useState<string>(getRandomHatchling());
 
   const eggHatchStages = [0, 3, 5, 7, 10];
   const currentStage = eggHatchStages.findIndex((stage) => matches.length <= stage) - 1;
@@ -115,6 +121,7 @@ export default function MatchingGame() {
   // Check for completion
   useEffect(() => {
     if (gameStarted && selectedCards.length > 0 && matches.length === selectedCards.length) {
+      setSelectedHatchling(getRandomHatchling());
       setShowHatchingSequence(true);
       setTimeout(() => {
         setGameComplete(true);
@@ -384,7 +391,7 @@ export default function MatchingGame() {
                 <div className="egg-shatter"></div>
               </div>
               <div className="hatchling-reveal">
-                <img src={hatchlingImage} alt="Hatchling!" />
+                <img src={selectedHatchling} alt="Hatchling!" />
               </div>
             </div>
           )}
