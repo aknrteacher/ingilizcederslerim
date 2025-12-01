@@ -547,6 +547,10 @@
   box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
 }
 
+.fullscreen-active .picture-card {
+  min-height: 20px;
+}
+
 .picture-card.dragging {
   opacity: 0.7;
   cursor: grabbing;
