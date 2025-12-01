@@ -10,15 +10,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-height: 600px;
-  max-height: calc(100vh - 200px);
-  padding: 20px;
+  height: 100%;
+  min-height: auto;
+  padding: 16px;
   background: linear-gradient(135deg, #f0e6ff 0%, #e6f2ff 100%);
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
   transition: all 0.3s ease;
   border-radius: 12px;
-  gap: 16px;
+  gap: 12px;
 }
 
 .matching-game-container.fullscreen-active {
@@ -30,10 +30,10 @@
   width: 100vw;
   height: 100vh;
   max-width: none;
-  padding: 24px;
+  padding: 20px;
   z-index: 9999;
   border-radius: 0;
-  overflow-y: auto;
+  overflow: hidden;
   margin: 0;
 }
 
@@ -263,8 +263,9 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
 }
 
 .header-left {
@@ -487,11 +488,11 @@
 .game-board {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   flex: 1;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   min-height: auto;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .pictures-section,
@@ -504,7 +505,8 @@
 .pictures-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 10px;
+  flex: 1;
 }
 
 @media (max-width: 1024px) {
@@ -532,7 +534,7 @@
   box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
   user-select: none;
   overflow: hidden;
-  min-height: 100px;
+  min-height: 70px;
   position: relative;
 }
 
@@ -606,7 +608,8 @@
 .words-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 10px;
+  flex: 1;
 }
 
 @media (max-width: 1024px) {
@@ -622,7 +625,7 @@
 }
 
 .word-card {
-  padding: 12px 8px;
+  padding: 10px 6px;
   background: linear-gradient(135deg, rgba(236, 72, 153, 0.8) 0%, rgba(249, 115, 22, 0.8) 100%);
   border: 2px solid rgba(236, 72, 153, 0.4);
   border-radius: 8px;
@@ -633,7 +636,7 @@
   transition: all 0.2s ease;
   box-shadow: 0 3px 10px rgba(236, 72, 153, 0.2);
   user-select: none;
-  min-height: 50px;
+  min-height: 42px;
 }
 
 .word-card:hover {
@@ -963,31 +966,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 12px;
   background: white;
   border-radius: 12px;
   border: 1px solid #e6f2ff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  margin-top: auto;
+  flex-shrink: 0;
 }
 
 .footer-buttons {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .footer-button {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 5px;
+  padding: 6px 10px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   border-radius: 6px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .footer-button:hover {
@@ -998,15 +1002,16 @@
 .back-link {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  gap: 5px;
+  padding: 6px 12px;
   text-decoration: none;
   color: #6366f1;
   border: 2px solid #6366f1;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .back-link:hover {
