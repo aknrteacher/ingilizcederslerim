@@ -255,7 +255,7 @@ export default function MatchingGame() {
                     <div className="egg-crack egg-crack-4"></div>
                     <div className="egg-crack egg-crack-5"></div>
                   </div>
-                  <span className="hatch-progress">{matches.length} / {allWords.length}</span>
+                  <span className="hatch-progress">{matches.length} / {selectedCards.length}</span>
                 </div>
 
                 <div className="game-stats">
