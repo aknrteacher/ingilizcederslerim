@@ -44,6 +44,7 @@ const levelItems = [
     title: "Okul Öncesi & 1. Sınıf", 
     theme: "pre-school" as LevelTheme,
     items: [
+      { title: "Kelime Kartları", href: "/pre-school/kelime-kartlari" },
       { title: "Oyunlar", href: "/pre-school/games" },
       { title: "Şarkılar", href: "/pre-school/songs" },
       { title: "Hikayeler", href: "/pre-school/stories" },
