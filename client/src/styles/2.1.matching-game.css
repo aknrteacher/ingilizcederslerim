@@ -651,7 +651,7 @@
 }
 
 .fullscreen-active .word-card {
-  min-height: clamp(28px, 3.5vh, 50px);
+  min-height: clamp(19px, 2.3vh, 33px);
 }
 
 .word-card:hover {
