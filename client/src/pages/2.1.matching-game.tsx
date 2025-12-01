@@ -74,8 +74,8 @@ export default function MatchingGame() {
       // Clear hint after animation
       setTimeout(() => {
         setHintCardId(null);
-      }, 2000);
-    }, 500);
+      }, 1000);
+    }, 800);
   }, []);
 
   // Timer
@@ -172,8 +172,8 @@ export default function MatchingGame() {
       // Clear hint after animation
       setTimeout(() => {
         setHintCardId(null);
-      }, 2000);
-    }, 500);
+      }, 1000);
+    }, 800);
   };
 
   const formatTime = (seconds: number) => {

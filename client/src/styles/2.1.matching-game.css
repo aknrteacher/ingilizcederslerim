@@ -1,6 +1,5 @@
 .matching-game-wrapper {
   width: 100%;
-  height: 100%;
 }
 
 .matching-game-fullscreen {
@@ -11,14 +10,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
-  padding: 24px;
+  min-height: 600px;
+  max-height: calc(100vh - 200px);
+  padding: 20px;
   background: linear-gradient(135deg, #f0e6ff 0%, #e6f2ff 100%);
   overflow-y: auto;
   position: relative;
   transition: all 0.3s ease;
-  min-height: auto;
   border-radius: 12px;
+  gap: 16px;
 }
 
 .matching-game-container.fullscreen-active {
@@ -487,11 +487,11 @@
 .game-board {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
   flex: 1;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   min-height: auto;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .pictures-section,
@@ -556,27 +556,33 @@
 /* Hint drag animation */
 .picture-card.hint-drag,
 .word-card.hint-drag {
-  animation: hintDragAnimation 1.2s ease-in-out;
+  animation: hintDragAnimation 0.8s ease-in-out !important;
 }
 
 @keyframes hintDragAnimation {
   0% {
-    transform: translateX(0) translateY(0);
-    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
   }
-  25% {
-    transform: translateX(15px) translateY(-5px);
+  20% {
+    transform: translateX(20px) translateY(-8px) scale(1.08);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
   }
-  50% {
-    transform: translateX(30px) translateY(-10px);
-    opacity: 0.8;
+  40% {
+    transform: translateX(35px) translateY(-15px) scale(1.1);
+    box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5);
   }
-  75% {
-    transform: translateX(15px) translateY(-5px);
+  60% {
+    transform: translateX(20px) translateY(-8px) scale(1.08);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  }
+  80% {
+    transform: translateX(8px) translateY(-3px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
   }
   100% {
-    transform: translateX(0) translateY(0);
-    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
   }
 }
 
