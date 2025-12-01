@@ -1,27 +1,30 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { Share2, Zap } from "lucide-react";
+import { FullscreenButton } from "@/components/FullscreenButton";
 import "../styles/2.1.matching-game.css";
 
 interface GameCard {
   id: string;
   word: string;
   imageUrl: string;
+  turkish: string;
   type: "word" | "picture";
 }
 
 export default function MatchingGame() {
   const allWords = [
-    { word: "hello", file: "hello.png" },
-    { word: "goodbye", file: "goodbye.png" },
-    { word: "How are you", file: "how are you.png" },
-    { word: "I am fine", file: "I m fine.png" },
-    { word: "school", file: "school.png" },
-    { word: "classroom", file: "classroom.png" },
-    { word: "library", file: "library.png" },
-    { word: "canteen", file: "canteen.png" },
-    { word: "sports hall", file: "sports hall.png" },
-    { word: "playground", file: "playground.png" },
+    { word: "hello", file: "hello.png", turkish: "merhaba" },
+    { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
+    { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
+    { word: "I am fine", file: "I m fine.png", turkish: "iyiyim" },
+    { word: "school", file: "school.png", turkish: "okul" },
+    { word: "classroom", file: "classroom.png", turkish: "sınıf" },
+    { word: "library", file: "library.png", turkish: "kütüphane" },
+    { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
+    { word: "sports hall", file: "sports hall.png", turkish: "spor salonu" },
+    { word: "playground", file: "playground.png", turkish: "oyun alanı" },
   ];
 
   const [wordCards, setWordCards] = useState<GameCard[]>([]);
@@ -31,6 +34,11 @@ export default function MatchingGame() {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(true);
+  const [hoveredPictureWord, setHoveredPictureWord] = useState<string | null>(null);
+
+  const eggHatchStages = [0, 3, 5, 7, 10];
+  const currentStage = eggHatchStages.findIndex((stage) => matches.length <= stage) - 1;
 
   // Initialize game
   useEffect(() => {
@@ -38,6 +46,7 @@ export default function MatchingGame() {
       id: `word-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
+      turkish: item.turkish,
       type: "word",
     }));
 
@@ -45,10 +54,10 @@ export default function MatchingGame() {
       id: `picture-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
+      turkish: item.turkish,
       type: "picture",
     }));
 
-    // Shuffle both
     setWordCards(words.sort(() => Math.random() - 0.5));
     setPictureCards(pictures.sort(() => Math.random() - 0.5));
     setStartTime(Date.now());
@@ -99,7 +108,6 @@ export default function MatchingGame() {
     }
 
     if (draggedCard_ && targetCard && draggedCard_.word === targetCard.word) {
-      // Correct match
       setMatches([...matches, draggedCard_.word]);
     }
 
@@ -111,11 +119,13 @@ export default function MatchingGame() {
     setDraggedCard(null);
     setGameComplete(false);
     setElapsedTime(0);
+    setShowTutorial(true);
 
     const words: GameCard[] = allWords.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
+      turkish: item.turkish,
       type: "word",
     }));
 
@@ -123,6 +133,7 @@ export default function MatchingGame() {
       id: `picture-${idx}`,
       word: item.word,
       imageUrl: `/images/2.1/${item.file}`,
+      turkish: item.turkish,
       type: "picture",
     }));
 
@@ -137,53 +148,105 @@ export default function MatchingGame() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
+  const shareGame = () => {
+    const text = `I just scored ${formatTime(elapsedTime)} on Mathlings! Can you beat my time? 🎮`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Mathlings",
+        text: text,
+        url: window.location.href,
+      });
+    } else {
+      alert(text);
+    }
+  };
+
+  const challengeFriend = () => {
+    const text = `Challenge me on Mathlings! Can you match all the words faster than my ${formatTime(elapsedTime)}? 🏆`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Challenge on Mathlings",
+        text: text,
+        url: window.location.href,
+      });
+    } else {
+      alert(text);
+    }
+  };
+
   return (
-    <Layout>
+    <div className="matching-game-fullscreen" id="mathlings-game">
       <div className="matching-game-container">
         <div className="game-header">
-          <div>
-            <h1 className="game-title">Kelime - Resim Eşleştir</h1>
-            <p className="game-subtitle">Kelimeleri resimle sürükle ve eşleştir</p>
+          <div className="header-left">
+            <h1 className="game-title">Mathlings</h1>
+            <p className="game-subtitle">Drag to match and hatch!</p>
           </div>
+
+          <div className="egg-hatching">
+            <div className={`egg egg-stage-${Math.max(0, currentStage)}`}></div>
+            <span className="hatch-progress">{matches.length} / {allWords.length}</span>
+          </div>
+
           <div className="game-stats">
             <div className="stat-item">
-              <span className="stat-label">Süre</span>
+              <span className="stat-label">Time</span>
               <span className="stat-value" data-testid="text-timer">
                 {formatTime(elapsedTime)}
               </span>
             </div>
-            <div className="stat-item">
-              <span className="stat-label">Eşleşti</span>
-              <span className="stat-value" data-testid="text-matched">
-                {matches.length} / {allWords.length}
-              </span>
-            </div>
+            <FullscreenButton containerId="mathlings-game" />
           </div>
         </div>
+
+        {/* Tutorial Modal */}
+        {showTutorial && (
+          <div className="tutorial-modal">
+            <div className="tutorial-content">
+              <h2>How to Play Mathlings</h2>
+              <div className="tutorial-steps">
+                <div className="tutorial-step">
+                  <div className="step-icon">👆</div>
+                  <p>Drag a word card</p>
+                </div>
+                <div className="tutorial-arrow">→</div>
+                <div className="tutorial-step">
+                  <div className="step-icon">📸</div>
+                  <p>Drop on matching picture</p>
+                </div>
+                <div className="tutorial-arrow">→</div>
+                <div className="tutorial-step">
+                  <div className="step-icon">✨</div>
+                  <p>Watch the egg hatch!</p>
+                </div>
+              </div>
+              <p className="tutorial-hint">💡 Hover over pictures to see the meaning in Turkish</p>
+              <button onClick={() => setShowTutorial(false)} className="btn-primary">
+                Start Game
+              </button>
+            </div>
+          </div>
+        )}
 
         {gameComplete && (
           <div className="win-modal">
             <div className="win-content">
-              <h2>🎉 Tebrikler! 🎉</h2>
-              <p>Tüm kelimeleri eşleştirdin!</p>
+              <h2>🎉 Perfect! 🎉</h2>
+              <p>You hatched the Mathling!</p>
               <div className="win-stats">
                 <p>
-                  <strong>Süre:</strong> {formatTime(elapsedTime)}
+                  <strong>Time:</strong> {formatTime(elapsedTime)}
                 </p>
-                <p>
-                  <strong>Eşleşen Kelimeler:</strong> {matches.length} / {allWords.length}
+                <p className="score-note">
+                  {elapsedTime < 120 ? "⭐ Amazing speed!" : "✨ Great job!"}
                 </p>
               </div>
               <div className="win-buttons">
-                <button
-                  onClick={resetGame}
-                  className="btn-primary"
-                  data-testid="button-play-again"
-                >
-                  Tekrar Oyna
+                <button onClick={resetGame} className="btn-primary" data-testid="button-play-again">
+                  Play Again
                 </button>
                 <a href="/oyunlar" className="btn-secondary">
-                  Oyunlara Dön
+                  Back to Games
                 </a>
               </div>
             </div>
@@ -192,7 +255,6 @@ export default function MatchingGame() {
 
         <div className="game-board">
           <div className="pictures-section">
-            <h3 className="section-label">Resimler</h3>
             <div className="pictures-grid">
               {pictureCards.map((card) => {
                 const isMatched = matches.includes(card.word);
@@ -205,9 +267,14 @@ export default function MatchingGame() {
                     onDragOver={handleDragOver}
                     onDrop={() => handleDrop(card.id)}
                     className={`picture-card ${draggedCard === card.id ? "dragging" : ""}`}
+                    onMouseEnter={() => setHoveredPictureWord(card.word)}
+                    onMouseLeave={() => setHoveredPictureWord(null)}
                     data-testid={`card-picture-${card.word}-${card.id}`}
                   >
                     <img src={card.imageUrl} alt={card.word} />
+                    {hoveredPictureWord === card.word && (
+                      <div className="hint-tooltip">{card.turkish}</div>
+                    )}
                   </div>
                 );
               })}
@@ -215,7 +282,6 @@ export default function MatchingGame() {
           </div>
 
           <div className="words-section">
-            <h3 className="section-label">Kelimeler</h3>
             <div className="words-grid">
               {wordCards.map((card) => {
                 const isMatched = matches.includes(card.word);
@@ -239,19 +305,37 @@ export default function MatchingGame() {
         </div>
 
         <div className="game-footer">
-          <Button
-            onClick={resetGame}
-            variant="outline"
-            className="reset-button"
-            data-testid="button-reset-game"
-          >
-            Oyunu Sıfırla
-          </Button>
+          <div className="footer-buttons">
+            <Button
+              onClick={shareGame}
+              variant="outline"
+              className="footer-button"
+              data-testid="button-share"
+            >
+              <Share2 className="h-4 w-4" /> Share
+            </Button>
+            <Button
+              onClick={challengeFriend}
+              variant="outline"
+              className="footer-button"
+              data-testid="button-challenge"
+            >
+              <Zap className="h-4 w-4" /> Challenge
+            </Button>
+            <Button
+              onClick={resetGame}
+              variant="outline"
+              className="footer-button"
+              data-testid="button-reset-game"
+            >
+              New Game
+            </Button>
+          </div>
           <a href="/oyunlar" className="back-link">
-            ← Oyunlara Dön
+            ← Back
           </a>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
