@@ -59,11 +59,13 @@
 
 /* OPENING TUTORIAL ANIMATION */
 .tutorial-animation {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 1400px);
+  height: auto;
+  max-height: 90vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
@@ -71,11 +73,18 @@
   z-index: 100;
   animation: fadeInAnimation 0.5s ease;
   border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .matching-game-container.fullscreen-active .tutorial-animation {
-  position: fixed;
+  width: 100vw;
+  height: 100vh;
   border-radius: 0;
+  max-height: none;
+  box-shadow: none;
+  top: 0;
+  left: 0;
+  transform: none;
 }
 
 @keyframes fadeInAnimation {
