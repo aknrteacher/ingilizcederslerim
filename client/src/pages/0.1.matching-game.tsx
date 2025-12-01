@@ -16,7 +16,7 @@ interface GameCard {
 const getRandomHatchling = () => {
   const hatchlingCount = 16;
   const randomNum = Math.floor(Math.random() * hatchlingCount) + 1;
-  return `/attached_assets/generated_images/hatchlings/hatchling${randomNum}.png`;
+  return `/images/hatchlings/hatchling${randomNum}.png`;
 };
 
 export default function ColorsMatchingGame() {
