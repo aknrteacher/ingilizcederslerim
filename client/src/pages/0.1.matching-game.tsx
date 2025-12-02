@@ -277,6 +277,28 @@ export default function ColorsMatchingGame() {
               </div>
 
               <div className="game-board">
+                <div className="words-section">
+                  <div className="words-grid">
+                    {wordCards.slice(0, 5).map((card) => {
+                      const isMatched = matches.includes(card.word);
+                      if (isMatched) return null;
+                      return (
+                        <div
+                          key={card.id}
+                          draggable={true}
+                          onDragStart={() => handleDragStart(card.id)}
+                          onDragOver={handleDragOver}
+                          onDrop={() => handleDrop(card.id)}
+                          className={`word-card ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
+                          data-testid={`card-word-${card.word}-${card.id}`}
+                        >
+                          <span>{card.word}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 <div className="pictures-section">
                   <div className="pictures-grid">
                     {pictureCards.map((card) => {
@@ -306,7 +328,7 @@ export default function ColorsMatchingGame() {
 
                 <div className="words-section">
                   <div className="words-grid">
-                    {wordCards.map((card) => {
+                    {wordCards.slice(5).map((card) => {
                       const isMatched = matches.includes(card.word);
                       if (isMatched) return null;
                       return (
