@@ -498,9 +498,10 @@
 }
 
 .fullscreen-active .game-board {
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 12px;
+  align-items: start;
 }
 
 .pictures-section,
@@ -513,15 +514,11 @@
 }
 
 .fullscreen-active .pictures-section {
-  flex: 2;
-  width: 55%;
-  order: 2;
+  grid-column: 2;
 }
 
 .fullscreen-active .words-section {
-  flex: 1;
-  width: 25%;
-  order: 1;
+  grid-column: 1 / 2;
 }
 
 /* PICTURES GRID */
@@ -546,6 +543,7 @@
 
 .fullscreen-active .pictures-grid {
   grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
 }
 
 /* PICTURE CARD */
@@ -568,6 +566,7 @@
 
 .fullscreen-active .picture-card {
   min-height: clamp(20px, 2.3vh, 32px);
+  aspect-ratio: 1;
 }
 
 .picture-card:hover {
@@ -657,7 +656,22 @@
 }
 
 .fullscreen-active .words-grid {
-  grid-template-columns: 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.fullscreen-active .words-section {
+  grid-column: 1 / 2;
+}
+
+.fullscreen-active:has(> .game-board .words-section) .game-board {
+  position: relative;
+}
+
+.fullscreen-active .game-board::after {
+  content: '';
+  grid-column: 3;
 }
 
 /* WORD CARD */
@@ -677,13 +691,14 @@
 }
 
 .fullscreen-active .word-card {
-  min-height: clamp(16px, 1.8vh, 24px);
-  padding: clamp(2px, 0.4vw, 3px) clamp(2px, 0.3vw, 2px);
+  min-height: clamp(24px, 2.2vh, 32px);
+  padding: clamp(4px, 0.6vw, 6px) clamp(4px, 0.5vw, 6px);
 }
 
 .fullscreen-active .word-card span {
-  font-size: clamp(8px, 1.2vw, 10px);
-  line-height: 1;
+  font-size: clamp(11px, 1.5vw, 13px);
+  line-height: 1.2;
+  font-weight: 700;
 }
 
 .word-card:hover {
