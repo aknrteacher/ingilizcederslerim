@@ -499,8 +499,8 @@
 
 .fullscreen-active .game-board {
   display: grid;
-  grid-template-columns: 1fr 2.5fr 1fr;
-  gap: 10px;
+  grid-template-columns: 120px 1fr 120px;
+  gap: 12px;
   align-items: start;
 }
 
@@ -546,7 +546,7 @@
 }
 
 .fullscreen-active .pictures-grid {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 4px;
 }
 
@@ -569,7 +569,7 @@
 }
 
 .fullscreen-active .picture-card {
-  min-height: clamp(20px, 2.3vh, 32px);
+  min-height: clamp(60px, 7vh, 100px);
   aspect-ratio: 1;
 }
 
