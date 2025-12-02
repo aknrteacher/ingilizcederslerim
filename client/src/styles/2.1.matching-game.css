@@ -497,6 +497,12 @@
   overflow: hidden;
 }
 
+.fullscreen-active .game-board {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
 .pictures-section,
 .words-section {
   display: flex;
@@ -504,6 +510,18 @@
   gap: 8px;
   flex: 1;
   min-height: 0;
+}
+
+.fullscreen-active .pictures-section {
+  flex: 2;
+  width: 55%;
+  order: 2;
+}
+
+.fullscreen-active .words-section {
+  flex: 1;
+  width: 25%;
+  order: 1;
 }
 
 /* PICTURES GRID */
@@ -524,6 +542,10 @@
   .pictures-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.fullscreen-active .pictures-grid {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 /* PICTURE CARD */
@@ -632,6 +654,10 @@
   .words-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+.fullscreen-active .words-grid {
+  grid-template-columns: 1fr;
 }
 
 /* WORD CARD */
