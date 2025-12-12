@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimize2 } from "lucide-react";
+import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimize2, RefreshCw } from "lucide-react";
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -88,8 +88,8 @@ export default function WordPopGame() {
       id: `${Date.now()}-${i}`,
       word: w,
       isCorrect: w === word.word,
-      x: 10 + (i * 22),
-      y: 100,
+      x: 5 + (i * 18) + (Math.random() * 8),
+      y: -20 - (Math.random() * 30),
       colorIndex: Math.floor(Math.random() * balloonColors.length),
       popped: false,
     }));
@@ -314,30 +314,30 @@ export default function WordPopGame() {
             </div>
           </div>
 
-          {/* Target Word Card */}
-          <div className="flex justify-center mb-4">
+          {/* Target Word Card - Left aligned */}
+          <div className="flex justify-start mb-4">
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-2xl shadow-xl p-4 flex items-center gap-4 border-4 border-blue-200"
+              className="bg-white rounded-2xl shadow-xl p-3 border-4 border-blue-200"
             >
-              <div className="w-20 h-20 rounded-xl bg-blue-50 flex items-center justify-center overflow-hidden">
+              <div className="w-28 h-28 rounded-xl bg-blue-50 flex items-center justify-center overflow-hidden mb-2">
                 <img 
                   src={`/images/2.1/${currentWord.file}`} 
                   alt={currentWord.word}
-                  className="w-16 h-16 object-contain"
+                  className="w-24 h-24 object-contain"
                 />
               </div>
-              <div className="text-center">
-                <p className="text-lg font-bold text-slate-800">{currentWord.turkish}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm font-semibold text-slate-700">{currentWord.turkish}</p>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => speakWord(currentWord.word)}
-                  className="mt-1"
+                  className="h-7 px-2"
                 >
-                  <Volume2 className="h-4 w-4 mr-1" /> Listen
+                  <Volume2 className="h-3 w-3" />
                 </Button>
               </div>
             </motion.div>
@@ -373,20 +373,21 @@ export default function WordPopGame() {
               </div>
             )}
 
-            {gameStarted && balloons.map((balloon) => (
+            {gameStarted && balloons.map((balloon, index) => (
               <button
                 key={balloon.id}
                 onClick={() => popBalloon(balloon)}
                 disabled={balloon.popped}
-                className={`absolute transform transition-transform hover:scale-110 ${balloon.popped ? 'opacity-0 scale-0' : ''}`}
+                className={`absolute transform hover:scale-110 balloon-float ${balloon.popped ? 'opacity-0 scale-0' : ''}`}
                 style={{ 
                   left: `${balloon.x}%`, 
                   bottom: `${balloon.y}%`,
+                  animationDelay: `${index * 0.2}s`,
                   transition: balloon.popped ? 'all 0.3s' : 'none'
                 }}
                 data-testid={`balloon-${balloon.word}`}
               >
-                <div className="relative">
+                <div className="relative balloon-wiggle" style={{ animationDelay: `${index * 0.3}s` }}>
                   <div className={`w-28 h-36 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-xl flex items-center justify-center cursor-pointer relative`}>
                     <div className="absolute top-3 left-3 w-6 h-6 bg-white/40 rounded-full" />
                     <span className="text-white font-bold text-base text-center px-2 drop-shadow-lg">
@@ -401,13 +402,23 @@ export default function WordPopGame() {
           </div>
 
           {/* Footer */}
-          <div className="mt-4 flex justify-center gap-4">
-            <Button onClick={shareGame} variant="outline" className="gap-2 bg-white hover:bg-blue-50">
-              <Share2 className="h-4 w-4 text-blue-500" /> Share
-            </Button>
-            <Button onClick={resetGame} variant="outline" className="gap-2 bg-white hover:bg-blue-50">
-              <Zap className="h-4 w-4 text-blue-500" /> New Game
-            </Button>
+          <div className="mt-4 flex flex-wrap justify-between items-center gap-4 bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-white/50 shadow-lg">
+            <div className="flex gap-2">
+              <Button onClick={shareGame} variant="outline" className="gap-2 bg-white hover:bg-blue-50 border-blue-200">
+                <Share2 className="h-4 w-4 text-blue-500" /> Share
+              </Button>
+              <Button onClick={() => {}} variant="outline" className="gap-2 bg-white hover:bg-blue-50 border-blue-200">
+                <Zap className="h-4 w-4 text-blue-500" /> Challenge
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={resetGame} variant="outline" className="gap-2 bg-white hover:bg-slate-50 border-slate-200">
+                <RefreshCw className="h-4 w-4 text-slate-500" /> New Game
+              </Button>
+              <Button variant="ghost" className="gap-2 text-slate-500 hover:text-slate-800" onClick={() => setLocation("/oyunlar")}>
+                Back
+              </Button>
+            </div>
           </div>
         </div>
 
