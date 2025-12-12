@@ -510,15 +510,20 @@ export default function CrosswordGame() {
             {/* Clues */}
             <div className="lg:col-span-4 space-y-4 h-full overflow-hidden">
               <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
-                <h3 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2" title="İpuçları">
                   <HelpCircle className="h-5 w-5 text-blue-500" />
-                  Clues
+                  <span className="cursor-help border-b border-dotted border-slate-400">Clues</span>
                 </h3>
                 
                 <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <div>
-                      <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10">Across</h4>
+                      <h4 
+                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10 cursor-help" 
+                        title="Soldan Sağa (Yatay)"
+                      >
+                        Across
+                      </h4>
                       <ul className="space-y-3">
                         {placedWords.filter(w => w.direction === "across").map(w => (
                           <li 
@@ -542,7 +547,12 @@ export default function CrosswordGame() {
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10">Down</h4>
+                      <h4 
+                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10 cursor-help" 
+                        title="Yukarıdan Aşağıya (Dikey)"
+                      >
+                        Down
+                      </h4>
                       <ul className="space-y-3">
                         {placedWords.filter(w => w.direction === "down").map(w => (
                           <li 
