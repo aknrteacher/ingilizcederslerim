@@ -118,12 +118,17 @@ export default function WordPopGame() {
   const [showCombo, setShowCombo] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [showTurkish, setShowTurkish] = useState(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
 
   const totalWords = 10;
+  const hintPenalty = 5;
 
-  const speakWord = useCallback((text: string) => {
+  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+    if (applyPenalty && gameStarted && !gameOver && !gameWon) {
+      setScore(prev => Math.max(0, prev - hintPenalty));
+    }
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -131,7 +136,14 @@ export default function WordPopGame() {
       utterance.rate = 0.8;
       window.speechSynthesis.speak(utterance);
     }
-  }, []);
+  }, [gameStarted, gameOver, gameWon]);
+
+  const revealTurkish = useCallback(() => {
+    if (gameStarted && !gameOver && !gameWon) {
+      setScore(prev => Math.max(0, prev - hintPenalty));
+    }
+    setShowTurkish(true);
+  }, [gameStarted, gameOver, gameWon]);
 
   const getRandomWords = (correctWord: string, count: number) => {
     const others = vocabulary.filter(v => v.word !== correctWord);
@@ -181,6 +193,7 @@ export default function WordPopGame() {
     const remaining = vocabulary.filter(v => v.word !== currentWord.word);
     const next = remaining[Math.floor(Math.random() * remaining.length)];
     setCurrentWord(next);
+    setShowTurkish(false);
     setWordsCompleted(prev => prev + 1);
     
     setTimeout(() => {
@@ -264,7 +277,7 @@ export default function WordPopGame() {
         
         const updated = prev.map(b => {
           if (b.popped) return b;
-          const speed = 0.03 + (b.floatOffset * 0.01);
+          const speed = 0.08 + (b.floatOffset * 0.02);
           return { ...b, y: b.y + speed * deltaTime * 0.1 };
         });
         
@@ -424,13 +437,26 @@ export default function WordPopGame() {
                   className="w-40 h-40 object-contain"
                 />
               </div>
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
+              <div className="flex items-center justify-center gap-2">
+                {showTurkish ? (
+                  <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={revealTurkish}
+                    className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
+                    title="Show Turkish meaning (-5 points)"
+                  >
+                    <span className="text-xs mr-1">?</span> Hint
+                  </Button>
+                )}
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => speakWord(currentWord.word)}
+                  onClick={() => speakWord(currentWord.word, true)}
                   className="h-8 px-3"
+                  title="Hear pronunciation (-5 points)"
                 >
                   <Volume2 className="h-4 w-4" />
                 </Button>
