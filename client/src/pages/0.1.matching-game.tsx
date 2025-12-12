@@ -108,7 +108,7 @@ export default function ColorsMatchingGame() {
       setShowHatchingSequence(true);
       setTimeout(() => {
         setGameComplete(true);
-      }, 3500);
+      }, 6000); // 3s crack + 3s hatch
     }
   }, [matches, gameStarted, selectedCards]);
 
@@ -248,17 +248,6 @@ export default function ColorsMatchingGame() {
       <div className="matching-game-wrapper" id="matchlings-game">
         <div className="matching-game-container">
           <>
-            <div className={`background-egg-wrapper egg-stage-${Math.max(0, currentStage)}`}>
-              <div className="egg-large-bg">
-                <div className="egg-crack egg-crack-1"></div>
-                <div className="egg-crack egg-crack-2"></div>
-                <div className="egg-crack egg-crack-3"></div>
-                <div className="egg-crack egg-crack-4"></div>
-                <div className="egg-crack egg-crack-5"></div>
-                <div className="egg-crack egg-crack-6"></div>
-              </div>
-            </div>
-
             <div className="game-header">
                 <div className="header-left">
                   <h1 className="game-title">Matchlings - Colours</h1>

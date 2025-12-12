@@ -125,7 +125,7 @@ export default function MatchingGame() {
       setShowHatchingSequence(true);
       setTimeout(() => {
         setGameComplete(true);
-      }, 3500);
+      }, 6000); // 3s crack + 3s hatch
     }
   }, [matches, gameStarted, selectedCards]);
 
