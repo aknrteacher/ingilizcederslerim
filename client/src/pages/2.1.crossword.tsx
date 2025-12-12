@@ -443,7 +443,7 @@ export default function CrosswordGame() {
               </AnimatePresence>
 
               {/* Main container with light blur */}
-              <div className="bg-white/30 backdrop-blur-[2px] p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto flex-1 relative">
+              <div className="bg-white/30 backdrop-blur-[2px] p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div 
                 className="grid gap-[4px] p-2 rounded-xl relative"
                 style={{ 
