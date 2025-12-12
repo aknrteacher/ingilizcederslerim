@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
+import { FullscreenButton } from "@/components/FullscreenButton";
 import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy } from "lucide-react";
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
@@ -294,6 +295,9 @@ export default function CrosswordGame() {
              </div>
              
              <div className="flex items-center gap-3">
+               <div className="hidden md:block">
+                 <FullscreenButton containerId="crossword-game" />
+               </div>
                <Button onClick={generateGrid} variant="outline" className="gap-2">
                  <RefreshCw className="h-4 w-4" />
                  New Game
@@ -301,9 +305,26 @@ export default function CrosswordGame() {
              </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6" id="crossword-game">
             {/* Crossword Grid */}
-            <div className="lg:col-span-8 bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto">
+            <div className="lg:col-span-8 flex flex-col gap-4">
+              {/* Active Clue Banner - Mobile Helper */}
+              {selectedWordId && (
+                <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r shadow-sm sticky top-2 z-10 lg:hidden">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-bold uppercase text-yellow-700 tracking-wider">
+                        {placedWords.find(w => w.id === selectedWordId)?.direction}
+                      </span>
+                      <p className="text-lg font-bold text-slate-800">
+                        {placedWords.find(w => w.id === selectedWordId)?.number}. {placedWords.find(w => w.id === selectedWordId)?.clue}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto">
               <div 
                 className="grid gap-[2px] bg-slate-800 p-[2px] rounded-lg shadow-inner"
                 style={{ 
@@ -319,11 +340,17 @@ export default function CrosswordGame() {
                         ${cell.isBlack ? "bg-slate-800" : "bg-white"}
                         ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100" : ""}
                       `}
+                      onClick={() => {
+                        if (!cell.isBlack && cell.partOfWords.length > 0) {
+                           setSelectedWordId(cell.partOfWords[0]);
+                           document.getElementById(`cell-${rIdx}-${cIdx}`)?.focus();
+                        }
+                      }}
                     >
                       {!cell.isBlack && (
                         <>
                           {(cell.acrossNum || cell.downNum) && (
-                            <span className="absolute top-[2px] left-[2px] text-[10px] font-bold text-slate-400 leading-none pointer-events-none">
+                            <span className="absolute top-[1px] left-[2px] text-[11px] font-extrabold text-slate-500 leading-none pointer-events-none z-10">
                               {cell.acrossNum || cell.downNum}
                             </span>
                           )}
@@ -339,7 +366,7 @@ export default function CrosswordGame() {
                                 if (cell.partOfWords.length > 0) setSelectedWordId(cell.partOfWords[0]);
                             }}
                             className={`
-                                w-full h-full text-center text-lg font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50
+                                w-full h-full text-center text-lg font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50 relative z-0
                                 ${cell.userChar === cell.char && isComplete ? "text-green-600" : "text-slate-800"}
                             `}
                             autoComplete="off"
@@ -350,6 +377,7 @@ export default function CrosswordGame() {
                   ))
                 ))}
               </div>
+            </div>
             </div>
 
             {/* Clues */}
