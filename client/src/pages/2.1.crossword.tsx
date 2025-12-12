@@ -356,7 +356,7 @@ export default function CrosswordGame() {
            <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-60">
              {/* Create a larger set of images for the background */}
              {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
-               <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg backdrop-blur-sm animate-pulse-slow" style={{ animationDelay: `${i * 0.2}s` }}>
+               <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg backdrop-blur-sm" style={{ animationDelay: `${i * 0.2}s` }}>
                  <img src={src} alt="" className="w-full h-full object-contain drop-shadow-md" />
                </div>
              ))}
@@ -456,9 +456,9 @@ export default function CrosswordGame() {
                       key={`${rIdx}-${cIdx}`} 
                       className={`
                         relative aspect-square flex items-center justify-center z-10 rounded-md transition-all duration-200
-                        ${cell.isBlack ? "bg-transparent" : "bg-white/80 backdrop-blur shadow-[0_2px_8px_rgba(0,0,0,0.1)] border border-white/60"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100/90 ring-2 ring-yellow-400 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)] z-20 scale-105" : ""}
-                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white/90 hover:scale-105 hover:shadow-lg hover:z-20 cursor-pointer" : ""}
+                        ${cell.isBlack ? "bg-transparent" : "bg-white/80 shadow-[0_2px_4px_rgba(0,0,0,0.1)] border border-white/60"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100/90 ring-2 ring-yellow-400 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.6)] z-20 scale-105" : ""}
+                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white/90 hover:scale-105 hover:shadow-md hover:z-20 cursor-pointer" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
