@@ -21,16 +21,21 @@ const vocabulary = [
   { word: "BLACK", turkish: "Siyah", file: "black.png" },
 ];
 
-const balloonStyles = [
-  { shape: "round", color: "from-orange-400 to-orange-600", pattern: "stripes" },
-  { shape: "round", color: "from-red-400 to-red-600", pattern: "hearts" },
-  { shape: "oval", color: "from-blue-400 to-blue-600", pattern: "circles" },
-  { shape: "oval", color: "from-green-400 to-green-600", pattern: "waves" },
-  { shape: "heart", color: "from-pink-400 to-pink-600", pattern: "none" },
-  { shape: "star", color: "from-yellow-400 to-orange-500", pattern: "none" },
-  { shape: "round", color: "from-purple-400 to-purple-600", pattern: "dots" },
-  { shape: "oval", color: "from-cyan-400 to-cyan-600", pattern: "stripes" },
-];
+const colorBalloonMap: Record<string, { color: string, textColor: string }> = {
+  "RED": { color: "from-red-400 to-red-600", textColor: "text-white" },
+  "BLUE": { color: "from-blue-400 to-blue-600", textColor: "text-white" },
+  "YELLOW": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
+  "GREEN": { color: "from-green-400 to-green-600", textColor: "text-white" },
+  "ORANGE": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
+  "PURPLE": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
+  "PINK": { color: "from-pink-400 to-pink-500", textColor: "text-white" },
+  "BROWN": { color: "from-amber-700 to-amber-900", textColor: "text-white" },
+  "GRAY": { color: "from-gray-400 to-gray-600", textColor: "text-white" },
+  "WHITE": { color: "from-gray-100 to-white", textColor: "text-gray-800" },
+  "BLACK": { color: "from-gray-700 to-gray-900", textColor: "text-white" },
+};
+
+const balloonShapes = ["round", "oval", "heart", "star"];
 
 interface Balloon {
   id: string;
@@ -38,64 +43,43 @@ interface Balloon {
   isCorrect: boolean;
   x: number;
   y: number;
-  styleIndex: number;
+  shape: string;
   popped: boolean;
   floatOffset: number;
 }
 
-function BalloonShape({ style, word }: { style: typeof balloonStyles[0], word: string }) {
-  const baseClasses = `bg-gradient-to-b ${style.color} shadow-xl flex items-center justify-center cursor-pointer relative overflow-hidden`;
-  
-  const patternOverlay = () => {
-    switch (style.pattern) {
-      case "stripes":
-        return <div className="absolute inset-0 opacity-30" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(255,255,255,0.4) 8px, rgba(255,255,255,0.4) 16px)" }} />;
-      case "hearts":
-        return <div className="absolute inset-0 flex flex-wrap justify-center items-center opacity-30 text-white text-xs">♥♥♥</div>;
-      case "circles":
-        return <div className="absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5) 5px, transparent 5px), radial-gradient(circle at 60% 50%, rgba(255,255,255,0.4) 8px, transparent 8px), radial-gradient(circle at 40% 70%, rgba(255,255,255,0.3) 6px, transparent 6px)" }} />;
-      case "waves":
-        return <div className="absolute inset-0 opacity-25" style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(255,255,255,0.3) 6px, rgba(255,255,255,0.3) 8px, transparent 8px, transparent 14px)" }} />;
-      case "dots":
-        return <div className="absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.5) 2px, transparent 2px)", backgroundSize: "10px 10px" }} />;
-      default:
-        return null;
-    }
-  };
-
+function ColorBalloonShape({ word, shape }: { word: string, shape: string }) {
+  const colorStyle = colorBalloonMap[word] || { color: "from-gray-400 to-gray-600", textColor: "text-white" };
+  const baseClasses = `bg-gradient-to-b ${colorStyle.color} shadow-xl flex items-center justify-center cursor-pointer relative overflow-hidden`;
   const shineEffect = <div className="absolute top-3 left-3 w-6 h-6 bg-white/50 rounded-full blur-sm" />;
 
-  switch (style.shape) {
+  switch (shape) {
     case "heart":
       return (
         <div className={`w-32 h-32 ${baseClasses}`} style={{ clipPath: "path('M64 120 C20 80 0 40 32 20 C50 8 64 20 64 35 C64 20 78 8 96 20 C128 40 108 80 64 120Z')" }}>
-          {patternOverlay()}
           {shineEffect}
-          <span className="text-white font-bold text-sm text-center px-2 drop-shadow-lg z-10">{word}</span>
+          <span className={`${colorStyle.textColor} font-bold text-sm text-center px-2 drop-shadow-lg z-10`}>{word}</span>
         </div>
       );
     case "star":
       return (
         <div className={`w-36 h-36 ${baseClasses}`} style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }}>
-          {patternOverlay()}
           {shineEffect}
-          <span className="text-white font-bold text-sm text-center px-2 drop-shadow-lg z-10">{word}</span>
+          <span className={`${colorStyle.textColor} font-bold text-sm text-center px-2 drop-shadow-lg z-10`}>{word}</span>
         </div>
       );
     case "oval":
       return (
         <div className={`w-24 h-36 rounded-[50%] ${baseClasses}`}>
-          {patternOverlay()}
           {shineEffect}
-          <span className="text-white font-bold text-sm text-center px-2 drop-shadow-lg z-10">{word}</span>
+          <span className={`${colorStyle.textColor} font-bold text-sm text-center px-2 drop-shadow-lg z-10`}>{word}</span>
         </div>
       );
     default:
       return (
         <div className={`w-32 h-32 rounded-full ${baseClasses}`}>
-          {patternOverlay()}
           {shineEffect}
-          <span className="text-white font-bold text-sm text-center px-2 drop-shadow-lg z-10">{word}</span>
+          <span className={`${colorStyle.textColor} font-bold text-sm text-center px-2 drop-shadow-lg z-10`}>{word}</span>
         </div>
       );
   }
@@ -157,21 +141,15 @@ export default function ColorsWordPopGame() {
     const wrongWords = getRandomWords(word.word, 3);
     const allWords = [word.word, ...wrongWords].sort(() => Math.random() - 0.5);
     
-    const usedStyles: number[] = [];
+    const shuffledShapes = [...balloonShapes].sort(() => Math.random() - 0.5);
     const newBalloons: Balloon[] = allWords.map((w, i) => {
-      let styleIndex;
-      do {
-        styleIndex = Math.floor(Math.random() * balloonStyles.length);
-      } while (usedStyles.includes(styleIndex) && usedStyles.length < balloonStyles.length);
-      usedStyles.push(styleIndex);
-      
       return {
         id: `${Date.now()}-${i}`,
         word: w,
         isCorrect: w === word.word,
         x: 10 + i * 22,
         y: 5 + (i * 3),
-        styleIndex,
+        shape: shuffledShapes[i % shuffledShapes.length],
         popped: false,
         floatOffset: Math.random() * Math.PI * 2,
       };
@@ -499,7 +477,7 @@ export default function ColorsWordPopGame() {
                   data-testid={`balloon-${balloon.word}`}
                 >
                   <div className="relative balloon-wiggle" style={{ animationDelay: `${index * 0.2}s` }}>
-                    <BalloonShape style={balloonStyles[balloon.styleIndex]} word={balloon.word} />
+                    <ColorBalloonShape word={balloon.word} shape={balloon.shape} />
                     <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                   </div>
                 </button>
