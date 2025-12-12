@@ -248,24 +248,28 @@ export default function ColorsMatchingGame() {
       <div className="matching-game-wrapper" id="matchlings-game">
         <div className="matching-game-container">
           <>
+            <div className={`background-egg-wrapper egg-stage-${Math.max(0, currentStage)}`}>
+              <div className="egg-large-bg">
+                <div className="egg-crack egg-crack-1"></div>
+                <div className="egg-crack egg-crack-2"></div>
+                <div className="egg-crack egg-crack-3"></div>
+                <div className="egg-crack egg-crack-4"></div>
+                <div className="egg-crack egg-crack-5"></div>
+                <div className="egg-crack egg-crack-6"></div>
+              </div>
+            </div>
+
             <div className="game-header">
                 <div className="header-left">
                   <h1 className="game-title">Matchlings - Colours</h1>
                   <p className="game-subtitle">Drag to match and hatch!</p>
                 </div>
 
-                <div className="egg-hatching">
-                  <div className={`egg egg-stage-${Math.max(0, currentStage)}`}>
-                    <div className="egg-crack egg-crack-1"></div>
-                    <div className="egg-crack egg-crack-2"></div>
-                    <div className="egg-crack egg-crack-3"></div>
-                    <div className="egg-crack egg-crack-4"></div>
-                    <div className="egg-crack egg-crack-5"></div>
-                  </div>
-                  <span className="hatch-progress">{matches.length} / {selectedCards.length}</span>
-                </div>
-
                 <div className="game-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">Progress</span>
+                    <span className="stat-value">{matches.length} / {selectedCards.length}</span>
+                  </div>
                   <div className="stat-item">
                     <span className="stat-label">Time</span>
                     <span className="stat-value" data-testid="text-timer">

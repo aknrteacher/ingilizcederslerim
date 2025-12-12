@@ -28,6 +28,15 @@ export default function Oyunlar() {
       theme: 1,
       path: "/primary-school/grade-2/theme-1/2.1-matching-game",
     },
+    {
+      id: "2.1.crossword",
+      title: "Word Cross",
+      description: "Solve the puzzle using Turkish clues. Find all 15 hidden words!",
+      icon: "🧩",
+      grade: 2,
+      theme: 1,
+      path: "/primary-school/grade-2/theme-1/crossword",
+    },
   ];
 
   const grade2Theme1Games = games.filter((g) => g.grade === 2 && g.theme === 1);

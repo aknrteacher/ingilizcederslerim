@@ -14,6 +14,8 @@ import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import MatchingGame from "@/pages/2.1.matching-game";
 import ColorsMatchingGame from "@/pages/0.1.matching-game";
 
+import CrosswordGame from "@/pages/2.1.crossword";
+
 function Router() {
   return (
     <Switch>
@@ -24,6 +26,7 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-1/games" component={Oyunlar} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
+      <Route path="/primary-school/grade-2/theme-1/crossword" component={CrosswordGame} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
       <Route path="/pre-school/kelime-kartlari/0.1-vocab" component={ColorsVocabulary} />
       <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />

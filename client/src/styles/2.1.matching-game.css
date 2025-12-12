@@ -259,6 +259,48 @@
   transform: translateY(0);
 }
 
+/* BACKGROUND EGG */
+.background-egg-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.egg-large-bg {
+  width: 60vh;
+  height: 75vh;
+  background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  border: 6px solid #ffd700;
+  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3), inset -4px -4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: all 0.5s ease;
+}
+
+/* Scale cracks for the large background egg */
+.egg-large-bg .egg-crack {
+  background: rgba(200, 160, 40, 0.6);
+}
+
+.background-egg-wrapper.egg-stage-1 .egg-large-bg { transform: translate(-50%, -50%) rotate(1deg); }
+.background-egg-wrapper.egg-stage-2 .egg-large-bg { transform: translate(-50%, -50%) rotate(-1deg); }
+.background-egg-wrapper.egg-stage-3 .egg-large-bg { transform: translate(-50%, -50%) rotate(2deg); }
+
+/* Ensure content sits above background */
+.game-header, .game-board, .game-footer {
+  position: relative;
+  z-index: 2;
+}
+
 /* GAME HEADER */
 .game-header {
   display: grid;
@@ -499,7 +541,7 @@
 
 .fullscreen-active .game-board {
   display: grid;
-  grid-template-columns: 120px 1fr 120px;
+  grid-template-columns: 140px 1fr;
   gap: 12px;
   align-items: start;
 }
