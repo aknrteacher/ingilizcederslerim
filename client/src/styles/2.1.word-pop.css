@@ -82,6 +82,12 @@
   50% { transform: translateY(-12px); }
 }
 
+.balloon-pop {
+  opacity: 0 !important;
+  transform: scale(1.5) !important;
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .word-pop-container {
     min-height: calc(100vh - 80px);

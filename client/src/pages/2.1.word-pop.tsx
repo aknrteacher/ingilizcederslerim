@@ -155,8 +155,8 @@ export default function WordPopGame() {
         id: `${Date.now()}-${i}`,
         word: w,
         isCorrect: w === word.word,
-        x: 0,
-        y: 0,
+        x: 10 + i * 22,
+        y: -30 - (i * 5),
         styleIndex,
         popped: false,
         floatOffset: Math.random() * Math.PI * 2,
@@ -252,14 +252,23 @@ export default function WordPopGame() {
   useEffect(() => {
     if (!gameStarted || gameOver || gameWon || balloons.length === 0) return;
 
-    const animate = () => {
+    let lastTime = performance.now();
+    
+    const animate = (currentTime: number) => {
+      const deltaTime = currentTime - lastTime;
+      lastTime = currentTime;
+      
       setBalloons(prev => {
+        const allPopped = prev.every(b => b.popped);
+        if (allPopped) return prev;
+        
         const updated = prev.map(b => {
           if (b.popped) return b;
-          return { ...b, y: b.y + 0.5 };
+          const speed = 0.03 + (b.floatOffset * 0.01);
+          return { ...b, y: b.y + speed * deltaTime * 0.1 };
         });
         
-        const anyEscaped = updated.some(b => !b.popped && b.y > 120);
+        const anyEscaped = updated.some(b => !b.popped && b.y > 100);
         if (anyEscaped) {
           return [];
         }
@@ -429,15 +438,17 @@ export default function WordPopGame() {
             </motion.div>
 
             {/* Balloons Area */}
-            <div className="flex-1 flex items-center justify-center gap-4">
+            <div className="flex-1 relative overflow-hidden">
               {!gameStarted && !gameOver && !gameWon && (
-                <Button
-                  onClick={startGame}
-                  size="lg"
-                  className="bg-blue-500 hover:bg-blue-600 text-white text-xl px-8 py-6 rounded-2xl shadow-xl"
-                >
-                  🎈 Start Game!
-                </Button>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button
+                    onClick={startGame}
+                    size="lg"
+                    className="bg-blue-500 hover:bg-blue-600 text-white text-xl px-8 py-6 rounded-2xl shadow-xl"
+                  >
+                    🎈 Start Game!
+                  </Button>
+                </div>
               )}
 
               {gameStarted && balloons.map((balloon, index) => (
@@ -445,10 +456,11 @@ export default function WordPopGame() {
                   key={balloon.id}
                   onClick={() => popBalloon(balloon)}
                   disabled={balloon.popped}
-                  className={`transform hover:scale-110 transition-transform ${balloon.popped ? 'opacity-0 scale-0 pointer-events-none' : ''}`}
+                  className={`absolute transform hover:scale-110 ${balloon.popped ? 'balloon-pop' : ''}`}
                   style={{ 
-                    transition: balloon.popped ? 'all 0.3s' : 'transform 0.2s',
-                    animation: !balloon.popped ? `balloon-float-${index} 3s ease-in-out infinite` : 'none',
+                    left: `${10 + index * 22}%`,
+                    bottom: `${balloon.y}%`,
+                    transition: balloon.popped ? 'all 0.3s' : 'none',
                   }}
                   data-testid={`balloon-${balloon.word}`}
                 >
