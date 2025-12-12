@@ -277,7 +277,7 @@ export default function WordPopGame() {
         
         const updated = prev.map(b => {
           if (b.popped) return b;
-          const speed = 0.25 + (b.floatOffset * 0.05);
+          const speed = 0.15 + (b.floatOffset * 0.03);
           return { ...b, y: b.y + speed * deltaTime * 0.1 };
         });
         
@@ -437,32 +437,29 @@ export default function WordPopGame() {
                   className="w-40 h-40 object-contain"
                 />
               </div>
-              <div className="flex flex-col items-center gap-1">
-                <p className="text-xs text-green-600 font-medium">No hint = +15 points</p>
-                <div className="flex items-center justify-center gap-2">
-                  {showTurkish ? (
-                    <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={revealTurkish}
-                      className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
-                      title="Show Turkish meaning (-5 points)"
-                    >
-                      <span className="text-xs mr-1">?</span> Hint
-                    </Button>
-                  )}
+              <div className="flex items-center justify-center gap-2">
+                {showTurkish ? (
+                  <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
+                ) : (
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    onClick={() => speakWord(currentWord.word, true)}
-                    className="h-8 px-3"
-                    title="Hear pronunciation (-5 points)"
+                    onClick={revealTurkish}
+                    className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
+                    title="Show Turkish meaning (-5 points)"
                   >
-                    <Volume2 className="h-4 w-4" />
+                    <span className="text-xs mr-1">?</span> Hint
                   </Button>
-                </div>
+                )}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => speakWord(currentWord.word, true)}
+                  className="h-8 px-3"
+                  title="Hear pronunciation (-5 points)"
+                >
+                  <Volume2 className="h-4 w-4" />
+                </Button>
               </div>
             </motion.div>
 
@@ -555,9 +552,14 @@ export default function WordPopGame() {
                     <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
                     <span className="text-2xl font-bold text-blue-700">{score} points</span>
                   </div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 mb-2">
                     {wordsCompleted} words completed
                   </p>
+                  <div className="text-xs text-gray-400 border-t border-gray-200 pt-2 mt-2">
+                    <p>Correct answer = +10 points</p>
+                    <p className="text-green-600">No hint bonus = +5 points</p>
+                    <p className="text-orange-500">Using hint = -5 points</p>
+                  </div>
                 </div>
 
                 <div className="flex flex-col gap-3">
