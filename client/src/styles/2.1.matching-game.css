@@ -706,7 +706,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 8px;
   height: 100%;
 }
 
@@ -727,8 +727,8 @@
 }
 
 .fullscreen-active .word-card {
-  min-height: clamp(60px, 10vh, 100px);
-  padding: 12px;
+  min-height: clamp(40px, 7vh, 70px);
+  padding: 8px 12px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -736,7 +736,7 @@
 }
 
 .fullscreen-active .word-card span {
-  font-size: clamp(18px, 2.5vh, 28px);
+  font-size: clamp(14px, 2vh, 20px);
   line-height: 1.2;
   font-weight: 700;
 }
