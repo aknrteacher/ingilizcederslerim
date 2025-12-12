@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap } from "lucide-react";
@@ -20,6 +21,7 @@ const getRandomHatchling = () => {
 };
 
 export default function ColorsMatchingGame() {
+  const [, setLocation] = useLocation();
   const allVocabulary = [
     { word: "red", file: "red.png", turkish: "kırmızı" },
     { word: "blue", file: "blue.png", turkish: "mavi" },
@@ -250,8 +252,8 @@ export default function ColorsMatchingGame() {
           <>
             <div className="game-header">
                 <div className="header-left">
-                  <h1 className="game-title">Matchlings - Colours</h1>
-                  <p className="game-subtitle">Drag to match and hatch!</p>
+                  <h1 className="game-title">Matchlings</h1>
+                  <p className="game-subtitle">Pre-School & 1st Grade - Theme: Colours</p>
                 </div>
 
                 <div className="game-stats">
@@ -349,9 +351,9 @@ export default function ColorsMatchingGame() {
                     New Game
                   </Button>
                 </div>
-                <a href="/oyunlar" className="back-link">
+                <Button variant="ghost" className="back-link" onClick={() => setLocation("/pre-school/games")}>
                   ← Back
-                </a>
+                </Button>
               </div>
             </>
 

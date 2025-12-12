@@ -20,6 +20,13 @@ export default function PreSchoolGamesMenu() {
       icon: "🌈",
       path: "/pre-school/0.1-matching-game",
     },
+    {
+      id: "0.1.crossword",
+      title: "Word Cross - Colours",
+      description: "Solve the crossword puzzle using colour names!",
+      icon: "🧩",
+      path: "/pre-school/0.1-crossword",
+    },
   ];
 
   return (
