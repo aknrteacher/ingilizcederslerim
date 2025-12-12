@@ -271,18 +271,11 @@ export default function MatchingGame() {
                   <p className="game-subtitle">Drag to match and hatch!</p>
                 </div>
 
-                <div className="egg-hatching">
-                  <div className={`egg egg-stage-${Math.max(0, currentStage)}`}>
-                    <div className="egg-crack egg-crack-1"></div>
-                    <div className="egg-crack egg-crack-2"></div>
-                    <div className="egg-crack egg-crack-3"></div>
-                    <div className="egg-crack egg-crack-4"></div>
-                    <div className="egg-crack egg-crack-5"></div>
-                  </div>
-                  <span className="hatch-progress">{matches.length} / {selectedCards.length}</span>
-                </div>
-
                 <div className="game-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">Progress</span>
+                    <span className="stat-value">{matches.length} / {selectedCards.length}</span>
+                  </div>
                   <div className="stat-item">
                     <span className="stat-label">Time</span>
                     <span className="stat-value" data-testid="text-timer">
