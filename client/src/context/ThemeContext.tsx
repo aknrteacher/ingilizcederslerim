@@ -1,24 +1,80 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useState, useEffect } from "react"
+import { useLocation } from "wouter"
 
 export type LevelTheme = "pre-school" | "primary-school" | "secondary-school" | "high-school" | "university" | "business-english"
 
 interface ThemeContextType {
   currentTheme: LevelTheme
   setCurrentTheme: (theme: LevelTheme) => void
+  themeBackground: string
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [currentTheme, setCurrentTheme] = useState<LevelTheme>("pre-school")
+function getThemeFromPath(path: string): LevelTheme {
+  if (path.includes("pre-school") || path.includes("okul-oncesi") || path.startsWith("/pre-school")) {
+    return "pre-school"
+  }
+  if (path.includes("primary-school") || path.includes("grade-2") || path.includes("grade-1")) {
+    return "primary-school"
+  }
+  if (path.includes("secondary-school")) {
+    return "secondary-school"
+  }
+  if (path.includes("high-school")) {
+    return "high-school"
+  }
+  if (path.includes("university")) {
+    return "university"
+  }
+  if (path.includes("business-english")) {
+    return "business-english"
+  }
+  return "pre-school"
+}
 
-  // Apply theme to document
-  React.useEffect(() => {
+export const themeBackgrounds: Record<LevelTheme, string> = {
+  "pre-school": "bg-amber-50",
+  "primary-school": "bg-blue-50",
+  "secondary-school": "bg-orange-50",
+  "high-school": "bg-green-50",
+  "university": "bg-purple-50",
+  "business-english": "bg-slate-50",
+}
+
+export const themeGradients: Record<LevelTheme, string> = {
+  "pre-school": "from-amber-500/10 to-yellow-500/10",
+  "primary-school": "from-blue-500/10 to-sky-500/10",
+  "secondary-school": "from-orange-500/10 to-amber-500/10",
+  "high-school": "from-green-500/10 to-emerald-500/10",
+  "university": "from-purple-500/10 to-violet-500/10",
+  "business-english": "from-slate-500/10 to-gray-500/10",
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [location] = useLocation()
+  const [currentTheme, setCurrentTheme] = useState<LevelTheme>(() => getThemeFromPath(location))
+
+  useEffect(() => {
+    const newTheme = getThemeFromPath(location)
+    setCurrentTheme(newTheme)
+    document.documentElement.setAttribute("data-theme", newTheme)
+    
+    document.body.classList.remove(
+      "bg-amber-50", "bg-blue-50", "bg-orange-50", 
+      "bg-green-50", "bg-purple-50", "bg-slate-50"
+    )
+    document.body.classList.add(themeBackgrounds[newTheme])
+  }, [location])
+
+  useEffect(() => {
     document.documentElement.setAttribute("data-theme", currentTheme)
   }, [currentTheme])
 
+  const themeBackground = themeBackgrounds[currentTheme]
+
   return (
-    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme }}>
+    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme, themeBackground }}>
       {children}
     </ThemeContext.Provider>
   )

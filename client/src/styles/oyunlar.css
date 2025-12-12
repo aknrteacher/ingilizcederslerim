@@ -1,3 +1,15 @@
+:root[data-theme="pre-school"] {
+  --theme-color: 45, 158, 11;
+  --theme-rgb: 245, 158, 11;
+  --theme-bg: #fef3c7;
+}
+
+:root[data-theme="primary-school"] {
+  --theme-color: 59, 130, 246;
+  --theme-rgb: 59, 130, 246;
+  --theme-bg: #dbeafe;
+}
+
 .oyunlar-container {
   display: flex;
   flex-direction: column;
@@ -63,7 +75,7 @@
 
 .game-card {
   background: white;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(var(--theme-rgb), 0.2);
   border-radius: 12px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -74,8 +86,8 @@
 }
 
 .game-card:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  border-color: rgba(var(--theme-rgb), 0.4);
+  box-shadow: 0 8px 24px rgba(var(--theme-rgb), 0.15);
   transform: translateY(-4px);
 }
 
@@ -117,7 +129,7 @@
 
 .game-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 6px 16px rgba(var(--theme-rgb), 0.3);
 }
 
 .game-button:active {
@@ -131,8 +143,8 @@
 }
 
 .coming-soon-card {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
-  border: 1.5px solid rgba(59, 130, 246, 0.2);
+  background: linear-gradient(135deg, rgba(var(--theme-rgb), 0.05) 0%, rgba(var(--theme-rgb), 0.05) 100%);
+  border: 1.5px solid rgba(var(--theme-rgb), 0.2);
   border-radius: 12px;
   opacity: 0.7;
   pointer-events: none;
@@ -140,7 +152,7 @@
 
 .coming-soon-badge {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(var(--theme-rgb), 0.8) 0%, rgba(var(--theme-rgb), 0.8) 100%);
   color: white;
   padding: 4px 12px;
   border-radius: 4px;
@@ -155,9 +167,9 @@
   justify-content: center;
   padding: 60px 20px;
   text-align: center;
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(var(--theme-rgb), 0.05);
   border-radius: 12px;
-  border: 1px dashed rgba(59, 130, 246, 0.2);
+  border: 1px dashed rgba(var(--theme-rgb), 0.2);
 }
 
 .empty-state p {
