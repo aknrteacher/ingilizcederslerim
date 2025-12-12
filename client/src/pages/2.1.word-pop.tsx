@@ -314,13 +314,30 @@ export default function WordPopGame() {
             </div>
           </div>
 
-          {/* Target Word Card - Left aligned, large */}
-          <div className="flex justify-start mb-4">
+          {/* Combo Display */}
+          <AnimatePresence>
+            {showCombo && combo >= 2 && (
+              <motion.div
+                initial={{ scale: 0, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0, opacity: 0 }}
+                className="absolute top-1/4 left-1/2 -translate-x-1/2 z-50"
+              >
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg">
+                  🔥 {combo}x Combo!
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Main Game Area - Card + Balloons side by side */}
+          <div className="flex-1 flex items-center gap-8 bg-gradient-to-b from-transparent to-green-200/30 rounded-xl p-6 min-h-[350px]">
+            {/* Target Word Card */}
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-3xl shadow-xl p-4 border-4 border-blue-200"
+              className="bg-white rounded-3xl shadow-xl p-4 border-4 border-blue-200 flex-shrink-0"
             >
               <div className="w-48 h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3">
                 <img 
@@ -341,28 +358,10 @@ export default function WordPopGame() {
                 </Button>
               </div>
             </motion.div>
-          </div>
 
-          {/* Combo Display */}
-          <AnimatePresence>
-            {showCombo && combo >= 2 && (
-              <motion.div
-                initial={{ scale: 0, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0, opacity: 0 }}
-                className="absolute top-1/3 left-1/2 -translate-x-1/2 z-50"
-              >
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg">
-                  🔥 {combo}x Combo!
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Game Area with Balloons */}
-          <div className="flex-1 relative overflow-hidden rounded-xl min-h-[300px] bg-gradient-to-b from-transparent to-green-200/30">
-            {!gameStarted && !gameOver && !gameWon && (
-              <div className="absolute inset-0 flex items-center justify-center">
+            {/* Balloons Area */}
+            <div className="flex-1 flex items-center justify-center gap-4">
+              {!gameStarted && !gameOver && !gameWon && (
                 <Button
                   onClick={startGame}
                   size="lg"
@@ -370,35 +369,32 @@ export default function WordPopGame() {
                 >
                   🎈 Start Game!
                 </Button>
-              </div>
-            )}
+              )}
 
-            {gameStarted && balloons.map((balloon, index) => (
-              <button
-                key={balloon.id}
-                onClick={() => popBalloon(balloon)}
-                disabled={balloon.popped}
-                className={`absolute transform hover:scale-110 balloon-float ${balloon.popped ? 'opacity-0 scale-0' : ''}`}
-                style={{ 
-                  left: `${balloon.x}%`, 
-                  bottom: `${balloon.y}%`,
-                  animationDelay: `${index * 0.2}s`,
-                  transition: balloon.popped ? 'all 0.3s' : 'none'
-                }}
-                data-testid={`balloon-${balloon.word}`}
-              >
-                <div className="relative balloon-wiggle" style={{ animationDelay: `${index * 0.3}s` }}>
-                  <div className={`w-28 h-36 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-xl flex items-center justify-center cursor-pointer relative`}>
-                    <div className="absolute top-3 left-3 w-6 h-6 bg-white/40 rounded-full" />
-                    <span className="text-white font-bold text-base text-center px-2 drop-shadow-lg">
-                      {balloon.word}
-                    </span>
+              {gameStarted && balloons.map((balloon, index) => (
+                <button
+                  key={balloon.id}
+                  onClick={() => popBalloon(balloon)}
+                  disabled={balloon.popped}
+                  className={`transform hover:scale-110 ${balloon.popped ? 'opacity-0 scale-0 pointer-events-none' : ''}`}
+                  style={{ 
+                    transition: balloon.popped ? 'all 0.3s' : 'none'
+                  }}
+                  data-testid={`balloon-${balloon.word}`}
+                >
+                  <div className="relative balloon-wiggle" style={{ animationDelay: `${index * 0.3}s` }}>
+                    <div className={`w-28 h-36 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-xl flex items-center justify-center cursor-pointer relative`}>
+                      <div className="absolute top-3 left-3 w-6 h-6 bg-white/40 rounded-full" />
+                      <span className="text-white font-bold text-base text-center px-2 drop-shadow-lg">
+                        {balloon.word}
+                      </span>
+                    </div>
+                    <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 ${balloonColors[balloon.colorIndex].bg} rotate-45`} />
+                    <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-0.5 h-10 bg-gray-400" />
                   </div>
-                  <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 ${balloonColors[balloon.colorIndex].bg} rotate-45`} />
-                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-0.5 h-10 bg-gray-400" />
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Footer */}
