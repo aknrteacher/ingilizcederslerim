@@ -187,10 +187,10 @@ export default function WordPopGame() {
       setBalloons(prev => {
         const updated = prev.map(b => {
           if (b.popped) return b;
-          return { ...b, y: b.y - 0.3 };
+          return { ...b, y: b.y + 0.5 };
         });
         
-        const anyEscaped = updated.some(b => !b.popped && b.y < -20);
+        const anyEscaped = updated.some(b => !b.popped && b.y > 120);
         if (anyEscaped) {
           return [];
         }
@@ -314,30 +314,30 @@ export default function WordPopGame() {
             </div>
           </div>
 
-          {/* Target Word Card - Left aligned */}
+          {/* Target Word Card - Left aligned, large */}
           <div className="flex justify-start mb-4">
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-2xl shadow-xl p-3 border-4 border-blue-200"
+              className="bg-white rounded-3xl shadow-xl p-4 border-4 border-blue-200"
             >
-              <div className="w-28 h-28 rounded-xl bg-blue-50 flex items-center justify-center overflow-hidden mb-2">
+              <div className="w-48 h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3">
                 <img 
                   src={`/images/2.1/${currentWord.file}`} 
                   alt={currentWord.word}
-                  className="w-24 h-24 object-contain"
+                  className="w-40 h-40 object-contain"
                 />
               </div>
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-slate-700">{currentWord.turkish}</p>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => speakWord(currentWord.word)}
-                  className="h-7 px-2"
+                  className="h-8 px-3"
                 >
-                  <Volume2 className="h-3 w-3" />
+                  <Volume2 className="h-4 w-4" />
                 </Button>
               </div>
             </motion.div>
