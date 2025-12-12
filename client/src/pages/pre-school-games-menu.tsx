@@ -34,6 +34,13 @@ export default function PreSchoolGamesMenu() {
       icon: "✨",
       path: "/pre-school/0.1-spell-quest",
     },
+    {
+      id: "0.1.word-pop",
+      title: "Word Pop - Colours",
+      description: "Pop the balloon with the matching colour!",
+      icon: "🎈",
+      path: "/pre-school/0.1-word-pop",
+    },
   ];
 
   return (
