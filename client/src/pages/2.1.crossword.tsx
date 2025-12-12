@@ -443,11 +443,11 @@ export default function CrosswordGame() {
               </AnimatePresence>
 
               {/* Main container with light blur */}
-              <div className="bg-white/30 backdrop-blur-[2px] p-4 rounded-2xl shadow-xl border border-white/40 flex justify-center items-start overflow-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="bg-white/30 backdrop-blur-[2px] p-4 rounded-2xl shadow-xl border border-white/40 flex justify-center items-center relative h-full">
               <div 
-                className="grid gap-[4px] p-2 rounded-xl relative"
+                className="grid gap-[3px] p-2 rounded-xl relative w-full max-w-[85vh] aspect-square mx-auto"
                 style={{ 
-                  gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(45px, 60px))` 
+                  gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` 
                 }}
               >
                 {/* Removed inner collage since we have global background now */}
@@ -457,10 +457,10 @@ export default function CrosswordGame() {
                     <div 
                       key={`${rIdx}-${cIdx}`} 
                       className={`
-                        relative aspect-square flex items-center justify-center z-10 rounded-md transition-all duration-200
-                        ${cell.isBlack ? "bg-transparent" : "bg-white shadow-[0_4px_12px_rgba(0,0,0,0.4)] border-2 border-slate-300"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-4 ring-yellow-400/50 border-yellow-400 z-20 scale-110 shadow-[0_8px_16px_rgba(0,0,0,0.5)]" : ""}
-                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white hover:scale-110 hover:shadow-[0_8px_16px_rgba(0,0,0,0.4)] hover:z-20 cursor-pointer hover:ring-2 hover:ring-blue-300" : ""}
+                        relative w-full h-full flex items-center justify-center z-10 rounded-sm transition-all duration-200
+                        ${cell.isBlack ? "bg-transparent" : "bg-white shadow-[0_2px_6px_rgba(0,0,0,0.4)] border border-slate-300"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-2 ring-yellow-400/50 border-yellow-400 z-20 scale-105 shadow-[0_4px_10px_rgba(0,0,0,0.5)]" : ""}
+                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white hover:scale-105 hover:shadow-[0_4px_8px_rgba(0,0,0,0.4)] hover:z-20 cursor-pointer hover:ring-1 hover:ring-blue-300" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
@@ -472,7 +472,7 @@ export default function CrosswordGame() {
                       {!cell.isBlack && (
                         <>
                           {(cell.acrossNum || cell.downNum) && (
-                            <span className="absolute top-[2px] left-[3px] text-[10px] font-extrabold text-slate-500 leading-none pointer-events-none z-10 drop-shadow-sm">
+                            <span className="absolute top-[1px] left-[1px] text-[8px] sm:text-[10px] font-extrabold text-slate-500 leading-none pointer-events-none z-10 drop-shadow-sm">
                               {cell.acrossNum || cell.downNum}
                             </span>
                           )}
@@ -488,12 +488,12 @@ export default function CrosswordGame() {
                                 if (cell.partOfWords.length > 0) setSelectedWordId(cell.partOfWords[0]);
                             }}
                             className={`
-                                w-full h-full text-center text-xl font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50/50 relative z-0 drop-shadow-sm
+                                w-full h-full text-center text-sm sm:text-lg md:text-xl font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50/50 relative z-0 drop-shadow-sm p-0
                                 ${
                                   cell.userChar === "" 
                                       ? "text-slate-800" 
                                       : cell.userChar === cell.char 
-                                          ? "text-green-600 drop-shadow-[0_2px_0_rgba(255,255,255,1)]" 
+                                          ? "text-green-600 drop-shadow-[0_1px_0_rgba(255,255,255,1)]" 
                                           : "text-red-500"
                                 }
                             `}
