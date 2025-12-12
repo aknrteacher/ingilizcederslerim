@@ -27,7 +27,7 @@
   z-index: -2;
 }
 
-#crossword-game.fullscreen-active > div:first-child {
+#crossword-game.fullscreen-active #crossword-grid-area {
   flex: 2;
   height: 100%;
   display: flex;
@@ -35,7 +35,7 @@
   z-index: 10;
 }
 
-#crossword-game.fullscreen-active > div:last-child {
+#crossword-game.fullscreen-active #crossword-clues-area {
   flex: 1;
   height: 100%;
   overflow: hidden;
@@ -50,12 +50,12 @@
     overflow-y: auto;
   }
   
-  #crossword-game.fullscreen-active > div:first-child {
+  #crossword-game.fullscreen-active #crossword-grid-area {
     flex: none;
     height: auto;
   }
   
-  #crossword-game.fullscreen-active > div:last-child {
+  #crossword-game.fullscreen-active #crossword-clues-area {
     flex: none;
     height: auto;
   }

@@ -432,7 +432,7 @@ export default function CrosswordGame() {
             )}
 
             {/* Crossword Grid */}
-            <div className="lg:col-span-8 flex flex-col gap-2">
+            <div id="crossword-grid-area" className="lg:col-span-8 flex flex-col gap-2">
               {/* Active Clue Banner - Visible everywhere now */}
               <AnimatePresence>
                 {selectedWordId && (
@@ -523,7 +523,7 @@ export default function CrosswordGame() {
             </div>
 
             {/* Clues */}
-            <div className="lg:col-span-4 space-y-4 h-full overflow-hidden">
+            <div id="crossword-clues-area" className="lg:col-span-4 space-y-4 h-full overflow-hidden">
               <div className="bg-white/90 backdrop-blur-md p-5 rounded-xl shadow-lg border border-white/50 h-full flex flex-col">
                 <h3 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2" title="İpuçları">
                   <HelpCircle className="h-5 w-5 text-blue-500" />
