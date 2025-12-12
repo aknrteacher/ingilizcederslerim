@@ -277,7 +277,7 @@ export default function WordPopGame() {
         
         const updated = prev.map(b => {
           if (b.popped) return b;
-          const speed = 0.08 + (b.floatOffset * 0.02);
+          const speed = 0.25 + (b.floatOffset * 0.05);
           return { ...b, y: b.y + speed * deltaTime * 0.1 };
         });
         
@@ -437,29 +437,32 @@ export default function WordPopGame() {
                   className="w-40 h-40 object-contain"
                 />
               </div>
-              <div className="flex items-center justify-center gap-2">
-                {showTurkish ? (
-                  <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
-                ) : (
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-xs text-green-600 font-medium">No hint = +15 points</p>
+                <div className="flex items-center justify-center gap-2">
+                  {showTurkish ? (
+                    <p className="text-base font-semibold text-slate-700">{currentWord.turkish}</p>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={revealTurkish}
+                      className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
+                      title="Show Turkish meaning (-5 points)"
+                    >
+                      <span className="text-xs mr-1">?</span> Hint
+                    </Button>
+                  )}
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
-                    onClick={revealTurkish}
-                    className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
-                    title="Show Turkish meaning (-5 points)"
+                    onClick={() => speakWord(currentWord.word, true)}
+                    className="h-8 px-3"
+                    title="Hear pronunciation (-5 points)"
                   >
-                    <span className="text-xs mr-1">?</span> Hint
+                    <Volume2 className="h-4 w-4" />
                   </Button>
-                )}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => speakWord(currentWord.word, true)}
-                  className="h-8 px-3"
-                  title="Hear pronunciation (-5 points)"
-                >
-                  <Volume2 className="h-4 w-4" />
-                </Button>
+                </div>
               </div>
             </motion.div>
 
