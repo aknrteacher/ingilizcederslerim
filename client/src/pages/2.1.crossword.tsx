@@ -458,9 +458,9 @@ export default function CrosswordGame() {
                       key={`${rIdx}-${cIdx}`} 
                       className={`
                         relative aspect-square flex items-center justify-center z-10 rounded-md transition-all duration-200
-                        ${cell.isBlack ? "bg-transparent" : "bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] border-2 border-slate-200"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-4 ring-yellow-400/50 border-yellow-400 z-20 scale-110 shadow-xl" : ""}
-                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white hover:scale-110 hover:shadow-xl hover:z-20 cursor-pointer hover:ring-2 hover:ring-blue-300" : ""}
+                        ${cell.isBlack ? "bg-transparent" : "bg-white shadow-[0_4px_12px_rgba(0,0,0,0.4)] border-2 border-slate-300"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-4 ring-yellow-400/50 border-yellow-400 z-20 scale-110 shadow-[0_8px_16px_rgba(0,0,0,0.5)]" : ""}
+                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white hover:scale-110 hover:shadow-[0_8px_16px_rgba(0,0,0,0.4)] hover:z-20 cursor-pointer hover:ring-2 hover:ring-blue-300" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
