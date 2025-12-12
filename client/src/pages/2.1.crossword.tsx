@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy, Maximize2, Minimize2, X } from "lucide-react";
+import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy, Maximize2, Minimize2, X, Share2, Zap } from "lucide-react";
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -91,6 +91,32 @@ export default function CrosswordGame() {
     } else {
       element.classList.remove("fullscreen-active");
       setIsFullscreen(false);
+    }
+  };
+
+  const shareGame = () => {
+    const text = `I just solved the Word Cross puzzle! Can you beat it? 🧩`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Word Cross",
+        text: text,
+        url: window.location.href,
+      });
+    } else {
+      alert(text);
+    }
+  };
+
+  const challengeFriend = () => {
+    const text = `I challenge you to solve this Word Cross puzzle! 🏆`;
+    if (navigator.share) {
+      navigator.share({
+        title: "Word Cross Challenge",
+        text: text,
+        url: window.location.href,
+      });
+    } else {
+      alert(text);
     }
   };
 
@@ -397,10 +423,6 @@ export default function CrosswordGame() {
                     )}
                   </Button>
                </div>
-               <Button onClick={generateGrid} variant="outline" size="sm" className="gap-2 bg-white/50 hover:bg-white border-slate-300">
-                 <RefreshCw className="h-3 w-3" />
-                 New Game
-               </Button>
              </div>
           </div>
 
@@ -592,6 +614,24 @@ export default function CrosswordGame() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Footer Buttons */}
+            <div id="crossword-footer-area" className="lg:col-span-12 mt-2 flex flex-col md:flex-row items-center justify-between gap-4 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50 relative z-30">
+               <div className="flex flex-wrap justify-center gap-3">
+                 <Button onClick={shareGame} variant="outline" className="gap-2 bg-white hover:bg-slate-50 border-slate-200 text-slate-700">
+                   <Share2 className="h-4 w-4" /> Share
+                 </Button>
+                 <Button onClick={challengeFriend} variant="outline" className="gap-2 bg-white hover:bg-slate-50 border-slate-200 text-slate-700">
+                   <Zap className="h-4 w-4" /> Challenge
+                 </Button>
+                 <Button onClick={generateGrid} variant="outline" className="gap-2 bg-white hover:bg-slate-50 border-slate-200 text-slate-700">
+                   <RefreshCw className="h-4 w-4" /> New Game
+                 </Button>
+               </div>
+               <Button variant="ghost" className="text-slate-500 hover:text-slate-800 gap-2" onClick={() => setLocation("/oyunlar")}>
+                 <ArrowLeft className="h-4 w-4" /> Back
+               </Button>
             </div>
           </div>
         </div>
