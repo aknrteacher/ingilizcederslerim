@@ -353,15 +353,16 @@ export default function CrosswordGame() {
       <div className="min-h-screen p-4 font-sans relative overflow-hidden">
         {/* Global Background Collage */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-slate-100">
-           <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-60">
+           <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
              {/* Create a larger set of images for the background */}
              {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
-               <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg backdrop-blur-sm" style={{ animationDelay: `${i * 0.2}s` }}>
+               <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg" style={{ animationDelay: `${i * 0.2}s` }}>
                  <img src={src} alt="" className="w-full h-full object-contain drop-shadow-md" />
                </div>
              ))}
            </div>
-           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-[2px]"></div>
+           {/* Removed blur from overlay, just a subtle tint */}
+           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -441,7 +442,8 @@ export default function CrosswordGame() {
                 )}
               </AnimatePresence>
 
-              <div className="bg-white/30 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto flex-1 relative">
+              {/* Removed main container background to let pictures show through clearly */}
+              <div className="p-6 rounded-2xl flex justify-center overflow-auto flex-1 relative">
               <div 
                 className="grid gap-[4px] p-2 rounded-xl relative"
                 style={{ 
@@ -456,9 +458,9 @@ export default function CrosswordGame() {
                       key={`${rIdx}-${cIdx}`} 
                       className={`
                         relative aspect-square flex items-center justify-center z-10 rounded-md transition-all duration-200
-                        ${cell.isBlack ? "bg-transparent" : "bg-white/80 shadow-[0_2px_4px_rgba(0,0,0,0.1)] border border-white/60"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100/90 ring-2 ring-yellow-400 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.6)] z-20 scale-105" : ""}
-                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white/90 hover:scale-105 hover:shadow-md hover:z-20 cursor-pointer" : ""}
+                        ${cell.isBlack ? "bg-transparent" : "bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] border-2 border-slate-200"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-4 ring-yellow-400/50 border-yellow-400 z-20 scale-110 shadow-xl" : ""}
+                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white hover:scale-110 hover:shadow-xl hover:z-20 cursor-pointer hover:ring-2 hover:ring-blue-300" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
