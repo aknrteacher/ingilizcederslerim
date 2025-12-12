@@ -46,6 +46,15 @@ export default function Oyunlar() {
       theme: 1,
       path: "/primary-school/grade-2/theme-1/spell-quest",
     },
+    {
+      id: "2.1.word-pop",
+      title: "Word Pop",
+      description: "Pop the balloons with the correct English words before they float away!",
+      icon: "🎈",
+      grade: 2,
+      theme: 1,
+      path: "/primary-school/grade-2/theme-1/word-pop",
+    },
   ];
 
   const grade2Theme1Games = games.filter((g) => g.grade === 2 && g.theme === 1);
