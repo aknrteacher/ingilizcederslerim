@@ -284,7 +284,7 @@ export default function ColorsWordPopGame() {
         
         const updated = prev.map(b => {
           if (b.popped) return b;
-          const speed = 0.06 + (b.floatOffset * 0.015);
+          const speed = 0.02 + (b.floatOffset * 0.005);
           return { ...b, y: b.y + speed * deltaTime * 0.1 };
         });
         
