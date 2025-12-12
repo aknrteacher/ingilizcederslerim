@@ -387,14 +387,14 @@ export default function WordPopGame() {
                 data-testid={`balloon-${balloon.word}`}
               >
                 <div className="relative">
-                  <div className={`w-20 h-24 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-lg flex items-center justify-center cursor-pointer relative`}>
-                    <div className="absolute top-2 left-2 w-4 h-4 bg-white/40 rounded-full" />
-                    <span className="text-white font-bold text-xs text-center px-1 drop-shadow-md">
+                  <div className={`w-28 h-36 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-xl flex items-center justify-center cursor-pointer relative`}>
+                    <div className="absolute top-3 left-3 w-6 h-6 bg-white/40 rounded-full" />
+                    <span className="text-white font-bold text-base text-center px-2 drop-shadow-lg">
                       {balloon.word}
                     </span>
                   </div>
-                  <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 ${balloonColors[balloon.colorIndex].bg} rotate-45`} />
-                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
+                  <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 ${balloonColors[balloon.colorIndex].bg} rotate-45`} />
+                  <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-0.5 h-10 bg-gray-400" />
                 </div>
               </button>
             ))}
