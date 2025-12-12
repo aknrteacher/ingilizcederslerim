@@ -38,6 +38,46 @@
   gap: 8px;
 }
 
+@media (max-width: 768px) {
+  .matching-game-container.fullscreen-active {
+    padding: 12px;
+  }
+  
+  .fullscreen-active .game-board {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 12px;
+  }
+
+  .fullscreen-active .words-section {
+    grid-column: 1;
+    width: 100%;
+    order: 2; /* Put words below pictures on mobile? or above? Let's try below for reachability or above for visibility */
+    order: 1;
+  }
+
+  .fullscreen-active .pictures-section {
+    grid-column: 1;
+    width: 100%;
+    order: 2;
+  }
+
+  .fullscreen-active .words-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .fullscreen-active .word-card {
+    min-height: 40px;
+    width: 100%;
+  }
+  
+  .fullscreen-active .pictures-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .matching-game-container::before {
   content: "";
   position: absolute;
