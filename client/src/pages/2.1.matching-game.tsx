@@ -282,6 +282,8 @@ export default function MatchingGame() {
                       {formatTime(elapsedTime)}
                     </span>
                   </div>
+                </div>
+                <div className="fullscreen-btn-wrapper">
                   <FullscreenButton containerId="matchlings-game" />
                 </div>
               </div>
