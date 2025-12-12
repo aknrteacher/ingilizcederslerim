@@ -59,7 +59,7 @@ export default function ColorsSpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 10);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);
