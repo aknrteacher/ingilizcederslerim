@@ -26,14 +26,14 @@ const vocabulary = [
 ];
 
 const balloonColors = [
-  "from-red-400 to-red-600",
-  "from-blue-400 to-blue-600",
-  "from-green-400 to-green-600",
-  "from-yellow-400 to-yellow-600",
-  "from-purple-400 to-purple-600",
-  "from-pink-400 to-pink-600",
-  "from-orange-400 to-orange-600",
-  "from-cyan-400 to-cyan-600",
+  { bg: "bg-red-500", hover: "hover:bg-red-400" },
+  { bg: "bg-blue-500", hover: "hover:bg-blue-400" },
+  { bg: "bg-green-500", hover: "hover:bg-green-400" },
+  { bg: "bg-yellow-500", hover: "hover:bg-yellow-400" },
+  { bg: "bg-purple-500", hover: "hover:bg-purple-400" },
+  { bg: "bg-pink-500", hover: "hover:bg-pink-400" },
+  { bg: "bg-orange-500", hover: "hover:bg-orange-400" },
+  { bg: "bg-cyan-500", hover: "hover:bg-cyan-400" },
 ];
 
 interface Balloon {
@@ -41,8 +41,8 @@ interface Balloon {
   word: string;
   isCorrect: boolean;
   x: number;
-  color: string;
-  speed: number;
+  y: number;
+  colorIndex: number;
   popped: boolean;
 }
 
@@ -50,7 +50,7 @@ export default function WordPopGame() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
-  const [currentWord, setCurrentWord] = useState(vocabulary[0]);
+  const [currentWord, setCurrentWord] = useState(() => vocabulary[Math.floor(Math.random() * vocabulary.length)]);
   const [balloons, setBalloons] = useState<Balloon[]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
@@ -58,9 +58,9 @@ export default function WordPopGame() {
   const [combo, setCombo] = useState(0);
   const [showCombo, setShowCombo] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
-  const lastSpawnRef = useRef<number>(0);
 
   const totalWords = 10;
 
@@ -74,28 +74,28 @@ export default function WordPopGame() {
     }
   }, []);
 
-  const getRandomWords = useCallback((correctWord: string, count: number) => {
+  const getRandomWords = (correctWord: string, count: number) => {
     const others = vocabulary.filter(v => v.word !== correctWord);
     const shuffled = [...others].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count).map(v => v.word);
-  }, []);
+  };
 
-  const spawnBalloons = useCallback(() => {
-    const wrongWords = getRandomWords(currentWord.word, 3);
-    const allWords = [currentWord.word, ...wrongWords].sort(() => Math.random() - 0.5);
+  const spawnBalloons = useCallback((word: typeof vocabulary[0]) => {
+    const wrongWords = getRandomWords(word.word, 3);
+    const allWords = [word.word, ...wrongWords].sort(() => Math.random() - 0.5);
     
-    const newBalloons: Balloon[] = allWords.map((word, i) => ({
+    const newBalloons: Balloon[] = allWords.map((w, i) => ({
       id: `${Date.now()}-${i}`,
-      word,
-      isCorrect: word === currentWord.word,
-      x: 15 + (i * 20) + Math.random() * 10,
-      color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
-      speed: 0.8 + Math.random() * 0.4,
+      word: w,
+      isCorrect: w === word.word,
+      x: 10 + (i * 22),
+      y: 100,
+      colorIndex: Math.floor(Math.random() * balloonColors.length),
       popped: false,
     }));
     
     setBalloons(newBalloons);
-  }, [currentWord, getRandomWords]);
+  }, []);
 
   const nextWord = useCallback(() => {
     if (wordsCompleted + 1 >= totalWords) {
@@ -113,9 +113,11 @@ export default function WordPopGame() {
     const next = remaining[Math.floor(Math.random() * remaining.length)];
     setCurrentWord(next);
     setWordsCompleted(prev => prev + 1);
-    setBalloons([]);
-    lastSpawnRef.current = 0;
-  }, [currentWord, wordsCompleted]);
+    
+    setTimeout(() => {
+      spawnBalloons(next);
+    }, 500);
+  }, [currentWord, wordsCompleted, spawnBalloons]);
 
   const popBalloon = useCallback((balloon: Balloon) => {
     if (balloon.popped || gameOver || gameWon) return;
@@ -140,7 +142,7 @@ export default function WordPopGame() {
       confetti({
         particleCount: 30,
         spread: 50,
-        origin: { x: balloon.x / 100, y: 0.3 },
+        origin: { x: 0.5, y: 0.5 },
         colors: ["#3b82f6", "#60a5fa", "#fbbf24"]
       });
 
@@ -161,30 +163,61 @@ export default function WordPopGame() {
     }
   }, [combo, gameOver, gameWon, nextWord, speakWord]);
 
-  const resetGame = useCallback(() => {
+  const startGame = useCallback(() => {
     setScore(0);
     setLives(3);
     setWordsCompleted(0);
     setCombo(0);
     setGameOver(false);
     setGameWon(false);
+    setGameStarted(true);
     const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
     setCurrentWord(randomWord);
-    setBalloons([]);
-    lastSpawnRef.current = 0;
-  }, []);
+    spawnBalloons(randomWord);
+  }, [spawnBalloons]);
+
+  const resetGame = useCallback(() => {
+    startGame();
+  }, [startGame]);
 
   useEffect(() => {
-    if (!gameOver && !gameWon && balloons.length === 0) {
-      const timer = setTimeout(spawnBalloons, 500);
+    if (!gameStarted || gameOver || gameWon || balloons.length === 0) return;
+
+    const animate = () => {
+      setBalloons(prev => {
+        const updated = prev.map(b => {
+          if (b.popped) return b;
+          return { ...b, y: b.y - 0.3 };
+        });
+        
+        const anyEscaped = updated.some(b => !b.popped && b.y < -20);
+        if (anyEscaped) {
+          return [];
+        }
+        
+        return updated;
+      });
+      
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [gameStarted, gameOver, gameWon, balloons.length]);
+
+  useEffect(() => {
+    if (gameStarted && !gameOver && !gameWon && balloons.length === 0 && balloons.every(b => b.popped || b.y < -20)) {
+      const timer = setTimeout(() => {
+        spawnBalloons(currentWord);
+      }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [balloons.length, gameOver, gameWon, spawnBalloons]);
-
-  useEffect(() => {
-    const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
-    setCurrentWord(randomWord);
-  }, []);
+  }, [balloons, gameStarted, gameOver, gameWon, currentWord, spawnBalloons]);
 
   const toggleFullscreen = () => {
     if (!gameAreaRef.current) return;
@@ -227,10 +260,9 @@ export default function WordPopGame() {
         {/* Background */}
         <div className="absolute inset-0 bg-gradient-to-b from-sky-300 via-sky-200 to-blue-100 z-0">
           <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-green-400 to-transparent opacity-50" />
-          {/* Clouds */}
-          <div className="absolute top-10 left-10 w-20 h-10 bg-white rounded-full opacity-80 animate-float" />
-          <div className="absolute top-20 right-20 w-32 h-16 bg-white rounded-full opacity-70 animate-float-delayed" />
-          <div className="absolute top-5 left-1/3 w-24 h-12 bg-white rounded-full opacity-75 animate-float" />
+          <div className="absolute top-10 left-10 w-20 h-10 bg-white rounded-full opacity-80 cloud-float" />
+          <div className="absolute top-20 right-20 w-32 h-16 bg-white rounded-full opacity-70 cloud-float-delayed" />
+          <div className="absolute top-5 left-1/3 w-24 h-12 bg-white rounded-full opacity-75 cloud-float" />
         </div>
 
         <div className="relative z-10 flex flex-col h-full p-4">
@@ -249,7 +281,6 @@ export default function WordPopGame() {
             </div>
 
             <div className="flex items-center gap-4">
-              {/* Lives */}
               <div className="flex items-center gap-1">
                 {[...Array(3)].map((_, i) => (
                   <Heart
@@ -259,13 +290,11 @@ export default function WordPopGame() {
                 ))}
               </div>
 
-              {/* Score */}
               <div className="bg-blue-100 px-3 py-1 rounded-lg flex items-center gap-2">
                 <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                 <span className="font-bold text-blue-700">{score}</span>
               </div>
 
-              {/* Progress */}
               <div className="hidden sm:flex items-center gap-2 bg-green-100 px-3 py-1 rounded-lg">
                 <Trophy className="h-4 w-4 text-green-600" />
                 <span className="font-bold text-green-700">{wordsCompleted}/{totalWords}</span>
@@ -279,11 +308,7 @@ export default function WordPopGame() {
                   className="h-9 w-9"
                   title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
                 >
-                  {isFullscreen ? (
-                    <Minimize2 className="h-4 w-4" />
-                  ) : (
-                    <Maximize2 className="h-4 w-4" />
-                  )}
+                  {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                 </Button>
               </div>
             </div>
@@ -334,47 +359,45 @@ export default function WordPopGame() {
             )}
           </AnimatePresence>
 
-          {/* Balloons Area */}
-          <div className="flex-1 relative overflow-hidden rounded-xl">
-            <AnimatePresence>
-              {balloons.map((balloon) => (
-                <motion.button
-                  key={balloon.id}
-                  initial={{ y: "100vh", scale: 0.8 }}
-                  animate={{ 
-                    y: balloon.popped ? "-20vh" : "-100vh",
-                    scale: balloon.popped ? 0 : 1,
-                    rotate: balloon.popped ? 180 : 0
-                  }}
-                  transition={{ 
-                    y: { duration: balloon.popped ? 0.3 : 8 / balloon.speed, ease: "linear" },
-                    scale: { duration: 0.3 },
-                    rotate: { duration: 0.3 }
-                  }}
-                  onClick={() => popBalloon(balloon)}
-                  className={`absolute cursor-pointer transform hover:scale-110 transition-transform ${balloon.popped ? 'pointer-events-none' : ''}`}
-                  style={{ left: `${balloon.x}%` }}
-                  data-testid={`balloon-${balloon.word}`}
-                  disabled={balloon.popped}
+          {/* Game Area with Balloons */}
+          <div className="flex-1 relative overflow-hidden rounded-xl min-h-[300px] bg-gradient-to-b from-transparent to-green-200/30">
+            {!gameStarted && !gameOver && !gameWon && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Button
+                  onClick={startGame}
+                  size="lg"
+                  className="bg-blue-500 hover:bg-blue-600 text-white text-xl px-8 py-6 rounded-2xl shadow-xl"
                 >
-                  <div className={`relative`}>
-                    {/* Balloon */}
-                    <div className={`w-24 h-28 bg-gradient-to-b ${balloon.color} rounded-full shadow-lg flex items-center justify-center relative`}>
-                      {/* Shine */}
-                      <div className="absolute top-3 left-3 w-6 h-6 bg-white/40 rounded-full" />
-                      {/* Word */}
-                      <span className="text-white font-bold text-sm text-center px-2 drop-shadow-md">
-                        {balloon.word}
-                      </span>
-                      {/* Knot */}
-                      <div className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-gradient-to-b ${balloon.color} rotate-45`} />
-                    </div>
-                    {/* String */}
-                    <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-0.5 h-12 bg-gray-400" />
+                  🎈 Start Game!
+                </Button>
+              </div>
+            )}
+
+            {gameStarted && balloons.map((balloon) => (
+              <button
+                key={balloon.id}
+                onClick={() => popBalloon(balloon)}
+                disabled={balloon.popped}
+                className={`absolute transform transition-transform hover:scale-110 ${balloon.popped ? 'opacity-0 scale-0' : ''}`}
+                style={{ 
+                  left: `${balloon.x}%`, 
+                  bottom: `${balloon.y}%`,
+                  transition: balloon.popped ? 'all 0.3s' : 'none'
+                }}
+                data-testid={`balloon-${balloon.word}`}
+              >
+                <div className="relative">
+                  <div className={`w-20 h-24 ${balloonColors[balloon.colorIndex].bg} ${balloonColors[balloon.colorIndex].hover} rounded-full shadow-lg flex items-center justify-center cursor-pointer relative`}>
+                    <div className="absolute top-2 left-2 w-4 h-4 bg-white/40 rounded-full" />
+                    <span className="text-white font-bold text-xs text-center px-1 drop-shadow-md">
+                      {balloon.word}
+                    </span>
                   </div>
-                </motion.button>
-              ))}
-            </AnimatePresence>
+                  <div className={`absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 ${balloonColors[balloon.colorIndex].bg} rotate-45`} />
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
+                </div>
+              </button>
+            ))}
           </div>
 
           {/* Footer */}
@@ -388,7 +411,7 @@ export default function WordPopGame() {
           </div>
         </div>
 
-        {/* Game Over Modal */}
+        {/* Game Over / Win Modal */}
         <AnimatePresence>
           {(gameOver || gameWon) && (
             <motion.div

@@ -16,7 +16,7 @@
   min-height: 100vh;
 }
 
-@keyframes float {
+@keyframes cloud-float {
   0%, 100% {
     transform: translateY(0) translateX(0);
   }
@@ -25,7 +25,7 @@
   }
 }
 
-@keyframes float-delayed {
+@keyframes cloud-float-delayed {
   0%, 100% {
     transform: translateY(0) translateX(0);
   }
@@ -34,12 +34,12 @@
   }
 }
 
-.animate-float {
-  animation: float 4s ease-in-out infinite;
+.cloud-float {
+  animation: cloud-float 4s ease-in-out infinite;
 }
 
-.animate-float-delayed {
-  animation: float-delayed 5s ease-in-out infinite;
+.cloud-float-delayed {
+  animation: cloud-float-delayed 5s ease-in-out infinite;
   animation-delay: 1s;
 }
 
