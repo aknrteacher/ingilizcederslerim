@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { FullscreenButton } from "@/components/FullscreenButton";
-import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy } from "lucide-react";
+import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy, Maximize2, Minimize2, X } from "lucide-react";
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
@@ -66,6 +65,7 @@ export default function CrosswordGame() {
   const [isComplete, setIsComplete] = useState(false);
   const [score, setScore] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [, setLocation] = useLocation();
 
   // Background collage images
@@ -73,6 +73,26 @@ export default function CrosswordGame() {
       const vocab = vocabulary.find(v => v.word === pw.word);
       return vocab?.file ? `/images/2.1/${vocab.file}` : null;
   }).filter(Boolean) as string[];
+
+  const speakWord = (word: string) => {
+    window.speechSynthesis?.cancel();
+    const utterance = new SpeechSynthesisUtterance(word);
+    utterance.rate = 0.9;
+    window.speechSynthesis?.speak(utterance);
+  };
+
+  const toggleFullscreen = () => {
+    const element = document.getElementById("crossword-game");
+    if (!element) return;
+
+    if (!isFullscreen) {
+      element.classList.add("fullscreen-active");
+      setIsFullscreen(true);
+    } else {
+      element.classList.remove("fullscreen-active");
+      setIsFullscreen(false);
+    }
+  };
 
   // Generate crossword
   const generateGrid = () => {
@@ -274,6 +294,10 @@ export default function CrosswordGame() {
         const audio = new Audio("/sounds/bell.mp3");
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play failed", e));
+
+        // Speak the word
+        const wordText = vocabulary.find(v => v.word === newlySolved[0])?.word;
+        if (wordText) speakWord(wordText);
     }
     
     // Check completion
@@ -345,7 +369,19 @@ export default function CrosswordGame() {
              
              <div className="flex items-center gap-3">
                <div className="hidden md:block">
-                 <FullscreenButton containerId="crossword-game" />
+                 <Button
+                    onClick={toggleFullscreen}
+                    variant="outline"
+                    size="icon"
+                    className="h-9 w-9"
+                    title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                  >
+                    {isFullscreen ? (
+                      <Minimize2 className="h-4 w-4" />
+                    ) : (
+                      <Maximize2 className="h-4 w-4" />
+                    )}
+                  </Button>
                </div>
                <Button onClick={generateGrid} variant="outline" className="gap-2">
                  <RefreshCw className="h-4 w-4" />
@@ -354,26 +390,45 @@ export default function CrosswordGame() {
              </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6" id="crossword-game">
-            {/* Crossword Grid */}
-            <div className="lg:col-span-8 flex flex-col gap-4">
-              {/* Active Clue Banner - Mobile Helper */}
-              {selectedWordId && (
-                <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r shadow-sm sticky top-2 z-10 lg:hidden">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-xs font-bold uppercase text-yellow-700 tracking-wider">
-                        {placedWords.find(w => w.id === selectedWordId)?.direction}
-                      </span>
-                      <p className="text-lg font-bold text-slate-800">
-                        {placedWords.find(w => w.id === selectedWordId)?.number}. {placedWords.find(w => w.id === selectedWordId)?.clue}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative" id="crossword-game">
+            
+            {/* Fullscreen Close Button */}
+            {isFullscreen && (
+               <Button 
+                 onClick={toggleFullscreen} 
+                 className="absolute top-4 right-4 z-50 bg-red-500 hover:bg-red-600 text-white rounded-full h-10 w-10 p-0 shadow-lg"
+                 title="Exit Fullscreen"
+               >
+                 <X className="h-6 w-6" />
+               </Button>
+            )}
 
-              <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto">
+            {/* Crossword Grid */}
+            <div className="lg:col-span-8 flex flex-col gap-4 h-full">
+              {/* Active Clue Banner - Visible everywhere now */}
+              <AnimatePresence>
+                {selectedWordId && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r shadow-md z-30"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-xs font-bold uppercase text-yellow-700 tracking-wider">
+                          {placedWords.find(w => w.id === selectedWordId)?.direction}
+                        </span>
+                        <p className="text-xl font-bold text-slate-800">
+                          {placedWords.find(w => w.id === selectedWordId)?.number}. {placedWords.find(w => w.id === selectedWordId)?.clue}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto flex-1 relative">
               <div 
                 className="grid gap-[2px] p-[2px] rounded-lg shadow-inner relative overflow-hidden"
                 style={{ 
@@ -403,8 +458,8 @@ export default function CrosswordGame() {
                       key={`${rIdx}-${cIdx}`} 
                       className={`
                         relative aspect-square flex items-center justify-center z-10
-                        ${cell.isBlack ? "bg-transparent" : "bg-white border border-slate-300 shadow-sm"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-2 ring-yellow-300 border-yellow-300 z-20" : ""}
+                        ${cell.isBlack ? "bg-transparent" : "bg-white border-2 border-slate-300 shadow-sm"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-2 ring-yellow-400 border-yellow-400 z-20" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
@@ -453,54 +508,62 @@ export default function CrosswordGame() {
             </div>
 
             {/* Clues */}
-            <div className="lg:col-span-4 space-y-4">
+            <div className="lg:col-span-4 space-y-4 h-full overflow-hidden">
               <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
                 <h3 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
                   <HelpCircle className="h-5 w-5 text-blue-500" />
                   Clues
                 </h3>
                 
-                <div className="space-y-6 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
-                  <div>
-                    <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1">Across</h4>
-                    <ul className="space-y-3">
-                      {placedWords.filter(w => w.direction === "across").map(w => (
-                        <li 
-                           key={w.id} 
-                           className={`
-                             p-3 rounded-lg cursor-pointer transition-colors border
-                             ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
-                           `}
-                           onClick={() => setSelectedWordId(w.id)}
-                        >
-                          <div className="flex gap-3">
-                            <span className="font-bold text-slate-900 bg-slate-100 w-6 h-6 flex items-center justify-center rounded text-sm">{w.number}</span>
-                            <span className="text-slate-600 font-medium">{w.clue}</span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10">Across</h4>
+                      <ul className="space-y-3">
+                        {placedWords.filter(w => w.direction === "across").map(w => (
+                          <li 
+                            key={w.id} 
+                            className={`
+                              p-3 rounded-lg cursor-pointer transition-colors border
+                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
+                              ${solvedWords.has(w.id) ? "opacity-50" : ""}
+                            `}
+                            onClick={() => setSelectedWordId(w.id)}
+                          >
+                            <div className="flex gap-3">
+                              <span className={`font-bold w-6 h-6 flex items-center justify-center rounded text-sm ${solvedWords.has(w.id) ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-900"}`}>
+                                {solvedWords.has(w.id) ? <Check className="h-4 w-4" /> : w.number}
+                              </span>
+                              <span className={`font-medium ${solvedWords.has(w.id) ? "text-slate-400 line-through" : "text-slate-600"}`}>{w.clue}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  <div>
-                    <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1">Down</h4>
-                    <ul className="space-y-3">
-                      {placedWords.filter(w => w.direction === "down").map(w => (
-                        <li 
-                           key={w.id} 
-                           className={`
-                             p-3 rounded-lg cursor-pointer transition-colors border
-                             ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
-                           `}
-                           onClick={() => setSelectedWordId(w.id)}
-                        >
-                          <div className="flex gap-3">
-                            <span className="font-bold text-slate-900 bg-slate-100 w-6 h-6 flex items-center justify-center rounded text-sm">{w.number}</span>
-                            <span className="text-slate-600 font-medium">{w.clue}</span>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    <div>
+                      <h4 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10">Down</h4>
+                      <ul className="space-y-3">
+                        {placedWords.filter(w => w.direction === "down").map(w => (
+                          <li 
+                            key={w.id} 
+                            className={`
+                              p-3 rounded-lg cursor-pointer transition-colors border
+                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
+                              ${solvedWords.has(w.id) ? "opacity-50" : ""}
+                            `}
+                            onClick={() => setSelectedWordId(w.id)}
+                          >
+                            <div className="flex gap-3">
+                              <span className={`font-bold w-6 h-6 flex items-center justify-center rounded text-sm ${solvedWords.has(w.id) ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-900"}`}>
+                                {solvedWords.has(w.id) ? <Check className="h-4 w-4" /> : w.number}
+                              </span>
+                              <span className={`font-medium ${solvedWords.has(w.id) ? "text-slate-400 line-through" : "text-slate-600"}`}>{w.clue}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
