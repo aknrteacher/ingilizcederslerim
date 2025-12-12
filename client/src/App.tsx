@@ -16,6 +16,7 @@ import ColorsMatchingGame from "@/pages/0.1.matching-game";
 import ColorsCrosswordGame from "@/pages/0.1.crossword";
 
 import CrosswordGame from "@/pages/2.1.crossword";
+import SpellQuestGame from "@/pages/2.1.spell-quest";
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
       <Route path="/primary-school/grade-2/theme-1/crossword" component={CrosswordGame} />
+      <Route path="/primary-school/grade-2/theme-1/spell-quest" component={SpellQuestGame} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
       <Route path="/pre-school/kelime-kartlari/0.1-vocab" component={ColorsVocabulary} />
       <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />

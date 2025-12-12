@@ -37,6 +37,15 @@ export default function Oyunlar() {
       theme: 1,
       path: "/primary-school/grade-2/theme-1/crossword",
     },
+    {
+      id: "2.1.spell-quest",
+      title: "Spell Quest",
+      description: "Unscramble letters to spell words. Build your spelling skills!",
+      icon: "✨",
+      grade: 2,
+      theme: 1,
+      path: "/primary-school/grade-2/theme-1/spell-quest",
+    },
   ];
 
   const grade2Theme1Games = games.filter((g) => g.grade === 2 && g.theme === 1);
