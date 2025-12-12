@@ -14,6 +14,7 @@ import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import MatchingGame from "@/pages/2.1.matching-game";
 import ColorsMatchingGame from "@/pages/0.1.matching-game";
 import ColorsCrosswordGame from "@/pages/0.1.crossword";
+import ColorsSpellQuestGame from "@/pages/0.1.spell-quest";
 
 import CrosswordGame from "@/pages/2.1.crossword";
 import SpellQuestGame from "@/pages/2.1.spell-quest";
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/pre-school/kelime-kartlari/0.1-vocab" component={ColorsVocabulary} />
       <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />
       <Route path="/pre-school/0.1-crossword" component={ColorsCrosswordGame} />
+      <Route path="/pre-school/0.1-spell-quest" component={ColorsSpellQuestGame} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 

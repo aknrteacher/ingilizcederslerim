@@ -27,6 +27,13 @@ export default function PreSchoolGamesMenu() {
       icon: "🧩",
       path: "/pre-school/0.1-crossword",
     },
+    {
+      id: "0.1.spell-quest",
+      title: "Spell Quest - Colours",
+      description: "Unscramble letters to spell colour words!",
+      icon: "✨",
+      path: "/pre-school/0.1-spell-quest",
+    },
   ];
 
   return (
