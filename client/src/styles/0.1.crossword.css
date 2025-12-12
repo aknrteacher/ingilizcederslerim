@@ -1,0 +1,74 @@
+
+#crossword-game.fullscreen-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: transparent;
+  padding: 24px;
+  margin: 0 !important;
+  border-radius: 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 24px;
+  overflow: hidden;
+}
+
+/* Ensure background is handled by React component */
+#crossword-game.fullscreen-active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fffbeb;
+  z-index: -2;
+}
+
+#crossword-game.fullscreen-active #crossword-grid-area {
+  grid-column: 1;
+  grid-row: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+#crossword-game.fullscreen-active #crossword-clues-area {
+  grid-column: 2;
+  grid-row: 1;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+#crossword-game.fullscreen-active #crossword-footer-area {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  z-index: 10;
+}
+
+@media (max-width: 1024px) {
+  #crossword-game.fullscreen-active {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  #crossword-game.fullscreen-active #crossword-grid-area {
+    flex: none;
+    height: auto;
+  }
+  
+  #crossword-game.fullscreen-active #crossword-clues-area {
+    flex: none;
+    height: auto;
+  }
+
+  #crossword-game.fullscreen-active #crossword-footer-area {
+    flex: none;
+  }
+}

@@ -1,6 +1,6 @@
 .spell-quest-colors-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffecd2 100%);
+  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 50%, #f59e0b 100%);
   padding: 1rem;
   position: relative;
   overflow: hidden;
@@ -14,8 +14,8 @@
   right: 0;
   bottom: 0;
   background-image: 
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -50,7 +50,7 @@
 .spell-quest-colors-wrapper .game-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #be185d;
+  color: #b45309;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -141,7 +141,7 @@
 }
 
 .spell-quest-colors-wrapper .picture-card {
-  background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
   border-radius: 1.5rem;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -149,7 +149,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  border: 3px solid #fbcfe8;
+  border: 3px solid #fde68a;
 }
 
 .spell-quest-colors-wrapper .word-image {
@@ -164,7 +164,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
 }
@@ -178,7 +178,7 @@
 .spell-quest-colors-wrapper .hint-text {
   font-size: 1rem;
   font-weight: 700;
-  color: #be185d;
+  color: #b45309;
 }
 
 .spell-quest-colors-wrapper .action-buttons {
@@ -189,13 +189,13 @@
 .spell-quest-colors-wrapper .hint-btn,
 .spell-quest-colors-wrapper .sound-btn {
   background: white;
-  border: 2px solid #fbcfe8;
+  border: 2px solid #fde68a;
 }
 
 .spell-quest-colors-wrapper .hint-btn:hover,
 .spell-quest-colors-wrapper .sound-btn:hover {
-  background: #fdf2f8;
-  border-color: #ec4899;
+  background: #fffbeb;
+  border-color: #f59e0b;
 }
 
 .spell-quest-colors-wrapper .first-letter-hint {
@@ -230,7 +230,7 @@
 .spell-quest-colors-wrapper .answer-slot {
   width: 50px;
   height: 60px;
-  border: 3px dashed #f9a8d4;
+  border: 3px dashed #fcd34d;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
@@ -241,7 +241,7 @@
 }
 
 .spell-quest-colors-wrapper .answer-slot:hover {
-  border-color: #ec4899;
+  border-color: #f59e0b;
   background: rgba(255, 255, 255, 0.8);
 }
 
@@ -289,9 +289,9 @@
   justify-content: center;
   flex-wrap: wrap;
   padding: 1rem;
-  background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
   border-radius: 1rem;
-  border: 2px solid #fbcfe8;
+  border: 2px solid #fde68a;
 }
 
 .spell-quest-colors-wrapper .letter-tile {
@@ -326,7 +326,7 @@
 
 .spell-quest-colors-wrapper .reset-btn:hover {
   color: #4b5563;
-  background: #fdf2f8;
+  background: #fffbeb;
 }
 
 /* Success Overlay */
@@ -368,13 +368,13 @@
 .spell-quest-colors-wrapper .success-word {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #be185d;
+  color: #b45309;
   margin: 0 0 1.5rem 0;
   letter-spacing: 0.1em;
 }
 
 .spell-quest-colors-wrapper .next-btn {
-  background: linear-gradient(135deg, #ec4899, #be185d);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   color: white;
   font-weight: 700;
   padding: 0.75rem 2rem;
@@ -385,7 +385,7 @@
 }
 
 .spell-quest-colors-wrapper .next-btn:hover {
-  background: linear-gradient(135deg, #db2777, #9d174d);
+  background: linear-gradient(135deg, #d97706, #b45309);
 }
 
 /* Complete Screen */
@@ -417,7 +417,7 @@
 .spell-quest-colors-wrapper .complete-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #be185d;
+  color: #b45309;
   margin: 0 0 0.5rem 0;
 }
 
@@ -439,7 +439,7 @@
   flex-direction: column;
   gap: 0.25rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+  background: linear-gradient(135deg, #fffbeb, #fef3c7);
   border-radius: 1rem;
 }
 
@@ -454,7 +454,7 @@
 .spell-quest-colors-wrapper .final-stat-value {
   font-size: 2rem;
   font-weight: 800;
-  color: #be185d;
+  color: #b45309;
 }
 
 .spell-quest-colors-wrapper .complete-buttons {
@@ -465,14 +465,14 @@
 }
 
 .spell-quest-colors-wrapper .play-again-btn {
-  background: linear-gradient(135deg, #ec4899, #be185d);
+  background: linear-gradient(135deg, #f59e0b, #d97706);
   color: white;
   font-weight: 700;
   padding: 0.75rem 2rem;
 }
 
 .spell-quest-colors-wrapper .play-again-btn:hover {
-  background: linear-gradient(135deg, #db2777, #9d174d);
+  background: linear-gradient(135deg, #d97706, #b45309);
 }
 
 /* Footer */
@@ -497,13 +497,13 @@
 
 .spell-quest-colors-wrapper .footer-button {
   background: white;
-  border: 2px solid #fbcfe8;
+  border: 2px solid #fde68a;
   gap: 0.5rem;
 }
 
 .spell-quest-colors-wrapper .footer-button:hover {
-  background: #fdf2f8;
-  border-color: #ec4899;
+  background: #fffbeb;
+  border-color: #f59e0b;
 }
 
 .spell-quest-colors-wrapper .back-link {

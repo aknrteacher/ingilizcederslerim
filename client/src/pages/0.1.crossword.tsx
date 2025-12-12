@@ -5,7 +5,7 @@ import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy, Maximize2, Minimize2, 
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
-import "../styles/2.1.crossword.css";
+import "../styles/0.1.crossword.css";
 
 // Vocabulary from 0.1 (Colours)
 const vocabulary = [

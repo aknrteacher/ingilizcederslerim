@@ -1,6 +1,6 @@
 .spell-quest-wrapper {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background: linear-gradient(135deg, #dbeafe 0%, #3b82f6 50%, #1d4ed8 100%);
   padding: 1rem;
   position: relative;
   overflow: hidden;
@@ -50,7 +50,7 @@
 .spell-quest-wrapper .game-title {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #4c1d95;
+  color: #1e40af;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -141,7 +141,7 @@
 }
 
 .spell-quest-wrapper .picture-card {
-  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border-radius: 1.5rem;
   padding: 1.5rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -149,7 +149,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  border: 3px solid #e2e8f0;
+  border: 3px solid #93c5fd;
 }
 
 .spell-quest-wrapper .word-image {
@@ -164,7 +164,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
 }
@@ -178,7 +178,7 @@
 .spell-quest-wrapper .hint-text {
   font-size: 1rem;
   font-weight: 700;
-  color: #5b21b6;
+  color: #1e40af;
 }
 
 .spell-quest-wrapper .action-buttons {
@@ -194,8 +194,8 @@
 
 .spell-quest-wrapper .hint-btn:hover,
 .spell-quest-wrapper .sound-btn:hover {
-  background: #f8fafc;
-  border-color: #7c3aed;
+  background: #eff6ff;
+  border-color: #3b82f6;
 }
 
 .spell-quest-wrapper .first-letter-hint {
@@ -230,7 +230,7 @@
 .spell-quest-wrapper .answer-slot {
   width: 50px;
   height: 60px;
-  border: 3px dashed #cbd5e1;
+  border: 3px dashed #93c5fd;
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
@@ -241,7 +241,7 @@
 }
 
 .spell-quest-wrapper .answer-slot:hover {
-  border-color: #94a3b8;
+  border-color: #3b82f6;
   background: rgba(255, 255, 255, 0.8);
 }
 
@@ -289,9 +289,9 @@
   justify-content: center;
   flex-wrap: wrap;
   padding: 1rem;
-  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border-radius: 1rem;
-  border: 2px solid #e2e8f0;
+  border: 2px solid #93c5fd;
 }
 
 .spell-quest-wrapper .letter-tile {
@@ -326,7 +326,7 @@
 
 .spell-quest-wrapper .reset-btn:hover {
   color: #4b5563;
-  background: #f3f4f6;
+  background: #eff6ff;
 }
 
 /* Success Overlay */
@@ -368,13 +368,13 @@
 .spell-quest-wrapper .success-word {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #5b21b6;
+  color: #1e40af;
   margin: 0 0 1.5rem 0;
   letter-spacing: 0.1em;
 }
 
 .spell-quest-wrapper .next-btn {
-  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
   font-weight: 700;
   padding: 0.75rem 2rem;
@@ -385,7 +385,7 @@
 }
 
 .spell-quest-wrapper .next-btn:hover {
-  background: linear-gradient(135deg, #6d28d9, #4c1d95);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
 }
 
 /* Complete Screen */
@@ -417,7 +417,7 @@
 .spell-quest-wrapper .complete-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #5b21b6;
+  color: #1e40af;
   margin: 0 0 0.5rem 0;
 }
 
@@ -439,7 +439,7 @@
   flex-direction: column;
   gap: 0.25rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
   border-radius: 1rem;
 }
 
@@ -454,7 +454,7 @@
 .spell-quest-wrapper .final-stat-value {
   font-size: 2rem;
   font-weight: 800;
-  color: #5b21b6;
+  color: #1e40af;
 }
 
 .spell-quest-wrapper .complete-buttons {
@@ -465,14 +465,14 @@
 }
 
 .spell-quest-wrapper .play-again-btn {
-  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
   font-weight: 700;
   padding: 0.75rem 2rem;
 }
 
 .spell-quest-wrapper .play-again-btn:hover {
-  background: linear-gradient(135deg, #6d28d9, #4c1d95);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
 }
 
 /* Footer */
@@ -502,8 +502,8 @@
 }
 
 .spell-quest-wrapper .footer-button:hover {
-  background: #f8fafc;
-  border-color: #7c3aed;
+  background: #eff6ff;
+  border-color: #3b82f6;
 }
 
 .spell-quest-wrapper .back-link {

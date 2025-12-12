@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap } from "lucide-react";
 import { FullscreenButton } from "@/components/FullscreenButton";
-import "../styles/2.1.matching-game.css";
+import "../styles/0.1.matching-game.css";
 
 interface GameCard {
   id: string;
