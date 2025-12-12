@@ -442,12 +442,12 @@ export default function CrosswordGame() {
                 )}
               </AnimatePresence>
 
-              {/* Removed main container background to let pictures show through clearly */}
-              <div className="p-6 rounded-2xl flex justify-center overflow-auto flex-1 relative">
+              {/* Main container with light blur */}
+              <div className="bg-white/30 backdrop-blur-[2px] p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto flex-1 relative">
               <div 
                 className="grid gap-[4px] p-2 rounded-xl relative"
                 style={{ 
-                  gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(30px, 40px))` 
+                  gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(45px, 60px))` 
                 }}
               >
                 {/* Removed inner collage since we have global background now */}
