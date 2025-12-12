@@ -403,7 +403,7 @@ export default function CrosswordGame() {
                    <Trophy className="text-yellow-500 h-5 w-5 drop-shadow-sm" />
                    Word Cross
                  </h1>
-                 <p className="text-slate-600 text-xs font-medium">2. Sınıf - Tema 1: Okul Hayatı</p>
+                 <p className="text-slate-600 text-xs font-medium">Grade 2 - Theme 1: School Life</p>
                </div>
              </div>
              

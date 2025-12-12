@@ -268,7 +268,7 @@ export default function MatchingGame() {
             <div className="game-header">
                 <div className="header-left">
                   <h1 className="game-title">Matchlings</h1>
-                  <p className="game-subtitle">Drag to match and hatch!</p>
+                  <p className="game-subtitle">Grade 2 - Theme 1: School Life</p>
                 </div>
 
                 <div className="game-stats">
