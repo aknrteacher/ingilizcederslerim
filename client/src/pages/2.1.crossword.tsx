@@ -350,20 +350,33 @@ export default function CrosswordGame() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#f0f4f8] p-4 font-sans relative overflow-hidden">
+      <div className="min-h-screen p-4 font-sans relative overflow-hidden">
+        {/* Global Background Collage */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-100">
+           <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-60">
+             {/* Create a larger set of images for the background */}
+             {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
+               <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg backdrop-blur-sm animate-pulse-slow" style={{ animationDelay: `${i * 0.2}s` }}>
+                 <img src={src} alt="" className="w-full h-full object-contain drop-shadow-md" />
+               </div>
+             ))}
+           </div>
+           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-[2px]"></div>
+        </div>
+
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+          <div className="flex items-center justify-between mb-6 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50">
              <div className="flex items-center gap-4">
                <Button variant="ghost" size="icon" onClick={() => setLocation("/oyunlar")}>
-                 <ArrowLeft className="h-6 w-6 text-slate-600" />
+                 <ArrowLeft className="h-6 w-6 text-slate-700" />
                </Button>
                <div>
                  <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                   <Trophy className="text-yellow-500 h-6 w-6" />
+                   <Trophy className="text-yellow-500 h-6 w-6 drop-shadow-sm" />
                    Word Cross
                  </h1>
-                 <p className="text-slate-500 text-sm">2. Sınıf - Tema 1: Okul Hayatı</p>
+                 <p className="text-slate-600 text-sm font-medium">2. Sınıf - Tema 1: Okul Hayatı</p>
                </div>
              </div>
              
@@ -373,7 +386,7 @@ export default function CrosswordGame() {
                     onClick={toggleFullscreen}
                     variant="outline"
                     size="icon"
-                    className="h-9 w-9"
+                    className="h-9 w-9 bg-white/50 hover:bg-white"
                     title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
                   >
                     {isFullscreen ? (
@@ -383,7 +396,7 @@ export default function CrosswordGame() {
                     )}
                   </Button>
                </div>
-               <Button onClick={generateGrid} variant="outline" className="gap-2">
+               <Button onClick={generateGrid} variant="outline" className="gap-2 bg-white/50 hover:bg-white border-slate-300">
                  <RefreshCw className="h-4 w-4" />
                  New Game
                </Button>
@@ -396,7 +409,7 @@ export default function CrosswordGame() {
             {isFullscreen && (
                <Button 
                  onClick={toggleFullscreen} 
-                 className="absolute top-4 right-4 z-50 bg-red-500 hover:bg-red-600 text-white rounded-full h-10 w-10 p-0 shadow-lg"
+                 className="absolute top-4 right-4 z-50 bg-red-500 hover:bg-red-600 text-white rounded-full h-10 w-10 p-0 shadow-lg border-2 border-white"
                  title="Exit Fullscreen"
                >
                  <X className="h-6 w-6" />
@@ -412,7 +425,7 @@ export default function CrosswordGame() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-r shadow-md z-30"
+                    className="bg-yellow-100/95 backdrop-blur-md border-l-4 border-yellow-500 p-4 rounded-r-xl shadow-lg z-30"
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -428,38 +441,24 @@ export default function CrosswordGame() {
                 )}
               </AnimatePresence>
 
-              <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto flex-1 relative">
+              <div className="bg-white/30 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto flex-1 relative">
               <div 
-                className="grid gap-[2px] p-[2px] rounded-lg shadow-inner relative overflow-hidden"
+                className="grid gap-[4px] p-2 rounded-xl relative"
                 style={{ 
                   gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(30px, 40px))` 
                 }}
               >
-                {/* Background Collage inside the grid */}
-                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden bg-slate-100">
-                  <div className="grid grid-cols-4 gap-2 p-2 transform rotate-3 scale-110 h-full w-full">
-                    {collageImages.map((src, i) => (
-                      <div key={i} className="aspect-square bg-white p-1 rounded shadow-sm opacity-80">
-                        <img src={src} alt="" className="w-full h-full object-contain" />
-                      </div>
-                    ))}
-                    {/* Repeat to ensure coverage */}
-                    {collageImages.map((src, i) => (
-                      <div key={`rep-${i}`} className="aspect-square bg-white p-1 rounded shadow-sm opacity-80">
-                        <img src={src} alt="" className="w-full h-full object-contain" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                {/* Removed inner collage since we have global background now */}
 
                 {grid.map((row, rIdx) => (
                   row.map((cell, cIdx) => (
                     <div 
                       key={`${rIdx}-${cIdx}`} 
                       className={`
-                        relative aspect-square flex items-center justify-center z-10
-                        ${cell.isBlack ? "bg-transparent" : "bg-white border-2 border-slate-300 shadow-sm"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-2 ring-yellow-400 border-yellow-400 z-20" : ""}
+                        relative aspect-square flex items-center justify-center z-10 rounded-md transition-all duration-200
+                        ${cell.isBlack ? "bg-transparent" : "bg-white/80 backdrop-blur shadow-[0_2px_8px_rgba(0,0,0,0.1)] border border-white/60"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100/90 ring-2 ring-yellow-400 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)] z-20 scale-105" : ""}
+                        ${!cell.isBlack && !cell.partOfWords.includes(selectedWordId || "") ? "hover:bg-white/90 hover:scale-105 hover:shadow-lg hover:z-20 cursor-pointer" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
@@ -471,7 +470,7 @@ export default function CrosswordGame() {
                       {!cell.isBlack && (
                         <>
                           {(cell.acrossNum || cell.downNum) && (
-                            <span className="absolute top-[1px] left-[2px] text-[11px] font-extrabold text-slate-500 leading-none pointer-events-none z-10">
+                            <span className="absolute top-[2px] left-[3px] text-[10px] font-extrabold text-slate-500 leading-none pointer-events-none z-10 drop-shadow-sm">
                               {cell.acrossNum || cell.downNum}
                             </span>
                           )}
@@ -487,12 +486,12 @@ export default function CrosswordGame() {
                                 if (cell.partOfWords.length > 0) setSelectedWordId(cell.partOfWords[0]);
                             }}
                             className={`
-                                w-full h-full text-center text-lg font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50 relative z-0
+                                w-full h-full text-center text-xl font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50/50 relative z-0 drop-shadow-sm
                                 ${
                                   cell.userChar === "" 
                                       ? "text-slate-800" 
                                       : cell.userChar === cell.char 
-                                          ? "text-green-600" 
+                                          ? "text-green-600 drop-shadow-[0_2px_0_rgba(255,255,255,1)]" 
                                           : "text-red-500"
                                 }
                             `}
@@ -509,7 +508,7 @@ export default function CrosswordGame() {
 
             {/* Clues */}
             <div className="lg:col-span-4 space-y-4 h-full overflow-hidden">
-              <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
+              <div className="bg-white/90 backdrop-blur-md p-5 rounded-xl shadow-lg border border-white/50 h-full flex flex-col">
                 <h3 className="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2" title="İpuçları">
                   <HelpCircle className="h-5 w-5 text-blue-500" />
                   <span className="cursor-help border-b border-dotted border-slate-400">Clues</span>
@@ -519,7 +518,7 @@ export default function CrosswordGame() {
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
                     <div>
                       <h4 
-                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10 cursor-help" 
+                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-transparent z-10 cursor-help" 
                         title="Soldan Sağa (Yatay)"
                       >
                         Across
@@ -529,9 +528,9 @@ export default function CrosswordGame() {
                           <li 
                             key={w.id} 
                             className={`
-                              p-3 rounded-lg cursor-pointer transition-colors border
-                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
-                              ${solvedWords.has(w.id) ? "opacity-50" : ""}
+                              p-3 rounded-lg cursor-pointer transition-all border shadow-sm
+                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200 shadow-md scale-[1.02]" : "bg-white hover:bg-slate-50 border-slate-100 hover:border-slate-200"}
+                              ${solvedWords.has(w.id) ? "opacity-60 bg-slate-50" : ""}
                             `}
                             onClick={() => setSelectedWordId(w.id)}
                           >
@@ -548,7 +547,7 @@ export default function CrosswordGame() {
 
                     <div>
                       <h4 
-                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-white z-10 cursor-help" 
+                        className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3 border-b pb-1 sticky top-0 bg-transparent z-10 cursor-help" 
                         title="Yukarıdan Aşağıya (Dikey)"
                       >
                         Down
@@ -558,9 +557,9 @@ export default function CrosswordGame() {
                           <li 
                             key={w.id} 
                             className={`
-                              p-3 rounded-lg cursor-pointer transition-colors border
-                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200" : "hover:bg-slate-50 border-transparent"}
-                              ${solvedWords.has(w.id) ? "opacity-50" : ""}
+                              p-3 rounded-lg cursor-pointer transition-all border shadow-sm
+                              ${selectedWordId === w.id ? "bg-yellow-50 border-yellow-200 ring-1 ring-yellow-200 shadow-md scale-[1.02]" : "bg-white hover:bg-slate-50 border-slate-100 hover:border-slate-200"}
+                              ${solvedWords.has(w.id) ? "opacity-60 bg-slate-50" : ""}
                             `}
                             onClick={() => setSelectedWordId(w.id)}
                           >
