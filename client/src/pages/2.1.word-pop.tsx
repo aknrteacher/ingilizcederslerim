@@ -120,15 +120,19 @@ export default function WordPopGame() {
   const [gameStarted, setGameStarted] = useState(false);
   const [showTurkish, setShowTurkish] = useState(false);
   const [usedWords, setUsedWords] = useState<string[]>([]);
+  const [hintsUsed, setHintsUsed] = useState(0);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
 
   const totalWords = 10;
   const hintPenalty = 5;
+  const correctPoints = 10;
+  const noHintBonus = 5;
 
   const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
+      setHintsUsed(prev => prev + 1);
     }
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
@@ -142,6 +146,7 @@ export default function WordPopGame() {
   const revealTurkish = useCallback(() => {
     if (gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
+      setHintsUsed(prev => prev + 1);
     }
     setShowTurkish(true);
   }, [gameStarted, gameOver, gameWon]);
@@ -253,6 +258,7 @@ export default function WordPopGame() {
     setLives(3);
     setWordsCompleted(0);
     setCombo(0);
+    setHintsUsed(0);
     setGameOver(false);
     setGameWon(false);
     setGameStarted(true);
@@ -553,17 +559,25 @@ export default function WordPopGame() {
                 </p>
 
                 <div className="bg-blue-50 rounded-xl p-4 mb-6">
-                  <div className="flex items-center justify-center gap-2 mb-2">
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
                     <span className="text-2xl font-bold text-blue-700">{score} points</span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-2">
-                    {wordsCompleted} words completed
-                  </p>
-                  <div className="text-xs text-gray-400 border-t border-gray-200 pt-2 mt-2">
-                    <p>Correct answer = +10 points</p>
-                    <p className="text-green-600">No hint bonus = +5 points</p>
-                    <p className="text-orange-500">Using hint = -5 points</p>
+                  <div className="text-sm space-y-1 border-t border-gray-200 pt-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">✓ Correct answers:</span>
+                      <span className="font-semibold text-green-600">{wordsCompleted} × {correctPoints} = +{wordsCompleted * correctPoints}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">🎯 No hint bonus:</span>
+                      <span className="font-semibold text-blue-600">{wordsCompleted - hintsUsed} × {noHintBonus} = +{Math.max(0, (wordsCompleted - hintsUsed)) * noHintBonus}</span>
+                    </div>
+                    {hintsUsed > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">💡 Hints used:</span>
+                        <span className="font-semibold text-orange-500">{hintsUsed} × {hintPenalty} = -{hintsUsed * hintPenalty}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
