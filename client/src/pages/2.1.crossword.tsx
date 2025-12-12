@@ -377,8 +377,8 @@ export default function CrosswordGame() {
   return (
     <Layout>
       <div className="min-h-screen p-4 font-sans relative overflow-hidden">
-        {/* Global Background Collage */}
-        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-100">
+        {/* Global Background Collage - Blue Theme for Grade 2 */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-blue-50">
            <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
              {/* Create a larger set of images for the background */}
              {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
@@ -387,8 +387,7 @@ export default function CrosswordGame() {
                </div>
              ))}
            </div>
-           {/* Removed blur from overlay, just a subtle tint */}
-           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-sky-500/10"></div>
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -428,9 +427,9 @@ export default function CrosswordGame() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 relative" id="crossword-game">
             
-            {/* Fullscreen Background - Only visible in fullscreen */}
+            {/* Fullscreen Background - Blue Theme */}
             {isFullscreen && (
-              <div className="absolute inset-0 z-[-1] overflow-hidden bg-slate-100">
+              <div className="absolute inset-0 z-[-1] overflow-hidden bg-blue-50">
                 <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
                   {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
                     <div key={`bg-fs-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg" style={{ animationDelay: `${i * 0.2}s` }}>
@@ -438,7 +437,7 @@ export default function CrosswordGame() {
                     </div>
                   ))}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-sky-500/10"></div>
               </div>
             )}
             

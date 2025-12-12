@@ -355,8 +355,8 @@ export default function ColorsCrosswordGame() {
   return (
     <Layout>
       <div className="min-h-screen p-4 font-sans relative overflow-hidden">
-        {/* Global Background Collage */}
-        <div className="absolute inset-0 z-0 overflow-hidden bg-slate-100">
+        {/* Global Background Collage - Yellow Theme for Pre-School */}
+        <div className="absolute inset-0 z-0 overflow-hidden bg-amber-50">
            <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
              {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
                <div key={`bg-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg" style={{ animationDelay: `${i * 0.2}s` }}>
@@ -364,7 +364,7 @@ export default function ColorsCrosswordGame() {
                </div>
              ))}
            </div>
-           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10"></div>
         </div>
 
         <div className="max-w-6xl mx-auto relative z-10">
@@ -404,9 +404,9 @@ export default function ColorsCrosswordGame() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 relative" id="crossword-game">
             
-            {/* Fullscreen Background */}
+            {/* Fullscreen Background - Yellow Theme */}
             {isFullscreen && (
-              <div className="absolute inset-0 z-[-1] overflow-hidden bg-slate-100">
+              <div className="absolute inset-0 z-[-1] overflow-hidden bg-amber-50">
                 <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
                   {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
                     <div key={`bg-fs-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg" style={{ animationDelay: `${i * 0.2}s` }}>
@@ -414,7 +414,7 @@ export default function ColorsCrosswordGame() {
                     </div>
                   ))}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-yellow-500/10"></div>
               </div>
             )}
             
@@ -608,11 +608,11 @@ export default function ColorsCrosswordGame() {
           {/* Footer Actions */}
           <div className="mt-6 flex flex-wrap justify-between items-center gap-4 bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-white/50 shadow-lg">
              <div className="flex gap-2">
-               <Button onClick={shareGame} variant="outline" className="gap-2 bg-white hover:bg-blue-50 border-slate-200">
-                  <Share2 className="h-4 w-4 text-blue-500" /> Share
+               <Button onClick={shareGame} variant="outline" className="gap-2 bg-white hover:bg-amber-50 border-amber-200">
+                  <Share2 className="h-4 w-4 text-amber-500" /> Share
                </Button>
-               <Button onClick={challengeFriend} variant="outline" className="gap-2 bg-white hover:bg-purple-50 border-slate-200">
-                  <Zap className="h-4 w-4 text-purple-500" /> Challenge
+               <Button onClick={challengeFriend} variant="outline" className="gap-2 bg-white hover:bg-yellow-50 border-amber-200">
+                  <Zap className="h-4 w-4 text-yellow-600" /> Challenge
                </Button>
              </div>
              
@@ -662,7 +662,7 @@ export default function ColorsCrosswordGame() {
                   </div>
                   
                   <div className="flex flex-col gap-3">
-                    <Button onClick={generateGrid} size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-200">
+                    <Button onClick={generateGrid} size="lg" className="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-xl shadow-lg shadow-amber-200">
                       Play Again
                     </Button>
                     <Button onClick={() => setLocation("/pre-school/games")} variant="ghost" size="lg" className="w-full text-slate-600 hover:bg-slate-50 rounded-xl">
