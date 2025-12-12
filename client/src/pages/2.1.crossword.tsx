@@ -367,17 +367,17 @@ export default function CrosswordGame() {
 
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6 bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg border border-white/50">
+          <div className="flex items-center justify-between mb-2 bg-white/90 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/50">
              <div className="flex items-center gap-4">
                <Button variant="ghost" size="icon" onClick={() => setLocation("/oyunlar")}>
                  <ArrowLeft className="h-6 w-6 text-slate-700" />
                </Button>
                <div>
-                 <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                   <Trophy className="text-yellow-500 h-6 w-6 drop-shadow-sm" />
+                 <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                   <Trophy className="text-yellow-500 h-5 w-5 drop-shadow-sm" />
                    Word Cross
                  </h1>
-                 <p className="text-slate-600 text-sm font-medium">2. Sınıf - Tema 1: Okul Hayatı</p>
+                 <p className="text-slate-600 text-xs font-medium">2. Sınıf - Tema 1: Okul Hayatı</p>
                </div>
              </div>
              
@@ -387,7 +387,7 @@ export default function CrosswordGame() {
                     onClick={toggleFullscreen}
                     variant="outline"
                     size="icon"
-                    className="h-9 w-9 bg-white/50 hover:bg-white"
+                    className="h-8 w-8 bg-white/50 hover:bg-white"
                     title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
                   >
                     {isFullscreen ? (
@@ -397,14 +397,14 @@ export default function CrosswordGame() {
                     )}
                   </Button>
                </div>
-               <Button onClick={generateGrid} variant="outline" className="gap-2 bg-white/50 hover:bg-white border-slate-300">
-                 <RefreshCw className="h-4 w-4" />
+               <Button onClick={generateGrid} variant="outline" size="sm" className="gap-2 bg-white/50 hover:bg-white border-slate-300">
+                 <RefreshCw className="h-3 w-3" />
                  New Game
                </Button>
              </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative" id="crossword-game">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 relative" id="crossword-game">
             
             {/* Fullscreen Close Button */}
             {isFullscreen && (
@@ -418,7 +418,7 @@ export default function CrosswordGame() {
             )}
 
             {/* Crossword Grid */}
-            <div className="lg:col-span-8 flex flex-col gap-4 h-full">
+            <div className="lg:col-span-8 flex flex-col gap-2">
               {/* Active Clue Banner - Visible everywhere now */}
               <AnimatePresence>
                 {selectedWordId && (
@@ -426,14 +426,14 @@ export default function CrosswordGame() {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="bg-yellow-100/95 backdrop-blur-md border-l-4 border-yellow-500 p-4 rounded-r-xl shadow-lg z-30"
+                    className="bg-yellow-100/95 backdrop-blur-md border-l-4 border-yellow-500 p-3 rounded-r-xl shadow-lg z-30 mb-2"
                   >
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-xs font-bold uppercase text-yellow-700 tracking-wider">
+                        <span className="text-[10px] font-bold uppercase text-yellow-700 tracking-wider">
                           {placedWords.find(w => w.id === selectedWordId)?.direction}
                         </span>
-                        <p className="text-xl font-bold text-slate-800">
+                        <p className="text-lg font-bold text-slate-800">
                           {placedWords.find(w => w.id === selectedWordId)?.number}. {placedWords.find(w => w.id === selectedWordId)?.clue}
                         </p>
                       </div>
@@ -443,7 +443,7 @@ export default function CrosswordGame() {
               </AnimatePresence>
 
               {/* Main container with light blur */}
-              <div className="bg-white/30 backdrop-blur-[2px] p-6 rounded-2xl shadow-xl border border-white/40 flex justify-center overflow-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="bg-white/30 backdrop-blur-[2px] p-4 rounded-2xl shadow-xl border border-white/40 flex justify-center items-start overflow-auto relative [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div 
                 className="grid gap-[4px] p-2 rounded-xl relative"
                 style={{ 
