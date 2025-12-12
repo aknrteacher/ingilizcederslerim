@@ -1183,6 +1183,10 @@
     justify-content: center;
   }
 
+  .fullscreen-btn-wrapper {
+    display: none !important;
+  }
+
   .egg-large {
     width: 140px;
     height: 180px;
