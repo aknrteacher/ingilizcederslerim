@@ -8,21 +8,21 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../styles/2.1.word-pop.css";
 
 const vocabulary = [
-  { word: "DESK", turkish: "Sıra", file: "desk.png" },
-  { word: "BOARD", turkish: "Tahta", file: "board.png" },
-  { word: "DOOR", turkish: "Kapı", file: "door.png" },
-  { word: "WINDOW", turkish: "Pencere", file: "window.png" },
-  { word: "BELL", turkish: "Zil", file: "bell.png" },
-  { word: "BOOK", turkish: "Kitap", file: "book.png" },
-  { word: "PENCIL", turkish: "Kalem", file: "pencil.png" },
-  { word: "ERASER", turkish: "Silgi", file: "eraser.png" },
-  { word: "RULER", turkish: "Cetvel", file: "ruler.png" },
-  { word: "SCHOOLBAG", turkish: "Okul Çantası", file: "schoolbag.png" },
-  { word: "PENCIL CASE", turkish: "Kalemlik", file: "pencilcase.png" },
-  { word: "NOTEBOOK", turkish: "Defter", file: "notebook.png" },
-  { word: "SCISSORS", turkish: "Makas", file: "scissors.png" },
-  { word: "GLUE", turkish: "Yapıştırıcı", file: "glue.png" },
-  { word: "SHARPENER", turkish: "Kalemtıraş", file: "sharpener.png" },
+  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
+  { word: "GOODBYE", turkish: "Hoşça kalın", file: "goodbye.png" },
+  { word: "SCHOOL", turkish: "Okul", file: "school.png" },
+  { word: "CLASSROOM", turkish: "Sınıf", file: "classroom.png" },
+  { word: "LIBRARY", turkish: "Kütüphane", file: "library.png" },
+  { word: "CANTEEN", turkish: "Kafeterya", file: "canteen.png" },
+  { word: "PLAYGROUND", turkish: "Oyun Alanı", file: "playground.png" },
+  { word: "GARDEN", turkish: "Bahçe", file: "garden.png" },
+  { word: "TEACHER", turkish: "Öğretmen", file: "teacher.png" },
+  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
+  { word: "GIRL", turkish: "Kız", file: "girl.png" },
+  { word: "BOY", turkish: "Erkek", file: "boy.png" },
+  { word: "FRIEND", turkish: "Arkadaş", file: "friend.png" },
+  { word: "DAY", turkish: "Gün", file: "day.png" },
+  { word: "WEEK", turkish: "Hafta", file: "week.png" },
 ];
 
 const balloonColors = [
