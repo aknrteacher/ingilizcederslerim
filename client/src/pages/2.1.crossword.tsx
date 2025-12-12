@@ -10,29 +10,29 @@ import "../styles/2.1.crossword.css";
 
 // Vocabulary from 2.1 (School Life)
 const vocabulary = [
-  { word: "HELLO", clue: "Merhaba" },
-  { word: "GOODBYE", clue: "Hoşça kalın" },
-  { word: "SCHOOL", clue: "Okul" },
-  { word: "CLASSROOM", clue: "Sınıf" },
-  { word: "LIBRARY", clue: "Kütüphane" },
-  { word: "CANTEEN", clue: "Kafeterya" },
-  { word: "GARDEN", clue: "Bahçe" },
-  { word: "TEACHER", clue: "Öğretmen" },
-  { word: "STUDENT", clue: "Öğrenci" },
-  { word: "FRIEND", clue: "Arkadaş" },
-  { word: "DAY", clue: "Gün" },
-  { word: "WEEK", clue: "Hafta" },
-  { word: "MONDAY", clue: "Pazartesi" },
-  { word: "FRIDAY", clue: "Cuma" },
-  { word: "SUNDAY", clue: "Pazar" },
-  { word: "WHAT", clue: "Ne" },
-  { word: "WHERE", clue: "Nerede" },
-  { word: "WHO", clue: "Kim" },
-  { word: "PENCIL", clue: "Kurşun kalem" },
-  { word: "BOOK", clue: "Kitap" },
-  { word: "DESK", clue: "Sıra" },
-  { word: "DOOR", clue: "Kapı" },
-  { word: "WINDOW", clue: "Pencere" }
+  { word: "HELLO", clue: "Merhaba", file: "hello.png" },
+  { word: "GOODBYE", clue: "Hoşça kalın", file: "goodbye.png" },
+  { word: "SCHOOL", clue: "Okul", file: "school.png" },
+  { word: "CLASSROOM", clue: "Sınıf", file: "classroom.png" },
+  { word: "LIBRARY", clue: "Kütüphane", file: "library.png" },
+  { word: "CANTEEN", clue: "Kafeterya", file: "canteen.png" },
+  { word: "GARDEN", clue: "Bahçe", file: "garden.png" },
+  { word: "TEACHER", clue: "Öğretmen", file: "teacher.png" },
+  { word: "STUDENT", clue: "Öğrenci", file: "student.png" },
+  { word: "FRIEND", clue: "Arkadaş", file: "friend.png" },
+  { word: "DAY", clue: "Gün", file: "day.png" },
+  { word: "WEEK", clue: "Hafta", file: "week.png" },
+  { word: "MONDAY", clue: "Pazartesi", file: "Monday.png" },
+  { word: "FRIDAY", clue: "Cuma", file: "Friday.png" },
+  { word: "SUNDAY", clue: "Pazar", file: "Sunday.png" },
+  { word: "WHAT", clue: "Ne", file: "what.png" },
+  { word: "WHERE", clue: "Nerede", file: "where.png" },
+  { word: "WHO", clue: "Kim", file: "who.png" },
+  { word: "PENCIL", clue: "Kurşun kalem", file: "pencil.png" }, // Assuming pencil.png exists, otherwise placeholder
+  { word: "BOOK", clue: "Kitap", file: "book.png" }, // Assuming book.png exists
+  { word: "DESK", clue: "Sıra", file: "desk.png" }, // Assuming desk.png exists
+  { word: "DOOR", clue: "Kapı", file: "door.png" }, // Assuming door.png exists
+  { word: "WINDOW", clue: "Pencere", file: "window.png" } // Assuming window.png exists
 ];
 
 interface Cell {
@@ -67,6 +67,12 @@ export default function CrosswordGame() {
   const [score, setScore] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [, setLocation] = useLocation();
+
+  // Background collage images
+  const collageImages = placedWords.map(pw => {
+      const vocab = vocabulary.find(v => v.word === pw.word);
+      return vocab?.file ? `/images/2.1/${vocab.file}` : null;
+  }).filter(Boolean) as string[];
 
   // Generate crossword
   const generateGrid = () => {
@@ -320,8 +326,25 @@ export default function CrosswordGame() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-[#f0f4f8] p-4 font-sans">
-        <div className="max-w-6xl mx-auto">
+      <div className="min-h-screen bg-[#f0f4f8] p-4 font-sans relative overflow-hidden">
+        {/* Background Collage */}
+        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none overflow-hidden">
+          <div className="grid grid-cols-4 md:grid-cols-6 gap-4 p-4 transform -rotate-12 scale-110">
+            {collageImages.map((src, i) => (
+              <div key={i} className="aspect-square bg-white p-2 rounded-lg shadow-sm">
+                 <img src={src} alt="" className="w-full h-full object-contain grayscale" />
+              </div>
+            ))}
+             {/* Repeat to fill screen if needed */}
+            {collageImages.length < 24 && collageImages.map((src, i) => (
+              <div key={`repeat-${i}`} className="aspect-square bg-white p-2 rounded-lg shadow-sm">
+                 <img src={src} alt="" className="w-full h-full object-contain grayscale" />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
           <div className="flex items-center justify-between mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
              <div className="flex items-center gap-4">
