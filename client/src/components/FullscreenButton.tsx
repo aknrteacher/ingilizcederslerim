@@ -13,7 +13,7 @@ export function FullscreenButton({ containerId }: FullscreenButtonProps) {
     const element = document.getElementById(containerId);
     if (!element) return;
 
-    const container = element.querySelector(".matching-game-container") as HTMLElement;
+    const container = (element.querySelector(".matching-game-container") || element) as HTMLElement;
     if (!container) return;
 
     if (!isFullscreen) {

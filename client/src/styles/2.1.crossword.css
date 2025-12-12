@@ -1,0 +1,53 @@
+
+#crossword-game.fullscreen-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: #f0f4f8;
+  padding: 24px;
+  margin: 0 !important;
+  border-radius: 0;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  overflow: hidden;
+}
+
+#crossword-game.fullscreen-active > div:first-child {
+  flex: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#crossword-game.fullscreen-active > div:last-child {
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+}
+
+#crossword-game.fullscreen-active .bg-white {
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  #crossword-game.fullscreen-active {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  #crossword-game.fullscreen-active > div:first-child {
+    flex: none;
+    height: auto;
+  }
+  
+  #crossword-game.fullscreen-active > div:last-child {
+    flex: none;
+    height: auto;
+  }
+}

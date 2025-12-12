@@ -6,6 +6,7 @@ import { ArrowLeft, Check, RefreshCw, HelpCircle, Trophy } from "lucide-react";
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import "../styles/2.1.crossword.css";
 
 // Vocabulary from 2.1 (School Life)
 const vocabulary = [
@@ -61,6 +62,7 @@ export default function CrosswordGame() {
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [placedWords, setPlacedWords] = useState<PlacedWord[]>([]);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
+  const [solvedWords, setSolvedWords] = useState<Set<string>>(new Set());
   const [isComplete, setIsComplete] = useState(false);
   const [score, setScore] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
@@ -177,6 +179,7 @@ export default function CrosswordGame() {
     setPlacedWords(placed.sort((a, b) => a.number - b.number));
     setStartTime(Date.now());
     setIsComplete(false);
+    setSolvedWords(new Set());
   };
 
   // Check if word can be placed
@@ -226,6 +229,46 @@ export default function CrosswordGame() {
     const newGrid = [...grid];
     newGrid[r][c].userChar = char;
     setGrid(newGrid);
+    
+    // Check for newly solved words
+    const newlySolved: string[] = [];
+    placedWords.forEach(pw => {
+        if (solvedWords.has(pw.id)) return;
+        
+        // Check if word is complete and correct
+        let isWordComplete = true;
+        let isWordCorrect = true;
+        
+        // We need to traverse the grid for this word
+        for (let k = 0; k < pw.word.length; k++) {
+             const rr = pw.direction === "across" ? pw.row : pw.row + k;
+             const cc = pw.direction === "across" ? pw.col + k : pw.col;
+             const cell = newGrid[rr][cc];
+             
+             if (!cell.userChar) {
+                 isWordComplete = false;
+                 break;
+             }
+             if (cell.userChar !== cell.char) {
+                 isWordCorrect = false;
+             }
+        }
+        
+        if (isWordComplete && isWordCorrect) {
+            newlySolved.push(pw.id);
+        }
+    });
+
+    if (newlySolved.length > 0) {
+        const newSolved = new Set(solvedWords);
+        newlySolved.forEach(id => newSolved.add(id));
+        setSolvedWords(newSolved);
+        
+        // Play sound
+        const audio = new Audio("/sounds/bell.mp3");
+        audio.volume = 0.5;
+        audio.play().catch(e => console.log("Audio play failed", e));
+    }
     
     // Check completion
     const allCorrect = placedWords.every(pw => {
@@ -367,7 +410,13 @@ export default function CrosswordGame() {
                             }}
                             className={`
                                 w-full h-full text-center text-lg font-bold uppercase bg-transparent border-none outline-none focus:bg-blue-50 relative z-0
-                                ${cell.userChar === cell.char && isComplete ? "text-green-600" : "text-slate-800"}
+                                ${
+                                  cell.userChar === "" 
+                                      ? "text-slate-800" 
+                                      : cell.userChar === cell.char 
+                                          ? "text-green-600" 
+                                          : "text-red-500"
+                                }
                             `}
                             autoComplete="off"
                           />
