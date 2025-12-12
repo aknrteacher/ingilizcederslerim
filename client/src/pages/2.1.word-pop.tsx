@@ -119,6 +119,7 @@ export default function WordPopGame() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [showTurkish, setShowTurkish] = useState(false);
+  const [usedWords, setUsedWords] = useState<string[]>([]);
   const gameAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
 
@@ -190,16 +191,18 @@ export default function WordPopGame() {
       return;
     }
 
-    const remaining = vocabulary.filter(v => v.word !== currentWord.word);
-    const next = remaining[Math.floor(Math.random() * remaining.length)];
+    const remaining = vocabulary.filter(v => !usedWords.includes(v.word) && v.word !== currentWord.word);
+    const pool = remaining.length > 0 ? remaining : vocabulary.filter(v => v.word !== currentWord.word);
+    const next = pool[Math.floor(Math.random() * pool.length)];
     setCurrentWord(next);
+    setUsedWords(prev => [...prev, next.word]);
     setShowTurkish(false);
     setWordsCompleted(prev => prev + 1);
     
     setTimeout(() => {
       spawnBalloons(next);
     }, 500);
-  }, [currentWord, wordsCompleted, spawnBalloons]);
+  }, [currentWord, wordsCompleted, usedWords, spawnBalloons]);
 
   const popBalloon = useCallback((balloon: Balloon) => {
     if (balloon.popped || gameOver || gameWon) return;
@@ -253,8 +256,10 @@ export default function WordPopGame() {
     setGameOver(false);
     setGameWon(false);
     setGameStarted(true);
+    setShowTurkish(false);
     const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
     setCurrentWord(randomWord);
+    setUsedWords([randomWord.word]);
     spawnBalloons(randomWord);
   }, [spawnBalloons]);
 
