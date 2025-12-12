@@ -327,23 +327,6 @@ export default function CrosswordGame() {
   return (
     <Layout>
       <div className="min-h-screen bg-[#f0f4f8] p-4 font-sans relative overflow-hidden">
-        {/* Background Collage */}
-        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none overflow-hidden">
-          <div className="grid grid-cols-4 md:grid-cols-6 gap-4 p-4 transform -rotate-12 scale-110">
-            {collageImages.map((src, i) => (
-              <div key={i} className="aspect-square bg-white p-2 rounded-lg shadow-sm">
-                 <img src={src} alt="" className="w-full h-full object-contain grayscale" />
-              </div>
-            ))}
-             {/* Repeat to fill screen if needed */}
-            {collageImages.length < 24 && collageImages.map((src, i) => (
-              <div key={`repeat-${i}`} className="aspect-square bg-white p-2 rounded-lg shadow-sm">
-                 <img src={src} alt="" className="w-full h-full object-contain grayscale" />
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="max-w-6xl mx-auto relative z-10">
           {/* Header */}
           <div className="flex items-center justify-between mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
@@ -392,19 +375,36 @@ export default function CrosswordGame() {
 
               <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex justify-center overflow-auto">
               <div 
-                className="grid gap-[2px] bg-slate-800 p-[2px] rounded-lg shadow-inner"
+                className="grid gap-[2px] p-[2px] rounded-lg shadow-inner relative overflow-hidden"
                 style={{ 
                   gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(30px, 40px))` 
                 }}
               >
+                {/* Background Collage inside the grid */}
+                <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden bg-slate-100">
+                  <div className="grid grid-cols-4 gap-2 p-2 transform rotate-3 scale-110 h-full w-full">
+                    {collageImages.map((src, i) => (
+                      <div key={i} className="aspect-square bg-white p-1 rounded shadow-sm opacity-80">
+                        <img src={src} alt="" className="w-full h-full object-contain" />
+                      </div>
+                    ))}
+                    {/* Repeat to ensure coverage */}
+                    {collageImages.map((src, i) => (
+                      <div key={`rep-${i}`} className="aspect-square bg-white p-1 rounded shadow-sm opacity-80">
+                        <img src={src} alt="" className="w-full h-full object-contain" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                 {grid.map((row, rIdx) => (
                   row.map((cell, cIdx) => (
                     <div 
                       key={`${rIdx}-${cIdx}`} 
                       className={`
-                        relative aspect-square flex items-center justify-center
-                        ${cell.isBlack ? "bg-slate-800" : "bg-white"}
-                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100" : ""}
+                        relative aspect-square flex items-center justify-center z-10
+                        ${cell.isBlack ? "bg-transparent" : "bg-white border border-slate-300 shadow-sm"}
+                        ${!cell.isBlack && selectedWordId && cell.partOfWords.includes(selectedWordId) ? "bg-yellow-100 ring-2 ring-yellow-300 border-yellow-300 z-20" : ""}
                       `}
                       onClick={() => {
                         if (!cell.isBlack && cell.partOfWords.length > 0) {
