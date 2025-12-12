@@ -156,7 +156,7 @@ export default function WordPopGame() {
         word: w,
         isCorrect: w === word.word,
         x: 10 + i * 22,
-        y: -30 - (i * 5),
+        y: 5 + (i * 3),
         styleIndex,
         popped: false,
         floatOffset: Math.random() * Math.PI * 2,
@@ -409,13 +409,13 @@ export default function WordPopGame() {
           </AnimatePresence>
 
           {/* Main Game Area - Card + Balloons side by side */}
-          <div className="flex-1 flex items-center gap-8 bg-gradient-to-b from-transparent to-green-200/30 rounded-xl p-6 min-h-[350px]">
+          <div className="flex-1 flex items-stretch gap-8 bg-gradient-to-b from-sky-100 to-green-200/30 rounded-xl p-6 min-h-[400px]">
             {/* Target Word Card */}
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="bg-white rounded-3xl shadow-xl p-4 border-4 border-blue-200 flex-shrink-0"
+              className="bg-white rounded-3xl shadow-xl p-4 border-4 border-blue-200 flex-shrink-0 self-center"
             >
               <div className="w-48 h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3">
                 <img 
@@ -438,7 +438,7 @@ export default function WordPopGame() {
             </motion.div>
 
             {/* Balloons Area */}
-            <div className="flex-1 relative overflow-hidden">
+            <div className="flex-1 relative overflow-visible min-h-[300px]">
               {!gameStarted && !gameOver && !gameWon && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Button
@@ -458,8 +458,9 @@ export default function WordPopGame() {
                   disabled={balloon.popped}
                   className={`absolute transform hover:scale-110 ${balloon.popped ? 'balloon-pop' : ''}`}
                   style={{ 
-                    left: `${10 + index * 22}%`,
-                    bottom: `${balloon.y}%`,
+                    left: `${5 + index * 23}%`,
+                    top: `${85 - balloon.y}%`,
+                    transform: 'translateY(-50%)',
                     transition: balloon.popped ? 'all 0.3s' : 'none',
                   }}
                   data-testid={`balloon-${balloon.word}`}
