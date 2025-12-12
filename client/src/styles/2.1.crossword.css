@@ -8,7 +8,7 @@
   width: 100vw;
   height: 100vh;
   z-index: 9999;
-  background: #f0f4f8;
+  background: transparent; /* Changed from solid color to transparent/handled by inner bg */
   padding: 24px;
   margin: 0 !important;
   border-radius: 0;
@@ -18,22 +18,31 @@
   overflow: hidden;
 }
 
+/* Ensure background is handled by React component */
+#crossword-game.fullscreen-active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #f0f9ff;
+  z-index: -2;
+}
+
 #crossword-game.fullscreen-active > div:first-child {
   flex: 2;
   height: 100%;
   display: flex;
   flex-direction: column;
+  z-index: 10;
 }
 
 #crossword-game.fullscreen-active > div:last-child {
   flex: 1;
   height: 100%;
   overflow: hidden;
+  z-index: 10;
 }
 
-#crossword-game.fullscreen-active .bg-white {
-  height: 100%;
-}
+/* Removed specific bg-white rule to avoid conflicts */
 
 @media (max-width: 1024px) {
   #crossword-game.fullscreen-active {

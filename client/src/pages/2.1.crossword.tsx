@@ -406,6 +406,20 @@ export default function CrosswordGame() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 relative" id="crossword-game">
             
+            {/* Fullscreen Background - Only visible in fullscreen */}
+            {isFullscreen && (
+              <div className="absolute inset-0 z-[-1] overflow-hidden bg-slate-100">
+                <div className="grid grid-cols-4 gap-4 p-4 transform -rotate-2 scale-105 h-full w-full opacity-100">
+                  {[...collageImages, ...collageImages, ...collageImages].map((src, i) => (
+                    <div key={`bg-fs-${i}`} className="aspect-square bg-white/40 p-2 rounded-xl shadow-lg" style={{ animationDelay: `${i * 0.2}s` }}>
+                      <img src={src} alt="" className="w-full h-full object-contain drop-shadow-md" />
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5"></div>
+              </div>
+            )}
+            
             {/* Fullscreen Close Button */}
             {isFullscreen && (
                <Button 
@@ -445,7 +459,7 @@ export default function CrosswordGame() {
               {/* Main container with light blur */}
               <div className="bg-white/30 backdrop-blur-[2px] p-4 rounded-2xl shadow-xl border border-white/40 flex justify-center items-center relative h-full">
               <div 
-                className="grid gap-[3px] p-2 rounded-xl relative w-full max-w-[85vh] aspect-square mx-auto"
+                className={`grid gap-[3px] p-2 rounded-xl relative w-full ${isFullscreen ? 'max-w-[95vh]' : 'max-w-[85vh]'} aspect-square mx-auto`}
                 style={{ 
                   gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)` 
                 }}
