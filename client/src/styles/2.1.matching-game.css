@@ -1,11 +1,22 @@
+/* PRIMARY SCHOOL - BLUE THEME */
+/* This file is for primary school games - uses BLUE color scheme */
+/* DO NOT use yellow/amber colors here - those are for preschool (0.1-matching-game.css) */
+
+/* Use class selector to ensure this only applies to primary school game */
+.primary-school-game.matching-game-wrapper,
 .matching-game-wrapper {
   width: 100%;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #eff6ff 100%) !important;
+  border-radius: 12px;
+  padding: 8px;
 }
 
 .matching-game-fullscreen {
   width: 100%;
 }
 
+/* Use class selector to ensure this only applies to primary school game */
+.primary-school-game .matching-game-container,
 .matching-game-container {
   display: flex;
   flex-direction: column;
@@ -13,7 +24,7 @@
   height: 100%;
   min-height: auto;
   padding: 12px;
-  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #eff6ff 100%) !important;
   overflow: hidden;
   position: relative;
   transition: all 0.3s ease;
@@ -21,6 +32,8 @@
   gap: 10px;
 }
 
+/* Use class selector to ensure this only applies to primary school game */
+.primary-school-game .matching-game-container.fullscreen-active,
 .matching-game-container.fullscreen-active {
   position: fixed;
   top: 0;
@@ -36,11 +49,14 @@
   overflow: hidden;
   margin: 0;
   gap: 8px;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #eff6ff 100%) !important;
 }
 
 @media (max-width: 768px) {
+  .primary-school-game .matching-game-container.fullscreen-active,
   .matching-game-container.fullscreen-active {
     padding: 12px;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #eff6ff 100%) !important;
   }
   
   .fullscreen-active .game-board {
@@ -85,7 +101,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: radial-gradient(circle at 20% 50%, rgba(255, 200, 100, 0.1) 0%, transparent 50%),
+  background-image: radial-gradient(circle at 20% 50%, rgba(96, 165, 250, 0.1) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(100, 150, 255, 0.1) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
@@ -318,17 +334,17 @@
 .egg-large-bg {
   width: 60vh;
   height: 75vh;
-  background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  border: 6px solid #ffd700;
-  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3), inset -4px -4px 20px rgba(0, 0, 0, 0.1);
+  border: 6px solid #60a5fa;
+  box-shadow: 0 10px 40px rgba(96, 165, 250, 0.3), inset -4px -4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   transition: all 0.5s ease;
 }
 
 /* Scale cracks for the large background egg */
 .egg-large-bg .egg-crack {
-  background: rgba(200, 160, 40, 0.6);
+  background: rgba(96, 165, 250, 0.8);
 }
 
 .background-egg-wrapper.egg-stage-1 .egg-large-bg { transform: translate(-50%, -50%) rotate(1deg); }
@@ -391,10 +407,10 @@
 .egg {
   width: clamp(60px, 10vw, 80px);
   height: clamp(75px, 12vw, 100px);
-  background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  border: 3px solid #ffd700;
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4), inset -2px -2px 8px rgba(0, 0, 0, 0.15);
+  border: 3px solid #60a5fa;
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.4), inset -2px -2px 8px rgba(0, 0, 0, 0.15);
   position: relative;
   animation: eggBounce 0.6s ease-in-out infinite;
 }
@@ -408,13 +424,13 @@
 .egg::after {
   content: "";
   position: absolute;
-  background: #d4af37;
+  background: #60a5fa;
 }
 
 /* Egg cracks - dynamic */
 .egg-crack {
   position: absolute;
-  background: rgba(212, 175, 55, 0.7);
+  background: rgba(96, 165, 250, 0.7);
   pointer-events: none;
 }
 
@@ -529,7 +545,7 @@
 }
 
 .egg-stage-3 {
-  background: linear-gradient(135deg, rgba(255, 245, 225, 0.6) 0%, rgba(255, 228, 181, 0.6) 100%);
+  background: linear-gradient(135deg, rgba(224, 242, 254, 0.6) 0%, rgba(186, 230, 253, 0.6) 100%);
 }
 
 .hatch-progress {
@@ -581,6 +597,10 @@
   margin-bottom: 8px;
   min-height: auto;
   overflow: hidden;
+  background: rgba(219, 234, 254, 0.3);
+  border-radius: 12px;
+  padding: 12px;
+  position: relative;
 }
 
 .fullscreen-active .game-board {
@@ -816,6 +836,12 @@
   align-items: center;
   justify-content: center;
   z-index: 200;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%) !important;
+}
+
+.win-modal ~ .hatching-sequence,
+.win-modal .hatching-sequence {
+  display: none !important;
 }
 
 .hatching-background {
@@ -824,8 +850,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%) !important;
   animation: bgFadeIn 0.5s ease;
+  z-index: 199;
 }
 
 @keyframes bgFadeIn {
@@ -836,10 +863,10 @@
 .egg-large {
   width: 200px;
   height: 280px;
-  background: linear-gradient(135deg, #fff5e1 0%, #ffe4b5 100%);
+  background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 50%, #60a5fa 100%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  border: 4px solid #ffd700;
-  box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5), inset -4px -4px 15px rgba(0, 0, 0, 0.15);
+  border: 4px solid #3b82f6;
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.6), 0 0 80px rgba(59, 130, 246, 0.4), inset -4px -4px 15px rgba(0, 0, 0, 0.15);
   position: relative;
   animation: eggEnlarge 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   z-index: 201;
@@ -858,7 +885,7 @@
 
 .egg-large .egg-crack {
   position: absolute;
-  background: rgba(212, 175, 55, 0.8);
+  background: rgba(96, 165, 250, 0.8);
 }
 
 .egg-large .egg-crack-1 {
@@ -938,7 +965,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  border: 4px solid #ffd700;
+  border: 4px solid #60a5fa;
   animation: shatterPulse 0.6s ease 3.0s forwards;
   opacity: 0;
 }
@@ -990,12 +1017,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.98) 0%, rgba(59, 130, 246, 0.96) 50%, rgba(96, 165, 250, 0.94) 100%) !important;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 210;
   animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
 }
 
 @keyframes fadeIn {

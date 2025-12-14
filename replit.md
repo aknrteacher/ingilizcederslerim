@@ -1,8 +1,8 @@
-# LinguaLearn - English Learning Platform
+# Ingilizce Derslerim - English Learning Platform
 
 ## Overview
 
-LinguaLearn is an interactive English learning platform designed for Turkish-speaking students across multiple educational levels (pre-school through business English). The application provides vocabulary flashcards, educational games (matching, crossword, spell quest, word pop), and structured learning paths organized by grade level and thematic units.
+Ingilizce Derslerim is an interactive English learning platform designed for Turkish-speaking students across multiple educational levels (pre-school through business English). The application provides vocabulary flashcards, educational games (matching, crossword, spell quest, word pop), and structured learning paths organized by grade level and thematic units.
 
 ## User Preferences
 

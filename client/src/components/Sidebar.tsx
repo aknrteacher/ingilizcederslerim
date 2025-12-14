@@ -97,6 +97,61 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   // Stack for nested menus
   const [menuStack, setMenuStack] = React.useState<{ title: string, items: NavItem[], theme?: LevelTheme }[]>([])
 
+  // Function to find menu path based on current location
+  const findMenuPathForLocation = React.useCallback((path: string): { title: string, items: NavItem[], theme?: LevelTheme }[] => {
+    const stack: { title: string, items: NavItem[], theme?: LevelTheme }[] = []
+
+    // Recursive function to find the matching path and build the stack
+    const findPathRecursive = (items: NavItem[], currentPath: { title: string, items: NavItem[], theme?: LevelTheme }[] = [], parentTheme?: LevelTheme): boolean => {
+      for (const item of items) {
+        // Check if this item's href matches the path
+        if (item.href && path.startsWith(item.href)) {
+          // Found a match - add current path to stack (all parent menus)
+          stack.push(...currentPath)
+          return true
+        }
+
+        // Check nested items recursively
+        if (item.items) {
+          // Add current item to the path before checking children
+          const newPath = [...currentPath, {
+            title: item.title,
+            items: item.items,
+            theme: item.theme || parentTheme
+          }]
+          const hasMatch = findPathRecursive(item.items, newPath, item.theme || parentTheme)
+          if (hasMatch) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+
+    // Start searching from top-level nav items
+    findPathRecursive(navItems)
+
+    return stack
+  }, [])
+
+  // Initialize menu stack based on current location
+  React.useEffect(() => {
+    if (location && location !== '/') {
+      const path = findMenuPathForLocation(location)
+      if (path.length > 0) {
+        setMenuStack(path)
+        // Set theme if found
+        const lastMenu = path[path.length - 1]
+        if (lastMenu.theme) {
+          setCurrentTheme(lastMenu.theme)
+        }
+      }
+    } else {
+      // Reset to main menu on home page
+      setMenuStack([])
+    }
+  }, [location, findMenuPathForLocation, setCurrentTheme])
+
   const handleLevelClick = (theme: LevelTheme) => {
     setCurrentTheme(theme)
     onItemClick?.()

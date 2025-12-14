@@ -55,10 +55,18 @@ export default function Oyunlar() {
       theme: 1,
       path: "/primary-school/grade-2/theme-1/word-pop",
     },
+    {
+      id: "2.1.catch-that",
+      title: "Catch That",
+      description: "Move the basket to catch the correct falling words. Don't miss them!",
+      icon: "🎯",
+      grade: 2,
+      theme: 1,
+      path: "/primary-school/grade-2/theme-1/catch-that",
+    },
   ];
 
   const grade2Theme1Games = games.filter((g) => g.grade === 2 && g.theme === 1);
-  const preSchoolMenuPath = "/oyunlar/okul-oncesi";
 
   return (
     <Layout>
@@ -115,83 +123,6 @@ export default function Oyunlar() {
           )}
         </section>
 
-        {/* Pre-School & 1st Grade */}
-        <section className="games-section">
-          <div className="section-header">
-            <h2 className="section-title">Okul Öncesi & 1. Sınıf</h2>
-            <p className="section-description">
-              Renkler ve temel kavramları öğren ve oyunlarla eğlen
-            </p>
-          </div>
-
-          <div className="games-grid">
-            <a
-              href={preSchoolMenuPath}
-              className="game-link"
-              data-testid="card-preschool-menu"
-            >
-              <Card className="game-card">
-                <CardHeader>
-                  <div className="game-header-content">
-                    <span className="game-icon">🎮</span>
-                    <CardTitle className="game-title">Okul Öncesi Oyunları</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <CardDescription className="game-description">
-                    Okul öncesi seviyesi için hazırlanmış oyunları keşfet
-                  </CardDescription>
-                  <div className="game-button" data-testid="button-play-preschool">
-                    Gir <ArrowRight className="ml-2 h-4 w-4" />
-                  </div>
-                </CardContent>
-              </Card>
-            </a>
-          </div>
-        </section>
-
-        {/* Coming Soon Section */}
-        <section className="games-section">
-          <div className="section-header">
-            <h2 className="section-title">Yakında Gelecek</h2>
-          </div>
-
-          <div className="coming-soon-grid">
-            {[
-              {
-                title: "Kelime Bulmaca",
-                grade: 2,
-                theme: 1,
-              },
-              {
-                title: "Konuşma Pratiği",
-                grade: 2,
-                theme: 1,
-              },
-              {
-                title: "Yazma Egzersizleri",
-                grade: 2,
-                theme: 1,
-              },
-            ].map((item, idx) => (
-              <Card
-                key={idx}
-                className="coming-soon-card"
-                data-testid={`card-coming-soon-${idx}`}
-              >
-                <CardHeader>
-                  <CardTitle className="text-lg">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="coming-soon-badge">Yakında</div>
-                  <p className="text-xs text-muted-foreground mt-2">
-                    {item.grade}. Sınıf - Tema {item.theme}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
       </div>
     </Layout>
   );

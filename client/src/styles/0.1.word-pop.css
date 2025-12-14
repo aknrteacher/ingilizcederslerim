@@ -1,0 +1,187 @@
+.word-pop-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.word-pop-container.fullscreen-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 1920px) {
+  .word-pop-container.fullscreen-mode {
+    padding: clamp(16px, 2vw, 24px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .word-pop-container.fullscreen-mode {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .word-pop-container.fullscreen-mode {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .word-pop-container.fullscreen-mode {
+    padding: 8px;
+  }
+}
+
+/* Fullscreen - Larger Picture Cards */
+.word-pop-container.fullscreen-mode .bg-amber-50.rounded-2xl {
+  width: clamp(200px, 20vw, 280px) !important;
+  height: clamp(200px, 20vw, 280px) !important;
+  min-width: clamp(200px, 20vw, 280px) !important;
+  min-height: clamp(200px, 20vw, 280px) !important;
+}
+
+.word-pop-container.fullscreen-mode .bg-amber-50 img {
+  width: clamp(180px, 18vw, 250px) !important;
+  height: clamp(180px, 18vw, 250px) !important;
+  min-width: clamp(180px, 18vw, 250px) !important;
+  min-height: clamp(180px, 18vw, 250px) !important;
+}
+
+/* Fullscreen - Larger Balloons - Round and Heart shapes (w-32 h-32) */
+.word-pop-container.fullscreen-mode button[data-testid^="balloon-"] > div > div.rounded-full,
+.word-pop-container.fullscreen-mode button[data-testid^="balloon-"] > div > div[style*="clipPath"][style*="M64 120"] {
+  width: clamp(140px, 14vw, 220px) !important;
+  height: clamp(140px, 14vw, 220px) !important;
+  min-width: clamp(140px, 14vw, 220px) !important;
+  min-height: clamp(140px, 14vw, 220px) !important;
+}
+
+/* Fullscreen - Larger Balloons - Star shape (w-36 h-36) - Make bigger for long words */
+.word-pop-container.fullscreen-mode button[data-testid^="balloon-"] > div > div[style*="polygon(50%"] {
+  width: clamp(160px, 16vw, 250px) !important;
+  height: clamp(160px, 16vw, 250px) !important;
+  min-width: clamp(160px, 16vw, 250px) !important;
+  min-height: clamp(160px, 16vw, 250px) !important;
+}
+
+/* Fullscreen - Larger Balloons - Oval shape (w-24 h-36) */
+.word-pop-container.fullscreen-mode button[data-testid^="balloon-"] > div > div.rounded-\[50\%\] {
+  width: clamp(110px, 11vw, 170px) !important;
+  height: clamp(160px, 16vw, 240px) !important;
+  min-width: clamp(110px, 11vw, 170px) !important;
+  min-height: clamp(160px, 16vw, 240px) !important;
+}
+
+/* Fullscreen - Larger Balloon Text */
+.word-pop-container.fullscreen-mode .balloon-wiggle span {
+  font-size: clamp(1.25rem, 1.8vw, 2rem) !important;
+  padding: clamp(0.5rem, 0.8vw, 0.75rem) !important;
+  line-height: 1.2 !important;
+}
+
+/* Fullscreen - Better text handling for star-shaped balloons with long words */
+.word-pop-container.fullscreen-mode button[data-testid^="balloon-"] > div > div[style*="polygon(50%"] span {
+  font-size: clamp(1rem, 1.5vw, 1.5rem) !important;
+  padding: clamp(0.5rem, 0.8vw, 1rem) clamp(0.25rem, 0.4vw, 0.5rem) !important;
+  line-height: 1.1 !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
+  max-width: 90% !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+/* Fullscreen - Larger Balloon String */
+.word-pop-container.fullscreen-mode .balloon-wiggle ~ div {
+  height: clamp(40px, 4vw, 60px) !important;
+  width: clamp(2px, 0.25vw, 4px) !important;
+}
+
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(10px);
+  }
+}
+
+@keyframes cloud-float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+}
+
+.cloud-float {
+  animation: cloud-float 4s ease-in-out infinite;
+}
+
+.cloud-float-delayed {
+  animation: cloud-float-delayed 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes balloon-wiggle {
+  0%, 100% {
+    transform: rotate(-2deg) translateX(0);
+  }
+  25% {
+    transform: rotate(2deg) translateX(4px);
+  }
+  50% {
+    transform: rotate(-1deg) translateX(-3px);
+  }
+  75% {
+    transform: rotate(3deg) translateX(2px);
+  }
+}
+
+.balloon-wiggle {
+  animation: balloon-wiggle 2.5s ease-in-out infinite;
+}
+
+@keyframes balloon-float-0 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes balloon-float-1 {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes balloon-float-2 {
+  0%, 100% { transform: translateY(-10px); }
+  50% { transform: translateY(5px); }
+}
+
+@keyframes balloon-float-3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.balloon-pop {
+  opacity: 0 !important;
+  transform: scale(1.5) !important;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .word-pop-container {
+    min-height: calc(100vh - 80px);
+  }
+}

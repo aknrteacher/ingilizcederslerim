@@ -4,6 +4,9 @@
   padding: 1rem;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 .spell-quest-colors-wrapper::before {
@@ -24,6 +27,11 @@
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
 }
 
 /* Header */
@@ -39,6 +47,7 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .spell-quest-colors-wrapper .header-left {
@@ -128,7 +137,25 @@
   padding: 2rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   position: relative;
-  min-height: 500px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .game-main,
+.spell-quest-container.fullscreen-active .game-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  align-items: stretch;
+  overflow: hidden;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(1rem, 2vw, 2rem);
 }
 
 /* Picture Area */
@@ -137,7 +164,22 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .picture-area,
+.spell-quest-container.fullscreen-active .picture-area {
+  grid-column: 1;
+  grid-row: 1;
+  margin-bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(0.5rem, 1vw, 1rem);
 }
 
 .spell-quest-colors-wrapper .picture-card {
@@ -217,6 +259,29 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  flex: 1;
+  min-height: 0;
+  justify-content: flex-start;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .spelling-area,
+.spell-quest-container.fullscreen-active .spelling-area {
+  grid-column: 2;
+  grid-row: 1;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  padding-bottom: 0;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: clamp(0.5rem, 1vw, 1rem);
+  width: 100%;
 }
 
 /* Answer Slots */
@@ -225,6 +290,13 @@
   gap: 0.5rem;
   justify-content: center;
   flex-wrap: wrap;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .answer-slots {
+  margin-bottom: clamp(0.5rem, 1vw, 1rem);
 }
 
 .spell-quest-colors-wrapper .answer-slot {
@@ -292,6 +364,9 @@
   background: linear-gradient(135deg, #fffbeb, #fef3c7);
   border-radius: 1rem;
   border: 2px solid #fde68a;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .spell-quest-colors-wrapper .letter-tile {
@@ -487,6 +562,7 @@
   padding: 1rem 1.5rem;
   border-radius: 1rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .spell-quest-colors-wrapper .footer-buttons {
@@ -524,34 +600,55 @@
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .spell-quest-colors-wrapper {
+    padding: 0.75rem;
+  }
+  
   .spell-quest-colors-wrapper .game-header {
     flex-direction: column;
     text-align: center;
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+  
+  .spell-quest-colors-wrapper .game-stats {
+    width: 100%;
+    justify-content: space-around;
   }
   
   .spell-quest-colors-wrapper .game-main {
     padding: 1.5rem 1rem;
+    min-height: auto;
+  }
+  
+  .spell-quest-colors-wrapper .picture-area {
+    margin-bottom: 1.5rem;
   }
   
   .spell-quest-colors-wrapper .word-image {
-    width: 120px;
-    height: 120px;
+    width: clamp(100px, 30vw, 140px);
+    height: clamp(100px, 30vw, 140px);
   }
   
   .spell-quest-colors-wrapper .answer-slot {
-    width: 40px;
-    height: 50px;
+    width: clamp(35px, 8vw, 50px);
+    height: clamp(45px, 10vw, 60px);
   }
   
   .spell-quest-colors-wrapper .slot-letter {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 4vw, 1.5rem);
   }
   
   .spell-quest-colors-wrapper .letter-tile {
-    width: 45px;
-    height: 55px;
-    font-size: 1.5rem;
+    width: clamp(40px, 9vw, 55px);
+    height: clamp(50px, 11vw, 65px);
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+  }
+  
+  .spell-quest-colors-wrapper .letter-bank {
+    padding: 0.75rem;
+    gap: 0.5rem;
   }
   
   .spell-quest-colors-wrapper .final-stats {
@@ -561,6 +658,53 @@
   
   .spell-quest-colors-wrapper .game-footer {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .spell-quest-colors-wrapper .footer-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .spell-quest-colors-wrapper {
+    padding: 0.5rem;
+  }
+  
+  .spell-quest-colors-wrapper .game-header {
+    padding: 0.75rem;
+  }
+  
+  .spell-quest-colors-wrapper .game-title {
+    font-size: 1.25rem;
+  }
+  
+  .spell-quest-colors-wrapper .game-main {
+    padding: 1rem 0.75rem;
+  }
+  
+  .spell-quest-colors-wrapper .word-image {
+    width: clamp(90px, 35vw, 120px);
+    height: clamp(90px, 35vw, 120px);
+  }
+  
+  .spell-quest-colors-wrapper .answer-slot {
+    width: clamp(32px, 7vw, 45px);
+    height: clamp(40px, 9vw, 55px);
+  }
+  
+  .spell-quest-colors-wrapper .letter-tile {
+    width: clamp(38px, 8vw, 50px);
+    height: clamp(48px, 10vw, 60px);
+  }
+  
+  .spell-quest-colors-wrapper .stat-item {
+    padding: 0.4rem 0.75rem;
+  }
+  
+  .spell-quest-colors-wrapper .stat-value {
+    font-size: 0.8rem;
   }
 }
 
@@ -572,26 +716,179 @@
   right: 0;
   bottom: 0;
   z-index: 9999;
-  padding: 2rem;
-  overflow-y: auto;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  box-sizing: border-box;
 }
 
 .spell-quest-colors-wrapper.fullscreen-active .spell-quest-container {
-  max-width: 1000px;
+  max-width: min(1000px, 95vw);
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
-.spell-quest-colors-wrapper.fullscreen-active .word-image {
-  width: 200px;
-  height: 200px;
+.spell-quest-colors-wrapper.fullscreen-active .game-header {
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
 }
 
-.spell-quest-colors-wrapper.fullscreen-active .answer-slot {
-  width: 60px;
-  height: 70px;
+.spell-quest-colors-wrapper.fullscreen-active .game-main {
+  padding: clamp(1rem, 2vw, 2rem);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  max-height: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
 }
 
-.spell-quest-colors-wrapper.fullscreen-active .letter-tile {
-  width: 65px;
-  height: 75px;
-  font-size: 2rem;
+.spell-quest-colors-wrapper.fullscreen-active .picture-area {
+  margin-bottom: 0;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .picture-card,
+.spell-quest-container.fullscreen-active .picture-card {
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .word-image,
+.spell-quest-container.fullscreen-active .word-image {
+  width: clamp(280px, 28vw, 400px);
+  height: clamp(280px, 28vw, 400px);
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .spelling-area {
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .answer-slot,
+.spell-quest-container.fullscreen-active .answer-slot {
+  width: clamp(52px, 5.25vw, 75px);
+  height: clamp(62px, 6.25vw, 85px);
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .slot-letter,
+.spell-quest-container.fullscreen-active .slot-letter {
+  font-size: clamp(1.3rem, 2.15vw, 2rem);
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .letter-tile,
+.spell-quest-container.fullscreen-active .letter-tile {
+  width: clamp(75px, 7.5vw, 105px);
+  height: clamp(85px, 8.5vw, 115px);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .letter-bank {
+  padding: clamp(0.75rem, 1.5vw, 1rem);
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.spell-quest-colors-wrapper.fullscreen-active .game-footer {
+  margin-top: clamp(0.75rem, 1.5vw, 1rem);
+  padding: clamp(0.75rem, 1.5vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+  flex-shrink: 0;
+}
+
+@media (min-width: 1920px) {
+  .spell-quest-colors-wrapper.fullscreen-active .spell-quest-container {
+    max-width: 1200px;
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .word-image,
+  .spell-quest-container.fullscreen-active .word-image {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .spell-quest-colors-wrapper.fullscreen-active {
+    padding: 0.5rem;
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .game-main {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .word-image,
+  .spell-quest-container.fullscreen-active .word-image {
+    width: clamp(240px, 24vw, 300px);
+    height: clamp(240px, 24vw, 300px);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .answer-slot,
+  .spell-quest-container.fullscreen-active .answer-slot {
+    width: clamp(50px, 5vw, 70px);
+    height: clamp(60px, 6vw, 80px);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .letter-tile,
+  .spell-quest-container.fullscreen-active .letter-tile {
+    width: clamp(70px, 7vw, 95px);
+    height: clamp(80px, 8vw, 105px);
+  }
+}
+
+@media (max-width: 768px) {
+  .spell-quest-colors-wrapper.fullscreen-active {
+    padding: 0.5rem;
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .game-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .picture-area {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .spelling-area {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .word-image,
+  .spell-quest-container.fullscreen-active .word-image {
+    width: clamp(180px, 25vw, 220px);
+    height: clamp(180px, 25vw, 220px);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .answer-slot,
+  .spell-quest-container.fullscreen-active .answer-slot {
+    width: clamp(48px, 6vw, 62px);
+    height: clamp(58px, 7.5vw, 72px);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .letter-tile,
+  .spell-quest-container.fullscreen-active .letter-tile {
+    width: clamp(65px, 8vw, 85px);
+    height: clamp(75px, 9vw, 95px);
+  }
+  
+  .spell-quest-colors-wrapper.fullscreen-active .game-main {
+    padding: clamp(0.75rem, 1.5vw, 1rem);
+    overflow-y: auto;
+  }
 }
