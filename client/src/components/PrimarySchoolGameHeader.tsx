@@ -23,6 +23,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                       element.querySelector(".spell-quest-container") ||
                       element.querySelector(".word-pop-container") ||
                       element.querySelector(".color-catch-container") ||
+                      element.querySelector(".catch-that-container") ||
                       element.querySelector(".max-w-6xl") ||
                       element) as HTMLElement;
     
@@ -49,12 +50,20 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
       gameMain.style.transition = "transform 0.2s ease";
     }
     
-    // For word pop and color catch, scale the main game area
+    // For word pop, color catch, and catch-that, scale the main game area
     const mainGameArea = container.querySelector('.flex-1.flex') as HTMLElement;
-    if (mainGameArea && (container.classList.contains('word-pop-container') || container.classList.contains('color-catch-container'))) {
+    if (mainGameArea && (container.classList.contains('word-pop-container') || container.classList.contains('color-catch-container') || container.classList.contains('catch-that-container'))) {
       mainGameArea.style.transform = `scale(${scaleValue})`;
       mainGameArea.style.transformOrigin = "top center";
       mainGameArea.style.transition = "transform 0.2s ease";
+    }
+    
+    // For catch-that, also scale the game play area specifically
+    const gamePlayArea = container.querySelector('.flex-1.relative.overflow-hidden') as HTMLElement;
+    if (gamePlayArea && container.classList.contains('catch-that-container')) {
+      gamePlayArea.style.transform = `scale(${scaleValue})`;
+      gamePlayArea.style.transformOrigin = "top center";
+      gamePlayArea.style.transition = "transform 0.2s ease";
     }
     
     // For crossword, scale the grid area
@@ -89,6 +98,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                       element.querySelector(".spell-quest-container") ||
                       element.querySelector(".word-pop-container") ||
                       element.querySelector(".color-catch-container") ||
+                      element.querySelector(".catch-that-container") ||
                       element.querySelector(".max-w-6xl") ||
                       element) as HTMLElement;
     if (!container) return;
@@ -141,6 +151,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                         element.querySelector(".spell-quest-container") ||
                         element.querySelector(".word-pop-container") ||
                         element.querySelector(".color-catch-container") ||
+                        element.querySelector(".catch-that-container") ||
                         element.querySelector(".max-w-6xl") ||
                         element) as HTMLElement;
       

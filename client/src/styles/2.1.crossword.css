@@ -1,3 +1,116 @@
+/* Primary School Crossword Game Wrapper */
+.crossword-game-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.crossword-game-wrapper.primary-school-game {
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+}
+
+.crossword-game-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Background Collage - Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+}
+
+/* Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card-inner {
+  width: 100%;
+  height: 100%;
+  background: rgba(219, 234, 254, 0.85);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  animation: floatCard 6s ease-in-out infinite;
+  border: 2px solid rgba(96, 165, 250, 0.3);
+}
+
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.3), rgba(147, 197, 253, 0.4));
+  pointer-events: none;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+/* Cloud animations */
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(10px);
+  }
+}
+
+@keyframes cloud-float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+}
+
+.crossword-game-wrapper .cloud-float {
+  animation: cloud-float 4s ease-in-out infinite;
+}
+
+.crossword-game-wrapper .cloud-float-delayed {
+  animation: cloud-float-delayed 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* Custom scrollbar for clues */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
 
 #crossword-game.fullscreen-active {
   position: fixed;
@@ -24,7 +137,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: #f0f9ff;
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
   z-index: -2;
 }
 
@@ -49,6 +162,43 @@
   grid-column: 1 / -1;
   grid-row: 2;
   z-index: 10;
+}
+
+/* Bigger clue text in fullscreen mode */
+#crossword-game.fullscreen-active #crossword-clues-area h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ACROSS / DOWN section headers */
+#crossword-game.fullscreen-active #crossword-clues-area h4.text-sm.font-black {
+  font-size: 1.75rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Clue list items - make them bigger */
+#crossword-game.fullscreen-active #crossword-clues-area li {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Clue number (e.g., "1.", "2.") */
+#crossword-game.fullscreen-active #crossword-clues-area li span.font-bold.text-sm {
+  font-size: 3rem;
+  min-width: 3rem;
+}
+
+/* Actual clue text (e.g., "Cuma", "Bahçe") - Make it much bigger */
+#crossword-game.fullscreen-active #crossword-clues-area li span.text-sm.font-medium {
+  font-size: 3rem !important;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Active clue banner text bigger in fullscreen */
+#crossword-game.fullscreen-active .text-lg {
+  font-size: 2rem;
 }
 
 @media (max-width: 1024px) {

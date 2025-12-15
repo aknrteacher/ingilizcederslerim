@@ -10,26 +10,51 @@ import "@/styles/2.1.crossword.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Vocabulary from 2.1 (School Life)
+// Vocabulary from 2.2 (Classroom Life) - convert multi-word to single word for crossword
 const vocabulary = [
-  { word: "HELLO", clue: "Merhaba", file: "hello.png" },
-  { word: "GOODBYE", clue: "Hoşça kalın", file: "goodbye.png" },
-  { word: "SCHOOL", clue: "Okul", file: "school.png" },
-  { word: "CLASSROOM", clue: "Sınıf", file: "classroom.png" },
-  { word: "LIBRARY", clue: "Kütüphane", file: "library.png" },
-  { word: "CANTEEN", clue: "Kafeterya", file: "canteen.png" },
-  { word: "GARDEN", clue: "Bahçe", file: "garden.png" },
-  { word: "TEACHER", clue: "Öğretmen", file: "teacher.png" },
-  { word: "STUDENT", clue: "Öğrenci", file: "student.png" },
-  { word: "FRIEND", clue: "Arkadaş", file: "friend.png" },
-  { word: "DAY", clue: "Gün", file: "day.png" },
-  { word: "WEEK", clue: "Hafta", file: "week.png" },
-  { word: "MONDAY", clue: "Pazartesi", file: "Monday.png" },
-  { word: "FRIDAY", clue: "Cuma", file: "Friday.png" },
-  { word: "SUNDAY", clue: "Pazar", file: "Sunday.png" },
-  { word: "WHAT", clue: "Ne", file: "what.png" },
-  { word: "WHERE", clue: "Nerede", file: "where.png" },
-  { word: "WHO", clue: "Kim", file: "who.png" },
+  { word: "COLOUR", clue: "Renk", file: "colour.png" },
+  { word: "YELLOW", clue: "Sarı", file: "yellow.png" },
+  { word: "BLUE", clue: "Mavi", file: "blue.png" },
+  { word: "RED", clue: "Kırmızı", file: "red.png" },
+  { word: "GREEN", clue: "Yeşil", file: "green.png" },
+  { word: "PURPLE", clue: "Mor", file: "purple.png" },
+  { word: "PINK", clue: "Pembe", file: "pink.png" },
+  { word: "BROWN", clue: "Kahverengi", file: "brown.png" },
+  { word: "ORANGE", clue: "Turuncu", file: "orange.png" },
+  { word: "BLACK", clue: "Siyah", file: "black.png" },
+  { word: "WHITE", clue: "Beyaz", file: "white.png" },
+  { word: "WATCH", clue: "İzle", file: "watch.png" },
+  { word: "LISTEN", clue: "Dinle", file: "listen.png" },
+  { word: "WRITE", clue: "Yaz", file: "write.png" },
+  { word: "RAISE", clue: "Kaldır", file: "raise.png" },
+  { word: "HAND", clue: "El", file: "hand.png" },
+  { word: "OPEN", clue: "Aç", file: "open.png" },
+  { word: "CLOSE", clue: "Kapat", file: "close.png" },
+  { word: "REPEAT", clue: "Tekrarla", file: "repeat.png" },
+  { word: "STANDUP", clue: "Ayağa kalk", file: "stand_up.png" },
+  { word: "SITDOWN", clue: "Otur", file: "sit_down.png" },
+  { word: "HURRYUP", clue: "Acele et", file: "hurry_up.png" },
+  { word: "BEQUIET", clue: "Sessiz ol", file: "be_quiet.png" },
+  { word: "LOOK", clue: "Bak", file: "look.png" },
+  { word: "COME", clue: "Gel", file: "come.png" },
+  { word: "GO", clue: "Git", file: "go.png" },
+  { word: "POINT", clue: "Göster", file: "point.png" },
+  { word: "MATCH", clue: "Eşleştir", file: "match.png" },
+  { word: "TABLE", clue: "Masa", file: "table.png" },
+  { word: "PENCIL", clue: "Kalem", file: "pencil.png" },
+  { word: "PENCILCASE", clue: "Kalem kutusu", file: "pencil_case.png" },
+  { word: "BOOK", clue: "Kitap", file: "book.png" },
+  { word: "BOOKSHELF", clue: "Kitaplık", file: "bookshelf.png" },
+  { word: "BAG", clue: "Çanta", file: "bag.png" },
+  { word: "NOTEBOOK", clue: "Defter", file: "notebook.png" },
+  { word: "ERASER", clue: "Silgi", file: "eraser.png" },
+  { word: "SHARPENER", clue: "Açacak", file: "sharpener.png" },
+  { word: "CRAYON", clue: "Pastel boya", file: "crayon.png" },
+  { word: "BOARD", clue: "Tahta", file: "board.png" },
+  { word: "WINDOW", clue: "Pencere", file: "window.png" },
+  { word: "DESK", clue: "Sıra", file: "desk.png" },
+  { word: "DOOR", clue: "Kapı", file: "door.png" },
+  { word: "CHAIR", clue: "Sandalye", file: "chair.png" },
 ];
 
 interface Cell {
@@ -55,7 +80,7 @@ interface PlacedWord {
 
 const GRID_SIZE = 16;
 
-export default function CrosswordGame() {
+export default function CrosswordGame2_2() {
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [placedWords, setPlacedWords] = useState<PlacedWord[]>([]);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
@@ -78,7 +103,7 @@ export default function CrosswordGame() {
   // Background collage images
   const collageImages = placedWords.map(pw => {
       const vocab = vocabulary.find(v => v.word === pw.word);
-      return vocab?.file ? `/images/2.1/${vocab.file}` : null;
+      return vocab?.file ? `/images/2.2/${vocab.file}` : null;
   }).filter(Boolean) as string[];
 
   const speakWord = (word: string) => {
@@ -90,10 +115,10 @@ export default function CrosswordGame() {
 
 
   const shareGame = () => {
-    const text = `I just solved the School Life Word Cross! Can you beat it? 🧩`;
+    const text = `I just solved the Classroom Life Word Cross! Can you beat it? 🧩`;
     if (navigator.share) {
       navigator.share({
-        title: "Word Cross - School Life",
+        title: "Word Cross - Classroom Life",
         text: text,
         url: window.location.href,
       });
@@ -103,7 +128,7 @@ export default function CrosswordGame() {
   };
 
   const challengeFriend = () => {
-    const text = `I challenge you to solve this School Life Word Cross puzzle! 🏆`;
+    const text = `I challenge you to solve this Classroom Life Word Cross puzzle! 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Word Cross Challenge",
@@ -397,7 +422,7 @@ export default function CrosswordGame() {
 
             <PrimarySchoolGameHeader 
               gameName="Word Cross"
-              description="2nd Grade - Theme 1: School Life"
+              description="2nd Grade - Theme 2: Classroom Life"
               containerId="crossword-game-wrapper"
               icon="🧩"
             />
@@ -601,7 +626,7 @@ export default function CrosswordGame() {
                   <Button onClick={generateGrid} variant="outline" className="footer-button">
                     <RefreshCw className="h-4 w-4" /> New Game
                   </Button>
-                  <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                  <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-2/games")}>
                     ← Back
                   </Button>
                 </div>
@@ -648,7 +673,7 @@ export default function CrosswordGame() {
                     <Button onClick={generateGrid} size="lg" className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-200">
                       Play Again
                     </Button>
-                    <Button onClick={() => setLocation("/primary-school/grade-2/theme-1/games")} variant="ghost" size="lg" className="w-full text-slate-600 hover:bg-slate-50 rounded-xl">
+                    <Button onClick={() => setLocation("/primary-school/grade-2/theme-2/games")} variant="ghost" size="lg" className="w-full text-slate-600 hover:bg-slate-50 rounded-xl">
                       Back to Games
                     </Button>
                   </div>

@@ -8,35 +8,48 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import VocabularyCards from "@/pages/primary/grade2/theme1/vocab/2.1.voc";
+import VocabularyCards2_2 from "@/pages/primary/grade2/theme2/vocab/2.2.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/colours/0.1.voc";
 import PreSchoolVocabMenu from "@/pages/preschool/vocab/colours/pre-school-vocab-menu";
-import Oyunlar from "@/pages/oyunlar";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
+import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
+import PrimarySchoolGrade2Theme2GamesMenu from "@/pages/primary-school-grade2-theme2-games-menu";
 import MatchingGame from "@/pages/primary/grade2/theme1/games/2.1.matching-game";
+import MatchingGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.matching-game";
 import ColorsMatchingGame from "@/pages/preschool/games/colours/0.1.matching-game";
 import ColorsCrosswordGame from "@/pages/preschool/games/colours/0.1.crossword";
 import ColorsSpellQuestGame from "@/pages/preschool/games/colours/0.1.spell-quest";
 import ColorsWordPopGame from "@/pages/preschool/games/colours/0.1.word-pop";
 import ColorsCatchGame from "@/pages/preschool/games/colours/0.1.catch-that";
 import CrosswordGame from "@/pages/primary/grade2/theme1/games/2.1.crossword";
+import CrosswordGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.crossword";
 import SpellQuestGame from "@/pages/primary/grade2/theme1/games/2.1.spell-quest";
+import SpellQuestGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.spell-quest";
 import WordPopGame from "@/pages/primary/grade2/theme1/games/2.1.word-pop";
+import WordPopGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.word-pop";
 import CatchThatGame from "@/pages/primary/grade2/theme1/games/2.1.catch-that";
+import CatchThatGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.catch-that";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/oyunlar" component={Oyunlar} />
       <Route path="/oyunlar/okul-oncesi" component={PreSchoolGamesMenu} />
       <Route path="/pre-school/games" component={PreSchoolGamesMenu} />
-      <Route path="/primary-school/grade-2/theme-1/games" component={Oyunlar} />
+      <Route path="/primary-school/grade-2/theme-1/games" component={PrimarySchoolGrade2Theme1GamesMenu} />
+      <Route path="/primary-school/grade-2/theme-2/games" component={PrimarySchoolGrade2Theme2GamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
+      <Route path="/primary-school/grade-2/theme-2/2.2-vocab" component={VocabularyCards2_2} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
+      <Route path="/primary-school/grade-2/theme-2/2.2-matching-game" component={MatchingGame2_2} />
       <Route path="/primary-school/grade-2/theme-1/crossword" component={CrosswordGame} />
+      <Route path="/primary-school/grade-2/theme-2/crossword" component={CrosswordGame2_2} />
       <Route path="/primary-school/grade-2/theme-1/spell-quest" component={SpellQuestGame} />
+      <Route path="/primary-school/grade-2/theme-2/spell-quest" component={SpellQuestGame2_2} />
       <Route path="/primary-school/grade-2/theme-1/word-pop" component={WordPopGame} />
+      <Route path="/primary-school/grade-2/theme-2/word-pop" component={WordPopGame2_2} />
       <Route path="/primary-school/grade-2/theme-1/catch-that" component={CatchThatGame} />
+      <Route path="/primary-school/grade-2/theme-2/catch-that" component={CatchThatGame2_2} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
       <Route path="/pre-school/kelime-kartlari/0.1-vocab" component={ColorsVocabulary} />
       <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />

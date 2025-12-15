@@ -11,25 +11,56 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 interface VocabWord {
-  word: string;
+  word: string; // For spelling (no spaces, uppercase)
+  displayWord: string; // For display/speech (original format)
   turkish: string;
   file: string;
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
-  { word: "GOODBYE", turkish: "Hoşça kalın", file: "goodbye.png" },
-  { word: "SCHOOL", turkish: "Okul", file: "school.png" },
-  { word: "CLASSROOM", turkish: "Sınıf", file: "classroom.png" },
-  { word: "LIBRARY", turkish: "Kütüphane", file: "library.png" },
-  { word: "CANTEEN", turkish: "Kafeterya", file: "canteen.png" },
-  { word: "GARDEN", turkish: "Bahçe", file: "garden.png" },
-  { word: "TEACHER", turkish: "Öğretmen", file: "teacher.png" },
-  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
-  { word: "FRIEND", turkish: "Arkadaş", file: "friend.png" },
-  { word: "MONDAY", turkish: "Pazartesi", file: "Monday.png" },
-  { word: "FRIDAY", turkish: "Cuma", file: "Friday.png" },
-  { word: "SUNDAY", turkish: "Pazar", file: "Sunday.png" },
+  { word: "COLOUR", displayWord: "colour", turkish: "renk", file: "colour.png" },
+  { word: "YELLOW", displayWord: "yellow", turkish: "sarı", file: "yellow.png" },
+  { word: "BLUE", displayWord: "blue", turkish: "mavi", file: "blue.png" },
+  { word: "RED", displayWord: "red", turkish: "kırmızı", file: "red.png" },
+  { word: "GREEN", displayWord: "green", turkish: "yeşil", file: "green.png" },
+  { word: "PURPLE", displayWord: "purple", turkish: "mor", file: "purple.png" },
+  { word: "PINK", displayWord: "pink", turkish: "pembe", file: "pink.png" },
+  { word: "BROWN", displayWord: "brown", turkish: "kahverengi", file: "brown.png" },
+  { word: "ORANGE", displayWord: "orange", turkish: "turuncu", file: "orange.png" },
+  { word: "BLACK", displayWord: "black", turkish: "siyah", file: "black.png" },
+  { word: "WHITE", displayWord: "white", turkish: "beyaz", file: "white.png" },
+  { word: "WATCH", displayWord: "watch", turkish: "izle", file: "watch.png" },
+  { word: "LISTEN", displayWord: "listen", turkish: "dinle", file: "listen.png" },
+  { word: "WRITE", displayWord: "write", turkish: "yaz", file: "write.png" },
+  { word: "RAISE", displayWord: "raise", turkish: "kaldır", file: "raise.png" },
+  { word: "HAND", displayWord: "hand", turkish: "el", file: "hand.png" },
+  { word: "OPEN", displayWord: "open", turkish: "aç", file: "open.png" },
+  { word: "CLOSE", displayWord: "close", turkish: "kapat", file: "close.png" },
+  { word: "REPEAT", displayWord: "repeat", turkish: "tekrarla", file: "repeat.png" },
+  { word: "STANDUP", displayWord: "stand up", turkish: "ayağa kalk", file: "stand_up.png" },
+  { word: "SITDOWN", displayWord: "sit down", turkish: "otur", file: "sit_down.png" },
+  { word: "HURRYUP", displayWord: "hurry up", turkish: "acele et", file: "hurry_up.png" },
+  { word: "BEQUIET", displayWord: "be quiet", turkish: "sessiz ol", file: "be_quiet.png" },
+  { word: "LOOK", displayWord: "look", turkish: "bak", file: "look.png" },
+  { word: "COME", displayWord: "come", turkish: "gel", file: "come.png" },
+  { word: "GO", displayWord: "go", turkish: "git", file: "go.png" },
+  { word: "POINT", displayWord: "point", turkish: "göster", file: "point.png" },
+  { word: "MATCH", displayWord: "match", turkish: "eşleştir", file: "match.png" },
+  { word: "TABLE", displayWord: "table", turkish: "masa", file: "table.png" },
+  { word: "PENCIL", displayWord: "pencil", turkish: "kalem", file: "pencil.png" },
+  { word: "PENCILCASE", displayWord: "pencil case", turkish: "kalem kutusu", file: "pencil_case.png" },
+  { word: "BOOK", displayWord: "book", turkish: "kitap", file: "book.png" },
+  { word: "BOOKSHELF", displayWord: "bookshelf", turkish: "kitaplık", file: "bookshelf.png" },
+  { word: "BAG", displayWord: "bag", turkish: "çanta", file: "bag.png" },
+  { word: "NOTEBOOK", displayWord: "notebook", turkish: "defter", file: "notebook.png" },
+  { word: "ERASER", displayWord: "eraser", turkish: "silgi", file: "eraser.png" },
+  { word: "SHARPENER", displayWord: "sharpener", turkish: "açacak", file: "sharpener.png" },
+  { word: "CRAYON", displayWord: "crayon", turkish: "pastel boya", file: "crayon.png" },
+  { word: "BOARD", displayWord: "board", turkish: "tahta", file: "board.png" },
+  { word: "WINDOW", displayWord: "window", turkish: "pencere", file: "window.png" },
+  { word: "DESK", displayWord: "desk", turkish: "sıra", file: "desk.png" },
+  { word: "DOOR", displayWord: "door", turkish: "kapı", file: "door.png" },
+  { word: "CHAIR", displayWord: "chair", turkish: "sandalye", file: "chair.png" },
 ];
 
 const letterColors = [
@@ -43,7 +74,7 @@ const letterColors = [
   "bg-gradient-to-br from-red-400 to-red-600",
 ];
 
-export default function SpellQuestGame() {
+export default function SpellQuestGame2_2() {
   const [, setLocation] = useLocation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [scrambledLetters, setScrambledLetters] = useState<{ letter: string; id: number; used: boolean; color: string }[]>([]);
@@ -137,8 +168,8 @@ export default function SpellQuestGame() {
         successAudio.volume = 0.5;
         successAudio.play().catch(() => {});
         
-        // Speak the word
-        speakWord(currentWord.word);
+        // Speak the display word (original format)
+        speakWord(currentWord.displayWord);
         
         // Celebration
         confetti({
@@ -239,7 +270,7 @@ export default function SpellQuestGame() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="2nd Grade - Theme 1: School Life"
+            description="2nd Grade - Theme 2: Classroom Life"
             containerId="spell-quest-game"
             icon="✨"
           />
@@ -275,7 +306,7 @@ export default function SpellQuestGame() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/2.1/${currentWord.file}`} 
+                    src={`/images/2.2/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />
@@ -298,7 +329,7 @@ export default function SpellQuestGame() {
                     variant="outline"
                     size="icon"
                     className="sound-btn"
-                    onClick={() => speakWord(currentWord.word)}
+                    onClick={() => speakWord(currentWord.displayWord)}
                   >
                     <Volume2 className="h-4 w-4" />
                   </Button>
@@ -388,7 +419,7 @@ export default function SpellQuestGame() {
                     >
                       <div className="success-stars">⭐ ⭐ ⭐</div>
                       <h2 className="success-title">Perfect!</h2>
-                      <p className="success-word">{currentWord.word}</p>
+                      <p className="success-word">{currentWord.displayWord}</p>
                       <Button
                         className="next-btn"
                         onClick={nextWord}
@@ -436,7 +467,7 @@ export default function SpellQuestGame() {
                   <Button onClick={startNewGame} className="play-again-btn" data-testid="button-play-again">
                     Play Again
                   </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-2/games")}>
                     Back to Games
                   </Button>
                 </div>
@@ -459,7 +490,7 @@ export default function SpellQuestGame() {
                 <Button onClick={startNewGame} variant="outline" className="footer-button" data-testid="button-new-game">
                   New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-2/games")}>
                   ← Back
                 </Button>
               </div>
