@@ -284,6 +284,28 @@
   transition: all 0.2s ease;
 }
 
+.spell-quest-wrapper .answer-slot.space-slot {
+  width: 20px;
+  border: none;
+  background: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.spell-quest-wrapper .answer-slot.space-slot:hover {
+  border: none;
+  background: transparent;
+}
+
+.spell-quest-wrapper .space-indicator {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #93c5fd;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
 .spell-quest-wrapper .answer-slot:hover {
   border-color: #3b82f6;
   background: rgba(255, 255, 255, 0.8);

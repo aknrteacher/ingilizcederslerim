@@ -16,7 +16,7 @@ type NavItem = {
 
 // --- Navigation Data ---
 const activityItems = [
-  { title: "Kelime Kartları", href: "2.1-vocab" },
+  { title: "Kelime Kartları", href: "vocab" }, // Will be replaced with theme-specific href
   { title: "Şarkılar", href: "songs" },
   { title: "Oyunlar", href: "games" },
   { title: "Hikayeler", href: "stories" },
@@ -26,7 +26,11 @@ const activityItems = [
 
 const grade2Themes = Array.from({ length: 6 }, (_, i) => ({
   title: `Tema ${i + 1}`,
-  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-2/theme-${i + 1}/${act.href}` }))
+  items: activityItems.map(act => {
+    // For vocab, use theme-specific format (2.1-vocab, 2.2-vocab, etc.)
+    const vocabHref = act.href === "vocab" ? `2.${i + 1}-vocab` : act.href;
+    return { ...act, href: `/primary-school/grade-2/theme-${i + 1}/${vocabHref}` };
+  })
 }))
 
 const grade3Units = Array.from({ length: 10 }, (_, i) => ({
@@ -101,13 +105,52 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const findMenuPathForLocation = React.useCallback((path: string): { title: string, items: NavItem[], theme?: LevelTheme }[] => {
     const stack: { title: string, items: NavItem[], theme?: LevelTheme }[] = []
 
+    // Helper function to check if a path is a child of a menu item
+    // e.g., /primary-school/grade-2/theme-2/2.2-matching-game is a child of /primary-school/grade-2/theme-2/games
+    const isChildOfMenu = (childPath: string, menuHref: string): boolean => {
+      if (!menuHref) return false
+      // Exact match
+      if (childPath === menuHref) return true
+      // Direct child (e.g., /games/child)
+      if (childPath.startsWith(menuHref + '/')) return true
+      
+      // For same-level pages (e.g., /theme-2/games vs /theme-2/2.2-matching-game)
+      // Extract the base path up to theme/unit (e.g., /primary-school/grade-2/theme-2)
+      const extractBasePath = (p: string): string | null => {
+        const themeMatch = p.match(/^(\/primary-school\/grade-\d+\/(?:theme|unit)-\d+)/)
+        return themeMatch ? themeMatch[1] : null
+      }
+      
+      const menuBase = extractBasePath(menuHref)
+      const childBase = extractBasePath(childPath)
+      
+      // If they're in the same theme/unit, and menu is a parent category (games, vocab, etc.)
+      if (menuBase && childBase && menuBase === childBase) {
+        // Check if menuHref is a category page (ends with /games, /vocab, etc.)
+        const menuCategory = menuHref.split('/').pop()
+        if (menuCategory && ['games', 'vocab', 'songs', 'stories', 'exercises', 'worksheets'].includes(menuCategory)) {
+          return true
+        }
+      }
+      return false
+    }
+
     // Recursive function to find the matching path and build the stack
     const findPathRecursive = (items: NavItem[], currentPath: { title: string, items: NavItem[], theme?: LevelTheme }[] = [], parentTheme?: LevelTheme): boolean => {
       for (const item of items) {
         // Check if this item's href matches the path
-        if (item.href && path.startsWith(item.href)) {
+        if (item.href && isChildOfMenu(path, item.href)) {
           // Found a match - add current path to stack (all parent menus)
-          stack.push(...currentPath)
+          // Also add the current item if it has items (to keep submenu open)
+          if (item.items && item.items.length > 0) {
+            stack.push(...currentPath, {
+              title: item.title,
+              items: item.items,
+              theme: item.theme || parentTheme
+            })
+          } else {
+            stack.push(...currentPath)
+          }
           return true
         }
 

@@ -90,6 +90,28 @@ export default function SpellQuestGame2_2() {
 
   const currentWord = shuffledVocab[currentWordIndex];
 
+  // Helper function to create slot structure with spaces for display
+  const getAnswerSlots = () => {
+    if (!currentWord) return [];
+    
+    const slots: Array<{ type: 'letter' | 'space'; letterIndex?: number }> = [];
+    const displayWords = currentWord.displayWord.split(' ');
+    let letterIndex = 0;
+    
+    displayWords.forEach((word, wordIndex) => {
+      // Add letter slots for this word
+      for (let i = 0; i < word.length; i++) {
+        slots.push({ type: 'letter', letterIndex: letterIndex++ });
+      }
+      // Add space slot after each word except the last
+      if (wordIndex < displayWords.length - 1) {
+        slots.push({ type: 'space' });
+      }
+    });
+    
+    return slots;
+  };
+
   useEffect(() => {
     startNewGame();
   }, []);
@@ -350,29 +372,40 @@ export default function SpellQuestGame2_2() {
               <div className="spelling-area">
                 {/* Answer slots */}
                 <div className="answer-slots">
-                  {currentWord.word.split("").map((_, index) => (
-                    <motion.div
-                      key={index}
-                      className={`answer-slot ${selectedLetters[index] ? "filled" : ""} ${isCorrect ? "correct" : ""} ${isWrong ? "wrong" : ""}`}
-                      onClick={() => selectedLetters[index] && handleRemoveLetter(index)}
-                      whileHover={selectedLetters[index] ? { scale: 1.05 } : {}}
-                      whileTap={selectedLetters[index] ? { scale: 0.95 } : {}}
-                    >
-                      <AnimatePresence mode="wait">
-                        {selectedLetters[index] && (
-                          <motion.span
-                            key={selectedLetters[index].id}
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            exit={{ scale: 0, rotate: 180 }}
-                            className={`slot-letter ${selectedLetters[index].color}`}
-                          >
-                            {selectedLetters[index].letter}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
+                  {getAnswerSlots().map((slot, displayIndex) => {
+                    if (slot.type === 'space') {
+                      return (
+                        <div key={`space-${displayIndex}`} className="answer-slot space-slot">
+                          <span className="space-indicator"> </span>
+                        </div>
+                      );
+                    }
+                    
+                    const letterIndex = slot.letterIndex!;
+                    return (
+                      <motion.div
+                        key={letterIndex}
+                        className={`answer-slot ${selectedLetters[letterIndex] ? "filled" : ""} ${isCorrect ? "correct" : ""} ${isWrong ? "wrong" : ""}`}
+                        onClick={() => selectedLetters[letterIndex] && handleRemoveLetter(letterIndex)}
+                        whileHover={selectedLetters[letterIndex] ? { scale: 1.05 } : {}}
+                        whileTap={selectedLetters[letterIndex] ? { scale: 0.95 } : {}}
+                      >
+                        <AnimatePresence mode="wait">
+                          {selectedLetters[letterIndex] && (
+                            <motion.span
+                              key={selectedLetters[letterIndex].id}
+                              initial={{ scale: 0, rotate: -180 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              exit={{ scale: 0, rotate: 180 }}
+                              className={`slot-letter ${selectedLetters[letterIndex].color}`}
+                            >
+                              {selectedLetters[letterIndex].letter}
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
                 {/* Scrambled letters */}
