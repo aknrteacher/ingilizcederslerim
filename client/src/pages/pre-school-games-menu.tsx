@@ -6,6 +6,11 @@ import wordCrossBanner from "@/assets/word-cross-banner.png";
 import spellQuestBanner from "@/assets/spell-quest-banner.png";
 import wordPopBanner from "@/assets/word-pop-banner.png";
 import colorCatchBanner from "@/assets/color-catch-banner.png";
+import matchlingsNumbersBanner from "@/assets/matchlings-numbers-banner.png";
+import wordCrossNumbersBanner from "@/assets/word-cross-numbers-banner.png";
+import spellQuestNumbersBanner from "@/assets/spell-quest-numbers-banner.png";
+import wordPopNumbersBanner from "@/assets/word-pop-numbers-banner.png";
+import catchThatNumbersBanner from "@/assets/catch-that-numbers-banner.png";
 import "../styles/oyunlar.css";
 
 interface Game {
@@ -186,19 +191,60 @@ export default function PreSchoolGamesMenu() {
               </a>
             </Link>
             
-            {/* Number Games */}
-            {games.filter(game => game.id.startsWith("0.1-numbers")).map((game) => (
-              <PreschoolButton
-                key={game.id}
-                title={game.title}
-                subtitle={game.subtitle}
-                description={game.description}
-                icon={game.icon}
-                href={game.path}
-                gradient={game.gradient}
-                dataTestId={`card-game-${game.id}`}
-              />
-            ))}
+            {/* Matchlings Numbers Game with Custom Banner */}
+            <Link href="/pre-school/0.1-numbers-matching-game">
+              <a className="game-banner-link" data-testid="card-game-0.1-numbers.matching">
+                <img 
+                  src={matchlingsNumbersBanner} 
+                  alt="Matchlings - Numbers 1 to 10 / Sayılar 1'den 10'a" 
+                  className="game-banner-image"
+                />
+              </a>
+            </Link>
+            
+            {/* Word Cross Numbers Game with Custom Banner */}
+            <Link href="/pre-school/0.1-numbers-crossword">
+              <a className="game-banner-link" data-testid="card-game-0.1-numbers.crossword">
+                <img 
+                  src={wordCrossNumbersBanner} 
+                  alt="Word Cross - Numbers 1 to 10 / Sayılar 1'den 10'a" 
+                  className="game-banner-image"
+                />
+              </a>
+            </Link>
+            
+            {/* Spell Quest Numbers Game with Custom Banner */}
+            <Link href="/pre-school/0.1-numbers-spell-quest">
+              <a className="game-banner-link" data-testid="card-game-0.1-numbers.spell-quest">
+                <img 
+                  src={spellQuestNumbersBanner} 
+                  alt="Spell Quest - Numbers 1 to 10 / Sayılar 1'den 10'a" 
+                  className="game-banner-image"
+                />
+              </a>
+            </Link>
+            
+            {/* Word Pop Numbers Game with Custom Banner */}
+            <Link href="/pre-school/0.1-numbers-word-pop">
+              <a className="game-banner-link" data-testid="card-game-0.1-numbers.word-pop">
+                <img 
+                  src={wordPopNumbersBanner} 
+                  alt="Word Pop - Numbers 1 to 10 / Sayılar 1'den 10'a" 
+                  className="game-banner-image"
+                />
+              </a>
+            </Link>
+            
+            {/* Catch That Numbers Game with Custom Banner */}
+            <Link href="/pre-school/0.1-numbers-catch-that">
+              <a className="game-banner-link" data-testid="card-game-0.1-numbers.catch-that">
+                <img 
+                  src={catchThatNumbersBanner} 
+                  alt="Catch That - Numbers 1 to 10 / Sayılar 1'den 10'a" 
+                  className="game-banner-image"
+                />
+              </a>
+            </Link>
             
             {/* Other Games */}
             {games.filter(game => game.id !== "0.1.matching" && game.id !== "0.1.crossword" && game.id !== "0.1.spell-quest" && game.id !== "0.1.word-pop" && game.id !== "0.1.color-catch" && !game.id.startsWith("0.1-numbers")).map((game) => (
