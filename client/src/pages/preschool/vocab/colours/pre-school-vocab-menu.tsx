@@ -8,8 +8,16 @@ export default function PreSchoolVocabMenu() {
       title: "COLOURS",
       subtitle: "RENKLER",
       description: "Learn basic colors: Red, Blue, Yellow, Green, and more",
-      href: "/pre-school/kelime-kartlari/0.1-vocab",
+      href: "/pre-school/kelime-kartlari/0.1colors",
       icon: "🎨",
+      gradient: "yellow-orange" as const,
+    },
+    {
+      title: "NUMBERS",
+      subtitle: "SAYILAR",
+      description: "Learn numbers from 1 to 10: One, Two, Three, and more",
+      href: "/pre-school/kelime-kartlari/0.1-numbers",
+      icon: "🔢",
       gradient: "yellow-orange" as const,
     },
   ];

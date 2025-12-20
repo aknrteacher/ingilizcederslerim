@@ -64,6 +64,51 @@ export default function PreSchoolGamesMenu() {
       path: "/pre-school/0.1-catch-that",
       gradient: "purple-pink",
     },
+    {
+      id: "0.1-numbers.matching",
+      title: "Matchlings",
+      subtitle: "Numbers",
+      description: "Match numbers with their English names. Drag and hatch cute characters!",
+      icon: "🔢",
+      path: "/pre-school/0.1-numbers-matching-game",
+      gradient: "yellow-orange",
+    },
+    {
+      id: "0.1-numbers.crossword",
+      title: "Word Cross",
+      subtitle: "Numbers",
+      description: "Solve the crossword puzzle using number names!",
+      icon: "🧩",
+      path: "/pre-school/0.1-numbers-crossword",
+      gradient: "blue-purple",
+    },
+    {
+      id: "0.1-numbers.spell-quest",
+      title: "Spell Quest",
+      subtitle: "Numbers",
+      description: "Unscramble letters to spell number words!",
+      icon: "✨",
+      path: "/pre-school/0.1-numbers-spell-quest",
+      gradient: "pink-red",
+    },
+    {
+      id: "0.1-numbers.word-pop",
+      title: "Word Pop",
+      subtitle: "Numbers",
+      description: "Pop the balloon with the matching number!",
+      icon: "🎈",
+      path: "/pre-school/0.1-numbers-word-pop",
+      gradient: "green-teal",
+    },
+    {
+      id: "0.1-numbers.catch-that",
+      title: "Catch That",
+      subtitle: "Numbers",
+      description: "Catch the falling numbers with your basket!",
+      icon: "🔢",
+      path: "/pre-school/0.1-numbers-catch-that",
+      gradient: "purple-pink",
+    },
   ];
 
   return (
@@ -72,7 +117,7 @@ export default function PreSchoolGamesMenu() {
         <div className="oyunlar-header">
           <div>
             <h1 className="oyunlar-title">Okul Öncesi & 1. Sınıf - Oyunlar</h1>
-            <p className="oyunlar-subtitle">Renkler ve temel kavramları oyunlarla öğren!</p>
+            <p className="oyunlar-subtitle">Renkler, sayılar ve temel kavramları oyunlarla öğren!</p>
           </div>
         </div>
 
@@ -141,8 +186,22 @@ export default function PreSchoolGamesMenu() {
               </a>
             </Link>
             
+            {/* Number Games */}
+            {games.filter(game => game.id.startsWith("0.1-numbers")).map((game) => (
+              <PreschoolButton
+                key={game.id}
+                title={game.title}
+                subtitle={game.subtitle}
+                description={game.description}
+                icon={game.icon}
+                href={game.path}
+                gradient={game.gradient}
+                dataTestId={`card-game-${game.id}`}
+              />
+            ))}
+            
             {/* Other Games */}
-            {games.filter(game => game.id !== "0.1.matching" && game.id !== "0.1.crossword" && game.id !== "0.1.spell-quest" && game.id !== "0.1.word-pop" && game.id !== "0.1.color-catch").map((game) => (
+            {games.filter(game => game.id !== "0.1.matching" && game.id !== "0.1.crossword" && game.id !== "0.1.spell-quest" && game.id !== "0.1.word-pop" && game.id !== "0.1.color-catch" && !game.id.startsWith("0.1-numbers")).map((game) => (
               <PreschoolButton
                 key={game.id}
                 title={game.title}

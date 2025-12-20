@@ -3,7 +3,7 @@ import { ChevronDown, ChevronLeft, LayoutDashboard, Settings, User, UserCircle, 
 import { cn } from "@/lib/utils"
 import logo from "@assets/generated_images/modern_english_learning_logo_with_speech_bubble_and_book.png"
 import { Link, useLocation } from "wouter"
-import { useTheme, type LevelTheme, themeFilters } from "@/context/ThemeContext"
+import { useTheme, type LevelTheme, themeFilters, defaultThemeFilter } from "@/context/ThemeContext"
 
 // --- Types ---
 type NavItem = {
@@ -84,7 +84,8 @@ const navItems: NavItem[] = [
   ...levelItems.map(item => ({
     title: item.title,
     theme: item.theme,
-    href: item.items ? undefined : `/${item.theme}`,
+    // Always provide href for level items to navigate to landing pages
+    href: `/${item.theme}`,
     items: item.items,
   })),
 ]
@@ -95,9 +96,9 @@ interface SidebarProps {
 }
 
 export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
-  const { currentTheme, setCurrentTheme } = useTheme()
-  const logoFilter = themeFilters[currentTheme]
-  const [location] = useLocation()
+  const { currentTheme, setCurrentTheme, isDefaultTheme } = useTheme()
+  const logoFilter = isDefaultTheme ? defaultThemeFilter : themeFilters[currentTheme]
+  const [location, setLocation] = useLocation()
   // Stack for nested menus
   const [menuStack, setMenuStack] = React.useState<{ title: string, items: NavItem[], theme?: LevelTheme }[]>([])
 
@@ -188,6 +189,19 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
         if (lastMenu.theme) {
           setCurrentTheme(lastMenu.theme)
         }
+      } else {
+        // If we're on a level landing page (e.g., /pre-school, /primary-school), open its submenu
+        const levelItem = navItems.find(item => item.href === location && item.items && item.items.length > 0)
+        if (levelItem) {
+          setMenuStack([{
+            title: levelItem.title,
+            items: levelItem.items!,
+            theme: levelItem.theme
+          }])
+          if (levelItem.theme) {
+            setCurrentTheme(levelItem.theme)
+          }
+        }
       }
     } else {
       // Reset to main menu on home page
@@ -195,8 +209,12 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
     }
   }, [location, findMenuPathForLocation, setCurrentTheme])
 
-  const handleLevelClick = (theme: LevelTheme) => {
+  const handleLevelClick = (theme: LevelTheme, href?: string) => {
     setCurrentTheme(theme)
+    if (href) {
+      // Navigate to landing page
+      setLocation(href)
+    }
     onItemClick?.()
   }
 
@@ -210,6 +228,9 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
       
       if (item.theme) {
         setCurrentTheme(item.theme)
+        // Navigate to landing page when opening submenu
+        const landingHref = `/${item.theme}`
+        setLocation(landingHref)
       }
     }
   }
@@ -239,12 +260,14 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   const activeSubmenuTheme = activeMenu?.theme
 
   return (
-    <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar text-sidebar-foreground transition-colors duration-300 backdrop-blur-xl`}>
+    <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col ${isDefaultTheme ? 'bg-sidebar' : 'bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar'} text-sidebar-foreground transition-colors duration-300 ${isDefaultTheme ? '' : 'backdrop-blur-xl'}`}>
       {/* Logo Section */}
       <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
         <h1 className={cn(
           "text-3xl font-black text-center leading-none transition-all duration-500 hover:scale-105 cursor-pointer font-serif tracking-tight",
-          levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary"
+          isDefaultTheme 
+            ? "text-sidebar-foreground" 
+            : (levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary")
         )}>
           ingilizce<br/>derslerim
         </h1>
@@ -288,22 +311,29 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
               {navItems.map((item, index) => (
                 <React.Fragment key={index}>
                   
-                  {item.items && !item.href ? (
-                     // Item with submenu (Level items or items with children)
-                    <button
-                      onClick={() => handleOpenSubmenu(item)}
-                      className={cn(
-                        "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
-                        "transition-all duration-300 group",
-                         item.theme 
-                          ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
-                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
-                        "cursor-pointer"
-                      )}
-                    >
-                      <span className="truncate flex-1 text-left">{item.title}</span>
-                      <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
-                    </button>
+                  {item.items && item.items.length > 0 ? (
+                     // Item with submenu (Level items or items with children) - navigate to landing page
+                    <Link href={item.href || "#"}>
+                      <a
+                        onClick={() => {
+                          // Navigate to landing page
+                          if (item.theme && item.href) {
+                            handleLevelClick(item.theme, item.href)
+                          }
+                        }}
+                        className={cn(
+                          "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
+                          "transition-all duration-300 group",
+                           item.theme 
+                            ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
+                            : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
+                          "cursor-pointer"
+                        )}
+                      >
+                        <span className="truncate flex-1 text-left">{item.title}</span>
+                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    </Link>
                   ) : (
                     // Regular link item
                     <Link href={item.href || "#"}>
@@ -317,7 +347,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                                 : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
                             }`
                       )}
-                      onClick={() => item.theme && handleLevelClick(item.theme)}
+                      onClick={() => item.theme && handleLevelClick(item.theme, item.href)}
                       >
                         {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
                         <span className={cn("truncate", item.theme ? "" : "flex-1")}>{item.title}</span>

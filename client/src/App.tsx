@@ -7,9 +7,17 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import MainLandingPage from "@/pages/landing-main";
+import PreschoolLandingPage from "@/pages/landing-preschool";
+import PrimarySchoolLandingPage from "@/pages/landing-primary-school";
+import SecondarySchoolLandingPage from "@/pages/landing-secondary-school";
+import HighSchoolLandingPage from "@/pages/landing-high-school";
+import UniversityLandingPage from "@/pages/landing-university";
+import BusinessEnglishLandingPage from "@/pages/landing-business-english";
 import VocabularyCards from "@/pages/primary/grade2/theme1/vocab/2.1.voc";
 import VocabularyCards2_2 from "@/pages/primary/grade2/theme2/vocab/2.2.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/colours/0.1.voc";
+import NumbersVocabulary from "@/pages/preschool/vocab/numbers/0.1-numbers.voc";
 import PreSchoolVocabMenu from "@/pages/preschool/vocab/colours/pre-school-vocab-menu";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
@@ -21,6 +29,11 @@ import ColorsCrosswordGame from "@/pages/preschool/games/colours/0.1.crossword";
 import ColorsSpellQuestGame from "@/pages/preschool/games/colours/0.1.spell-quest";
 import ColorsWordPopGame from "@/pages/preschool/games/colours/0.1.word-pop";
 import ColorsCatchGame from "@/pages/preschool/games/colours/0.1.catch-that";
+import NumbersMatchingGame from "@/pages/preschool/games/numbers/0.1-numbers.matching-game";
+import NumbersCrosswordGame from "@/pages/preschool/games/numbers/0.1-numbers.crossword";
+import NumbersSpellQuestGame from "@/pages/preschool/games/numbers/0.1-numbers.spell-quest";
+import NumbersWordPopGame from "@/pages/preschool/games/numbers/0.1-numbers.word-pop";
+import NumbersCatchGame from "@/pages/preschool/games/numbers/0.1-numbers.catch-that";
 import CrosswordGame from "@/pages/primary/grade2/theme1/games/2.1.crossword";
 import CrosswordGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.crossword";
 import SpellQuestGame from "@/pages/primary/grade2/theme1/games/2.1.spell-quest";
@@ -33,7 +46,14 @@ import CatchThatGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.catch-that
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={MainLandingPage} />
+      <Route path="/pre-school" component={PreschoolLandingPage} />
+      <Route path="/primary-school" component={PrimarySchoolLandingPage} />
+      <Route path="/secondary-school" component={SecondarySchoolLandingPage} />
+      <Route path="/high-school" component={HighSchoolLandingPage} />
+      <Route path="/university" component={UniversityLandingPage} />
+      <Route path="/business-english" component={BusinessEnglishLandingPage} />
+      <Route path="/home" component={Home} />
       <Route path="/oyunlar/okul-oncesi" component={PreSchoolGamesMenu} />
       <Route path="/pre-school/games" component={PreSchoolGamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/games" component={PrimarySchoolGrade2Theme1GamesMenu} />
@@ -51,12 +71,18 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-1/catch-that" component={CatchThatGame} />
       <Route path="/primary-school/grade-2/theme-2/catch-that" component={CatchThatGame2_2} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
-      <Route path="/pre-school/kelime-kartlari/0.1-vocab" component={ColorsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.1colors" component={ColorsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.1-numbers" component={NumbersVocabulary} />
       <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />
       <Route path="/pre-school/0.1-crossword" component={ColorsCrosswordGame} />
       <Route path="/pre-school/0.1-spell-quest" component={ColorsSpellQuestGame} />
       <Route path="/pre-school/0.1-word-pop" component={ColorsWordPopGame} />
       <Route path="/pre-school/0.1-catch-that" component={ColorsCatchGame} />
+      <Route path="/pre-school/0.1-numbers-matching-game" component={NumbersMatchingGame} />
+      <Route path="/pre-school/0.1-numbers-crossword" component={NumbersCrosswordGame} />
+      <Route path="/pre-school/0.1-numbers-spell-quest" component={NumbersSpellQuestGame} />
+      <Route path="/pre-school/0.1-numbers-word-pop" component={NumbersWordPopGame} />
+      <Route path="/pre-school/0.1-numbers-catch-that" component={NumbersCatchGame} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 

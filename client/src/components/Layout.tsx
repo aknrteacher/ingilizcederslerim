@@ -4,7 +4,7 @@ import { Header } from "./Header"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useTheme, themeBackgrounds } from "@/context/ThemeContext"
+import { useTheme } from "@/context/ThemeContext"
 
 interface LayoutProps {
   children: React.ReactNode
@@ -12,14 +12,14 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const { currentTheme } = useTheme()
+  const { themeBackground } = useTheme()
 
   const handleSidebarClose = () => {
     setMobileOpen(false)
   }
 
   return (
-    <div className={`flex h-screen w-full overflow-hidden ${themeBackgrounds[currentTheme]}`}>
+    <div className={`flex h-screen w-full overflow-hidden ${themeBackground}`}>
       {/* Desktop Sidebar */}
       <div className="hidden md:flex md:w-64 flex-col flex-shrink-0">
         <Sidebar isMobile={false} />
@@ -42,7 +42,7 @@ export function Layout({ children }: LayoutProps) {
         } />
         
         {/* Main Content */}
-        <main className={`flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 ${themeBackgrounds[currentTheme]}`}>
+        <main className={`flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 ${themeBackground}`}>
           <div className="mx-auto max-w-6xl animate-in fade-in duration-500">
             {children}
           </div>

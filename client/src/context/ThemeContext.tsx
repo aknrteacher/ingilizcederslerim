@@ -2,35 +2,41 @@ import React, { createContext, useContext, useState, useEffect } from "react"
 import { useLocation } from "wouter"
 
 export type LevelTheme = "pre-school" | "primary-school" | "secondary-school" | "high-school" | "university" | "business-english"
+export type Theme = LevelTheme | "default"
 
 interface ThemeContextType {
   currentTheme: LevelTheme
   setCurrentTheme: (theme: LevelTheme) => void
   themeBackground: string
+  isDefaultTheme: boolean
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-function getThemeFromPath(path: string): LevelTheme {
+function getThemeFromPath(path: string): { theme: LevelTheme; isDefault: boolean } {
+  // Main landing page uses default/neutral theme
+  if (path === "/" || path === "") {
+    return { theme: "pre-school", isDefault: true } // Use pre-school as fallback but mark as default
+  }
   if (path.includes("pre-school") || path.includes("okul-oncesi") || path.startsWith("/pre-school")) {
-    return "pre-school"
+    return { theme: "pre-school", isDefault: false }
   }
   if (path.includes("primary-school") || path.includes("grade-2") || path.includes("grade-1")) {
-    return "primary-school"
+    return { theme: "primary-school", isDefault: false }
   }
   if (path.includes("secondary-school")) {
-    return "secondary-school"
+    return { theme: "secondary-school", isDefault: false }
   }
   if (path.includes("high-school")) {
-    return "high-school"
+    return { theme: "high-school", isDefault: false }
   }
   if (path.includes("university")) {
-    return "university"
+    return { theme: "university", isDefault: false }
   }
   if (path.includes("business-english")) {
-    return "business-english"
+    return { theme: "business-english", isDefault: false }
   }
-  return "pre-school"
+  return { theme: "pre-school", isDefault: false }
 }
 
 export const themeBackgrounds: Record<LevelTheme, string> = {
@@ -41,6 +47,9 @@ export const themeBackgrounds: Record<LevelTheme, string> = {
   "university": "bg-purple-50",
   "business-english": "bg-slate-50",
 }
+
+// Neutral theme for main landing page
+export const defaultThemeBackground = "bg-white"
 
 export const themeGradients: Record<LevelTheme, string> = {
   "pre-school": "from-amber-500/10 to-yellow-500/10",
@@ -53,28 +62,39 @@ export const themeGradients: Record<LevelTheme, string> = {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [location] = useLocation()
-  const [currentTheme, setCurrentTheme] = useState<LevelTheme>(() => getThemeFromPath(location))
+  const themeInfo = getThemeFromPath(location)
+  const [currentTheme, setCurrentTheme] = useState<LevelTheme>(themeInfo.theme)
+  const [isDefaultTheme, setIsDefaultTheme] = useState(themeInfo.isDefault)
 
   useEffect(() => {
-    const newTheme = getThemeFromPath(location)
-    setCurrentTheme(newTheme)
-    document.documentElement.setAttribute("data-theme", newTheme)
+    const themeInfo = getThemeFromPath(location)
+    setCurrentTheme(themeInfo.theme)
+    setIsDefaultTheme(themeInfo.isDefault)
+    // Set data-theme to "default" for main landing page, otherwise use the theme
+    document.documentElement.setAttribute("data-theme", themeInfo.isDefault ? "default" : themeInfo.theme)
     
     document.body.classList.remove(
       "bg-amber-50", "bg-blue-50", "bg-orange-50", 
-      "bg-green-50", "bg-purple-50", "bg-slate-50"
+      "bg-green-50", "bg-purple-50", "bg-slate-50", "bg-white"
     )
-    document.body.classList.add(themeBackgrounds[newTheme])
+    if (themeInfo.isDefault) {
+      document.body.classList.add(defaultThemeBackground)
+    } else {
+      document.body.classList.add(themeBackgrounds[themeInfo.theme])
+    }
   }, [location])
 
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", currentTheme)
-  }, [currentTheme])
+    // Only update data-theme if not using default theme
+    if (!isDefaultTheme) {
+      document.documentElement.setAttribute("data-theme", currentTheme)
+    }
+  }, [currentTheme, isDefaultTheme])
 
-  const themeBackground = themeBackgrounds[currentTheme]
+  const themeBackground = isDefaultTheme ? defaultThemeBackground : themeBackgrounds[currentTheme]
 
   return (
-    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme, themeBackground }}>
+    <ThemeContext.Provider value={{ currentTheme, setCurrentTheme, themeBackground, isDefaultTheme }}>
       {children}
     </ThemeContext.Provider>
   )
@@ -96,6 +116,9 @@ export const themeFilters: Record<LevelTheme, string> = {
   "university": "hue-rotate(270deg) saturate(1.3) brightness(0.95)",
   "business-english": "saturate(0.5) brightness(0.9) contrast(1.1)",
 }
+
+// Neutral filter for default theme
+export const defaultThemeFilter = "none"
 
 export const themeColors: Record<LevelTheme, Record<string, string>> = {
   "pre-school": {
@@ -158,4 +181,16 @@ export const themeColors: Record<LevelTheme, Record<string, string>> = {
     sidebar_primary: "200 20% 65%",
     sidebar_accent: "200 15% 25%",
   },
+}
+
+// Neutral theme colors for main landing page (white with black/dark grey accents)
+export const defaultThemeColors: Record<string, string> = {
+  background: "0 0% 100%",
+  foreground: "0 0% 0%",
+  primary: "0 0% 0%",
+  primary_foreground: "0 0% 100%",
+  sidebar: "0 0% 0%",
+  sidebar_foreground: "0 0% 100%",
+  sidebar_primary: "0 0% 20%",
+  sidebar_accent: "0 0% 15%",
 }

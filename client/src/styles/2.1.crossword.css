@@ -25,6 +25,9 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 0;
+  transform: translateZ(0);
+  will-change: transform;
+  isolation: isolate;
 }
 
 /* Scoped to primary school game only */
@@ -33,6 +36,8 @@
   width: 80px;
   height: 80px;
   pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* Scoped to primary school game only */
@@ -45,6 +50,8 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
   animation: floatCard 6s ease-in-out infinite;
   border: 2px solid rgba(96, 165, 250, 0.3);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card-inner img {
@@ -199,6 +206,31 @@
 /* Active clue banner text bigger in fullscreen */
 #crossword-game.fullscreen-active .text-lg {
   font-size: 2rem;
+}
+
+/* Drag functionality for crossword grid */
+.crossword-grid-container {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.crossword-grid-container input {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto;
+}
+
+/* Prevent text selection during drag */
+body.dragging-crossword {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  cursor: grabbing !important;
 }
 
 @media (max-width: 1024px) {
