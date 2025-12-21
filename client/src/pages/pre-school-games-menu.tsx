@@ -16,6 +16,7 @@ import "../styles/oyunlar.css";
 interface Game {
   id: string;
   title: string;
+  subtitle: string;
   description: string;
   icon: string;
   path: string;
@@ -121,6 +122,96 @@ export default function PreSchoolGamesMenu() {
       description: "Catch the falling numbers with your basket!",
       icon: "🔢",
       path: "/pre-school/0.1-numbers-catch-that",
+      gradient: "purple-pink",
+    },
+    {
+      id: "0.3-greetings.matching",
+      title: "Matchlings",
+      subtitle: "Greetings",
+      description: "Match greetings with their English names. Drag and hatch cute characters!",
+      icon: "👋",
+      path: "/pre-school/0.3-greetings-matching-game",
+      gradient: "yellow-orange",
+    },
+    {
+      id: "0.3-greetings.crossword",
+      title: "Word Cross",
+      subtitle: "Greetings",
+      description: "Solve the crossword puzzle using greeting words!",
+      icon: "🧩",
+      path: "/pre-school/0.3-greetings-crossword",
+      gradient: "blue-purple",
+    },
+    {
+      id: "0.3-greetings.spell-quest",
+      title: "Spell Quest",
+      subtitle: "Greetings",
+      description: "Unscramble letters to spell greeting words!",
+      icon: "✨",
+      path: "/pre-school/0.3-greetings-spell-quest",
+      gradient: "pink-red",
+    },
+    {
+      id: "0.3-greetings.word-pop",
+      title: "Word Pop",
+      subtitle: "Greetings",
+      description: "Pop the balloon with the matching greeting!",
+      icon: "🎈",
+      path: "/pre-school/0.3-greetings-word-pop",
+      gradient: "green-teal",
+    },
+    {
+      id: "0.3-greetings.catch-that",
+      title: "Catch That",
+      subtitle: "Greetings",
+      description: "Catch the falling greetings with your basket!",
+      icon: "🎯",
+      path: "/pre-school/0.3-greetings-catch-that",
+      gradient: "purple-pink",
+    },
+    {
+      id: "0.4-actions.matching",
+      title: "Matchlings",
+      subtitle: "Actions",
+      description: "Match actions with their English names. Drag and hatch cute characters!",
+      icon: "🏃",
+      path: "/pre-school/0.4-actions-matching-game",
+      gradient: "yellow-orange",
+    },
+    {
+      id: "0.4-actions.crossword",
+      title: "Word Cross",
+      subtitle: "Actions",
+      description: "Solve the crossword puzzle using action words!",
+      icon: "🧩",
+      path: "/pre-school/0.4-actions-crossword",
+      gradient: "blue-purple",
+    },
+    {
+      id: "0.4-actions.spell-quest",
+      title: "Spell Quest",
+      subtitle: "Actions",
+      description: "Unscramble letters to spell action words!",
+      icon: "✨",
+      path: "/pre-school/0.4-actions-spell-quest",
+      gradient: "pink-red",
+    },
+    {
+      id: "0.4-actions.word-pop",
+      title: "Word Pop",
+      subtitle: "Actions",
+      description: "Pop the balloon with the matching action!",
+      icon: "🎈",
+      path: "/pre-school/0.4-actions-word-pop",
+      gradient: "green-teal",
+    },
+    {
+      id: "0.4-actions.catch-that",
+      title: "Catch That",
+      subtitle: "Actions",
+      description: "Catch the falling actions with your basket!",
+      icon: "🎯",
+      path: "/pre-school/0.4-actions-catch-that",
       gradient: "purple-pink",
     },
   ];
@@ -255,8 +346,36 @@ export default function PreSchoolGamesMenu() {
               </a>
             </Link>
             
+            {/* Greetings Games */}
+            {games.filter(game => game.id.startsWith("0.3-greetings")).map((game) => (
+              <PreschoolButton
+                key={game.id}
+                title={game.title}
+                subtitle={game.subtitle}
+                description={game.description}
+                icon={game.icon}
+                href={game.path}
+                gradient={game.gradient}
+                dataTestId={`card-game-${game.id}`}
+              />
+            ))}
+            
+            {/* Actions Games */}
+            {games.filter(game => game.id.startsWith("0.4-actions")).map((game) => (
+              <PreschoolButton
+                key={game.id}
+                title={game.title}
+                subtitle={game.subtitle}
+                description={game.description}
+                icon={game.icon}
+                href={game.path}
+                gradient={game.gradient}
+                dataTestId={`card-game-${game.id}`}
+              />
+            ))}
+            
             {/* Other Games */}
-            {games.filter(game => game.id !== "0.2-colours.matching" && game.id !== "0.2-colours.crossword" && game.id !== "0.2-colours.spell-quest" && game.id !== "0.2-colours.word-pop" && game.id !== "0.2-colours.color-catch" && game.id !== "0.2-colours.i-spy" && !game.id.startsWith("0.1-numbers")).map((game) => (
+            {games.filter(game => game.id !== "0.2-colours.matching" && game.id !== "0.2-colours.crossword" && game.id !== "0.2-colours.spell-quest" && game.id !== "0.2-colours.word-pop" && game.id !== "0.2-colours.color-catch" && game.id !== "0.2-colours.i-spy" && !game.id.startsWith("0.1-numbers") && !game.id.startsWith("0.3-greetings") && !game.id.startsWith("0.4-actions")).map((game) => (
               <PreschoolButton
                 key={game.id}
                 title={game.title}

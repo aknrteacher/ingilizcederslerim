@@ -4,6 +4,7 @@ import coloursBanner from "@/assets/colours-banner.png";
 import numbersBanner from "@/assets/numbers-banner.png";
 import thealphabetBanner from "@/assets/thealphabet-banner.png";
 import greetingsBanner from "@/assets/greetings-banner.png";
+import actionsBanner from "@/assets/actions.banner.png";
 import "@/styles/2.1.voc.css";
 
 export default function PreschoolLandingPage() {
@@ -31,6 +32,12 @@ export default function PreschoolLandingPage() {
       image: greetingsBanner,
       alt: "GREETINGS - SELAMLAŞMALAR",
       testId: "landing-vocab-set-3",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.4-actions",
+      image: actionsBanner,
+      alt: "ACTIONS - EYLEMLER",
+      testId: "landing-vocab-set-4",
     },
   ];
 
