@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import coloursBanner from "@/assets/colours-banner.png";
 import numbersBanner from "@/assets/numbers-banner.png";
 import thealphabetBanner from "@/assets/thealphabet-banner.png";
+import greetingsBanner from "@/assets/greetings-banner.png";
 import "@/styles/2.1.voc.css";
 
 export default function PreSchoolVocabMenu() {
@@ -24,6 +25,12 @@ export default function PreSchoolVocabMenu() {
       image: coloursBanner,
       alt: "COLOURS - RENKLER",
       testId: "card-vocab-set-2",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.3-greetings",
+      image: greetingsBanner,
+      alt: "GREETINGS - SELAMLAŞMALAR",
+      testId: "card-vocab-set-3",
     },
   ];
 

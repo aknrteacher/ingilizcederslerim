@@ -19,6 +19,7 @@ import VocabularyCards2_2 from "@/pages/primary/grade2/theme2/vocab/2.2.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/0.2-colours/0.1.voc";
 import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.voc";
 import AlphabetVocabulary from "@/pages/preschool/vocab/0.0-alphabet/0.1-alphabet.voc";
+import GreetingsVocabulary from "@/pages/preschool/vocab/0.3-greetings/0.3-greetings.voc";
 import PreSchoolVocabMenu from "@/pages/preschool/vocab/0.2-colours/pre-school-vocab-menu";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
@@ -76,6 +77,7 @@ function Router() {
       <Route path="/pre-school/kelime-kartlari/0.0-alphabet" component={AlphabetVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.1-numbers" component={NumbersVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.2-colours" component={ColorsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.3-greetings" component={GreetingsVocabulary} />
       <Route path="/pre-school/0.2-colours-matching-game" component={ColorsMatchingGame} />
       <Route path="/pre-school/0.2-colours-crossword" component={ColorsCrosswordGame} />
       <Route path="/pre-school/0.2-colours-spell-quest" component={ColorsSpellQuestGame} />
