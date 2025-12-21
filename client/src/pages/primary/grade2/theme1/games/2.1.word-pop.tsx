@@ -409,7 +409,7 @@ export default function WordPopGame() {
             >
               <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3 mx-auto">
                 <img 
-                  src={`/images/2.1/${currentWord.file}`} 
+                  src={`/images/primary/2.1/${currentWord.file}`} 
                   alt={currentWord.word}
                   className="w-28 h-28 sm:w-40 sm:h-40 object-contain"
                 />

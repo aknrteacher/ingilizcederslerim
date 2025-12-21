@@ -118,18 +118,25 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
       // For same-level pages (e.g., /theme-2/games vs /theme-2/2.2-matching-game)
       // Extract the base path up to theme/unit (e.g., /primary-school/grade-2/theme-2)
       const extractBasePath = (p: string): string | null => {
-        const themeMatch = p.match(/^(\/primary-school\/grade-\d+\/(?:theme|unit)-\d+)/)
-        return themeMatch ? themeMatch[1] : null
+        // Match primary-school paths: /primary-school/grade-X/theme-Y or /primary-school/grade-X/unit-Y
+        const primaryMatch = p.match(/^(\/primary-school\/grade-\d+\/(?:theme|unit)-\d+)/)
+        if (primaryMatch) return primaryMatch[1]
+        
+        // Match pre-school paths: /pre-school/...
+        const preSchoolMatch = p.match(/^(\/pre-school)/)
+        if (preSchoolMatch) return preSchoolMatch[1]
+        
+        return null
       }
       
       const menuBase = extractBasePath(menuHref)
       const childBase = extractBasePath(childPath)
       
-      // If they're in the same theme/unit, and menu is a parent category (games, vocab, etc.)
+      // If they're in the same theme/unit/base, and menu is a parent category (games, vocab, etc.)
       if (menuBase && childBase && menuBase === childBase) {
         // Check if menuHref is a category page (ends with /games, /vocab, etc.)
         const menuCategory = menuHref.split('/').pop()
-        if (menuCategory && ['games', 'vocab', 'songs', 'stories', 'exercises', 'worksheets'].includes(menuCategory)) {
+        if (menuCategory && ['games', 'vocab', 'songs', 'stories', 'exercises', 'worksheets', 'kelime-kartlari'].includes(menuCategory)) {
           return true
         }
       }
@@ -142,15 +149,21 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
         // Check if this item's href matches the path
         if (item.href && isChildOfMenu(path, item.href)) {
           // Found a match - add current path to stack (all parent menus)
-          // Also add the current item if it has items (to keep submenu open)
+          // For game pages and other activity pages, we want to keep the parent submenu open
+          // (e.g., if we're on a game page, show the theme submenu, not the games submenu)
+          // So we always add the currentPath which includes all parent menus
+          if (currentPath.length > 0) {
+            stack.push(...currentPath)
+          }
+          
+          // Only add the current item if it has items and we want to show its submenu
+          // (This is for cases where the matched item itself is a submenu container)
           if (item.items && item.items.length > 0) {
-            stack.push(...currentPath, {
+            stack.push({
               title: item.title,
               items: item.items,
               theme: item.theme || parentTheme
             })
-          } else {
-            stack.push(...currentPath)
           }
           return true
         }
@@ -181,6 +194,153 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   // Initialize menu stack based on current location
   React.useEffect(() => {
     if (location && location !== '/') {
+      const pathParts = location.split('/').filter(Boolean)
+      
+      // Check if we're on any activity/end page by checking the entire path
+      // Activity indicators: -game, -vocab, crossword, spell-quest, word-pop, catch-that
+      // Also check for vocab pages like /kelime-kartlari/0.1colors
+      const activityIndicators = [
+        '-game', '-matching-game', '-vocab', 'vocab', 'crossword', 
+        'spell-quest', 'word-pop', 'catch-that', 'kelime-kartlari',
+        'songs', 'stories', 'exercises', 'worksheets'
+      ]
+      
+      // Exclude menu pages (not activity pages)
+      // Check if the last path part is a menu category
+      const lastPathPart = pathParts[pathParts.length - 1]
+      const menuCategories = ['games', 'vocab', 'songs', 'stories', 'exercises', 'worksheets', 'kelime-kartlari']
+      const isMenuPage = menuCategories.includes(lastPathPart) && 
+        !lastPathPart.includes('-game') && 
+        !lastPathPart.includes('-vocab') &&
+        !lastPathPart.includes('crossword') &&
+        !lastPathPart.includes('spell-quest') &&
+        !lastPathPart.includes('word-pop') &&
+        !lastPathPart.includes('catch-that')
+      
+      // Check if any path part contains an activity indicator
+      const hasActivityIndicator = pathParts.some(part => 
+        activityIndicators.some(indicator => part.includes(indicator))
+      )
+      
+      // It's an activity page if it has an activity indicator and is not a menu page
+      const isActivityPage = hasActivityIndicator && !isMenuPage
+      
+      // Check if we're on a menu page that needs full menu stack preserved
+      // Menu pages are intermediate pages like /games, /vocab, etc. that should also show full path
+      const needsFullMenuStack = isActivityPage || isMenuPage
+      
+      // For activity/end pages AND menu pages, always use fallback logic to ensure full menu stack
+      if (needsFullMenuStack) {
+        const contextLevelItem = navItems.find(item => {
+          if (!item.theme) return false
+          return location.startsWith(`/${item.theme}`)
+        })
+        
+        if (contextLevelItem && contextLevelItem.items && contextLevelItem.items.length > 0) {
+          // For primary-school, we need at least 3 parts: primary-school, grade-X, theme-X
+          // For pre-school, we just need the level
+          const isPrimarySchool = contextLevelItem.theme === 'primary-school'
+          const hasEnoughParts = isPrimarySchool ? pathParts.length >= 3 : pathParts.length >= 1
+          
+          if (pathParts.length >= 1 && pathParts[0] === contextLevelItem.theme && hasEnoughParts) {
+            // Handle pre-school structure (no grade/theme, just level -> activities)
+            if (contextLevelItem.theme === 'pre-school') {
+              // For pre-school, just show the level menu
+              setMenuStack([{
+                title: contextLevelItem.title,
+                items: contextLevelItem.items!,
+                theme: contextLevelItem.theme
+              }])
+              if (contextLevelItem.theme) {
+                setCurrentTheme(contextLevelItem.theme)
+              }
+              return
+            }
+            
+            // Handle primary-school structure (level -> grade -> theme -> activities)
+            let currentItems = contextLevelItem.items
+            let foundSubmenu: NavItem | null = null
+            let foundThemeSubmenu: NavItem | null = null
+            
+            const gradeMatch = pathParts[1]?.match(/grade-(\d+)/)
+            if (gradeMatch) {
+              const gradeIndex = parseInt(gradeMatch[1]) - 2
+              if (gradeIndex >= 0 && gradeIndex < currentItems.length) {
+                foundSubmenu = currentItems[gradeIndex]
+                currentItems = foundSubmenu.items || []
+                
+                if (pathParts.length >= 3 && currentItems.length > 0) {
+                  const themeMatch = pathParts[2]?.match(/(?:theme|unit)-(\d+)/)
+                  if (themeMatch) {
+                    const themeIndex = parseInt(themeMatch[1]) - 1
+                    if (themeIndex >= 0 && themeIndex < currentItems.length) {
+                      foundThemeSubmenu = currentItems[themeIndex]
+                    }
+                  }
+                }
+              }
+            }
+            
+            // Build menu stack based on what we found
+            if (foundThemeSubmenu && foundSubmenu) {
+              // We found both grade and theme - show full path
+              setMenuStack([
+                {
+                  title: contextLevelItem.title,
+                  items: contextLevelItem.items!,
+                  theme: contextLevelItem.theme
+                },
+                {
+                  title: foundSubmenu.title,
+                  items: foundSubmenu.items || [],
+                  theme: contextLevelItem.theme
+                },
+                {
+                  title: foundThemeSubmenu.title,
+                  items: foundThemeSubmenu.items || [],
+                  theme: contextLevelItem.theme
+                }
+              ])
+              if (contextLevelItem.theme) {
+                setCurrentTheme(contextLevelItem.theme)
+              }
+              return
+            } else if (foundSubmenu) {
+              // We found grade but not theme - show grade submenu
+              setMenuStack([
+                {
+                  title: contextLevelItem.title,
+                  items: contextLevelItem.items!,
+                  theme: contextLevelItem.theme
+                },
+                {
+                  title: foundSubmenu.title,
+                  items: foundSubmenu.items || [],
+                  theme: contextLevelItem.theme
+                }
+              ])
+              if (contextLevelItem.theme) {
+                setCurrentTheme(contextLevelItem.theme)
+              }
+              return
+            } else {
+              // If we couldn't find grade/theme but we're on a menu/activity page,
+              // at least show the level menu to preserve context
+              setMenuStack([{
+                title: contextLevelItem.title,
+                items: contextLevelItem.items!,
+                theme: contextLevelItem.theme
+              }])
+              if (contextLevelItem.theme) {
+                setCurrentTheme(contextLevelItem.theme)
+              }
+              return
+            }
+          }
+        }
+      }
+      
+      // For other pages, use the normal path finding logic
       const path = findMenuPathForLocation(location)
       if (path.length > 0) {
         setMenuStack(path)
@@ -200,6 +360,126 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
           }])
           if (levelItem.theme) {
             setCurrentTheme(levelItem.theme)
+          }
+        } else {
+          // If we can't find a match but we're still within a known navigation context,
+          // try to preserve the menu stack by finding the appropriate level and submenu
+          // This handles cases like game end pages where the path might not match exactly
+          const contextLevelItem = navItems.find(item => {
+            if (!item.theme) return false
+            // Check if location starts with this level's path
+            return location.startsWith(`/${item.theme}`)
+          })
+          
+          if (contextLevelItem && contextLevelItem.items && contextLevelItem.items.length > 0) {
+            // Try to find a matching submenu based on the path structure
+            const pathParts = location.split('/').filter(Boolean)
+            
+            if (pathParts.length >= 1 && pathParts[0] === contextLevelItem.theme) {
+              // Handle pre-school structure (no grade/theme, just level -> activities)
+              if (contextLevelItem.theme === 'pre-school') {
+                // For pre-school, just show the level menu
+                setMenuStack([{
+                  title: contextLevelItem.title,
+                  items: contextLevelItem.items!,
+                  theme: contextLevelItem.theme
+                }])
+                if (contextLevelItem.theme) {
+                  setCurrentTheme(contextLevelItem.theme)
+                }
+              } else {
+                // Handle primary-school structure (level -> grade -> theme -> activities)
+                let currentItems = contextLevelItem.items
+                let foundSubmenu: NavItem | null = null
+                let foundThemeSubmenu: NavItem | null = null
+                
+                // Look for grade/class match (e.g., "grade-2" in path)
+                const gradeMatch = pathParts[1]?.match(/grade-(\d+)/)
+                if (gradeMatch) {
+                  const gradeIndex = parseInt(gradeMatch[1]) - 2 // grade-2 is index 0, grade-3 is index 1, etc.
+                  if (gradeIndex >= 0 && gradeIndex < currentItems.length) {
+                    foundSubmenu = currentItems[gradeIndex]
+                    currentItems = foundSubmenu.items || []
+                    
+                    // Look for theme/unit match (e.g., "theme-2" in path)
+                    if (pathParts.length >= 3 && currentItems.length > 0) {
+                      const themeMatch = pathParts[2]?.match(/(?:theme|unit)-(\d+)/)
+                      if (themeMatch) {
+                        const themeIndex = parseInt(themeMatch[1]) - 1 // theme-1 is index 0, theme-2 is index 1, etc.
+                        if (themeIndex >= 0 && themeIndex < currentItems.length) {
+                          foundThemeSubmenu = currentItems[themeIndex]
+                        }
+                      }
+                    }
+                  }
+                }
+                
+                // Build the menu stack based on what we found
+                // Always preserve the full path when we have theme/unit information
+                if (foundThemeSubmenu && foundSubmenu) {
+                  // We found both grade and theme - show full path to preserve submenu context
+                  setMenuStack([
+                    {
+                      title: contextLevelItem.title,
+                      items: contextLevelItem.items!,
+                      theme: contextLevelItem.theme
+                    },
+                    {
+                      title: foundSubmenu.title,
+                      items: foundSubmenu.items || [],
+                      theme: contextLevelItem.theme
+                    },
+                    {
+                      title: foundThemeSubmenu.title,
+                      items: foundThemeSubmenu.items || [],
+                      theme: contextLevelItem.theme
+                    }
+                  ])
+                  if (contextLevelItem.theme) {
+                    setCurrentTheme(contextLevelItem.theme)
+                  }
+                } else if (foundSubmenu) {
+                  // We found grade but not theme - show grade submenu
+                  setMenuStack([
+                    {
+                      title: contextLevelItem.title,
+                      items: contextLevelItem.items!,
+                      theme: contextLevelItem.theme
+                    },
+                    {
+                      title: foundSubmenu.title,
+                      items: foundSubmenu.items || [],
+                      theme: contextLevelItem.theme
+                    }
+                  ])
+                  if (contextLevelItem.theme) {
+                    setCurrentTheme(contextLevelItem.theme)
+                  }
+                } else {
+                  // If we couldn't find a specific match but we're in this level's context,
+                  // at least show the level's main submenu to preserve navigation context
+                  setMenuStack([{
+                    title: contextLevelItem.title,
+                    items: contextLevelItem.items!,
+                    theme: contextLevelItem.theme
+                  }])
+                  if (contextLevelItem.theme) {
+                    setCurrentTheme(contextLevelItem.theme)
+                  }
+                }
+              }
+            } else {
+              // If we're in the level's context but path structure doesn't match,
+              // still preserve the level's main submenu
+              setMenuStack([{
+                title: contextLevelItem.title,
+                items: contextLevelItem.items!,
+                theme: contextLevelItem.theme
+              }])
+              if (contextLevelItem.theme) {
+                setCurrentTheme(contextLevelItem.theme)
+              }
+            }
           }
         }
       }

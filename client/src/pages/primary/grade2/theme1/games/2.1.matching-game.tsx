@@ -83,7 +83,7 @@ export default function MatchingGame() {
     const words: GameCard[] = selectedCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
-      imageUrl: `/images/2.1/${item.file}`,
+      imageUrl: `/images/primary/2.1/${item.file}`,
       turkish: item.turkish,
       type: "word",
     }));
@@ -91,7 +91,7 @@ export default function MatchingGame() {
     const pictures: GameCard[] = selectedCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
-      imageUrl: `/images/2.1/${item.file}`,
+      imageUrl: `/images/primary/2.1/${item.file}`,
       turkish: item.turkish,
       type: "picture",
     }));
@@ -199,7 +199,7 @@ export default function MatchingGame() {
     const words: GameCard[] = newCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
-      imageUrl: `/images/2.1/${item.file}`,
+      imageUrl: `/images/primary/2.1/${item.file}`,
       turkish: item.turkish,
       type: "word",
     }));
@@ -207,7 +207,7 @@ export default function MatchingGame() {
     const pictures: GameCard[] = newCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
-      imageUrl: `/images/2.1/${item.file}`,
+      imageUrl: `/images/primary/2.1/${item.file}`,
       turkish: item.turkish,
       type: "picture",
     }));

@@ -23,6 +23,7 @@ export function PreschoolGameHeader({ gameName, description, containerId, icon }
                       element.querySelector(".spell-quest-container") ||
                       element.querySelector(".word-pop-container") ||
                       element.querySelector(".color-catch-container") ||
+                      element.querySelector(".i-spy-game-container") ||
                       element.querySelector(".max-w-6xl") ||
                       element) as HTMLElement;
     
@@ -64,6 +65,14 @@ export function PreschoolGameHeader({ gameName, description, containerId, icon }
       gridArea.style.transformOrigin = "top center";
       gridArea.style.transition = "transform 0.2s ease";
     }
+    
+    // For I Spy game, scale the game scene
+    const gameScene = container.querySelector('.game-scene-container') as HTMLElement;
+    if (gameScene) {
+      gameScene.style.transform = `scale(${scaleValue})`;
+      gameScene.style.transformOrigin = "top center";
+      gameScene.style.transition = "transform 0.2s ease";
+    }
   }, [zoomLevel, containerId, isFullscreen]);
 
   const handleZoomIn = () => {
@@ -84,13 +93,14 @@ export function PreschoolGameHeader({ gameName, description, containerId, icon }
     const element = document.getElementById(containerId);
     if (!element) return;
 
-    // Find the main game container to make fullscreen
-    const container = (element.querySelector(".matching-game-container") || 
-                      element.querySelector(".spell-quest-container") ||
-                      element.querySelector(".word-pop-container") ||
-                      element.querySelector(".color-catch-container") ||
-                      element.querySelector(".max-w-6xl") ||
-                      element) as HTMLElement;
+      // Find the main game container to make fullscreen
+      const container = (element.querySelector(".matching-game-container") || 
+                        element.querySelector(".spell-quest-container") ||
+                        element.querySelector(".word-pop-container") ||
+                        element.querySelector(".color-catch-container") ||
+                        element.querySelector(".i-spy-game-container") ||
+                        element.querySelector(".max-w-6xl") ||
+                        element) as HTMLElement;
     if (!container) return;
 
     // Also find wrapper for spell-quest to add class
@@ -141,6 +151,7 @@ export function PreschoolGameHeader({ gameName, description, containerId, icon }
                         element.querySelector(".spell-quest-container") ||
                         element.querySelector(".word-pop-container") ||
                         element.querySelector(".color-catch-container") ||
+                        element.querySelector(".i-spy-game-container") ||
                         element.querySelector(".max-w-6xl") ||
                         element) as HTMLElement;
       

@@ -132,7 +132,7 @@ export default function VocabularyCards2_2() {
   useEffect(() => {
     const vocabData = imageFiles.map((item) => ({
       word: item.word,
-      imageUrl: `/images/2.2/${item.file}`,
+      imageUrl: `/images/primary/2.2/${item.file}`,
       turkish: item.turkish,
     }));
     console.log("Vocabulary loaded:", vocabData);

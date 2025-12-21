@@ -16,24 +16,26 @@ import UniversityLandingPage from "@/pages/landing-university";
 import BusinessEnglishLandingPage from "@/pages/landing-business-english";
 import VocabularyCards from "@/pages/primary/grade2/theme1/vocab/2.1.voc";
 import VocabularyCards2_2 from "@/pages/primary/grade2/theme2/vocab/2.2.voc";
-import ColorsVocabulary from "@/pages/preschool/vocab/colours/0.1.voc";
-import NumbersVocabulary from "@/pages/preschool/vocab/numbers/0.1-numbers.voc";
-import PreSchoolVocabMenu from "@/pages/preschool/vocab/colours/pre-school-vocab-menu";
+import ColorsVocabulary from "@/pages/preschool/vocab/0.2-colours/0.1.voc";
+import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.voc";
+import AlphabetVocabulary from "@/pages/preschool/vocab/0.0-alphabet/0.1-alphabet.voc";
+import PreSchoolVocabMenu from "@/pages/preschool/vocab/0.2-colours/pre-school-vocab-menu";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
 import PrimarySchoolGrade2Theme2GamesMenu from "@/pages/primary-school-grade2-theme2-games-menu";
 import MatchingGame from "@/pages/primary/grade2/theme1/games/2.1.matching-game";
 import MatchingGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.matching-game";
-import ColorsMatchingGame from "@/pages/preschool/games/colours/0.1.matching-game";
-import ColorsCrosswordGame from "@/pages/preschool/games/colours/0.1.crossword";
-import ColorsSpellQuestGame from "@/pages/preschool/games/colours/0.1.spell-quest";
-import ColorsWordPopGame from "@/pages/preschool/games/colours/0.1.word-pop";
-import ColorsCatchGame from "@/pages/preschool/games/colours/0.1.catch-that";
-import NumbersMatchingGame from "@/pages/preschool/games/numbers/0.1-numbers.matching-game";
-import NumbersCrosswordGame from "@/pages/preschool/games/numbers/0.1-numbers.crossword";
-import NumbersSpellQuestGame from "@/pages/preschool/games/numbers/0.1-numbers.spell-quest";
-import NumbersWordPopGame from "@/pages/preschool/games/numbers/0.1-numbers.word-pop";
-import NumbersCatchGame from "@/pages/preschool/games/numbers/0.1-numbers.catch-that";
+import ColorsMatchingGame from "@/pages/preschool/games/0.2-colours/0.1.matching-game";
+import ColorsCrosswordGame from "@/pages/preschool/games/0.2-colours/0.1.crossword";
+import ColorsSpellQuestGame from "@/pages/preschool/games/0.2-colours/0.1.spell-quest";
+import ColorsWordPopGame from "@/pages/preschool/games/0.2-colours/0.1.word-pop";
+import ColorsCatchGame from "@/pages/preschool/games/0.2-colours/0.1.catch-that";
+import ISpyGame from "@/pages/preschool/games/0.2-colours/0.1.i-spy";
+import NumbersMatchingGame from "@/pages/preschool/games/0.1-numbers/0.1-numbers.matching-game";
+import NumbersCrosswordGame from "@/pages/preschool/games/0.1-numbers/0.1-numbers.crossword";
+import NumbersSpellQuestGame from "@/pages/preschool/games/0.1-numbers/0.1-numbers.spell-quest";
+import NumbersWordPopGame from "@/pages/preschool/games/0.1-numbers/0.1-numbers.word-pop";
+import NumbersCatchGame from "@/pages/preschool/games/0.1-numbers/0.1-numbers.catch-that";
 import CrosswordGame from "@/pages/primary/grade2/theme1/games/2.1.crossword";
 import CrosswordGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.crossword";
 import SpellQuestGame from "@/pages/primary/grade2/theme1/games/2.1.spell-quest";
@@ -71,13 +73,15 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-1/catch-that" component={CatchThatGame} />
       <Route path="/primary-school/grade-2/theme-2/catch-that" component={CatchThatGame2_2} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
-      <Route path="/pre-school/kelime-kartlari/0.1colors" component={ColorsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.0-alphabet" component={AlphabetVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.1-numbers" component={NumbersVocabulary} />
-      <Route path="/pre-school/0.1-matching-game" component={ColorsMatchingGame} />
-      <Route path="/pre-school/0.1-crossword" component={ColorsCrosswordGame} />
-      <Route path="/pre-school/0.1-spell-quest" component={ColorsSpellQuestGame} />
-      <Route path="/pre-school/0.1-word-pop" component={ColorsWordPopGame} />
-      <Route path="/pre-school/0.1-catch-that" component={ColorsCatchGame} />
+      <Route path="/pre-school/kelime-kartlari/0.2-colours" component={ColorsVocabulary} />
+      <Route path="/pre-school/0.2-colours-matching-game" component={ColorsMatchingGame} />
+      <Route path="/pre-school/0.2-colours-crossword" component={ColorsCrosswordGame} />
+      <Route path="/pre-school/0.2-colours-spell-quest" component={ColorsSpellQuestGame} />
+      <Route path="/pre-school/0.2-colours-word-pop" component={ColorsWordPopGame} />
+      <Route path="/pre-school/0.2-colours-catch-that" component={ColorsCatchGame} />
+      <Route path="/pre-school/0.2-colours-i-spy" component={ISpyGame} />
       <Route path="/pre-school/0.1-numbers-matching-game" component={NumbersMatchingGame} />
       <Route path="/pre-school/0.1-numbers-crossword" component={NumbersCrosswordGame} />
       <Route path="/pre-school/0.1-numbers-spell-quest" component={NumbersSpellQuestGame} />

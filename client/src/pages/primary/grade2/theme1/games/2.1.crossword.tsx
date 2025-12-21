@@ -78,7 +78,7 @@ export default function CrosswordGame() {
   // Background collage images
   const collageImages = placedWords.map(pw => {
       const vocab = vocabulary.find(v => v.word === pw.word);
-      return vocab?.file ? `/images/2.1/${vocab.file}` : null;
+      return vocab?.file ? `/images/primary/2.1/${vocab.file}` : null;
   }).filter(Boolean) as string[];
 
   const speakWord = (word: string) => {

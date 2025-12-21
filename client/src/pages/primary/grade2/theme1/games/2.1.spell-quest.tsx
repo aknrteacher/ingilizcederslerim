@@ -275,7 +275,7 @@ export default function SpellQuestGame() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/2.1/${currentWord.file}`} 
+                    src={`/images/primary/2.1/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />

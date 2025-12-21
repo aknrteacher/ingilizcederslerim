@@ -25,49 +25,58 @@ interface Game {
 export default function PreSchoolGamesMenu() {
   const games: Game[] = [
     {
-      id: "0.1.matching",
+      id: "0.2-colours.matching",
       title: "Matchlings",
       subtitle: "Colours",
       description: "Match colours with their English names. Drag and hatch cute characters!",
       icon: "🌈",
-      path: "/pre-school/0.1-matching-game",
+      path: "/pre-school/0.2-colours-matching-game",
       gradient: "yellow-orange",
     },
     {
-      id: "0.1.crossword",
+      id: "0.2-colours.crossword",
       title: "Word Cross",
       subtitle: "Colours",
       description: "Solve the crossword puzzle using colour names!",
       icon: "🧩",
-      path: "/pre-school/0.1-crossword",
+      path: "/pre-school/0.2-colours-crossword",
       gradient: "blue-purple",
     },
     {
-      id: "0.1.spell-quest",
+      id: "0.2-colours.spell-quest",
       title: "Spell Quest",
       subtitle: "Colours",
       description: "Unscramble letters to spell colour words!",
       icon: "✨",
-      path: "/pre-school/0.1-spell-quest",
+      path: "/pre-school/0.2-colours-spell-quest",
       gradient: "pink-red",
     },
     {
-      id: "0.1.word-pop",
+      id: "0.2-colours.word-pop",
       title: "Word Pop",
       subtitle: "Colours",
       description: "Pop the balloon with the matching colour!",
       icon: "🎈",
-      path: "/pre-school/0.1-word-pop",
+      path: "/pre-school/0.2-colours-word-pop",
       gradient: "green-teal",
     },
     {
-      id: "0.1.color-catch",
+      id: "0.2-colours.color-catch",
       title: "Catch That",
       subtitle: "Colours",
       description: "Catch the falling colors with your basket!",
       icon: "🎨",
-      path: "/pre-school/0.1-catch-that",
+      path: "/pre-school/0.2-colours-catch-that",
       gradient: "purple-pink",
+    },
+    {
+      id: "0.2-colours.i-spy",
+      title: "I Spy",
+      subtitle: "Colours & Objects",
+      description: "I spy with my little eye... Find objects by their colors!",
+      icon: "👁️",
+      path: "/pre-school/0.2-colours-i-spy",
+      gradient: "blue-purple",
     },
     {
       id: "0.1-numbers.matching",
@@ -137,8 +146,8 @@ export default function PreSchoolGamesMenu() {
 
           <div className="preschool-games-grid">
             {/* Matchlings Game with Custom Banner */}
-            <Link href="/pre-school/0.1-matching-game">
-              <a className="game-banner-link" data-testid="card-game-0.1.matching">
+            <Link href="/pre-school/0.2-colours-matching-game">
+              <a className="game-banner-link" data-testid="card-game-0.2-colours.matching">
                 <img 
                   src={matchlingsBanner} 
                   alt="Matchlings - Colours / Renkler" 
@@ -148,8 +157,8 @@ export default function PreSchoolGamesMenu() {
             </Link>
             
             {/* Word Cross Game with Custom Banner */}
-            <Link href="/pre-school/0.1-crossword">
-              <a className="game-banner-link" data-testid="card-game-0.1.crossword">
+            <Link href="/pre-school/0.2-colours-crossword">
+              <a className="game-banner-link" data-testid="card-game-0.2-colours.crossword">
                 <img 
                   src={wordCrossBanner} 
                   alt="Word Cross - Colours / Renkler" 
@@ -159,8 +168,8 @@ export default function PreSchoolGamesMenu() {
             </Link>
             
             {/* Spell Quest Game with Custom Banner */}
-            <Link href="/pre-school/0.1-spell-quest">
-              <a className="game-banner-link" data-testid="card-game-0.1.spell-quest">
+            <Link href="/pre-school/0.2-colours-spell-quest">
+              <a className="game-banner-link" data-testid="card-game-0.2-colours.spell-quest">
                 <img 
                   src={spellQuestBanner} 
                   alt="Spell Quest - Colours / Renkler" 
@@ -170,8 +179,8 @@ export default function PreSchoolGamesMenu() {
             </Link>
             
             {/* Word Pop Game with Custom Banner */}
-            <Link href="/pre-school/0.1-word-pop">
-              <a className="game-banner-link" data-testid="card-game-0.1.word-pop">
+            <Link href="/pre-school/0.2-colours-word-pop">
+              <a className="game-banner-link" data-testid="card-game-0.2-colours.word-pop">
                 <img 
                   src={wordPopBanner} 
                   alt="Word Pop - Colours / Renkler" 
@@ -181,8 +190,8 @@ export default function PreSchoolGamesMenu() {
             </Link>
             
             {/* Color Catch Game with Custom Banner */}
-            <Link href="/pre-school/0.1-catch-that">
-              <a className="game-banner-link" data-testid="card-game-0.1.color-catch">
+            <Link href="/pre-school/0.2-colours-catch-that">
+              <a className="game-banner-link" data-testid="card-game-0.2-colours.color-catch">
                 <img 
                   src={colorCatchBanner} 
                   alt="Catch That - Colours / Renkler" 
@@ -247,7 +256,7 @@ export default function PreSchoolGamesMenu() {
             </Link>
             
             {/* Other Games */}
-            {games.filter(game => game.id !== "0.1.matching" && game.id !== "0.1.crossword" && game.id !== "0.1.spell-quest" && game.id !== "0.1.word-pop" && game.id !== "0.1.color-catch" && !game.id.startsWith("0.1-numbers")).map((game) => (
+            {games.filter(game => game.id !== "0.2-colours.matching" && game.id !== "0.2-colours.crossword" && game.id !== "0.2-colours.spell-quest" && game.id !== "0.2-colours.word-pop" && game.id !== "0.2-colours.color-catch" && game.id !== "0.2-colours.i-spy" && !game.id.startsWith("0.1-numbers")).map((game) => (
               <PreschoolButton
                 key={game.id}
                 title={game.title}
