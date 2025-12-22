@@ -94,8 +94,14 @@ function ActionBalloonShape({ word, shape }: { word: string, shape: string }) {
 
   switch (shape) {
     case "heart":
+      // Generate scalable heart path based on actual balloon size
+      const heartWidth = minWidth;
+      const heartHeight = minHeight;
+      const scaleX = heartWidth / 128;
+      const scaleY = heartHeight / 128;
+      const heartPath = `path('M${64 * scaleX} ${120 * scaleY} C${20 * scaleX} ${80 * scaleY} ${0 * scaleX} ${40 * scaleY} ${32 * scaleX} ${20 * scaleY} C${50 * scaleX} ${8 * scaleY} ${64 * scaleX} ${20 * scaleY} ${64 * scaleX} ${35 * scaleY} C${64 * scaleX} ${20 * scaleY} ${78 * scaleX} ${8 * scaleY} ${96 * scaleX} ${20 * scaleY} C${128 * scaleX} ${40 * scaleY} ${108 * scaleX} ${80 * scaleY} ${64 * scaleX} ${120 * scaleY}Z')`;
       return (
-        <div className={`${baseClasses}`} style={{ ...balloonStyle, clipPath: "path('M64 120 C20 80 0 40 32 20 C50 8 64 20 64 35 C64 20 78 8 96 20 C128 40 108 80 64 120Z')" }}>
+        <div className={`${baseClasses}`} style={{ ...balloonStyle, clipPath: heartPath }}>
           {shineEffect}
         </div>
       );
