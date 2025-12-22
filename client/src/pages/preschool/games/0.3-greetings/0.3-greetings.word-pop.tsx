@@ -44,6 +44,19 @@ const greetingBalloonMap: Record<string, { color: string, textColor: string }> =
 
 const balloonShapes = ["round", "oval", "heart", "star"];
 
+// Function to format words with spaces
+const formatWordWithSpaces = (word: string): string => {
+  const wordMap: Record<string, string> = {
+    "GOODMORNING": "GOOD MORNING",
+    "GOODAFTERNOON": "GOOD AFTERNOON",
+    "GOODNIGHT": "GOOD NIGHT",
+    "THANKYOU": "THANK YOU",
+    "HOWAREYOU": "HOW ARE YOU",
+    "IAMFINE": "I AM FINE",
+  };
+  return wordMap[word] || word;
+};
+
 interface Balloon {
   id: string;
   word: string;
@@ -60,9 +73,11 @@ function GreetingBalloonShape({ word, shape }: { word: string, shape: string }) 
   const baseClasses = `bg-gradient-to-b ${colorStyle.color} shadow-xl flex items-center justify-center cursor-pointer relative overflow-hidden`;
   const shineEffect = <div className="absolute top-3 left-3 w-6 h-6 bg-white/50 rounded-full blur-sm" />;
   
-  // Calculate minimum size based on word length
-  const minWidth = Math.max(128, word.length * 14 + 40);
-  const minHeight = Math.max(128, minWidth * 0.95);
+  // Calculate minimum size based on word length (reduced for normal screens)
+  const formattedWord = formatWordWithSpaces(word);
+  const displayLength = formattedWord.length;
+  const minWidth = Math.max(96, displayLength * 10 + 30);
+  const minHeight = Math.max(96, minWidth * 0.95);
 
   const balloonStyle = {
     width: `${minWidth}px`,
@@ -79,15 +94,15 @@ function GreetingBalloonShape({ word, shape }: { word: string, shape: string }) 
         </div>
       );
     case "star":
-      const starSize = Math.max(144, minWidth);
+      const starSize = Math.max(110, minWidth);
       return (
         <div className={`${baseClasses}`} style={{ width: `${starSize}px`, height: `${starSize}px`, minWidth: `${starSize}px`, minHeight: `${starSize}px`, clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }}>
           {shineEffect}
         </div>
       );
     case "oval":
-      const ovalWidth = Math.max(96, minWidth);
-      const ovalHeight = Math.max(144, ovalWidth * 1.5);
+      const ovalWidth = Math.max(80, minWidth);
+      const ovalHeight = Math.max(110, ovalWidth * 1.5);
       return (
         <div className={`rounded-[50%] ${baseClasses}`} style={{ width: `${ovalWidth}px`, height: `${ovalHeight}px`, minWidth: `${ovalWidth}px`, minHeight: `${ovalHeight}px` }}>
           {shineEffect}
@@ -494,7 +509,7 @@ export default function GreetingsWordPopGame() {
                       <GreetingBalloonShape word={balloon.word} shape={balloon.shape} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {balloon.word}
+                        {formatWordWithSpaces(balloon.word)}
                       </div>
                     </div>
                   </button>
