@@ -21,6 +21,10 @@ import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.v
 import AlphabetVocabulary from "@/pages/preschool/vocab/0.0-alphabet/0.1-alphabet.voc";
 import GreetingsVocabulary from "@/pages/preschool/vocab/0.3-greetings/0.3-greetings.voc";
 import ActionsVocabulary from "@/pages/preschool/vocab/0.4-actions/0.4-actions.voc";
+import OurBodyVocabulary from "@/pages/preschool/vocab/0.5-ourbody/0.5-ourbody.voc";
+import OurClassroomVocabulary from "@/pages/preschool/vocab/0.6-ourclassroom/0.6-ourclassroom.voc";
+import ThingsVocabulary from "@/pages/preschool/vocab/0.7-things/0.7-things.voc";
+import PeopleVocabulary from "@/pages/preschool/vocab/0.8-people/0.8-people.voc";
 import PreSchoolVocabMenu from "@/pages/preschool/vocab/0.2-colours/pre-school-vocab-menu";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
@@ -48,6 +52,30 @@ import ActionsCrosswordGame from "@/pages/preschool/games/0.4-actions/0.4-action
 import ActionsSpellQuestGame from "@/pages/preschool/games/0.4-actions/0.4-actions.spell-quest";
 import ActionsWordPopGame from "@/pages/preschool/games/0.4-actions/0.4-actions.word-pop";
 import ActionsCatchGame from "@/pages/preschool/games/0.4-actions/0.4-actions.catch-that";
+// 0.5-ourbody games
+import OurBodyMatchingGame from "@/pages/preschool/games/0.5-ourbody/0.5-ourbody.matching-game";
+import OurBodyCrosswordGame from "@/pages/preschool/games/0.5-ourbody/0.5-ourbody.crossword";
+import OurBodySpellQuestGame from "@/pages/preschool/games/0.5-ourbody/0.5-ourbody.spell-quest";
+import OurBodyWordPopGame from "@/pages/preschool/games/0.5-ourbody/0.5-ourbody.word-pop";
+import OurBodyCatchGame from "@/pages/preschool/games/0.5-ourbody/0.5-ourbody.catch-that";
+// 0.6-ourclassroom games
+import OurClassroomMatchingGame from "@/pages/preschool/games/0.6-ourclassroom/0.6-ourclassroom.matching-game";
+import OurClassroomCrosswordGame from "@/pages/preschool/games/0.6-ourclassroom/0.6-ourclassroom.crossword";
+import OurClassroomSpellQuestGame from "@/pages/preschool/games/0.6-ourclassroom/0.6-ourclassroom.spell-quest";
+import OurClassroomWordPopGame from "@/pages/preschool/games/0.6-ourclassroom/0.6-ourclassroom.word-pop";
+import OurClassroomCatchGame from "@/pages/preschool/games/0.6-ourclassroom/0.6-ourclassroom.catch-that";
+// 0.7-things games
+import ThingsMatchingGame from "@/pages/preschool/games/0.7-things/0.7-things.matching-game";
+import ThingsCrosswordGame from "@/pages/preschool/games/0.7-things/0.7-things.crossword";
+import ThingsSpellQuestGame from "@/pages/preschool/games/0.7-things/0.7-things.spell-quest";
+import ThingsWordPopGame from "@/pages/preschool/games/0.7-things/0.7-things.word-pop";
+import ThingsCatchGame from "@/pages/preschool/games/0.7-things/0.7-things.catch-that";
+// 0.8-people games
+import PeopleMatchingGame from "@/pages/preschool/games/0.8-people/0.8-people.matching-game";
+import PeopleCrosswordGame from "@/pages/preschool/games/0.8-people/0.8-people.crossword";
+import PeopleSpellQuestGame from "@/pages/preschool/games/0.8-people/0.8-people.spell-quest";
+import PeopleWordPopGame from "@/pages/preschool/games/0.8-people/0.8-people.word-pop";
+import PeopleCatchGame from "@/pages/preschool/games/0.8-people/0.8-people.catch-that";
 import CrosswordGame from "@/pages/primary/grade2/theme1/games/2.1.crossword";
 import CrosswordGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.crossword";
 import SpellQuestGame from "@/pages/primary/grade2/theme1/games/2.1.spell-quest";
@@ -90,6 +118,10 @@ function Router() {
       <Route path="/pre-school/kelime-kartlari/0.2-colours" component={ColorsVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.3-greetings" component={GreetingsVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.4-actions" component={ActionsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.5-ourbody" component={OurBodyVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.6-ourclassroom" component={OurClassroomVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.7-things" component={ThingsVocabulary} />
+      <Route path="/pre-school/kelime-kartlari/0.8-people" component={PeopleVocabulary} />
       <Route path="/pre-school/0.2-colours-matching-game" component={ColorsMatchingGame} />
       <Route path="/pre-school/0.2-colours-crossword" component={ColorsCrosswordGame} />
       <Route path="/pre-school/0.2-colours-spell-quest" component={ColorsSpellQuestGame} />
@@ -111,6 +143,30 @@ function Router() {
       <Route path="/pre-school/0.4-actions-spell-quest" component={ActionsSpellQuestGame} />
       <Route path="/pre-school/0.4-actions-word-pop" component={ActionsWordPopGame} />
       <Route path="/pre-school/0.4-actions-catch-that" component={ActionsCatchGame} />
+      {/* 0.5-ourbody games */}
+      <Route path="/pre-school/0.5-ourbody-matching-game" component={OurBodyMatchingGame} />
+      <Route path="/pre-school/0.5-ourbody-crossword" component={OurBodyCrosswordGame} />
+      <Route path="/pre-school/0.5-ourbody-spell-quest" component={OurBodySpellQuestGame} />
+      <Route path="/pre-school/0.5-ourbody-word-pop" component={OurBodyWordPopGame} />
+      <Route path="/pre-school/0.5-ourbody-catch-that" component={OurBodyCatchGame} />
+      {/* 0.6-ourclassroom games */}
+      <Route path="/pre-school/0.6-ourclassroom-matching-game" component={OurClassroomMatchingGame} />
+      <Route path="/pre-school/0.6-ourclassroom-crossword" component={OurClassroomCrosswordGame} />
+      <Route path="/pre-school/0.6-ourclassroom-spell-quest" component={OurClassroomSpellQuestGame} />
+      <Route path="/pre-school/0.6-ourclassroom-word-pop" component={OurClassroomWordPopGame} />
+      <Route path="/pre-school/0.6-ourclassroom-catch-that" component={OurClassroomCatchGame} />
+      {/* 0.7-things games */}
+      <Route path="/pre-school/0.7-things-matching-game" component={ThingsMatchingGame} />
+      <Route path="/pre-school/0.7-things-crossword" component={ThingsCrosswordGame} />
+      <Route path="/pre-school/0.7-things-spell-quest" component={ThingsSpellQuestGame} />
+      <Route path="/pre-school/0.7-things-word-pop" component={ThingsWordPopGame} />
+      <Route path="/pre-school/0.7-things-catch-that" component={ThingsCatchGame} />
+      {/* 0.8-people games */}
+      <Route path="/pre-school/0.8-people-matching-game" component={PeopleMatchingGame} />
+      <Route path="/pre-school/0.8-people-crossword" component={PeopleCrosswordGame} />
+      <Route path="/pre-school/0.8-people-spell-quest" component={PeopleSpellQuestGame} />
+      <Route path="/pre-school/0.8-people-word-pop" component={PeopleWordPopGame} />
+      <Route path="/pre-school/0.8-people-catch-that" component={PeopleCatchGame} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 
