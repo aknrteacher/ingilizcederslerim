@@ -5,6 +5,8 @@ import numbersBanner from "@/assets/numbers-banner.png";
 import thealphabetBanner from "@/assets/thealphabet-banner.png";
 import greetingsBanner from "@/assets/greetings-banner.png";
 import actionsBanner from "@/assets/actions.banner.png";
+// TODO: Add ourbody-banner.png to assets when available
+// import ourbodyBanner from "@/assets/ourbody-banner.png";
 import "@/styles/2.1.voc.css";
 
 export default function PreSchoolVocabMenu() {
@@ -38,6 +40,48 @@ export default function PreSchoolVocabMenu() {
       image: actionsBanner,
       alt: "ACTIONS - EYLEMLER",
       testId: "card-vocab-set-4",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.5-ourbody",
+      image: actionsBanner, // TODO: Replace with ourbodyBanner when available
+      alt: "OUR BODY - VÜCUDUMUZ",
+      testId: "card-vocab-set-5",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.6-ourclassroom",
+      image: actionsBanner, // TODO: Replace with ourclassroomBanner when available
+      alt: "OUR CLASSROOM - SINIFIMIZ",
+      testId: "card-vocab-set-6",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.7-things",
+      image: actionsBanner, // TODO: Replace with thingsBanner when available
+      alt: "THINGS - EŞYALAR",
+      testId: "card-vocab-set-7",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.8-people",
+      image: actionsBanner, // TODO: Replace with peopleBanner when available
+      alt: "PEOPLE - İNSANLAR",
+      testId: "card-vocab-set-8",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.9-animals",
+      image: actionsBanner, // TODO: Replace with animalsBanner when available
+      alt: "ANIMALS - HAYVANLAR",
+      testId: "card-vocab-set-9",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.10-aroundus",
+      image: actionsBanner, // TODO: Replace with aroundusBanner when available
+      alt: "AROUND US - ÇEVRİMİZ",
+      testId: "card-vocab-set-10",
+    },
+    {
+      href: "/pre-school/kelime-kartlari/0.11-food",
+      image: actionsBanner, // TODO: Replace with foodBanner when available
+      alt: "FOOD - YİYECEK",
+      testId: "card-vocab-set-11",
     },
   ];
 

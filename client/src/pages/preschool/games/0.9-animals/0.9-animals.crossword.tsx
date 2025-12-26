@@ -10,18 +10,24 @@ import "@/styles/0.1.crossword.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
 
-// Vocabulary from 0.10 (Around Us)
+// Vocabulary from 0.9 (Animals)
 const vocabulary = [
-  { word: "WORLD", clue: "dünya", file: "world.png" },
-  { word: "SUN", clue: "güneş", file: "sun.png" },
-  { word: "MOON", clue: "ay", file: "moon.png" },
-  { word: "SKY", clue: "gökyüzü", file: "sky.png" },
-  { word: "CLOUDS", clue: "bulutlar", file: "clouds.png" },
-  { word: "WATER", clue: "su", file: "water.png" },
-  { word: "TREE", clue: "ağaç", file: "tree.png" },
   { word: "ANIMALS", clue: "hayvanlar", file: "animals.png" },
-  { word: "PEOPLE", clue: "insanlar", file: "people.png" },
-  { word: "CITY", clue: "şehir", file: "city.png" },
+  { word: "CAT", clue: "kedi", file: "cat.png" },
+  { word: "DOG", clue: "köpek", file: "dog.png" },
+  { word: "BEAR", clue: "ayı", file: "bear.png" },
+  { word: "FROG", clue: "kurbağa", file: "frog.png" },
+  { word: "ELEPHANT", clue: "fil", file: "elephant.png" },
+  { word: "WHALE", clue: "balina", file: "whale.png" },
+  { word: "FLAMINGO", clue: "flamingo", file: "flamingo.png" },
+  { word: "RABBIT", clue: "tavşan", file: "rabbit.png" },
+  { word: "MONKEY", clue: "maymun", file: "monkey.png" },
+  { word: "SHEEP", clue: "koyun", file: "sheep.png" },
+  { word: "HORSE", clue: "at", file: "horse.png" },
+  { word: "COW", clue: "inek", file: "cow.png" },
+  { word: "LION", clue: "aslan", file: "lion.png" },
+  { word: "MOUSE", clue: "fare", file: "mouse.png" },
+  { word: "CHICKEN", clue: "tavuk", file: "chicken.png" },
 ];
 
 interface Cell {
@@ -47,7 +53,7 @@ interface PlacedWord {
 
 const GRID_SIZE = 16;
 
-export default function AroundUsCrosswordGame() {
+export default function AnimalsCrosswordGame() {
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [placedWords, setPlacedWords] = useState<PlacedWord[]>([]);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
@@ -70,7 +76,7 @@ export default function AroundUsCrosswordGame() {
   // Background collage images
   const collageImages = placedWords.map(pw => {
       const vocab = vocabulary.find(v => v.word === pw.word);
-      return vocab?.file ? `/images/preschool/vocab/0.10-aroundus/${vocab.file}` : null;
+      return vocab?.file ? `/images/preschool/vocab/0.9-animals/${vocab.file}` : null;
   }).filter(Boolean) as string[];
 
   const speakWord = (word: string) => {
@@ -82,10 +88,10 @@ export default function AroundUsCrosswordGame() {
 
 
   const shareGame = () => {
-    const text = `I just solved the Around Us Word Cross! Can you beat it? 👋`;
+    const text = `I just solved the Animals Word Cross! Can you beat it? 👋`;
     if (navigator.share) {
       navigator.share({
-        title: "Word Cross - Around Us",
+        title: "Word Cross - Animals",
         text: text,
         url: window.location.href,
       });
@@ -95,7 +101,7 @@ export default function AroundUsCrosswordGame() {
   };
 
   const challengeFriend = () => {
-    const text = `I challenge you to solve this Around Us Word Cross puzzle! 🏆`;
+    const text = `I challenge you to solve this Animals Word Cross puzzle! 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Word Cross Challenge",
@@ -388,7 +394,7 @@ export default function AroundUsCrosswordGame() {
 
             <PreschoolGameHeader 
               gameName="Word Cross"
-              description="Pre-School & 1st Grade - Theme: Around Us"
+              description="Pre-School & 1st Grade - Theme: Animals"
               containerId="crossword-game-wrapper"
               icon="🧩"
             />
