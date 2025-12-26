@@ -235,61 +235,65 @@ export default function PreSchoolGamesMenu() {
             </p>
           </div>
 
-          <div className="preschool-games-grid">
+          {/* First Five Game Type Buttons - Single Row */}
+          <div className="game-type-buttons-row">
             {/* Matchlings Game with Custom Banner */}
             <Link href="/pre-school/0.2-colours-matching-game">
-              <a className="game-banner-link" data-testid="card-game-0.2-colours.matching">
+              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.matching">
                 <img 
                   src={matchlingsBanner} 
                   alt="Matchlings - Colours / Renkler" 
-                  className="game-banner-image"
+                  className="game-banner-image-small"
                 />
               </a>
             </Link>
             
             {/* Word Cross Game with Custom Banner */}
             <Link href="/pre-school/0.2-colours-crossword">
-              <a className="game-banner-link" data-testid="card-game-0.2-colours.crossword">
+              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.crossword">
                 <img 
                   src={wordCrossBanner} 
                   alt="Word Cross - Colours / Renkler" 
-                  className="game-banner-image"
+                  className="game-banner-image-small"
                 />
               </a>
             </Link>
             
             {/* Spell Quest Game with Custom Banner */}
             <Link href="/pre-school/0.2-colours-spell-quest">
-              <a className="game-banner-link" data-testid="card-game-0.2-colours.spell-quest">
+              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.spell-quest">
                 <img 
                   src={spellQuestBanner} 
                   alt="Spell Quest - Colours / Renkler" 
-                  className="game-banner-image"
+                  className="game-banner-image-small"
                 />
               </a>
             </Link>
             
             {/* Word Pop Game with Custom Banner */}
             <Link href="/pre-school/0.2-colours-word-pop">
-              <a className="game-banner-link" data-testid="card-game-0.2-colours.word-pop">
+              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.word-pop">
                 <img 
                   src={wordPopBanner} 
                   alt="Word Pop - Colours / Renkler" 
-                  className="game-banner-image"
+                  className="game-banner-image-small"
                 />
               </a>
             </Link>
             
             {/* Color Catch Game with Custom Banner */}
             <Link href="/pre-school/0.2-colours-catch-that">
-              <a className="game-banner-link" data-testid="card-game-0.2-colours.color-catch">
+              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.color-catch">
                 <img 
                   src={colorCatchBanner} 
                   alt="Catch That - Colours / Renkler" 
-                  className="game-banner-image"
+                  className="game-banner-image-small"
                 />
               </a>
             </Link>
+          </div>
+
+          <div className="preschool-games-grid">
             
             {/* Matchlings Numbers Game with Custom Banner */}
             <Link href="/pre-school/0.1-numbers-matching-game">
@@ -674,6 +678,80 @@ export default function PreSchoolGamesMenu() {
       </div>
 
       <style>{`
+        /* First Five Game Type Buttons - Single Row Layout */
+        .game-type-buttons-row {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 12px;
+          width: 100%;
+          margin-bottom: 32px;
+          justify-content: center;
+          align-items: stretch;
+        }
+
+        .game-banner-link-small {
+          display: block;
+          text-decoration: none;
+          transition: transform 0.3s ease, filter 0.3s ease;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          flex: 1 1 0;
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        .game-banner-link-small:hover {
+          transform: translateY(-4px) scale(1.02);
+          filter: brightness(1.05);
+          box-shadow: 0 8px 20px rgba(255, 224, 102, 0.3);
+        }
+
+        .game-banner-link-small:active {
+          transform: translateY(-2px) scale(1.01);
+        }
+
+        .game-banner-image-small {
+          width: 100%;
+          height: auto;
+          display: block;
+          object-fit: contain;
+        }
+
+        @media (max-width: 1024px) {
+          .game-type-buttons-row {
+            flex-wrap: wrap;
+          }
+          .game-banner-link-small {
+            flex: 1 1 calc(33.333% - 8px);
+            max-width: calc(33.333% - 8px);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .game-type-buttons-row {
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+          }
+          .game-banner-link-small {
+            flex: 1 1 calc(50% - 5px);
+            max-width: calc(50% - 5px);
+            min-width: 120px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .game-type-buttons-row {
+            gap: 8px;
+          }
+          .game-banner-link-small {
+            flex: 1 1 calc(50% - 4px);
+            max-width: calc(50% - 4px);
+            min-width: 100px;
+          }
+        }
+
         .preschool-games-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
