@@ -5,8 +5,13 @@ import numbersBanner from "@/assets/numbers-banner.png";
 import thealphabetBanner from "@/assets/thealphabet-banner.png";
 import greetingsBanner from "@/assets/greetings-banner.png";
 import actionsBanner from "@/assets/actions.banner.png";
-// TODO: Add ourbody-banner.png to assets when available
-// import ourbodyBanner from "@/assets/ourbody-banner.png";
+import ourbodyBanner from "@/assets/ourbody.banner.png";
+import ourclassroomBanner from "@/assets/ourclassroom.banner.png";
+import thingsBanner from "@/assets/things.banner.png";
+import peopleBanner from "@/assets/people.banner.png";
+import animalsBanner from "@/assets/animals.banner.png";
+import aroundusBanner from "@/assets/aroundus.banner.png";
+import foodBanner from "@/assets/food.banner.png";
 import "@/styles/2.1.voc.css";
 
 export default function PreSchoolVocabMenu() {
@@ -43,43 +48,43 @@ export default function PreSchoolVocabMenu() {
     },
     {
       href: "/pre-school/kelime-kartlari/0.5-ourbody",
-      image: actionsBanner, // TODO: Replace with ourbodyBanner when available
+      image: ourbodyBanner,
       alt: "OUR BODY - VÜCUDUMUZ",
       testId: "card-vocab-set-5",
     },
     {
       href: "/pre-school/kelime-kartlari/0.6-ourclassroom",
-      image: actionsBanner, // TODO: Replace with ourclassroomBanner when available
+      image: ourclassroomBanner,
       alt: "OUR CLASSROOM - SINIFIMIZ",
       testId: "card-vocab-set-6",
     },
     {
       href: "/pre-school/kelime-kartlari/0.7-things",
-      image: actionsBanner, // TODO: Replace with thingsBanner when available
+      image: thingsBanner,
       alt: "THINGS - EŞYALAR",
       testId: "card-vocab-set-7",
     },
     {
       href: "/pre-school/kelime-kartlari/0.8-people",
-      image: actionsBanner, // TODO: Replace with peopleBanner when available
+      image: peopleBanner,
       alt: "PEOPLE - İNSANLAR",
       testId: "card-vocab-set-8",
     },
     {
       href: "/pre-school/kelime-kartlari/0.9-animals",
-      image: actionsBanner, // TODO: Replace with animalsBanner when available
+      image: animalsBanner,
       alt: "ANIMALS - HAYVANLAR",
       testId: "card-vocab-set-9",
     },
     {
       href: "/pre-school/kelime-kartlari/0.10-aroundus",
-      image: actionsBanner, // TODO: Replace with aroundusBanner when available
+      image: aroundusBanner,
       alt: "AROUND US - ÇEVRİMİZ",
       testId: "card-vocab-set-10",
     },
     {
       href: "/pre-school/kelime-kartlari/0.11-food",
-      image: actionsBanner, // TODO: Replace with foodBanner when available
+      image: foodBanner,
       alt: "FOOD - YİYECEK",
       testId: "card-vocab-set-11",
     },
@@ -146,20 +151,22 @@ export default function PreSchoolVocabMenu() {
         .vocab-banner-link {
           display: block;
           text-decoration: none;
-          transition: transform 0.3s ease, filter 0.3s ease;
+          transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
           border-radius: 16px;
           overflow: hidden;
+          border: 3px solid #ffd700;
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .vocab-banner-link:hover {
-          transform: translateY(-8px) scale(1.02);
+          transform: translateY(-8px) scale(1.08);
           filter: brightness(1.05);
-          box-shadow: 0 12px 32px rgba(255, 224, 102, 0.4);
+          border-color: #ffd700;
+          box-shadow: 0 12px 32px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
         }
 
         .vocab-banner-link:active {
-          transform: translateY(-4px) scale(1.01);
+          transform: translateY(-4px) scale(1.05);
         }
 
         .vocab-banner-image {
