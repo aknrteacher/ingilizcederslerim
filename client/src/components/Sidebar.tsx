@@ -543,14 +543,20 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
     <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col ${isDefaultTheme ? 'bg-sidebar' : 'bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar'} text-sidebar-foreground transition-colors duration-300 ${isDefaultTheme ? '' : 'backdrop-blur-xl'}`}>
       {/* Logo Section */}
       <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
-        <h1 className={cn(
-          "text-3xl font-black text-center leading-none transition-all duration-500 hover:scale-105 cursor-pointer font-serif tracking-tight",
-          isDefaultTheme 
-            ? "text-sidebar-foreground" 
-            : (levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary")
-        )}>
-          ingilizce<br/>derslerim
-        </h1>
+        <div className="relative group">
+          <h1 className={cn(
+            "logo-jump text-3xl font-black text-center leading-none transition-all duration-500 cursor-pointer font-serif tracking-tight group-hover:drop-shadow-lg",
+            isDefaultTheme 
+              ? "text-sidebar-foreground" 
+              : (levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary")
+          )}>
+            ingilizce<br/>derslerim
+          </h1>
+          {/* Beta Tag */}
+          <span className="beta-wiggle absolute top-full left-1/2 -translate-x-1/2 -mt-1 bg-black text-white text-xs font-bold px-2 py-0.5 rounded-md shadow-lg">
+            -beta-
+          </span>
+        </div>
       </div>
 
       {/* Top Icon Buttons */}

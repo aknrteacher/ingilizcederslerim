@@ -34,6 +34,17 @@ export default function PreschoolLandingPage() {
             <p className="text-lg text-gray-600">Choose a section to get started</p>
           </div>
 
+          <div className="mb-6">
+            <Link href="/pre-school/teachers-guide">
+              <a className="block p-6 bg-amber-100 rounded-lg border-2 border-amber-400 hover:border-amber-600 hover:shadow-lg transition-all duration-200 text-center">
+                <h2 className="text-2xl font-semibold text-amber-900 mb-2">
+                  Velilere, 1.sınıf ya da Okul Öncesi Öğretmenlerine Özel
+                </h2>
+                <p className="text-amber-800">Öğretmenler ve Veliler İçin Rehber</p>
+              </a>
+            </Link>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {sections.map((section, index) => (
               <Link key={index} href={section.href}>

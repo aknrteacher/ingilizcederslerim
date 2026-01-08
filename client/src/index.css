@@ -283,6 +283,27 @@
   }
 }
 
+@keyframes wiggle {
+  0%, 100% {
+    transform: scale(1.05) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.05) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(5deg);
+  }
+}
+
+@keyframes jump {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -297,5 +318,17 @@
   .submenu-item {
     animation: slideInFromRight 0.4s ease-out forwards;
     opacity: 0;
+  }
+  
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out infinite;
+  }
+  
+  .group:hover .beta-wiggle {
+    animation: wiggle 2.5s ease-in-out infinite;
+  }
+  
+  .group:hover .logo-jump {
+    animation: jump 3s ease-in-out infinite;
   }
 }

@@ -31,10 +31,11 @@
 
 .title-container p:first-child {
   margin-bottom: 8px;
+  color: hsl(var(--primary));
 }
 
 .title-container p:last-child {
-  color: hsl(var(--primary));
+  color: #8B4513 !important;
 }
 
 .center-layout {

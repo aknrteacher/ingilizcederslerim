@@ -1,17 +1,31 @@
+import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import { PreschoolButton } from "@/components/PreschoolButton";
+import { CombinedGameButton } from "@/components/CombinedGameButton";
 import { Link } from "wouter";
-import matchlingsBanner from "@/assets/matchlings-banner.png";
-import wordCrossBanner from "@/assets/word-cross-banner.png";
-import spellQuestBanner from "@/assets/spell-quest-banner.png";
-import wordPopBanner from "@/assets/word-pop-banner.png";
-import colorCatchBanner from "@/assets/color-catch-banner.png";
-import matchlingsNumbersBanner from "@/assets/matchlings-numbers-banner.png";
-import wordCrossNumbersBanner from "@/assets/word-cross-numbers-banner.png";
-import spellQuestNumbersBanner from "@/assets/spell-quest-numbers-banner.png";
-import wordPopNumbersBanner from "@/assets/word-pop-numbers-banner.png";
-import catchThatNumbersBanner from "@/assets/catch-that-numbers-banner.png";
+
+// Import topic button halves (300x100px)
+import topicNumbers from "@/assets/numbers.png";
+import topicColours from "@/assets/colours.png";
+import topicGreetings from "@/assets/greetings.png";
+import topicActions from "@/assets/actions.png";
+import topicOurBody from "@/assets/our body.png";
+import topicOurClassroom from "@/assets/our classroom.png";
+import topicThings from "@/assets/things.png";
+import topicPeople from "@/assets/people.png";
+import topicAnimals from "@/assets/animals.png";
+import topicAroundUs from "@/assets/around us.png";
+import topicFood from "@/assets/food.png";
+
+// Import game type button halves (300x300px)
+import gameTypeMatchlings from "@/assets/matchlings.png";
+import gameTypeWordCross from "@/assets/word cross.png";
+import gameTypeSpellQuest from "@/assets/spell quest.png";
+import gameTypeWordPop from "@/assets/word pop.png";
+import gameTypeCatchThat from "@/assets/catch that.png";
+
 import "../styles/oyunlar.css";
+import "@/styles/2.1.voc.css";
 
 interface Game {
   id: string;
@@ -24,6 +38,125 @@ interface Game {
 }
 
 export default function PreSchoolGamesMenu() {
+  const [selectedTopic, setSelectedTopic] = useState<string>("all");
+
+  const topics = [
+    { value: "all", label: "Tümü (All)" },
+    { value: "0.1-numbers", label: "Sayılar (Numbers)" },
+    { value: "0.2-colours", label: "Renkler (Colours)" },
+    { value: "0.3-greetings", label: "Selamlaşmalar (Greetings)" },
+    { value: "0.4-actions", label: "Eylemler (Actions)" },
+    { value: "0.5-ourbody", label: "Vücudumuz (Our Body)" },
+    { value: "0.6-ourclassroom", label: "Sınıfımız (Our Classroom)" },
+    { value: "0.7-things", label: "Eşyalar (Things)" },
+    { value: "0.8-people", label: "İnsanlar (People)" },
+    { value: "0.9-animals", label: "Hayvanlar (Animals)" },
+    { value: "0.10-aroundus", label: "Çevremiz (Around Us)" },
+    { value: "0.11-food", label: "Yiyecekler (Food)" },
+  ];
+
+  // Topic image mappings
+  const topicImages: Record<string, string> = {
+    "0.1-numbers": topicNumbers,
+    "0.2-colours": topicColours,
+    "0.3-greetings": topicGreetings,
+    "0.4-actions": topicActions,
+    "0.5-ourbody": topicOurBody,
+    "0.6-ourclassroom": topicOurClassroom,
+    "0.7-things": topicThings,
+    "0.8-people": topicPeople,
+    "0.9-animals": topicAnimals,
+    "0.10-aroundus": topicAroundUs,
+    "0.11-food": topicFood,
+  };
+
+  // Game type image mappings
+  const gameTypeImages: Record<string, string> = {
+    "matching": gameTypeMatchlings,
+    "crossword": gameTypeWordCross,
+    "spell-quest": gameTypeSpellQuest,
+    "word-pop": gameTypeWordPop,
+    "catch-that": gameTypeCatchThat,
+  };
+
+  const gameTypes = [
+    {
+      id: "matching",
+      name: "Matchlings",
+      icon: "🔢",
+      gradient: "yellow-orange" as const,
+      pathSuffix: "matching-game",
+      image: gameTypeMatchlings,
+    },
+    {
+      id: "crossword",
+      name: "Word Cross",
+      icon: "🧩",
+      gradient: "blue-purple" as const,
+      pathSuffix: "crossword",
+      image: gameTypeWordCross,
+    },
+    {
+      id: "spell-quest",
+      name: "Spell Quest",
+      icon: "✨",
+      gradient: "pink-red" as const,
+      pathSuffix: "spell-quest",
+      image: gameTypeSpellQuest,
+    },
+    {
+      id: "word-pop",
+      name: "Word Pop",
+      icon: "🎈",
+      gradient: "green-teal" as const,
+      pathSuffix: "word-pop",
+      image: gameTypeWordPop,
+    },
+    {
+      id: "catch-that",
+      name: "Catch That",
+      icon: "🎯",
+      gradient: "purple-pink" as const,
+      pathSuffix: "catch-that",
+      image: gameTypeCatchThat,
+    },
+  ];
+
+  // Generate all game combinations
+  const generateGameCombinations = () => {
+    const combinations: Array<{
+      topicValue: string;
+      topicLabel: string;
+      gameType: string;
+      gameIcon: string;
+      gameGradient: "yellow-orange" | "blue-purple" | "pink-red" | "green-teal" | "purple-pink";
+      path: string;
+      id: string;
+      topicImage?: string;
+      gameTypeImage?: string;
+    }> = [];
+
+    topics.slice(1).forEach((topic) => { // Skip "all"
+      gameTypes.forEach((gameType) => {
+        combinations.push({
+          topicValue: topic.value,
+          topicLabel: topic.label,
+          gameType: gameType.name,
+          gameIcon: gameType.icon,
+          gameGradient: gameType.gradient,
+          path: `/pre-school/${topic.value}-${gameType.pathSuffix}`,
+          id: `${topic.value}.${gameType.id}`,
+          topicImage: topicImages[topic.value], // Get topic image if available
+          gameTypeImage: gameType.image, // Get game type image
+        });
+      });
+    });
+
+    return combinations;
+  };
+
+  const allGameCombinations = generateGameCombinations();
+
   const games: Game[] = [
     {
       id: "0.2-colours.matching",
@@ -219,449 +352,87 @@ export default function PreSchoolGamesMenu() {
   return (
     <Layout>
       <div className="oyunlar-container">
-        <div className="oyunlar-header">
-          <div>
-            <h1 className="oyunlar-title">Okul Öncesi & 1. Sınıf - Oyunlar</h1>
-            <p className="oyunlar-subtitle">Renkler, sayılar ve temel kavramları oyunlarla öğren!</p>
-          </div>
+        <div className="title-container">
+          <p>Pre-School & 1st Grade (Okul Öncesi & 1. Sınıf)</p>
+          <p style={{ color: '#8B4513' }}>Oyunlar (Games)</p>
+        </div>
+
+        {/* Filter Section */}
+        <div className="filter-container">
+          <label htmlFor="topic-filter" className="filter-label">Filtrele</label>
+          <select
+            id="topic-filter"
+            value={selectedTopic}
+            onChange={(e) => setSelectedTopic(e.target.value)}
+            className="filter-select"
+          >
+            {topics.map((topic) => (
+              <option key={topic.value} value={topic.value}>
+                {topic.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Pre-School Games */}
         <section className="games-section">
-          <div className="section-header">
-            <h2 className="section-title">Mevcut Oyunlar</h2>
-            <p className="section-description">
-              Eğlenerek İngilizce öğren
-            </p>
-          </div>
+          {/* Combined Game Buttons - Grouped by Topic */}
+          {topics.slice(1).map((topic) => {
+            const topicGames = allGameCombinations.filter(
+              (game) => game.topicValue === topic.value
+            );
+            
+            if (selectedTopic !== "all" && selectedTopic !== topic.value) {
+              return null;
+            }
 
-          {/* First Five Game Type Buttons - Single Row */}
-          <div className="game-type-buttons-row">
-            {/* Matchlings Game with Custom Banner */}
-            <Link href="/pre-school/0.2-colours-matching-game">
-              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.matching">
-                <img 
-                  src={matchlingsBanner} 
-                  alt="Matchlings - Colours / Renkler" 
-                  className="game-banner-image-small"
-                />
-              </a>
-            </Link>
-            
-            {/* Word Cross Game with Custom Banner */}
-            <Link href="/pre-school/0.2-colours-crossword">
-              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.crossword">
-                <img 
-                  src={wordCrossBanner} 
-                  alt="Word Cross - Colours / Renkler" 
-                  className="game-banner-image-small"
-                />
-              </a>
-            </Link>
-            
-            {/* Spell Quest Game with Custom Banner */}
-            <Link href="/pre-school/0.2-colours-spell-quest">
-              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.spell-quest">
-                <img 
-                  src={spellQuestBanner} 
-                  alt="Spell Quest - Colours / Renkler" 
-                  className="game-banner-image-small"
-                />
-              </a>
-            </Link>
-            
-            {/* Word Pop Game with Custom Banner */}
-            <Link href="/pre-school/0.2-colours-word-pop">
-              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.word-pop">
-                <img 
-                  src={wordPopBanner} 
-                  alt="Word Pop - Colours / Renkler" 
-                  className="game-banner-image-small"
-                />
-              </a>
-            </Link>
-            
-            {/* Color Catch Game with Custom Banner */}
-            <Link href="/pre-school/0.2-colours-catch-that">
-              <a className="game-banner-link-small" data-testid="card-game-0.2-colours.color-catch">
-                <img 
-                  src={colorCatchBanner} 
-                  alt="Catch That - Colours / Renkler" 
-                  className="game-banner-image-small"
-                />
-              </a>
-            </Link>
-          </div>
+            return (
+              <div key={topic.value} className="game-type-buttons-row">
+                {topicGames.map((game) => (
+                  <CombinedGameButton
+                    key={game.id}
+                    topicLabel={game.topicLabel}
+                    topicValue={game.topicValue}
+                    gameType={game.gameType}
+                    gameIcon={game.gameIcon}
+                    href={game.path}
+                    gameGradient={game.gameGradient}
+                    dataTestId={`card-game-${game.id}`}
+                    topicImage={game.topicImage}
+                    gameTypeImage={game.gameTypeImage}
+                  />
+                ))}
+              </div>
+            );
+          })}
+
 
           <div className="preschool-games-grid">
             
-            {/* Matchlings Numbers Game with Custom Banner */}
-            <Link href="/pre-school/0.1-numbers-matching-game">
-              <a className="game-banner-link" data-testid="card-game-0.1-numbers.matching">
-                <img 
-                  src={matchlingsNumbersBanner} 
-                  alt="Matchlings - Numbers 1 to 10 / Sayılar 1'den 10'a" 
-                  className="game-banner-image"
-                />
-              </a>
-            </Link>
-            
-            {/* Word Cross Numbers Game with Custom Banner */}
-            <Link href="/pre-school/0.1-numbers-crossword">
-              <a className="game-banner-link" data-testid="card-game-0.1-numbers.crossword">
-                <img 
-                  src={wordCrossNumbersBanner} 
-                  alt="Word Cross - Numbers 1 to 10 / Sayılar 1'den 10'a" 
-                  className="game-banner-image"
-                />
-              </a>
-            </Link>
-            
-            {/* Spell Quest Numbers Game with Custom Banner */}
-            <Link href="/pre-school/0.1-numbers-spell-quest">
-              <a className="game-banner-link" data-testid="card-game-0.1-numbers.spell-quest">
-                <img 
-                  src={spellQuestNumbersBanner} 
-                  alt="Spell Quest - Numbers 1 to 10 / Sayılar 1'den 10'a" 
-                  className="game-banner-image"
-                />
-              </a>
-            </Link>
-            
-            {/* Word Pop Numbers Game with Custom Banner */}
-            <Link href="/pre-school/0.1-numbers-word-pop">
-              <a className="game-banner-link" data-testid="card-game-0.1-numbers.word-pop">
-                <img 
-                  src={wordPopNumbersBanner} 
-                  alt="Word Pop - Numbers 1 to 10 / Sayılar 1'den 10'a" 
-                  className="game-banner-image"
-                />
-              </a>
-            </Link>
-            
-            {/* Catch That Numbers Game with Custom Banner */}
-            <Link href="/pre-school/0.1-numbers-catch-that">
-              <a className="game-banner-link" data-testid="card-game-0.1-numbers.catch-that">
-                <img 
-                  src={catchThatNumbersBanner} 
-                  alt="Catch That - Numbers 1 to 10 / Sayılar 1'den 10'a" 
-                  className="game-banner-image"
-                />
-              </a>
-            </Link>
-            
-            {/* Greetings Games */}
-            {games.filter(game => game.id.startsWith("0.3-greetings")).map((game) => (
-              <PreschoolButton
-                key={game.id}
-                title={game.title}
-                subtitle={game.subtitle}
-                description={game.description}
-                icon={game.icon}
-                href={game.path}
-                gradient={game.gradient}
-                dataTestId={`card-game-${game.id}`}
-              />
-            ))}
-            
-            {/* Actions Games */}
-            {games.filter(game => game.id.startsWith("0.4-actions")).map((game) => (
-              <PreschoolButton
-                key={game.id}
-                title={game.title}
-                subtitle={game.subtitle}
-                description={game.description}
-                icon={game.icon}
-                href={game.path}
-                gradient={game.gradient}
-                dataTestId={`card-game-${game.id}`}
-              />
-            ))}
-            
-            {/* TEMPORARY: Our Body Games (0.5) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="Our Body"
-              description="Match body parts with their English names. Drag and hatch cute characters!"
-              icon="👤"
-              href="/pre-school/0.5-ourbody-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.5-ourbody.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="Our Body"
-              description="Solve the crossword puzzle using body part words!"
-              icon="🧩"
-              href="/pre-school/0.5-ourbody-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.5-ourbody.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="Our Body"
-              description="Unscramble letters to spell body part words!"
-              icon="✨"
-              href="/pre-school/0.5-ourbody-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.5-ourbody.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="Our Body"
-              description="Pop the balloon with the matching body part!"
-              icon="🎈"
-              href="/pre-school/0.5-ourbody-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.5-ourbody.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="Our Body"
-              description="Catch the falling body parts with your basket!"
-              icon="🎯"
-              href="/pre-school/0.5-ourbody-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.5-ourbody.catch-that"
-            />
-            
-            {/* TEMPORARY: Our Classroom Games (0.6) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="Our Classroom"
-              description="Match classroom items with their English names. Drag and hatch cute characters!"
-              icon="📚"
-              href="/pre-school/0.6-ourclassroom-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.6-ourclassroom.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="Our Classroom"
-              description="Solve the crossword puzzle using classroom item words!"
-              icon="🧩"
-              href="/pre-school/0.6-ourclassroom-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.6-ourclassroom.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="Our Classroom"
-              description="Unscramble letters to spell classroom item words!"
-              icon="✨"
-              href="/pre-school/0.6-ourclassroom-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.6-ourclassroom.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="Our Classroom"
-              description="Pop the balloon with the matching classroom item!"
-              icon="🎈"
-              href="/pre-school/0.6-ourclassroom-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.6-ourclassroom.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="Our Classroom"
-              description="Catch the falling classroom items with your basket!"
-              icon="🎯"
-              href="/pre-school/0.6-ourclassroom-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.6-ourclassroom.catch-that"
-            />
-            
-            {/* TEMPORARY: Things Games (0.7) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="Things"
-              description="Match things with their English names. Drag and hatch cute characters!"
-              icon="🧸"
-              href="/pre-school/0.7-things-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.7-things.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="Things"
-              description="Solve the crossword puzzle using thing words!"
-              icon="🧩"
-              href="/pre-school/0.7-things-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.7-things.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="Things"
-              description="Unscramble letters to spell thing words!"
-              icon="✨"
-              href="/pre-school/0.7-things-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.7-things.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="Things"
-              description="Pop the balloon with the matching thing!"
-              icon="🎈"
-              href="/pre-school/0.7-things-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.7-things.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="Things"
-              description="Catch the falling things with your basket!"
-              icon="🎯"
-              href="/pre-school/0.7-things-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.7-things.catch-that"
-            />
-            
-            {/* TEMPORARY: People Games (0.8) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="People"
-              description="Match people with their English names. Drag and hatch cute characters!"
-              icon="👥"
-              href="/pre-school/0.8-people-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.8-people.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="People"
-              description="Solve the crossword puzzle using people words!"
-              icon="🧩"
-              href="/pre-school/0.8-people-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.8-people.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="People"
-              description="Unscramble letters to spell people words!"
-              icon="✨"
-              href="/pre-school/0.8-people-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.8-people.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="People"
-              description="Pop the balloon with the matching person!"
-              icon="🎈"
-              href="/pre-school/0.8-people-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.8-people.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="People"
-              description="Catch the falling people words with your basket!"
-              icon="🎯"
-              href="/pre-school/0.8-people-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.8-people.catch-that"
-            />
-            
-            {/* TEMPORARY: Animals Games (0.9) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="Animals"
-              description="Match animals with their English names. Drag and hatch cute characters!"
-              icon="🐾"
-              href="/pre-school/0.9-animals-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.9-animals.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="Animals"
-              description="Solve the crossword puzzle using animal words!"
-              icon="🧩"
-              href="/pre-school/0.9-animals-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.9-animals.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="Animals"
-              description="Unscramble letters to spell animal words!"
-              icon="✨"
-              href="/pre-school/0.9-animals-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.9-animals.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="Animals"
-              description="Pop the balloon with the matching animal!"
-              icon="🎈"
-              href="/pre-school/0.9-animals-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.9-animals.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="Animals"
-              description="Catch the falling animals with your basket!"
-              icon="🎯"
-              href="/pre-school/0.9-animals-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.9-animals.catch-that"
-            />
-            
-            {/* TEMPORARY: Around Us Games (0.10) */}
-            <PreschoolButton
-              title="Matchlings"
-              subtitle="Around Us"
-              description="Match things around us with their English names. Drag and hatch cute characters!"
-              icon="🌍"
-              href="/pre-school/0.10-aroundus-matching-game"
-              gradient="yellow-orange"
-              dataTestId="card-game-0.10-aroundus.matching"
-            />
-            <PreschoolButton
-              title="Word Cross"
-              subtitle="Around Us"
-              description="Solve the crossword puzzle using words about things around us!"
-              icon="🧩"
-              href="/pre-school/0.10-aroundus-crossword"
-              gradient="blue-purple"
-              dataTestId="card-game-0.10-aroundus.crossword"
-            />
-            <PreschoolButton
-              title="Spell Quest"
-              subtitle="Around Us"
-              description="Unscramble letters to spell words about things around us!"
-              icon="✨"
-              href="/pre-school/0.10-aroundus-spell-quest"
-              gradient="pink-red"
-              dataTestId="card-game-0.10-aroundus.spell-quest"
-            />
-            <PreschoolButton
-              title="Word Pop"
-              subtitle="Around Us"
-              description="Pop the balloon with the matching word about things around us!"
-              icon="🎈"
-              href="/pre-school/0.10-aroundus-word-pop"
-              gradient="green-teal"
-              dataTestId="card-game-0.10-aroundus.word-pop"
-            />
-            <PreschoolButton
-              title="Catch That"
-              subtitle="Around Us"
-              description="Catch the falling words about things around us with your basket!"
-              icon="🎯"
-              href="/pre-school/0.10-aroundus-catch-that"
-              gradient="purple-pink"
-              dataTestId="card-game-0.10-aroundus.catch-that"
-            />
-            
-            {/* Other Games */}
-            {games.filter(game => game.id !== "0.2-colours.matching" && game.id !== "0.2-colours.crossword" && game.id !== "0.2-colours.spell-quest" && game.id !== "0.2-colours.word-pop" && game.id !== "0.2-colours.color-catch" && game.id !== "0.2-colours.i-spy" && !game.id.startsWith("0.1-numbers") && !game.id.startsWith("0.3-greetings") && !game.id.startsWith("0.4-actions")).map((game) => (
+            {/* Other Games - I Spy for Colours */}
+            {games.filter(game => {
+              // Filter out games that are already displayed as banners
+              const isBannerGame = game.id === "0.2-colours.matching" || 
+                                   game.id === "0.2-colours.crossword" || 
+                                   game.id === "0.2-colours.spell-quest" || 
+                                   game.id === "0.2-colours.word-pop" || 
+                                   game.id === "0.2-colours.color-catch" || 
+                                   game.id === "0.2-colours.i-spy" || 
+                                   game.id.startsWith("0.1-numbers") || 
+                                   game.id.startsWith("0.3-greetings") || 
+                                   game.id.startsWith("0.4-actions");
+              
+              if (isBannerGame) return false;
+              
+              // Apply topic filter
+              if (selectedTopic === "all") return true;
+              
+              // For I Spy game, it belongs to colours topic
+              if (game.id === "0.2-colours.i-spy" && selectedTopic === "0.2-colours") return true;
+              
+              // Check if game belongs to selected topic
+              return game.id.startsWith(selectedTopic);
+            }).map((game) => (
               <PreschoolButton
                 key={game.id}
                 title={game.title}
@@ -678,6 +449,43 @@ export default function PreSchoolGamesMenu() {
       </div>
 
       <style>{`
+        /* Filter Container */
+        .filter-container {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 24px;
+          justify-content: center;
+        }
+
+        .filter-label {
+          font-size: 16px;
+          font-weight: 600;
+          color: hsl(var(--foreground));
+        }
+
+        .filter-select {
+          padding: 8px 16px;
+          font-size: 16px;
+          border: 2px solid hsl(var(--border));
+          border-radius: 8px;
+          background-color: hsl(var(--background));
+          color: hsl(var(--foreground));
+          cursor: pointer;
+          min-width: 200px;
+          transition: border-color 0.2s ease;
+        }
+
+        .filter-select:hover {
+          border-color: hsl(var(--primary));
+        }
+
+        .filter-select:focus {
+          outline: none;
+          border-color: hsl(var(--primary));
+          box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+        }
+
         /* First Five Game Type Buttons - Single Row Layout */
         .game-type-buttons-row {
           display: flex;
@@ -716,6 +524,58 @@ export default function PreSchoolGamesMenu() {
           height: auto;
           display: block;
           object-fit: contain;
+        }
+
+        /* Test Button Hover Overlay Styles */
+        .test-button-wrapper {
+          position: relative;
+          overflow: hidden;
+        }
+
+        .play-now-overlay {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          transform: translateY(-50%);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+          z-index: 10;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 16px;
+        }
+
+        .play-now-container {
+          background-color: #000000;
+          border-radius: 6px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 4px 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .play-now-text {
+          background-color: #000000;
+          color: #00ff00;
+          font-weight: bold;
+          font-size: 0.9rem;
+          padding: 4px 12px;
+          border-radius: 4px;
+          white-space: nowrap;
+        }
+
+        .test-button-wrapper:hover .play-now-overlay {
+          opacity: 1;
+        }
+
+        .test-button-wrapper:hover .game-banner-image-small {
+          filter: brightness(0.7);
         }
 
         @media (max-width: 1024px) {

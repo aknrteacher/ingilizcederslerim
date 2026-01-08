@@ -10,16 +10,15 @@ import "@/styles/0.1.crossword.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
 
-// Vocabulary from 0.7 (Things)
+// Vocabulary from 0.6 (Our Classroom)
 const vocabulary = [
-  { word: "TOY", clue: "oyuncak", file: "toys.png" },
-  { word: "BALL", clue: "top", file: "ball.png" },
-  { word: "BOX", clue: "kutu", file: "box.png" },
-  { word: "DOLL", clue: "bebek", file: "doll.png" },
-  { word: "CAR", clue: "araba", file: "car.png" },
-  { word: "PUZZLE", clue: "yapboz", file: "puzzle.png" },
-  { word: "COMPUTER", clue: "bilgisayar", file: "computer.png" },
-  { word: "PHONE", clue: "telefon", file: "phone.png" },
+  { word: "BOOK", clue: "kitap", file: "book.png" },
+  { word: "NOTEBOOK", clue: "defter", file: "notebook.png" },
+  { word: "PENCIL", clue: "kalem", file: "pencil.png" },
+  { word: "BAG", clue: "çanta", file: "bag.png" },
+  { word: "CHAIR", clue: "sandalye", file: "chair.png" },
+  { word: "TABLE", clue: "masa", file: "table.png" },
+  { word: "DESK", clue: "sıra", file: "desk.png" },
 ];
 
 interface Cell {
@@ -45,7 +44,7 @@ interface PlacedWord {
 
 const GRID_SIZE = 16;
 
-export default function ThingsCrosswordGame() {
+export default function OurClassroomCrosswordGame() {
   const [grid, setGrid] = useState<Cell[][]>([]);
   const [placedWords, setPlacedWords] = useState<PlacedWord[]>([]);
   const [selectedWordId, setSelectedWordId] = useState<string | null>(null);
@@ -68,7 +67,7 @@ export default function ThingsCrosswordGame() {
   // Background collage images
   const collageImages = placedWords.map(pw => {
       const vocab = vocabulary.find(v => v.word === pw.word);
-      return vocab?.file ? `/images/preschool/vocab/0.7-things/${vocab.file}` : null;
+      return vocab?.file ? `/images/preschool/vocab/0.6-ourclassroom/${vocab.file}` : null;
   }).filter(Boolean) as string[];
 
   const speakWord = (word: string) => {
@@ -80,10 +79,10 @@ export default function ThingsCrosswordGame() {
 
 
   const shareGame = () => {
-    const text = `I just solved the Things Word Cross! Can you beat it? 👋`;
+    const text = `I just solved the Our Classroom Word Cross! Can you beat it? 👋`;
     if (navigator.share) {
       navigator.share({
-        title: "Word Cross - Things",
+        title: "Word Cross - Our Classroom",
         text: text,
         url: window.location.href,
       });
@@ -93,7 +92,7 @@ export default function ThingsCrosswordGame() {
   };
 
   const challengeFriend = () => {
-    const text = `I challenge you to solve this Things Word Cross puzzle! 🏆`;
+    const text = `I challenge you to solve this Our Classroom Word Cross puzzle! 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Word Cross Challenge",
@@ -386,7 +385,7 @@ export default function ThingsCrosswordGame() {
 
             <PreschoolGameHeader 
               gameName="Word Cross"
-              description="Pre-School & 1st Grade - Theme: Things"
+              description="Pre-School & 1st Grade - Theme: Our Classroom"
               containerId="crossword-game-wrapper"
               icon="🧩"
             />

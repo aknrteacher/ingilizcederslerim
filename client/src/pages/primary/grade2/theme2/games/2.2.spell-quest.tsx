@@ -18,49 +18,36 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "COLOUR", displayWord: "colour", turkish: "renk", file: "colour.png" },
-  { word: "YELLOW", displayWord: "yellow", turkish: "sarı", file: "yellow.png" },
-  { word: "BLUE", displayWord: "blue", turkish: "mavi", file: "blue.png" },
-  { word: "RED", displayWord: "red", turkish: "kırmızı", file: "red.png" },
-  { word: "GREEN", displayWord: "green", turkish: "yeşil", file: "green.png" },
-  { word: "PURPLE", displayWord: "purple", turkish: "mor", file: "purple.png" },
-  { word: "PINK", displayWord: "pink", turkish: "pembe", file: "pink.png" },
-  { word: "BROWN", displayWord: "brown", turkish: "kahverengi", file: "brown.png" },
-  { word: "ORANGE", displayWord: "orange", turkish: "turuncu", file: "orange.png" },
-  { word: "BLACK", displayWord: "black", turkish: "siyah", file: "black.png" },
-  { word: "WHITE", displayWord: "white", turkish: "beyaz", file: "white.png" },
-  { word: "WATCH", displayWord: "watch", turkish: "izle", file: "watch.png" },
-  { word: "LISTEN", displayWord: "listen", turkish: "dinle", file: "listen.png" },
-  { word: "WRITE", displayWord: "write", turkish: "yaz", file: "write.png" },
-  { word: "RAISE", displayWord: "raise", turkish: "kaldır", file: "raise.png" },
-  { word: "HAND", displayWord: "hand", turkish: "el", file: "hand.png" },
-  { word: "OPEN", displayWord: "open", turkish: "aç", file: "open.png" },
-  { word: "CLOSE", displayWord: "close", turkish: "kapat", file: "close.png" },
-  { word: "REPEAT", displayWord: "repeat", turkish: "tekrarla", file: "repeat.png" },
-  { word: "STANDUP", displayWord: "stand up", turkish: "ayağa kalk", file: "stand_up.png" },
-  { word: "SITDOWN", displayWord: "sit down", turkish: "otur", file: "sit_down.png" },
-  { word: "HURRYUP", displayWord: "hurry up", turkish: "acele et", file: "hurry_up.png" },
-  { word: "BEQUIET", displayWord: "be quiet", turkish: "sessiz ol", file: "be_quiet.png" },
-  { word: "LOOK", displayWord: "look", turkish: "bak", file: "look.png" },
-  { word: "COME", displayWord: "come", turkish: "gel", file: "come.png" },
-  { word: "GO", displayWord: "go", turkish: "git", file: "go.png" },
-  { word: "POINT", displayWord: "point", turkish: "göster", file: "point.png" },
-  { word: "MATCH", displayWord: "match", turkish: "eşleştir", file: "match.png" },
-  { word: "TABLE", displayWord: "table", turkish: "masa", file: "table.png" },
-  { word: "PENCIL", displayWord: "pencil", turkish: "kalem", file: "pencil.png" },
-  { word: "PENCILCASE", displayWord: "pencil case", turkish: "kalem kutusu", file: "pencil_case.png" },
-  { word: "BOOK", displayWord: "book", turkish: "kitap", file: "book.png" },
-  { word: "BOOKSHELF", displayWord: "bookshelf", turkish: "kitaplık", file: "bookshelf.png" },
-  { word: "BAG", displayWord: "bag", turkish: "çanta", file: "bag.png" },
-  { word: "NOTEBOOK", displayWord: "notebook", turkish: "defter", file: "notebook.png" },
-  { word: "ERASER", displayWord: "eraser", turkish: "silgi", file: "eraser.png" },
-  { word: "SHARPENER", displayWord: "sharpener", turkish: "açacak", file: "sharpener.png" },
-  { word: "CRAYON", displayWord: "crayon", turkish: "pastel boya", file: "crayon.png" },
-  { word: "BOARD", displayWord: "board", turkish: "tahta", file: "board.png" },
-  { word: "WINDOW", displayWord: "window", turkish: "pencere", file: "window.png" },
-  { word: "DESK", displayWord: "desk", turkish: "sıra", file: "desk.png" },
-  { word: "DOOR", displayWord: "door", turkish: "kapı", file: "door.png" },
-  { word: "CHAIR", displayWord: "chair", turkish: "sandalye", file: "chair.png" },
+  { word: "FAMILY", displayWord: "family", turkish: "aile", file: "family.png" },
+  { word: "MEMBER", displayWord: "member", turkish: "üye", file: "member.png" },
+  { word: "FATHER", displayWord: "father", turkish: "baba", file: "father.png" },
+  { word: "MOTHER", displayWord: "mother", turkish: "anne", file: "mother.png" },
+  { word: "BROTHER", displayWord: "brother", turkish: "erkek kardeş", file: "brother.png" },
+  { word: "SISTER", displayWord: "sister", turkish: "kız kardeş", file: "sister.png" },
+  { word: "SON", displayWord: "son", turkish: "oğul", file: "son.png" },
+  { word: "DAUGHTER", displayWord: "daughter", turkish: "kız", file: "daughter.png" },
+  { word: "GRANDFATHER", displayWord: "grandfather", turkish: "büyükbaba", file: "grandfather.png" },
+  { word: "GRANDMOTHER", displayWord: "grandmother", turkish: "büyükanne", file: "grandmother.png" },
+  { word: "GRANDCHILD", displayWord: "grandchild", turkish: "torun", file: "grandchild.png" },
+  { word: "CHILD", displayWord: "child", turkish: "çocuk", file: "child.png" },
+  { word: "BABY", displayWord: "baby", turkish: "bebek", file: "baby.png" },
+  { word: "MAN", displayWord: "man", turkish: "erkek", file: "man.png" },
+  { word: "WOMAN", displayWord: "woman", turkish: "kadın", file: "woman.png" },
+  { word: "OLD", displayWord: "old", turkish: "yaşlı", file: "old.png" },
+  { word: "YOUNG", displayWord: "young", turkish: "genç", file: "young.png" },
+  { word: "LONG", displayWord: "long", turkish: "uzun", file: "long.png" },
+  { word: "SHORT", displayWord: "short", turkish: "kısa", file: "short.png" },
+  { word: "TALL", displayWord: "tall", turkish: "uzun boylu", file: "tall.png" },
+  { word: "HANDSOME", displayWord: "handsome", turkish: "yakışıklı", file: "handsome.png" },
+  { word: "BEAUTIFUL", displayWord: "beautiful", turkish: "güzel", file: "beautiful.png" },
+  { word: "BIG", displayWord: "big", turkish: "büyük", file: "big.png" },
+  { word: "SMALL", displayWord: "small", turkish: "küçük", file: "small.png" },
+  { word: "HAIR", displayWord: "hair", turkish: "saç", file: "hair.png" },
+  { word: "EYES", displayWord: "eyes", turkish: "gözler", file: "eyes.png" },
+  { word: "WHO", displayWord: "who", turkish: "kim", file: "who.png" },
+  { word: "THIS", displayWord: "this", turkish: "bu", file: "this.png" },
+  { word: "LOVE", displayWord: "love", turkish: "sevmek", file: "love.png" },
+  { word: "FRIEND", displayWord: "friend", turkish: "arkadaş", file: "friend.png" },
 ];
 
 const letterColors = [
@@ -74,7 +61,7 @@ const letterColors = [
   "bg-gradient-to-br from-red-400 to-red-600",
 ];
 
-export default function SpellQuestGame2_2() {
+export default function SpellQuestGame2_4() {
   const [, setLocation] = useLocation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [scrambledLetters, setScrambledLetters] = useState<{ letter: string; id: number; used: boolean; color: string }[]>([]);
@@ -292,7 +279,7 @@ export default function SpellQuestGame2_2() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="2nd Grade - Theme 2: Classroom Life"
+            description="2nd Grade - Theme 4: Family Life"
             containerId="spell-quest-game"
             icon="✨"
           />
@@ -328,7 +315,7 @@ export default function SpellQuestGame2_2() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/primary/2.2/${currentWord.file}`} 
+                    src={`/images/primary/2.4/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />
@@ -500,7 +487,7 @@ export default function SpellQuestGame2_2() {
                   <Button onClick={startNewGame} className="play-again-btn" data-testid="button-play-again">
                     Play Again
                   </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-2/games")}>
+                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-4/games")}>
                     Back to Games
                   </Button>
                 </div>
@@ -523,7 +510,7 @@ export default function SpellQuestGame2_2() {
                 <Button onClick={startNewGame} variant="outline" className="footer-button" data-testid="button-new-game">
                   New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-2/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-4/games")}>
                   ← Back
                 </Button>
               </div>
