@@ -11,6 +11,7 @@
 
 .loading {
   font-size: 24px;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
 }
 
@@ -24,6 +25,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(18px, 5vw, 26px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   margin: 0;
   line-height: 1.4;
@@ -31,6 +33,7 @@
 
 .title-container p:first-child {
   margin-bottom: 8px;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
 }
 
@@ -77,6 +80,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(12px, 2vw, 16px);
   font-weight: 600;
+  color: hsl(0, 0%, 40%);
   color: hsl(var(--muted-foreground));
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
   min-width: 32px;
@@ -87,6 +91,7 @@
 .counter-item.active {
   font-size: clamp(18px, 3.5vw, 24px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
 }
 
@@ -98,7 +103,9 @@
 }
 
 .counter-item.clickable:hover {
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
+  background-color: rgba(0, 0, 0, 0.1);
   background-color: hsl(var(--primary) / 0.1);
   transform: scale(1.1);
 }
@@ -107,12 +114,14 @@
   0%, 100% {
     transform: scale(1);
     opacity: 1;
-    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 0 hsl(var(--primary) / 0.3);
   }
   50% {
     transform: scale(1.15);
     opacity: 0.7;
-    box-shadow: 0 0 0 8px hsl(var(--primary) / 0);
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 8px hsl(var(--primary) / 0);
   }
 }
 
@@ -120,11 +129,14 @@
 .counter-item.total {
   font-size: clamp(16px, 2.5vw, 20px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
+  background-color: rgba(0, 0, 0, 0.1);
   background-color: hsl(var(--primary) / 0.1);
   border-radius: 8px;
   padding: 6px 12px;
   min-width: auto;
+  border: 1.5px solid rgba(0, 0, 0, 0.3);
   border: 1.5px solid hsl(var(--primary) / 0.3);
   transition: all 0.3s ease;
 }
@@ -136,8 +148,11 @@
 
 /* Separator button styling - styled like control buttons */
 .counter-item.separator-button {
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1.5px solid hsl(0, 0%, 85%);
   border: 1.5px solid hsl(var(--border));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   width: clamp(40px, 7vw, 48px);
   height: clamp(40px, 7vw, 48px);
@@ -167,6 +182,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(6px, 1vw, 8px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   line-height: 1;
 }
@@ -182,9 +198,12 @@
   right: clamp(8px, 1.5vw, 12px);
   width: clamp(36px, 6.5vw, 44px);
   height: clamp(36px, 6.5vw, 44px);
+  background-color: rgba(255, 255, 255, 0.85);
   background-color: hsl(var(--card) / 0.85);
+  border: 2.5px solid rgba(0, 0, 0, 0.4);
   border: 2.5px solid hsl(var(--primary) / 0.4);
   border-radius: 8px;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   display: flex;
   justify-content: center;
@@ -196,10 +215,14 @@
 }
 
 .fullscreen-btn:hover {
+  background-color: rgba(255, 255, 255, 0.95);
   background-color: hsl(var(--card) / 0.95);
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   box-shadow: 0 4px 12px hsl(var(--primary) / 0.25);
 }
 
@@ -222,6 +245,7 @@
 }
 
 .fullscreen-modal-content {
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
   border-radius: clamp(16px, 3vw, 24px);
   padding: clamp(20px, 4vw, 40px);
@@ -257,8 +281,10 @@
   justify-content: center;
   align-items: center;
   border-radius: clamp(12px, 2.5vw, 18px);
+  background: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0.98) 100%);
   background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.98) 100%);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid hsl(0, 0%, 85%);
   border: 1px solid hsl(var(--border));
   backface-visibility: hidden;
 }
@@ -278,9 +304,12 @@
   right: clamp(16px, 3vw, 24px);
   width: clamp(44px, 8vw, 56px);
   height: clamp(44px, 8vw, 56px);
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1.5px solid hsl(0, 0%, 85%);
   border: 1.5px solid hsl(var(--border));
   border-radius: 8px;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   display: flex;
   justify-content: center;
@@ -292,8 +321,11 @@
 }
 
 .fullscreen-modal-close-btn:hover {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   transform: scale(1.1);
 }
@@ -310,8 +342,11 @@
 }
 
 .fullscreen-icon-control-btn {
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1.5px solid hsl(0, 0%, 85%);
   border: 1.5px solid hsl(var(--border));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   width: clamp(38px, 6.5vw, 46px);
   height: clamp(38px, 6.5vw, 46px);
@@ -328,14 +363,19 @@
 }
 
 .fullscreen-icon-control-btn:hover {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   box-shadow: 0 6px 20px hsl(var(--primary) / 0.35);
 }
 
 .fullscreen-icon-control-btn svg {
+  fill: hsl(0, 0%, 0%);
   fill: hsl(var(--foreground));
   width: clamp(16px, 3.5vw, 20px);
   height: clamp(16px, 3.5vw, 20px);
@@ -343,16 +383,21 @@
 }
 
 .fullscreen-icon-control-btn:hover svg {
+  fill: hsl(0, 0%, 100%);
   fill: hsl(var(--primary-foreground));
 }
 
 .fullscreen-icon-control-btn.active {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
 }
 
 .fullscreen-icon-control-btn.active svg {
+  fill: hsl(0, 0%, 100%);
   fill: hsl(var(--primary-foreground));
 }
 
@@ -379,6 +424,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(10px, 1.4vw, 12px);
   font-weight: 600;
+  color: hsl(0, 0%, 40%);
   color: hsl(var(--muted-foreground));
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
   min-width: 24px;
@@ -389,6 +435,7 @@
 .fullscreen-counter-item.active {
   font-size: clamp(12px, 1.8vw, 14px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
 }
 
@@ -400,14 +447,19 @@
 }
 
 .fullscreen-counter-item.clickable:hover {
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
+  background-color: rgba(0, 0, 0, 0.1);
   background-color: hsl(var(--primary) / 0.1);
   transform: scale(1.1);
 }
 
 .fullscreen-counter-item.separator-button {
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1px solid hsl(0, 0%, 85%);
   border: 1px solid hsl(var(--border));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   width: clamp(24px, 4vw, 28px);
   height: clamp(24px, 4vw, 28px);
@@ -436,11 +488,14 @@
 .fullscreen-counter-item.total {
   font-size: clamp(10px, 1.6vw, 12px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
+  background-color: rgba(0, 0, 0, 0.1);
   background-color: hsl(var(--primary) / 0.1);
   border-radius: 6px;
   padding: 4px 8px;
   min-width: auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border: 1px solid hsl(var(--primary) / 0.3);
   transition: all 0.3s ease;
 }
@@ -453,9 +508,12 @@
 .fullscreen-speed-btn {
   width: clamp(28px, 5vw, 36px);
   height: clamp(28px, 5vw, 36px);
+  background-color: rgba(255, 255, 255, 0.85);
   background-color: hsl(var(--card) / 0.85);
+  border: 1.5px solid rgba(0, 0, 0, 0.3);
   border: 1.5px solid hsl(var(--primary) / 0.3);
   border-radius: 6px;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   font-size: clamp(16px, 2.5vw, 20px);
   font-weight: 700;
@@ -468,7 +526,9 @@
 }
 
 .fullscreen-speed-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
   background-color: hsl(var(--primary) / 0.1);
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
   transform: scale(1.05);
 }
@@ -477,6 +537,7 @@
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(10px, 1.5vw, 12px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   min-width: clamp(32px, 5vw, 40px);
   text-align: center;
@@ -527,8 +588,10 @@
   justify-content: center;
   align-items: center;
   border-radius: clamp(12px, 2.5vw, 18px);
+  background: linear-gradient(135deg, hsl(0, 0%, 100%) 0%, rgba(255, 255, 255, 0.98) 100%);
   background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.98) 100%);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid hsl(0, 0%, 85%);
   border: 1px solid hsl(var(--border));
 }
 
@@ -553,6 +616,7 @@
   font-weight: 700;
   padding: clamp(15px, 4vw, 28px);
   text-align: center;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   word-break: break-word;
 }
@@ -561,6 +625,7 @@
   position: absolute;
   top: clamp(12px, 2vw, 18px);
   right: clamp(12px, 2vw, 18px);
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
   border: 1.5px solid hsl(var(--primary));
   border-radius: 50%;
@@ -575,12 +640,15 @@
 }
 
 .pronunciation-btn:hover {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
   transform: scale(1.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   box-shadow: 0 4px 16px hsl(var(--primary) / 0.3);
 }
 
 .pronunciation-btn svg {
+  fill: hsl(0, 0%, 0%);
   fill: hsl(var(--primary));
   width: clamp(16px, 4vw, 22px);
   height: clamp(16px, 4vw, 22px);
@@ -588,6 +656,7 @@
 }
 
 .pronunciation-btn:hover svg {
+  fill: hsl(0, 0%, 100%);
   fill: hsl(var(--primary-foreground));
 }
 
@@ -601,10 +670,13 @@ img {
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(14px, 2.5vw, 18px);
   font-weight: 600;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   text-align: center;
   padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border: 1px solid hsl(var(--primary) / 0.3);
   border-radius: clamp(6px, 1vw, 10px);
   max-width: clamp(150px, 80vw, 200px);
@@ -632,8 +704,11 @@ img {
 }
 
 .icon-control-btn {
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
+  border: 1.5px solid hsl(0, 0%, 85%);
   border: 1.5px solid hsl(var(--border));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   width: clamp(38px, 6.5vw, 46px);
   height: clamp(38px, 6.5vw, 46px);
@@ -650,14 +725,19 @@ img {
 }
 
 .icon-control-btn:hover {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   box-shadow: 0 6px 20px hsl(var(--primary) / 0.35);
 }
 
 .icon-control-btn svg {
+  fill: hsl(0, 0%, 0%);
   fill: hsl(var(--foreground));
   width: clamp(16px, 3.5vw, 20px);
   height: clamp(16px, 3.5vw, 20px);
@@ -665,16 +745,21 @@ img {
 }
 
 .icon-control-btn:hover svg {
+  fill: hsl(0, 0%, 100%);
   fill: hsl(var(--primary-foreground));
 }
 
 .icon-control-btn.active {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  border-color: hsl(0, 0%, 0%);
   border-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
 }
 
 .icon-control-btn.active svg {
+  fill: hsl(0, 0%, 100%);
   fill: hsl(var(--primary-foreground));
 }
 
@@ -735,6 +820,7 @@ img {
   font-family: 'Libre Baskerville', serif;
   font-size: clamp(20px, 5vw, 28px);
   font-weight: 700;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
 }
 
@@ -742,6 +828,7 @@ img {
   font-family: 'Inter', sans-serif;
   font-size: clamp(14px, 3vw, 18px);
   font-weight: 500;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
 }
 
@@ -870,8 +957,10 @@ img {
   width: clamp(44px, 8vw, 56px);
   height: clamp(44px, 8vw, 56px);
   border-radius: 50%;
+  background-color: hsl(0, 0%, 100%);
   background-color: hsl(var(--card));
   border: 1.5px solid hsl(var(--primary));
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   display: flex;
   justify-content: center;
@@ -883,9 +972,12 @@ img {
 }
 
 .share-button:hover {
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   transform: scale(1.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   box-shadow: 0 6px 20px hsl(var(--primary) / 0.35);
 }
 
@@ -900,7 +992,9 @@ img {
   left: 100%;
   top: 50%;
   transform: translateY(-50%) translateX(8px);
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   padding: 8px 12px;
   border-radius: 6px;
@@ -933,8 +1027,10 @@ img {
   position: absolute;
   bottom: clamp(80px, 12vw, 120px);
   left: clamp(20px, 5vw, 40px);
+  background-color: rgba(255, 255, 255, 0.95);
   background-color: hsl(var(--card) / 0.95);
   backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(0, 0, 0, 0.3);
   border: 1.5px solid hsl(var(--primary) / 0.3);
   border-radius: 12px;
   padding: clamp(12px, 2.5vw, 18px);
@@ -957,6 +1053,7 @@ img {
   gap: clamp(6px, 1.5vw, 10px);
   background: none;
   border: none;
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--foreground));
   cursor: pointer;
   font-family: 'Inter', sans-serif;
@@ -968,7 +1065,9 @@ img {
 }
 
 .share-option:hover {
+  background-color: rgba(0, 0, 0, 0.15);
   background-color: hsl(var(--primary) / 0.15);
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   transform: scale(1.08);
 }
@@ -976,6 +1075,7 @@ img {
 .share-option svg {
   width: clamp(20px, 4vw, 28px);
   height: clamp(20px, 4vw, 28px);
+  color: hsl(0, 0%, 0%);
   color: hsl(var(--primary));
   transition: all 0.2s ease-out;
 }
@@ -988,7 +1088,9 @@ img {
   position: fixed;
   bottom: clamp(100px, 18vw, 160px);
   left: clamp(20px, 5vw, 40px);
+  background-color: hsl(0, 0%, 0%);
   background-color: hsl(var(--primary));
+  color: hsl(0, 0%, 100%);
   color: hsl(var(--primary-foreground));
   padding: clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px);
   border-radius: 8px;

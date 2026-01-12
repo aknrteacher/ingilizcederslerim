@@ -10,6 +10,8 @@
   --radius-xl: calc(var(--radius) + 4px);
   
   /* Brand Colors - Dynamic based on theme */
+  /* Note: For older browsers that don't support CSS variables, 
+     fallback colors are provided in individual CSS files */
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   

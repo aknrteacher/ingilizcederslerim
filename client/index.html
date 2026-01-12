@@ -23,5 +23,186 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Browser Compatibility Detection Script
+      (function() {
+        'use strict';
+        
+        // Detect CSS variable support
+        function supportsCSSVariables() {
+          try {
+            return window.CSS && CSS.supports && CSS.supports('color', 'var(--test)');
+          } catch (e) {
+            return false;
+          }
+        }
+        
+        // Get browser information
+        function getBrowserInfo() {
+          var ua = navigator.userAgent;
+          var browser = 'Unknown';
+          var version = 'Unknown';
+          var isOld = false;
+          
+          // Detect Internet Explorer
+          if (ua.indexOf('MSIE') !== -1 || ua.indexOf('Trident/') !== -1) {
+            browser = 'Internet Explorer';
+            var match = ua.match(/(?:MSIE |rv:)(\d+(\.\d+)?)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseFloat(version) < 11 || parseFloat(version) === 11;
+          }
+          // Detect Chrome
+          else if (ua.indexOf('Chrome') !== -1 && ua.indexOf('Edg') === -1) {
+            browser = 'Chrome';
+            var match = ua.match(/Chrome\/(\d+)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseInt(version) < 49;
+          }
+          // Detect Edge (Chromium)
+          else if (ua.indexOf('Edg') !== -1) {
+            browser = 'Edge (Chromium)';
+            var match = ua.match(/Edg\/(\d+)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseInt(version) < 15;
+          }
+          // Detect Edge (Legacy)
+          else if (ua.indexOf('Edge') !== -1) {
+            browser = 'Edge (Legacy)';
+            var match = ua.match(/Edge\/(\d+)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseInt(version) < 15;
+          }
+          // Detect Firefox
+          else if (ua.indexOf('Firefox') !== -1) {
+            browser = 'Firefox';
+            var match = ua.match(/Firefox\/(\d+)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseInt(version) < 31;
+          }
+          // Detect Safari
+          else if (ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1) {
+            browser = 'Safari';
+            var match = ua.match(/Version\/(\d+\.\d+)/);
+            version = match ? match[1] : 'Unknown';
+            isOld = parseFloat(version) < 9.1;
+          }
+          
+          return { browser: browser, version: version, isOld: isOld };
+        }
+        
+        // Get OS information
+        function getOSInfo() {
+          var ua = navigator.userAgent;
+          var os = 'Unknown';
+          
+          if (ua.indexOf('Windows') !== -1) {
+            if (ua.indexOf('Windows NT 10.0') !== -1) os = 'Windows 10/11';
+            else if (ua.indexOf('Windows NT 6.3') !== -1) os = 'Windows 8.1';
+            else if (ua.indexOf('Windows NT 6.2') !== -1) os = 'Windows 8';
+            else if (ua.indexOf('Windows NT 6.1') !== -1) os = 'Windows 7';
+            else os = 'Windows';
+          } else if (ua.indexOf('Mac') !== -1) {
+            os = 'macOS';
+          } else if (ua.indexOf('Linux') !== -1) {
+            os = 'Linux';
+          } else if (ua.indexOf('Android') !== -1) {
+            os = 'Android';
+          } else if (ua.indexOf('iOS') !== -1 || ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1) {
+            os = 'iOS';
+          }
+          
+          return os;
+        }
+        
+        // Check for other important features
+        function getFeatureSupport() {
+          return {
+            cssVariables: supportsCSSVariables(),
+            flexbox: CSS.supports('display', 'flex'),
+            grid: CSS.supports('display', 'grid'),
+            transform: CSS.supports('transform', 'translateX(0)'),
+            localStorage: typeof(Storage) !== 'undefined',
+            sessionStorage: typeof(sessionStorage) !== 'undefined'
+          };
+        }
+        
+        // Run detection
+        var cssVarsSupported = supportsCSSVariables();
+        var browserInfo = getBrowserInfo();
+        var osInfo = getOSInfo();
+        var features = getFeatureSupport();
+        
+        // Store compatibility info globally for debugging
+        window.__browserCompatibility = {
+          cssVariablesSupported: cssVarsSupported,
+          browser: browserInfo.browser,
+          browserVersion: browserInfo.version,
+          isOldBrowser: browserInfo.isOld,
+          os: osInfo,
+          features: features,
+          userAgent: navigator.userAgent,
+          timestamp: new Date().toISOString()
+        };
+        
+        // Log to console with styling
+        console.log('%c🔍 Browser Compatibility Check', 'font-size: 16px; font-weight: bold; color: #2563eb;');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.log('Browser:', browserInfo.browser, browserInfo.version);
+        console.log('OS:', osInfo);
+        console.log('CSS Variables:', cssVarsSupported ? '✅ Supported' : '❌ Not Supported');
+        console.log('Old Browser:', browserInfo.isOld ? '⚠️ Yes' : '✅ No');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.log('Feature Support:');
+        console.log('  • Flexbox:', features.flexbox ? '✅' : '❌');
+        console.log('  • CSS Grid:', features.grid ? '✅' : '❌');
+        console.log('  • Transform:', features.transform ? '✅' : '❌');
+        console.log('  • LocalStorage:', features.localStorage ? '✅' : '❌');
+        console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+        console.log('Full Info:', window.__browserCompatibility);
+        
+        // Show visual warning if CSS variables not supported
+        if (!cssVarsSupported) {
+          var warning = document.createElement('div');
+          warning.id = 'browser-compat-warning';
+          warning.style.cssText = [
+            'position: fixed',
+            'top: 0',
+            'left: 0',
+            'right: 0',
+            'background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+            'color: white',
+            'padding: 12px 20px',
+            'text-align: center',
+            'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            'font-size: 14px',
+            'font-weight: 600',
+            'z-index: 99999',
+            'box-shadow: 0 2px 8px rgba(0,0,0,0.2)',
+            'border-bottom: 2px solid #b45309'
+          ].join('; ');
+          warning.innerHTML = '⚠️ You are using an older browser. Some features may not work perfectly. The site will use fallback colors.';
+          document.body.insertBefore(warning, document.body.firstChild);
+          
+          // Auto-hide after 10 seconds
+          setTimeout(function() {
+            if (warning && warning.parentNode) {
+              warning.style.transition = 'opacity 0.5s ease-out';
+              warning.style.opacity = '0';
+              setTimeout(function() {
+                if (warning && warning.parentNode) {
+                  warning.parentNode.removeChild(warning);
+                }
+              }, 500);
+            }
+          }, 10000);
+        }
+        
+        // Log warning for old browsers even if CSS vars are supported
+        if (browserInfo.isOld && cssVarsSupported) {
+          console.warn('%c⚠️ Old Browser Detected', 'font-size: 14px; font-weight: bold; color: #f59e0b;');
+          console.warn('Browser version may have compatibility issues. Consider updating.');
+        }
+      })();
+    </script>
   </body>
 </html>

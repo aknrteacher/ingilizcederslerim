@@ -461,15 +461,19 @@ export default function PreSchoolGamesMenu() {
         .filter-label {
           font-size: 16px;
           font-weight: 600;
+          color: hsl(0, 0%, 0%);
           color: hsl(var(--foreground));
         }
 
         .filter-select {
           padding: 8px 16px;
           font-size: 16px;
+          border: 2px solid hsl(0, 0%, 85%);
           border: 2px solid hsl(var(--border));
           border-radius: 8px;
+          background-color: hsl(0, 0%, 100%);
           background-color: hsl(var(--background));
+          color: hsl(0, 0%, 0%);
           color: hsl(var(--foreground));
           cursor: pointer;
           min-width: 200px;
@@ -477,12 +481,15 @@ export default function PreSchoolGamesMenu() {
         }
 
         .filter-select:hover {
+          border-color: hsl(0, 0%, 0%);
           border-color: hsl(var(--primary));
         }
 
         .filter-select:focus {
           outline: none;
+          border-color: hsl(0, 0%, 0%);
           border-color: hsl(var(--primary));
+          box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
         }
 
