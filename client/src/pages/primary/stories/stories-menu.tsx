@@ -5,6 +5,7 @@ import { BookOpen } from 'lucide-react';
 import { stories } from '@/data/stories';
 
 export default function StoriesMenu() {
+  // Updated: 2024 - Stories menu with Turkish instructions
   return (
     <Layout>
       <div className="space-y-8 py-8 max-w-4xl mx-auto">
