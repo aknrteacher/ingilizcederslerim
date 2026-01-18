@@ -14,6 +14,8 @@ export const story1: Story = {
     {
       pageNumber: 1,
       imageUrl: '/images/stories/story1/book 1-01.png',
+      audioStartTime: 0.00,
+      audioEndTime: 6.00,
       sentences: [
         {
           english: 'English Year 2 Book 1',
@@ -35,6 +37,8 @@ export const story1: Story = {
     {
       pageNumber: 2,
       imageUrl: '/images/stories/story1/book 1-02.png',
+      audioStartTime: 6.00,
+      audioEndTime: 13.70,
       sentences: [
         {
           english: 'English Year 2 Book 1',
@@ -65,11 +69,15 @@ export const story1: Story = {
     {
       pageNumber: 3,
       imageUrl: '/images/stories/story1/book 1-03.png',
+      audioStartTime: 13.70,
+      audioEndTime: 14.70,
       sentences: [],
     },
     {
       pageNumber: 4,
       imageUrl: '/images/stories/story1/book 1-04.png',
+      audioStartTime: 14.70,
+      audioEndTime: 21.89,
       sentences: [
         {
           english: 'It\'s Monday morning.',
@@ -114,6 +122,8 @@ export const story1: Story = {
     {
       pageNumber: 5,
       imageUrl: '/images/stories/story1/book 1-05.png',
+      audioStartTime: 21.89,
+      audioEndTime: 33.09,
       sentences: [
         {
           english: 'Sude: Good morning.',
@@ -171,6 +181,8 @@ export const story1: Story = {
     {
       pageNumber: 6,
       imageUrl: '/images/stories/story1/book 1-06.png',
+      audioStartTime: 33.09,
+      audioEndTime: 47.50,
       sentences: [
         {
           english: 'Clara: Nice to meet you.',
@@ -230,6 +242,8 @@ export const story1: Story = {
     {
       pageNumber: 7,
       imageUrl: '/images/stories/story1/book 1-07.png',
+      audioStartTime: 47.50,
+      audioEndTime: 56.93,
       sentences: [
         {
           english: 'Efe: This board is for Republic Day.',
@@ -267,6 +281,8 @@ export const story1: Story = {
     {
       pageNumber: 8,
       imageUrl: '/images/stories/story1/book 1-08.png',
+      audioStartTime: 56.93,
+      audioEndTime: 64.52,
       sentences: [
         {
           english: 'Ding! Dong!',
@@ -299,6 +315,8 @@ export const story1: Story = {
     {
       pageNumber: 9,
       imageUrl: '/images/stories/story1/book 1-09.png',
+      audioStartTime: 64.52,
+      audioEndTime: 82.00,
       sentences: [
         {
           english: 'Lesson: English',
@@ -359,6 +377,8 @@ export const story1: Story = {
     {
       pageNumber: 10,
       imageUrl: '/images/stories/story1/book 1-10.png',
+      audioStartTime: 82.00,
+      audioEndTime: 102.85,
       sentences: [
         {
           english: 'Mrs Yalçın: I have a surprise for you. Let\'s play a game.',
@@ -417,6 +437,8 @@ export const story1: Story = {
     {
       pageNumber: 11,
       imageUrl: '/images/stories/story1/book 1-11.png',
+      audioStartTime: 102.85,
+      audioEndTime: 124.00,
       sentences: [
         {
           english: 'Efe: Hello, Mr Bilir. We are here for the \'Find the Clues\' game.',
@@ -476,6 +498,8 @@ export const story1: Story = {
     {
       pageNumber: 12,
       imageUrl: '/images/stories/story1/book 1-12.png',
+      audioStartTime: 124.00,
+      audioEndTime: 144.50,
       sentences: [
         {
           english: 'Mr Eren: Good morning, kids! How are you?',
@@ -540,6 +564,8 @@ export const story1: Story = {
     {
       pageNumber: 13,
       imageUrl: '/images/stories/story1/book 1-13.png',
+      audioStartTime: 144.50,
+      audioEndTime: 158.70,
       sentences: [
         {
           english: 'Efe: Hello, Mrs Yaman.',
@@ -588,6 +614,8 @@ export const story1: Story = {
     {
       pageNumber: 14,
       imageUrl: '/images/stories/story1/book 1-14.png',
+      audioStartTime: 158.70,
+      audioEndTime: 170.20,
       sentences: [
         {
           english: 'Efe: Here is the boy.',
@@ -629,6 +657,8 @@ export const story1: Story = {
     {
       pageNumber: 15,
       imageUrl: '/images/stories/story1/book 1-15.png',
+      audioStartTime: 170.20,
+      audioEndTime: 178.55,
       sentences: [
         {
           english: 'Sude: Here is the big table.',
@@ -664,6 +694,8 @@ export const story1: Story = {
     {
       pageNumber: 16,
       imageUrl: '/images/stories/story1/book 1-16.png',
+      audioStartTime: 178.55,
+      audioEndTime: 188.45,
       sentences: [
         {
           english: 'Clara: What is in it?',
@@ -701,6 +733,8 @@ export const story1: Story = {
     {
       pageNumber: 17,
       imageUrl: '/images/stories/story1/book 1-17.png',
+      audioStartTime: 188.45,
+      audioEndTime: 202.80,
       sentences: [
         {
           english: 'Efe: Look, Mrs Yalçın!',
@@ -757,6 +791,8 @@ export const story1: Story = {
     {
       pageNumber: 18,
       imageUrl: '/images/stories/story1/book 1-18.png',
+      audioStartTime: 202.80,
+      audioEndTime: 204.79,
       sentences: [
         {
           english: 'GLOSSARY',
@@ -770,6 +806,8 @@ export const story1: Story = {
     {
       pageNumber: 19,
       imageUrl: '/images/stories/story1/book 1-19.png',
+      audioStartTime: 204.79,
+      audioEndTime: 206.35,
       sentences: [
         {
           english: 'GLOSSARY',
@@ -783,6 +821,8 @@ export const story1: Story = {
     {
       pageNumber: 20,
       imageUrl: '/images/stories/story1/book 1-20.png',
+      audioStartTime: 206.35,
+      audioEndTime: 219.50,
       sentences: [
         {
           english: 'LET\'S CHECK',
@@ -849,6 +889,8 @@ export const story1: Story = {
     {
       pageNumber: 21,
       imageUrl: '/images/stories/story1/book 1-21.png',
+      audioStartTime: 219.50,
+      audioEndTime: 242.95,
       sentences: [
         {
           english: 'B) Choose and write.',
@@ -870,6 +912,8 @@ export const story1: Story = {
     {
       pageNumber: 22,
       imageUrl: '/images/stories/story1/book 1-22.png',
+      audioStartTime: 242.95,
+      audioEndTime: 300, // End of audio (adjust if audio is longer)
       sentences: [],
     },
   ],

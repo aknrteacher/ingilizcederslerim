@@ -4,58 +4,6 @@ import { StoryAudioPlayer } from './StoryAudioPlayer';
 import { cn } from '@/lib/utils';
 import type { Story } from '@/data/stories/types';
 
-// Speech Recognition types
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start(): void;
-  stop(): void;
-  abort(): void;
-  onresult: ((event: SpeechRecognitionEvent) => void) | null;
-  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
-  onend: (() => void) | null;
-}
-
-interface SpeechRecognitionEvent {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-interface SpeechRecognitionResultList {
-  length: number;
-  item(index: number): SpeechRecognitionResult;
-  [index: number]: SpeechRecognitionResult;
-}
-
-interface SpeechRecognitionResult {
-  length: number;
-  item(index: number): SpeechRecognitionAlternative;
-  [index: number]: SpeechRecognitionAlternative;
-  isFinal: boolean;
-}
-
-interface SpeechRecognitionAlternative {
-  transcript: string;
-  confidence: number;
-}
-
-interface SpeechRecognitionErrorEvent {
-  error: string;
-  message: string;
-}
-
-interface SpeechRecognitionConstructor {
-  new (): SpeechRecognition;
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition: SpeechRecognitionConstructor;
-    webkitSpeechRecognition: SpeechRecognitionConstructor;
-  }
-}
-
 interface StoryReaderProps {
   story: Story;
 }
@@ -64,8 +12,6 @@ export function StoryReader({ story }: StoryReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const audioSyncEnabledRef = useRef(true);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const lastPageDetectedRef = useRef<number | null>(null);
 
   // Play page turn sound effect
   const playPageTurnSound = () => {
@@ -126,101 +72,7 @@ export function StoryReader({ story }: StoryReaderProps) {
   const canGoPrevious = currentPageIndex > 0;
   const canGoNext = currentPageIndex + 2 < story.pages.length;
 
-  // Speech Recognition for "Page X" detection
-  useEffect(() => {
-    if (!story.audioUrl) return;
-
-    // Check if browser supports speech recognition
-    const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      console.log('Speech recognition not supported in this browser');
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = false;
-    recognition.lang = 'en-US';
-
-    recognition.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .map((result) => result[0].transcript)
-        .join(' ')
-        .toLowerCase();
-
-      // Look for "page" followed by a number
-      const pageMatch = transcript.match(/page\s+(\d+)/i);
-      if (pageMatch) {
-        const pageNumber = parseInt(pageMatch[1], 10);
-        
-        // Only navigate if it's a different page and sync is enabled
-        if (
-          pageNumber !== lastPageDetectedRef.current &&
-          pageNumber >= 1 &&
-          pageNumber <= story.pages.length &&
-          audioSyncEnabledRef.current
-        ) {
-          lastPageDetectedRef.current = pageNumber;
-          
-          // Convert page number (1-based) to page index (0-based)
-          const targetPageIndex = pageNumber - 1;
-          
-          // Find the correct page pair to show (always show 2 pages)
-          // If target is odd, show it on the left (with previous page on right if exists)
-          // If target is even, show it on the right (with previous page on left)
-          let targetIndex: number;
-          if (targetPageIndex % 2 === 0) {
-            // Even index (0, 2, 4...) - show on left
-            targetIndex = targetPageIndex;
-          } else {
-            // Odd index (1, 3, 5...) - show on right, so left page is previous
-            targetIndex = Math.max(0, targetPageIndex - 1);
-          }
-
-          if (targetIndex !== currentPageIndex && targetIndex >= 0 && targetIndex < story.pages.length) {
-            setCurrentPageIndex(targetIndex);
-          }
-        }
-      }
-    };
-
-    recognition.onerror = (event) => {
-      console.log('Speech recognition error:', event.error);
-    };
-
-    recognition.onend = () => {
-      // Restart recognition if audio sync is enabled
-      if (audioSyncEnabledRef.current && story.audioUrl) {
-        try {
-          recognition.start();
-        } catch (e) {
-          // Ignore errors when restarting
-        }
-      }
-    };
-
-    recognitionRef.current = recognition;
-
-    // Start recognition
-    try {
-      recognition.start();
-    } catch (e) {
-      console.log('Could not start speech recognition:', e);
-    }
-
-    return () => {
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch (e) {
-          // Ignore errors when stopping
-        }
-        recognitionRef.current = null;
-      }
-    };
-  }, [story.audioUrl, story.pages.length, currentPageIndex]);
-
-  // Audio synchronization - auto-advance pages based on audio timing (fallback)
+  // Audio synchronization - auto-advance pages based on audio timing
   useEffect(() => {
     if (!story.audioUrl || !audioSyncEnabledRef.current) return;
 
