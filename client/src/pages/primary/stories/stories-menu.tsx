@@ -21,25 +21,14 @@ export default function StoriesMenu() {
           <p className="text-base text-foreground">
             Çocuklara hem ödevlerinde yardımcı olması hem de dinleme becerilerine katkı sağlaması için aşağıdaki kitap sayfalarını hazırladım.
           </p>
-          
-          {/* Important Section - Red with bold words between -- */}
-          <div className="text-base text-red-600 dark:text-red-400 space-y-2">
-            <p className="font-semibold">ÖNEMLİ:</p>
-            <p>
-              Herbir kitap sayfasında:
-            </p>
-            <ul className="list-disc list-inside space-y-1 ml-4">
-              <li>
-                En üstte: Yavaşlatıp hızlandırabileceğiniz sesli <span className="font-bold">-dinleme-</span> bölümü (çalma tuşu, yavaşlatma/hızlandırma, ses seviyesi)
-              </li>
-              <li>
-                Orta bölümde: dinleme ile otomatik ilerleyen kitap sayfaları
-              </li>
-              <li>
-                En altta da: İngilizce yazılar VE bastığınızda beliren <span className="font-bold">-TÜRKÇE çeviriler-</span> bulunmakta.
-              </li>
-            </ul>
-          </div>
+          <p className="text-base text-foreground text-red-600 dark:text-red-400 font-bold">
+            ÖNEMLİ:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-base text-foreground ml-4">
+            <li>En üstte: Yavaşlatıp hızlandırabileceğiniz sesli <span className="text-red-600 dark:text-red-400 font-bold">-dinleme-</span> bölümü (çalma tuşu, yavaşlatma/hızlandırma, ses seviyesi)</li>
+            <li>Orta bölümde: dinleme ile otomatik ilerleyen kitap sayfaları</li>
+            <li>En altta da: İngilizce yazılar VE bastığınızda beliren <span className="text-red-600 dark:text-red-400 font-bold">-TÜRKÇE çeviriler-</span> bulunmakta.</li>
+          </ul>
 
           <p className="text-base text-foreground">
             Yapay zeka seslendirmeleri malesef tek düze ama umarım yine de ilgilerini çeker. Ayrıca sayfanın tamamı da anlamalarında yardımcı olur diye umuyorum 🍀 Sayfaları, bilgisayar ya da tablette görüntülenecek şekilde hazırladım ama benim telefonumda da sayfa fena gözükmüyor 🤞
