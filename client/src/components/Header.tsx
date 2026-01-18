@@ -1,5 +1,6 @@
-import { Bell, Search, HelpCircle } from "lucide-react"
+import { Bell, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { SearchBox } from "@/components/SearchBox"
 import * as React from "react"
 
 interface HeaderProps {
@@ -21,13 +22,8 @@ export function Header({ mobileMenuTrigger }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2 sm:gap-4">
-        <div className="relative hidden lg:block">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Dersleri ara..."
-            className="h-9 w-48 sm:w-64 rounded-md border border-input bg-background pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-          />
+        <div className="hidden lg:block">
+          <SearchBox />
         </div>
         
         <Button variant="ghost" size="icon" className="relative h-8 w-8 sm:h-10 sm:w-10">

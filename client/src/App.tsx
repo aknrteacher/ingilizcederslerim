@@ -127,6 +127,8 @@ import CatchThatGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.catch-that
 import CatchThatGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.catch-that";
 import CatchThatGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.catch-that";
 import CatchThatGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.catch-that";
+import StoriesMenu from "@/pages/primary/stories/stories-menu";
+import StoryReaderPage from "@/pages/primary/stories/story-reader";
 
 function Router() {
   return (
@@ -253,6 +255,9 @@ function Router() {
       <Route path="/pre-school/0.10-aroundus-spell-quest" component={AroundUsSpellQuestGame} />
       <Route path="/pre-school/0.10-aroundus-word-pop" component={AroundUsWordPopGame} />
       <Route path="/pre-school/0.10-aroundus-catch-that" component={AroundUsCatchGame} />
+      {/* Story routes */}
+      <Route path="/primary-school/stories" component={StoriesMenu} />
+      <Route path="/primary-school/stories/:storyId" component={StoryReaderPage} />
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 

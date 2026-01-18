@@ -1,0 +1,47 @@
+/* Story Reader Styles */
+
+/* Smooth page transitions */
+.story-page-transition {
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Book-like page shadow effect */
+.story-page-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Enhanced hover effect for clickable sentences */
+.story-sentence-clickable {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.story-sentence-clickable:hover {
+  background-color: hsl(var(--accent) / 0.1);
+}
+
+/* Audio player styling */
+.story-audio-player {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .story-page-container {
+    padding: 1rem;
+  }
+}
+
+/* Print styles for future print functionality */
+@media print {
+  .story-navigation,
+  .story-audio-player {
+    display: none;
+  }
+  
+  .story-page {
+    page-break-after: always;
+  }
+}
+
