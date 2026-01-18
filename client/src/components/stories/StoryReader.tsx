@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'wouter';
 import { StoryPage } from './StoryPage';
 import { StoryAudioPlayer } from './StoryAudioPlayer';
+import { ColorCodedText } from './ColorCodedText';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Story } from '@/data/stories/types';
 
@@ -12,6 +17,7 @@ export function StoryReader({ story }: StoryReaderProps) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [audioCurrentTime, setAudioCurrentTime] = useState(0);
   const audioSyncEnabledRef = useRef(true);
+  const syncTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Play page turn sound effect
   const playPageTurnSound = () => {
@@ -28,11 +34,25 @@ export function StoryReader({ story }: StoryReaderProps) {
     }
   };
 
+  // Re-enable audio sync after manual navigation
+  const reEnableSync = () => {
+    // Clear any existing timeout
+    if (syncTimeoutRef.current) {
+      clearTimeout(syncTimeoutRef.current);
+    }
+    // Temporarily disable sync
+    audioSyncEnabledRef.current = false;
+    // Re-enable sync after 2 seconds
+    syncTimeoutRef.current = setTimeout(() => {
+      audioSyncEnabledRef.current = true;
+    }, 2000);
+  };
+
   // Always show 2 pages side by side (book-like)
   const goToPreviousPage = () => {
     playPageTurnSound();
     setCurrentPageIndex((prev) => Math.max(0, prev - 2));
-    audioSyncEnabledRef.current = false; // Disable sync when manually navigating
+    reEnableSync(); // Temporarily disable, then re-enable after delay
   };
 
   const goToNextPage = () => {
@@ -46,8 +66,17 @@ export function StoryReader({ story }: StoryReaderProps) {
       }
       return next;
     });
-    audioSyncEnabledRef.current = false; // Disable sync when manually navigating
+    reEnableSync(); // Temporarily disable, then re-enable after delay
   };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (syncTimeoutRef.current) {
+        clearTimeout(syncTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Get pages to display - always show 2 pages
   const getDisplayPages = () => {
@@ -71,6 +100,22 @@ export function StoryReader({ story }: StoryReaderProps) {
   const displayPages = getDisplayPages();
   const canGoPrevious = currentPageIndex > 0;
   const canGoNext = currentPageIndex + 2 < story.pages.length;
+
+  // Calculate which sentence is currently being read on a page
+  const getCurrentSentenceIndex = (page: typeof story.pages[0], audioTime: number): number | null => {
+    if (!page.audioStartTime || !page.audioEndTime) return null;
+    if (audioTime < page.audioStartTime || audioTime >= page.audioEndTime) return null;
+    
+    const pageDuration = page.audioEndTime - page.audioStartTime;
+    const timeIntoPage = audioTime - page.audioStartTime;
+    const sentenceCount = page.sentences.length;
+    
+    if (sentenceCount === 0) return null;
+    
+    // Estimate which sentence is being read by dividing page duration evenly
+    const estimatedSentenceIndex = Math.floor((timeIntoPage / pageDuration) * sentenceCount);
+    return Math.min(estimatedSentenceIndex, sentenceCount - 1);
+  };
 
   // Audio synchronization - auto-advance pages based on audio timing
   useEffect(() => {
@@ -109,10 +154,21 @@ export function StoryReader({ story }: StoryReaderProps) {
 
   return (
     <div className="flex flex-col h-full max-w-7xl mx-auto">
-      {/* Story Title */}
-      <div className="mb-6 text-center">
-        <h1 className="text-3xl font-bold text-foreground mb-2">{story.title}</h1>
-        <p className="text-muted-foreground">{story.titleTurkish}</p>
+      {/* Back Button */}
+      <div className="mb-4">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href="/primary-school/stories">
+              <Button variant="ghost" className="gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Hikayelere Dön
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Hikaye listesine geri dön</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {/* Audio Player */}
@@ -120,14 +176,14 @@ export function StoryReader({ story }: StoryReaderProps) {
         <div className="mb-6">
           <StoryAudioPlayer 
             audioUrl={story.audioUrl} 
-            playbackRate={0.8}
+            playbackRate={story.id === 'story2' ? 0.7 : 0.8}
             onTimeUpdate={setAudioCurrentTime}
           />
         </div>
       )}
 
       {/* Book Pages - Always 2 pages side by side, no gap */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col mb-6">
         <div className="flex flex-1 gap-0">
           {displayPages.map((page, displayIndex) => {
             const isLeftPage = displayIndex === 0;
@@ -150,6 +206,7 @@ export function StoryReader({ story }: StoryReaderProps) {
                   canGoPrevious={isLeftPage ? canGoPrevious : false}
                   canGoNext={isRightPage || (isLeftPage && !displayPages[1]) ? canGoNext : false}
                   showNavigation={true}
+                  showSentences={false}
                 />
               </div>
             );
@@ -164,11 +221,42 @@ export function StoryReader({ story }: StoryReaderProps) {
         </div>
 
         {/* Page Indicator */}
-        <div className="flex items-center justify-center mt-6">
-          <div className="text-sm text-muted-foreground">
-            Page {currentPageIndex + 1} - {Math.min(currentPageIndex + displayPages.length, story.pages.length)} of {story.pages.length}
-          </div>
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center justify-center mt-6">
+              <div className="text-sm text-muted-foreground">
+                Sayfa {currentPageIndex + 1} - {Math.min(currentPageIndex + displayPages.length, story.pages.length)} / {story.pages.length}
+              </div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Gösterilen sayfa numaraları</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+
+      {/* English Text and Translations - Below Book Pages */}
+      <div className="space-y-4">
+        {displayPages.map((page) => {
+          const currentSentenceIndex = getCurrentSentenceIndex(page, audioCurrentTime);
+          
+          return (
+            <div key={page.pageNumber} className="bg-card border rounded-lg p-6 shadow-md">
+              <h3 className="text-lg font-semibold mb-4 text-foreground">
+                Sayfa {page.pageNumber} - Metin ve Çeviriler
+              </h3>
+              <div className="space-y-4">
+                {page.sentences.map((sentence, index) => (
+                  <ColorCodedText 
+                    key={index} 
+                    sentence={sentence} 
+                    isHighlighted={currentSentenceIndex === index}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

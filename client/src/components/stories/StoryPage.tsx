@@ -1,5 +1,6 @@
 import { ColorCodedText } from './ColorCodedText';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { StoryPage as StoryPageType } from '@/data/stories/types';
@@ -12,6 +13,7 @@ interface StoryPageProps {
   canGoPrevious?: boolean;
   canGoNext?: boolean;
   showNavigation?: boolean;
+  showSentences?: boolean;
 }
 
 export function StoryPage({ 
@@ -21,7 +23,8 @@ export function StoryPage({
   onNext, 
   canGoPrevious = false, 
   canGoNext = false,
-  showNavigation = true 
+  showNavigation = true,
+  showSentences = true
 }: StoryPageProps) {
   return (
     <div className={cn('flex flex-col h-full relative', className)}>
@@ -76,11 +79,18 @@ export function StoryPage({
         
         {/* Page Number Overlay - Bottom Center */}
         <div className="absolute bottom-0 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="bg-background/95 backdrop-blur-sm px-4 py-2 rounded-t-lg border-t border-x shadow-lg">
-            <span className="text-sm font-semibold text-foreground">
-              Page {page.pageNumber}
-            </span>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="bg-background/95 backdrop-blur-sm px-4 py-2 rounded-t-lg border-t border-x shadow-lg pointer-events-auto">
+                <span className="text-sm font-semibold text-foreground">
+                  Sayfa {page.pageNumber}
+                </span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Sayfa Numarası</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
         
         {/* Navigation Buttons Overlay - Always Visible */}
@@ -88,39 +98,55 @@ export function StoryPage({
           <>
             {/* Left Button */}
             {canGoPrevious && onPrevious && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={onPrevious}
-                className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur-sm hover:bg-background border-2 shadow-lg h-12 w-12"
-                aria-label="Previous page"
-              >
-                <ChevronLeft className="h-7 w-7" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={onPrevious}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur-sm hover:bg-background border-2 shadow-lg h-12 w-12"
+                    aria-label="Previous page"
+                  >
+                    <ChevronLeft className="h-7 w-7" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Önceki Sayfa</p>
+                </TooltipContent>
+              </Tooltip>
             )}
 
             {/* Right Button */}
             {canGoNext && onNext && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={onNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur-sm hover:bg-background border-2 shadow-lg h-12 w-12"
-                aria-label="Next page"
-              >
-                <ChevronRight className="h-7 w-7" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={onNext}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/95 backdrop-blur-sm hover:bg-background border-2 shadow-lg h-12 w-12"
+                    aria-label="Next page"
+                  >
+                    <ChevronRight className="h-7 w-7" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Sonraki Sayfa</p>
+                </TooltipContent>
+              </Tooltip>
             )}
           </>
         )}
       </div>
 
       {/* Sentences */}
-      <div className="flex-1 space-y-4 overflow-y-auto">
-        {page.sentences.map((sentence, index) => (
-          <ColorCodedText key={index} sentence={sentence} />
-        ))}
-      </div>
+      {showSentences && (
+        <div className="flex-1 space-y-4 overflow-y-auto">
+          {page.sentences.map((sentence, index) => (
+            <ColorCodedText key={index} sentence={sentence} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

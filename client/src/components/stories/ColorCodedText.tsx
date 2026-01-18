@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { Sentence, GrammaticalRole, WordAnnotation } from '@/data/stories/types';
 
 interface ColorCodedTextProps {
   sentence: Sentence;
   className?: string;
+  isHighlighted?: boolean;
 }
 
 const roleColors: Record<GrammaticalRole, { english: string; turkish: string }> = {
@@ -99,7 +101,7 @@ function renderColoredText(
   return elements.length > 0 ? elements : [<span key="full">{text}</span>];
 }
 
-export function ColorCodedText({ sentence, className }: ColorCodedTextProps) {
+export function ColorCodedText({ sentence, className, isHighlighted = false }: ColorCodedTextProps) {
   const [showTranslation, setShowTranslation] = useState(false);
 
   const handleClick = () => {
@@ -109,27 +111,40 @@ export function ColorCodedText({ sentence, className }: ColorCodedTextProps) {
   return (
     <div className={cn('space-y-2', className)}>
       {/* English sentence - clickable */}
-      <div
-        onClick={handleClick}
-        className="cursor-pointer hover:bg-accent/50 rounded-lg p-3 transition-colors"
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleClick();
-          }
-        }}
-      >
-        <p className="text-lg leading-relaxed">
-          {renderColoredText(sentence.english, sentence.words, true)}
-        </p>
-      </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            onClick={handleClick}
+            className={cn(
+              "cursor-pointer hover:bg-accent/50 rounded-lg p-3 transition-all duration-300",
+              isHighlighted && "bg-yellow-200 dark:bg-yellow-900/30 border-2 border-yellow-400 dark:border-yellow-600 shadow-lg scale-[1.02]"
+            )}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleClick();
+              }
+            }}
+          >
+            <p className="text-lg leading-relaxed">
+              {renderColoredText(sentence.english, sentence.words, true)}
+            </p>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{showTranslation ? 'Türkçe çeviriyi gizlemek için tıklayın' : 'Türkçe çeviriyi görmek için tıklayın'}</p>
+        </TooltipContent>
+      </Tooltip>
 
       {/* Turkish translation - revealed on click */}
       {showTranslation && (
         <div
-          className="bg-muted/50 rounded-lg p-3 animate-in fade-in slide-in-from-top-2 duration-200"
+          className={cn(
+            "bg-muted/50 rounded-lg p-3 animate-in fade-in slide-in-from-top-2 duration-200",
+            isHighlighted && "bg-yellow-200/50 dark:bg-yellow-900/20"
+          )}
         >
           <p className="text-lg leading-relaxed text-muted-foreground">
             {renderColoredText(sentence.turkish, sentence.words, false)}

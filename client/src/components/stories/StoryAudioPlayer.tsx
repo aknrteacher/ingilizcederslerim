@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -143,23 +144,37 @@ export function StoryAudioPlayer({ audioUrl, className, playbackRate = 0.8, onTi
     <div className={cn('bg-card border rounded-lg p-4 space-y-3', className)}>
       {/* Play/Pause Button and Progress */}
       <div className="flex items-center gap-3">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={togglePlayPause}
-          aria-label={isPlaying ? 'Pause' : 'Play'}
-        >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={togglePlayPause}
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{isPlaying ? 'Duraklat' : 'Oynat'}</p>
+          </TooltipContent>
+        </Tooltip>
 
         <div className="flex-1 space-y-1">
-          <Slider
-            value={[progress]}
-            onValueChange={handleProgressChange}
-            max={100}
-            step={0.1}
-            className="w-full"
-          />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Slider
+                value={[progress]}
+                onValueChange={handleProgressChange}
+                max={100}
+                step={0.1}
+                className="w-full"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>İlerleme çubuğu - tıklayarak ilerleyebilirsiniz</p>
+            </TooltipContent>
+          </Tooltip>
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
@@ -170,39 +185,60 @@ export function StoryAudioPlayer({ audioUrl, className, playbackRate = 0.8, onTi
       {/* Speed, Volume Controls */}
       <div className="flex items-center gap-4">
         {/* Speed Control */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground min-w-[60px]">Speed: {speed.toFixed(1)}x</span>
-          <Slider
-            value={[speed * 100]}
-            onValueChange={(value) => setSpeed(value[0] / 100)}
-            min={25}
-            max={100}
-            step={5}
-            className="w-24"
-          />
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground min-w-[60px]">Hız: {speed.toFixed(1)}x</span>
+              <Slider
+                value={[speed * 100]}
+                onValueChange={(value) => setSpeed(value[0] / 100)}
+                min={25}
+                max={100}
+                step={5}
+                className="w-24"
+              />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Ses hızını ayarlayın (0.25x - 1.0x)</p>
+          </TooltipContent>
+        </Tooltip>
 
         {/* Volume Control */}
         <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleMute}
-            aria-label={isMuted ? 'Unmute' : 'Mute'}
-          >
-            {isMuted ? (
-              <VolumeX className="h-4 w-4" />
-            ) : (
-              <Volume2 className="h-4 w-4" />
-            )}
-          </Button>
-          <Slider
-            value={[isMuted ? 0 : volume * 100]}
-            onValueChange={handleVolumeChange}
-            max={100}
-            step={1}
-            className="w-24"
-          />
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleMute}
+                aria-label={isMuted ? 'Unmute' : 'Mute'}
+              >
+                {isMuted ? (
+                  <VolumeX className="h-4 w-4" />
+                ) : (
+                  <Volume2 className="h-4 w-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{isMuted ? 'Sesi Aç' : 'Sesi Kapat'}</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Slider
+                value={[isMuted ? 0 : volume * 100]}
+                onValueChange={handleVolumeChange}
+                max={100}
+                step={1}
+                className="w-24"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Ses seviyesini ayarlayın</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </div>
