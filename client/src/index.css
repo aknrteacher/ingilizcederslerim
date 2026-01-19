@@ -334,3 +334,48 @@
     animation: jump 3s ease-in-out infinite;
   }
 }
+
+/* Fallback styles for older browsers (Chrome 109 and similar) */
+.browser-fallback[data-theme="pre-school"] {
+  /* Ensure colors are applied even if CSS variables have issues */
+  background-color: hsl(45, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="primary-school"] {
+  background-color: hsl(200, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] {
+  background-color: hsl(25, 80%, 97%) !important;
+}
+
+.browser-fallback[data-theme="high-school"] {
+  background-color: hsl(120, 50%, 97%) !important;
+}
+
+.browser-fallback[data-theme="university"] {
+  background-color: hsl(270, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="business-english"] {
+  background-color: hsl(200, 10%, 97%) !important;
+}
+
+/* Enhanced theme application for fallback browsers */
+.browser-fallback {
+  /* Force reflow to ensure theme is applied */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Ensure sidebar colors work in fallback mode */
+.browser-fallback .bg-sidebar-primary {
+  /* Force sidebar primary color to be visible */
+  opacity: 1 !important;
+}
+
+.browser-fallback .text-sidebar-foreground {
+  /* Ensure text is visible */
+  color: hsl(var(--sidebar-foreground)) !important;
+  opacity: 1 !important;
+}

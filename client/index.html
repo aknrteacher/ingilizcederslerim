@@ -46,10 +46,14 @@
           theme = 'business-english';
         }
         
-        // Set data-theme attribute immediately
-        document.documentElement.setAttribute('data-theme', theme);
+        // Set data-theme attribute immediately (critical for CSS to work)
+        var html = document.documentElement;
+        html.setAttribute('data-theme', theme);
         
-        // Also set body background class for theme backgrounds
+        // Force a reflow to ensure styles are applied (helps with older browsers)
+        html.offsetHeight;
+        
+        // Also set body background class for theme backgrounds (fallback)
         var bodyClasses = {
           'pre-school': 'bg-amber-50',
           'primary-school': 'bg-blue-50',
@@ -60,9 +64,19 @@
           'default': 'bg-white'
         };
         
+        // Remove all theme classes first
+        var allClasses = Object.values(bodyClasses);
+        allClasses.forEach(function(cls) {
+          document.body.classList.remove(cls);
+        });
+        
+        // Add the current theme class
         if (bodyClasses[theme]) {
           document.body.classList.add(bodyClasses[theme]);
         }
+        
+        // Store theme for React to use later
+        window.__initialTheme = theme;
       })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
@@ -130,7 +144,17 @@
             isOld = parseFloat(version) < 9.1;
           }
           
-          return { browser: browser, version: version, isOld: isOld };
+          // Check if Chrome version needs fallback (49-119 range)
+          var needsFallback = false;
+          if (browser === 'Chrome') {
+            var chromeVersion = parseInt(version);
+            // Chrome 109 and similar versions might need fallback for some CSS features
+            if (chromeVersion >= 49 && chromeVersion < 120) {
+              needsFallback = true;
+            }
+          }
+          
+          return { browser: browser, version: version, isOld: isOld, needsFallback: needsFallback };
         }
         
         // Get OS information
@@ -181,11 +205,17 @@
           browser: browserInfo.browser,
           browserVersion: browserInfo.version,
           isOldBrowser: browserInfo.isOld,
+          needsFallback: browserInfo.needsFallback || false,
           os: osInfo,
           features: features,
           userAgent: navigator.userAgent,
           timestamp: new Date().toISOString()
         };
+        
+        // Apply fallback class if needed
+        if (browserInfo.needsFallback || !cssVarsSupported) {
+          document.documentElement.classList.add('browser-fallback');
+        }
         
         // Log to console with styling
         console.log('%c🔍 Browser Compatibility Check', 'font-size: 16px; font-weight: bold; color: #2563eb;');
@@ -244,6 +274,12 @@
         if (browserInfo.isOld && cssVarsSupported) {
           console.warn('%c⚠️ Old Browser Detected', 'font-size: 14px; font-weight: bold; color: #f59e0b;');
           console.warn('Browser version may have compatibility issues. Consider updating.');
+        }
+        
+        // Log info for browsers that need fallback
+        if (browserInfo.needsFallback) {
+          console.log('%cℹ️ Fallback Mode Enabled', 'font-size: 14px; font-weight: bold; color: #3b82f6;');
+          console.log('Using enhanced compatibility mode for Chrome ' + browserInfo.version);
         }
       })();
     </script>
