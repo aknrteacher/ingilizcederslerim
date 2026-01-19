@@ -71,13 +71,15 @@ const levelItems = [
 ]
 
 // --- Theme Color Mapping ---
+// Using theme-aware CSS variables instead of hardcoded colors
+// darkText uses sidebar-foreground (light text) for better contrast on colored backgrounds
 const levelColors: Record<LevelTheme, { bg: string; text: string; dark: string; light: string; darkText: string }> = {
-  "pre-school": { bg: "from-yellow-300 to-yellow-400", text: "text-amber-900", dark: "bg-yellow-700", light: "border-yellow-200", darkText: "text-yellow-100" },
-  "primary-school": { bg: "from-blue-300 to-blue-400", text: "text-blue-900", dark: "bg-blue-700", light: "border-blue-200", darkText: "text-blue-100" },
-  "secondary-school": { bg: "from-orange-300 to-orange-400", text: "text-orange-900", dark: "bg-orange-700", light: "border-orange-200", darkText: "text-orange-100" },
-  "high-school": { bg: "from-green-300 to-green-400", text: "text-green-900", dark: "bg-green-700", light: "border-green-200", darkText: "text-green-100" },
-  "university": { bg: "from-purple-300 to-purple-400", text: "text-purple-900", dark: "bg-purple-700", light: "border-purple-200", darkText: "text-purple-100" },
-  "business-english": { bg: "from-gray-400 to-gray-500", text: "text-gray-900", dark: "bg-gray-700", light: "border-gray-200", darkText: "text-gray-100" },
+  "pre-school": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
+  "primary-school": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
+  "secondary-school": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
+  "high-school": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
+  "university": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
+  "business-english": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-foreground" },
 }
 
 const navItems: NavItem[] = [
