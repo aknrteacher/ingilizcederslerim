@@ -82,6 +82,26 @@ const levelColors: Record<LevelTheme, { bg: string; text: string; dark: string; 
   "business-english": { bg: "from-primary/20 to-primary/30", text: "text-foreground", dark: "bg-sidebar-primary", light: "border-sidebar-primary/40", darkText: "text-sidebar-primary" },
 }
 
+// Inline styles for fallback mode (older browsers like Chrome 109)
+// These use actual color values, not CSS variables
+const fallbackInlineStyles: Record<LevelTheme, { backgroundColor: string; color: string; borderColor: string }> = {
+  "pre-school": { backgroundColor: "hsl(45, 100%, 75%)", color: "hsl(45, 100%, 75%)", borderColor: "hsl(45, 100%, 75%)" },
+  "primary-school": { backgroundColor: "hsl(200, 100%, 75%)", color: "hsl(200, 100%, 75%)", borderColor: "hsl(200, 100%, 75%)" },
+  "secondary-school": { backgroundColor: "hsl(25, 100%, 75%)", color: "hsl(25, 100%, 75%)", borderColor: "hsl(25, 100%, 75%)" },
+  "high-school": { backgroundColor: "hsl(120, 80%, 70%)", color: "hsl(120, 80%, 70%)", borderColor: "hsl(120, 80%, 70%)" },
+  "university": { backgroundColor: "hsl(270, 70%, 65%)", color: "hsl(270, 70%, 65%)", borderColor: "hsl(270, 70%, 65%)" },
+  "business-english": { backgroundColor: "hsl(200, 20%, 65%)", color: "hsl(200, 20%, 65%)", borderColor: "hsl(200, 20%, 65%)" },
+}
+
+// Check if browser needs fallback (set by index.html script)
+const needsFallback = typeof window !== 'undefined' && document.documentElement.classList.contains('browser-fallback')
+
+// Get inline styles for a theme (returns empty object if fallback not needed)
+const getFallbackStyles = (theme: LevelTheme | undefined): React.CSSProperties => {
+  if (!needsFallback || !theme) return {}
+  return fallbackInlineStyles[theme] || {}
+}
+
 const navItems: NavItem[] = [
   ...levelItems.map(item => ({
     title: item.title,
@@ -617,9 +637,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                             : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
                           "cursor-pointer"
                         )}
+                        style={getFallbackStyles(item.theme)}
                       >
-                        <span className="truncate flex-1 text-left">{item.title}</span>
-                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                        <span className="truncate flex-1 text-left" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
+                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined} />
                       </a>
                     </Link>
                   ) : (
@@ -636,9 +657,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                             }`
                       )}
                       onClick={() => item.theme && handleLevelClick(item.theme, item.href)}
+                      style={getFallbackStyles(item.theme)}
                       >
                         {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                        <span className={cn("truncate", item.theme ? "" : "flex-1")}>{item.title}</span>
+                        <span className={cn("truncate", item.theme ? "" : "flex-1")} style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
                       </a>
                     </Link>
                   )}
@@ -663,9 +685,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                       ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg backdrop-blur-sm bg-opacity-80 hover:shadow-xl`
                       : "bg-sidebar-primary/20 text-sidebar-primary-foreground hover:bg-sidebar-primary/30"
                   )}
+                  style={getFallbackStyles(activeSubmenuTheme)}
                 >
-                  <ChevronLeft className="h-5 w-5 flex-shrink-0 group-hover:-translate-x-1 transition-transform" />
-                  <span className="flex-1 text-left truncate">{submenuTitle}</span>
+                  <ChevronLeft className="h-5 w-5 flex-shrink-0 group-hover:-translate-x-1 transition-transform" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined} />
+                  <span className="flex-1 text-left truncate" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined}>{submenuTitle}</span>
                 </button>
 
                 {/* Submenu Items */}
@@ -684,10 +707,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                                : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
                              "cursor-pointer"
                            )}
-                           style={{ animationDelay: `${index * 50}ms` }}
+                           style={{ animationDelay: `${index * 50}ms`, ...getFallbackStyles(activeSubmenuTheme) }}
                          >
-                           <span className="truncate flex-1 text-left">{subItem.title}</span>
-                           <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
+                           <span className="truncate flex-1 text-left" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined}>{subItem.title}</span>
+                           <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined} />
                          </button>
                       ) : (
                         // Link Item
@@ -704,10 +727,10 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                                     ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
                                     : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
                             )}
-                            style={{ animationDelay: `${index * 50}ms` }}
+                            style={{ animationDelay: `${index * 50}ms`, ...getFallbackStyles(activeSubmenuTheme) }}
                           >
                             {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                            <span className="flex-1 truncate">{subItem.title}</span>
+                            <span className="flex-1 truncate" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined}>{subItem.title}</span>
                           </a>
                         </Link>
                       )}
