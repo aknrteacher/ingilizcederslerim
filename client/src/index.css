@@ -77,15 +77,15 @@
   --border: 0 0% 85%;
   --input: 0 0% 95%;
   --ring: 0 0% 0%;
-  /* Sidebar: Black background with dark grey accents */
+  /* Sidebar: Black background with lighter grey accents for button text/borders */
   --sidebar: 0 0% 0%;
   --sidebar-foreground: 0 0% 100%;
-  --sidebar-primary: 0 0% 20%;
+  --sidebar-primary: 0 0% 55%;
   --sidebar-primary-foreground: 0 0% 100%;
   --sidebar-accent: 0 0% 15%;
   --sidebar-accent-foreground: 0 0% 100%;
-  --sidebar-border: 0 0% 25%;
-  --sidebar-ring: 0 0% 20%;
+  --sidebar-border: 0 0% 40%;
+  --sidebar-ring: 0 0% 55%;
 }
 
 /* Pre-School Theme - Pastel Yellow */

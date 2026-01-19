@@ -224,7 +224,7 @@
             'high-school': { bg: 'hsl(120, 50%, 97%)', sidebar: 'hsl(140, 30%, 12%)', sidebarFg: 'hsl(120, 50%, 90%)', sidebarPrimary: 'hsl(120, 80%, 70%)' },
             'university': { bg: 'hsl(270, 60%, 97%)', sidebar: 'hsl(260, 30%, 12%)', sidebarFg: 'hsl(270, 60%, 90%)', sidebarPrimary: 'hsl(270, 70%, 65%)' },
             'business-english': { bg: 'hsl(200, 10%, 97%)', sidebar: 'hsl(200, 15%, 15%)', sidebarFg: 'hsl(200, 10%, 90%)', sidebarPrimary: 'hsl(200, 20%, 65%)' },
-            'default': { bg: 'hsl(0, 0%, 100%)', sidebar: 'hsl(0, 0%, 0%)', sidebarFg: 'hsl(0, 0%, 100%)', sidebarPrimary: 'hsl(0, 0%, 20%)' }
+            'default': { bg: 'hsl(0, 0%, 100%)', sidebar: 'hsl(0, 0%, 0%)', sidebarFg: 'hsl(0, 0%, 100%)', sidebarPrimary: 'hsl(0, 0%, 55%)' }
           };
           
           var currentTheme = window.__initialTheme || document.documentElement.getAttribute('data-theme') || 'default';
@@ -247,7 +247,7 @@
               'high-school': { primary: 'hsl(120, 80%, 70%)' },
               'university': { primary: 'hsl(270, 70%, 65%)' },
               'business-english': { primary: 'hsl(200, 20%, 65%)' },
-              'default': { primary: 'hsl(0, 0%, 20%)' }
+              'default': { primary: 'hsl(0, 0%, 55%)' }
             };
             
             var currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
@@ -400,6 +400,41 @@
         if (browserInfo.needsFallback) {
           console.log('%cℹ️ Fallback Mode Enabled', 'font-size: 14px; font-weight: bold; color: #3b82f6;');
           console.log('Using enhanced compatibility mode for Chrome ' + browserInfo.version);
+        }
+        
+        // Show update browser message for old Chrome versions
+        if (browserInfo.needsFallback && browserInfo.browser === 'Chrome') {
+          var updateBanner = document.createElement('div');
+          updateBanner.id = 'browser-update-banner';
+          updateBanner.style.cssText = [
+            'position: fixed',
+            'top: 0',
+            'left: 0',
+            'right: 0',
+            'background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+            'color: white',
+            'padding: 12px 20px',
+            'text-align: center',
+            'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            'font-size: 14px',
+            'font-weight: 500',
+            'z-index: 99999',
+            'box-shadow: 0 2px 8px rgba(0,0,0,0.2)',
+            'border-bottom: 2px solid #1e40af',
+            'display: flex',
+            'align-items: center',
+            'justify-content: center',
+            'gap: 12px',
+            'flex-wrap: wrap'
+          ].join('; ');
+          
+          updateBanner.innerHTML = [
+            '<span>🌐 Tarayıcınız eski bir sürüm (Chrome ' + browserInfo.version + '). Daha iyi bir deneyim için lütfen güncelleyin.</span>',
+            '<a href="https://www.google.com/chrome/" target="_blank" style="background: white; color: #1d4ed8; padding: 6px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; white-space: nowrap;">Chrome\'u Güncelle</a>',
+            '<button onclick="this.parentElement.style.display=\'none\'" style="background: transparent; border: 2px solid white; color: white; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-weight: 500;">Kapat</button>'
+          ].join('');
+          
+          document.body.insertBefore(updateBanner, document.body.firstChild);
         }
       })();
     </script>
