@@ -127,6 +127,13 @@ import CatchThatGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.catch-that
 import CatchThatGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.catch-that";
 import CatchThatGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.catch-that";
 import CatchThatGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.catch-that";
+// New Theme 1 Games
+import SoundMatchGame from "@/pages/primary/grade2/theme1/games/2.1.sound-match";
+import MemoryFlipGame from "@/pages/primary/grade2/theme1/games/2.1.memory-flip";
+import WordRaceGame from "@/pages/primary/grade2/theme1/games/2.1.word-race";
+import WordShooterGame from "@/pages/primary/grade2/theme1/games/2.1.word-shooter";
+import WordSnakeGame from "@/pages/primary/grade2/theme1/games/2.1.word-snake";
+import WordBuilderGame from "@/pages/primary/grade2/theme1/games/2.1.word-builder";
 import StoriesMenu from "@/pages/primary/stories/stories-menu";
 import StoryReaderPage from "@/pages/primary/stories/story-reader";
 
@@ -175,6 +182,12 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-4/word-pop" component={WordPopGame2_4} />
       <Route path="/primary-school/grade-2/theme-5/word-pop" component={WordPopGame2_5} />
       <Route path="/primary-school/grade-2/theme-1/catch-that" component={CatchThatGame} />
+      <Route path="/primary-school/grade-2/theme-1/sound-match" component={SoundMatchGame} />
+      <Route path="/primary-school/grade-2/theme-1/memory-flip" component={MemoryFlipGame} />
+      <Route path="/primary-school/grade-2/theme-1/word-race" component={WordRaceGame} />
+      <Route path="/primary-school/grade-2/theme-1/word-shooter" component={WordShooterGame} />
+      <Route path="/primary-school/grade-2/theme-1/word-snake" component={WordSnakeGame} />
+      <Route path="/primary-school/grade-2/theme-1/word-builder" component={WordBuilderGame} />
       <Route path="/primary-school/grade-2/theme-2/catch-that" component={CatchThatGame2_2} />
       <Route path="/primary-school/grade-2/theme-3/catch-that" component={CatchThatGame2_3} />
       <Route path="/primary-school/grade-2/theme-4/catch-that" component={CatchThatGame2_4} />

@@ -30,16 +30,12 @@ export default function AnimalsVocabulary() {
   const autoplayRef = useRef(false);
   const speedRef = useRef(1);
 
-  // Check if user has seen intro before
+  // Always show intro card when page loads
   useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('vocabcards-intro-seen');
-    if (hasSeenIntro) {
-      setShowIntroCard(false);
-    }
+    setShowIntroCard(true);
   }, []);
 
   const handleDismissIntro = () => {
-    localStorage.setItem('vocabcards-intro-seen', 'true');
     setShowIntroCard(false);
   };
 
@@ -510,7 +506,7 @@ export default function AnimalsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Anladım!
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
