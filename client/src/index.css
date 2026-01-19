@@ -336,28 +336,71 @@
 }
 
 /* Fallback styles for older browsers (Chrome 109 and similar) */
-.browser-fallback[data-theme="pre-school"] {
-  /* Ensure colors are applied even if CSS variables have issues */
+/* These use direct HSL values without CSS variables for maximum compatibility */
+
+.browser-fallback[data-theme="pre-school"],
+.browser-fallback[data-theme="pre-school"] body {
   background-color: hsl(45, 60%, 97%) !important;
 }
 
-.browser-fallback[data-theme="primary-school"] {
+.browser-fallback[data-theme="primary-school"],
+.browser-fallback[data-theme="primary-school"] body {
   background-color: hsl(200, 60%, 97%) !important;
 }
 
-.browser-fallback[data-theme="secondary-school"] {
+.browser-fallback[data-theme="secondary-school"],
+.browser-fallback[data-theme="secondary-school"] body {
   background-color: hsl(25, 80%, 97%) !important;
 }
 
-.browser-fallback[data-theme="high-school"] {
+.browser-fallback[data-theme="high-school"],
+.browser-fallback[data-theme="high-school"] body {
   background-color: hsl(120, 50%, 97%) !important;
 }
 
-.browser-fallback[data-theme="university"] {
+.browser-fallback[data-theme="university"],
+.browser-fallback[data-theme="university"] body {
   background-color: hsl(270, 60%, 97%) !important;
 }
 
-.browser-fallback[data-theme="business-english"] {
+.browser-fallback[data-theme="business-english"],
+.browser-fallback[data-theme="business-english"] body {
+  background-color: hsl(200, 10%, 97%) !important;
+}
+
+/* Force body background in fallback mode */
+.browser-fallback body {
+  background-color: inherit !important;
+}
+
+/* Force main content areas to use theme colors */
+.browser-fallback[data-theme="pre-school"] main,
+.browser-fallback[data-theme="pre-school"] .bg-background {
+  background-color: hsl(45, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="primary-school"] main,
+.browser-fallback[data-theme="primary-school"] .bg-background {
+  background-color: hsl(200, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] main,
+.browser-fallback[data-theme="secondary-school"] .bg-background {
+  background-color: hsl(25, 80%, 97%) !important;
+}
+
+.browser-fallback[data-theme="high-school"] main,
+.browser-fallback[data-theme="high-school"] .bg-background {
+  background-color: hsl(120, 50%, 97%) !important;
+}
+
+.browser-fallback[data-theme="university"] main,
+.browser-fallback[data-theme="university"] .bg-background {
+  background-color: hsl(270, 60%, 97%) !important;
+}
+
+.browser-fallback[data-theme="business-english"] main,
+.browser-fallback[data-theme="business-english"] .bg-background {
   background-color: hsl(200, 10%, 97%) !important;
 }
 
@@ -368,14 +411,64 @@
   -webkit-transform: translateZ(0);
 }
 
-/* Ensure sidebar colors work in fallback mode */
-.browser-fallback .bg-sidebar-primary {
-  /* Force sidebar primary color to be visible */
+/* Ensure sidebar colors work in fallback mode - use direct colors */
+.browser-fallback[data-theme="pre-school"] .bg-sidebar-primary {
+  background-color: hsl(45, 100%, 75%) !important;
   opacity: 1 !important;
 }
 
-.browser-fallback .text-sidebar-foreground {
-  /* Ensure text is visible */
-  color: hsl(var(--sidebar-foreground)) !important;
+.browser-fallback[data-theme="primary-school"] .bg-sidebar-primary {
+  background-color: hsl(200, 100%, 75%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] .bg-sidebar-primary {
+  background-color: hsl(25, 100%, 75%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="high-school"] .bg-sidebar-primary {
+  background-color: hsl(120, 80%, 70%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="university"] .bg-sidebar-primary {
+  background-color: hsl(270, 70%, 65%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="business-english"] .bg-sidebar-primary {
+  background-color: hsl(200, 20%, 65%) !important;
+  opacity: 1 !important;
+}
+
+/* Text colors for sidebar in fallback mode */
+.browser-fallback[data-theme="pre-school"] .text-sidebar-foreground {
+  color: hsl(45, 100%, 97%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="primary-school"] .text-sidebar-foreground {
+  color: hsl(200, 60%, 90%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] .text-sidebar-foreground {
+  color: hsl(25, 80%, 90%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="high-school"] .text-sidebar-foreground {
+  color: hsl(120, 50%, 90%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="university"] .text-sidebar-foreground {
+  color: hsl(270, 60%, 90%) !important;
+  opacity: 1 !important;
+}
+
+.browser-fallback[data-theme="business-english"] .text-sidebar-foreground {
+  color: hsl(200, 10%, 90%) !important;
   opacity: 1 !important;
 }

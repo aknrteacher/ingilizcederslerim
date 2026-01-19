@@ -215,6 +215,28 @@
         // Apply fallback class if needed
         if (browserInfo.needsFallback || !cssVarsSupported) {
           document.documentElement.classList.add('browser-fallback');
+          
+          // Apply colors directly via inline styles for maximum compatibility
+          var themeColors = {
+            'pre-school': { bg: 'hsl(45, 60%, 97%)', sidebar: 'hsl(30, 30%, 20%)', sidebarFg: 'hsl(45, 100%, 97%)', sidebarPrimary: 'hsl(45, 100%, 75%)' },
+            'primary-school': { bg: 'hsl(200, 60%, 97%)', sidebar: 'hsl(210, 30%, 12%)', sidebarFg: 'hsl(200, 60%, 90%)', sidebarPrimary: 'hsl(200, 100%, 75%)' },
+            'secondary-school': { bg: 'hsl(25, 80%, 97%)', sidebar: 'hsl(20, 40%, 15%)', sidebarFg: 'hsl(25, 80%, 90%)', sidebarPrimary: 'hsl(25, 100%, 75%)' },
+            'high-school': { bg: 'hsl(120, 50%, 97%)', sidebar: 'hsl(140, 30%, 12%)', sidebarFg: 'hsl(120, 50%, 90%)', sidebarPrimary: 'hsl(120, 80%, 70%)' },
+            'university': { bg: 'hsl(270, 60%, 97%)', sidebar: 'hsl(260, 30%, 12%)', sidebarFg: 'hsl(270, 60%, 90%)', sidebarPrimary: 'hsl(270, 70%, 65%)' },
+            'business-english': { bg: 'hsl(200, 10%, 97%)', sidebar: 'hsl(200, 15%, 15%)', sidebarFg: 'hsl(200, 10%, 90%)', sidebarPrimary: 'hsl(200, 20%, 65%)' },
+            'default': { bg: 'hsl(0, 0%, 100%)', sidebar: 'hsl(0, 0%, 0%)', sidebarFg: 'hsl(0, 0%, 100%)', sidebarPrimary: 'hsl(0, 0%, 20%)' }
+          };
+          
+          var currentTheme = window.__initialTheme || document.documentElement.getAttribute('data-theme') || 'default';
+          var colors = themeColors[currentTheme] || themeColors['default'];
+          
+          // Apply background color directly to body
+          if (colors && colors.bg) {
+            document.body.style.backgroundColor = colors.bg;
+          }
+          
+          // Store colors for later use
+          window.__fallbackColors = colors;
         }
         
         // Log to console with styling

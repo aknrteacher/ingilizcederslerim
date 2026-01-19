@@ -82,6 +82,33 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       document.body.classList.add(themeBackgrounds[themeInfo.theme])
     }
+    
+    // Apply fallback colors if browser-fallback class is present
+    if (document.documentElement.classList.contains('browser-fallback')) {
+      const fallbackColors: Record<LevelTheme | "default", { bg: string }> = {
+        "pre-school": { bg: "hsl(45, 60%, 97%)" },
+        "primary-school": { bg: "hsl(200, 60%, 97%)" },
+        "secondary-school": { bg: "hsl(25, 80%, 97%)" },
+        "high-school": { bg: "hsl(120, 50%, 97%)" },
+        "university": { bg: "hsl(270, 60%, 97%)" },
+        "business-english": { bg: "hsl(200, 10%, 97%)" },
+        "default": { bg: "hsl(0, 0%, 100%)" }
+      }
+      
+      const theme = themeInfo.isDefault ? "default" : themeInfo.theme
+      const colors = fallbackColors[theme]
+      
+      if (colors) {
+        // Apply background color directly to body
+        document.body.style.backgroundColor = colors.bg
+        
+        // Apply to main content areas
+        const mainElements = document.querySelectorAll('main, .bg-background')
+        mainElements.forEach((el) => {
+          (el as HTMLElement).style.backgroundColor = colors.bg
+        })
+      }
+    }
   }, [location])
 
   useEffect(() => {
