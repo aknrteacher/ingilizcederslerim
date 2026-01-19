@@ -22,6 +22,49 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Set theme immediately based on URL path - runs BEFORE React loads
+      (function() {
+        'use strict';
+        var path = window.location.pathname;
+        var theme = 'default';
+        
+        // Determine theme from path (same logic as ThemeContext)
+        if (path === '/' || path === '') {
+          theme = 'default';
+        } else if (path.includes('pre-school') || path.includes('okul-oncesi')) {
+          theme = 'pre-school';
+        } else if (path.includes('primary-school') || path.includes('grade-2') || path.includes('grade-1')) {
+          theme = 'primary-school';
+        } else if (path.includes('secondary-school')) {
+          theme = 'secondary-school';
+        } else if (path.includes('high-school')) {
+          theme = 'high-school';
+        } else if (path.includes('university')) {
+          theme = 'university';
+        } else if (path.includes('business-english')) {
+          theme = 'business-english';
+        }
+        
+        // Set data-theme attribute immediately
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Also set body background class for theme backgrounds
+        var bodyClasses = {
+          'pre-school': 'bg-amber-50',
+          'primary-school': 'bg-blue-50',
+          'secondary-school': 'bg-orange-50',
+          'high-school': 'bg-green-50',
+          'university': 'bg-purple-50',
+          'business-english': 'bg-slate-50',
+          'default': 'bg-white'
+        };
+        
+        if (bodyClasses[theme]) {
+          document.body.classList.add(bodyClasses[theme]);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <script>
       // Browser Compatibility Detection Script
