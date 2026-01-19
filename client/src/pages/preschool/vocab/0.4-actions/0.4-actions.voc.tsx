@@ -26,8 +26,26 @@ export default function ActionsVocabulary() {
   const [isImageZoomed, setIsImageZoomed] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [autoplaySpeed, setAutoplaySpeed] = useState(1);
+  const [showIntroCard, setShowIntroCard] = useState(true);
   const autoplayRef = useRef(false);
   const speedRef = useRef(1);
+
+  // Check if user has seen intro before
+  useEffect(() => {
+    const hasSeenIntro = localStorage.getItem('vocabcards-intro-seen');
+    if (hasSeenIntro) {
+      setShowIntroCard(false);
+    }
+  }, []);
+
+  const handleDismissIntro = () => {
+    localStorage.setItem('vocabcards-intro-seen', 'true');
+    setShowIntroCard(false);
+  };
+
+  const handleShowIntro = () => {
+    setShowIntroCard(true);
+  };
 
   // Actions vocabulary data
   const imageFiles = [
@@ -137,6 +155,17 @@ export default function ActionsVocabulary() {
         // Listen for 6 seconds (adjusted by speed)
         if (vocabulary[index]) {
           const utterance = new SpeechSynthesisUtterance(vocabulary[index].word);
+          utterance.lang = 'en-US';
+          
+          const voices = speechSynthesis.getVoices();
+          const englishVoice = voices.find(voice => 
+            voice.lang.startsWith('en') && voice.localService
+          ) || voices.find(voice => voice.lang.startsWith('en'));
+          
+          if (englishVoice) {
+            utterance.voice = englishVoice;
+          }
+          
           speechSynthesis.speak(utterance);
         }
         await new Promise(resolve => setTimeout(resolve, 6000 / speedRef.current));
@@ -208,6 +237,19 @@ export default function ActionsVocabulary() {
     e.stopPropagation();
     if (vocabulary[currentCardIndex]) {
       const utterance = new SpeechSynthesisUtterance(vocabulary[currentCardIndex].word);
+      utterance.lang = 'en-GB';
+      
+      const voices = speechSynthesis.getVoices();
+      const englishVoice = 
+        voices.find(voice => voice.lang === 'en-GB') ||
+        voices.find(voice => voice.lang.startsWith('en-GB')) ||
+        voices.find(voice => voice.lang === 'en-US') ||
+        voices.find(voice => voice.lang.startsWith('en'));
+      
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+      }
+      
       speechSynthesis.speak(utterance);
     }
   };
@@ -454,7 +496,25 @@ export default function ActionsVocabulary() {
           {/* Center Card */}
           <div className="center-card">
             <div className="flashcard-container">
-              {isBonusCard ? (
+              {showIntroCard ? (
+                /* Intro Card with Video */
+                <div className="flashcard intro-card" data-testid="card-intro">
+                  <div className="intro-card-content">
+                    <video
+                      className="intro-video"
+                      src="/videos/vocabcards-intro.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="auto"
+                    />
+                    <button className="intro-start-btn" onClick={handleDismissIntro}>
+                      Anladım!
+                    </button>
+                  </div>
+                </div>
+              ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
                     <div className="bonus-emoji">🎮</div>
