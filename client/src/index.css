@@ -590,3 +590,130 @@
   background-color: inherit !important;
   opacity: 1 !important;
 }
+
+/* Force navigation menu items to have colored backgrounds (like the working buttons) */
+.browser-fallback[data-theme="pre-school"] nav a,
+.browser-fallback[data-theme="pre-school"] nav button {
+  background-color: hsl(45, 100%, 75%) !important;
+  color: hsl(45, 100%, 75%) !important;
+  border-color: hsl(45, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="pre-school"] nav a span,
+.browser-fallback[data-theme="pre-school"] nav button span {
+  color: hsl(45, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="primary-school"] nav a,
+.browser-fallback[data-theme="primary-school"] nav button {
+  background-color: hsl(200, 100%, 75%) !important;
+  color: hsl(200, 100%, 75%) !important;
+  border-color: hsl(200, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="primary-school"] nav a span,
+.browser-fallback[data-theme="primary-school"] nav button span {
+  color: hsl(200, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] nav a,
+.browser-fallback[data-theme="secondary-school"] nav button {
+  background-color: hsl(25, 100%, 75%) !important;
+  color: hsl(25, 100%, 75%) !important;
+  border-color: hsl(25, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] nav a span,
+.browser-fallback[data-theme="secondary-school"] nav button span {
+  color: hsl(25, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="high-school"] nav a,
+.browser-fallback[data-theme="high-school"] nav button {
+  background-color: hsl(120, 80%, 70%) !important;
+  color: hsl(120, 80%, 70%) !important;
+  border-color: hsl(120, 80%, 70%) !important;
+}
+
+.browser-fallback[data-theme="high-school"] nav a span,
+.browser-fallback[data-theme="high-school"] nav button span {
+  color: hsl(120, 80%, 70%) !important;
+}
+
+.browser-fallback[data-theme="university"] nav a,
+.browser-fallback[data-theme="university"] nav button {
+  background-color: hsl(270, 70%, 65%) !important;
+  color: hsl(270, 70%, 65%) !important;
+  border-color: hsl(270, 70%, 65%) !important;
+}
+
+.browser-fallback[data-theme="university"] nav a span,
+.browser-fallback[data-theme="university"] nav button span {
+  color: hsl(270, 70%, 65%) !important;
+}
+
+.browser-fallback[data-theme="business-english"] nav a,
+.browser-fallback[data-theme="business-english"] nav button {
+  background-color: hsl(200, 20%, 65%) !important;
+  color: hsl(200, 20%, 65%) !important;
+  border-color: hsl(200, 20%, 65%) !important;
+}
+
+.browser-fallback[data-theme="business-english"] nav a span,
+.browser-fallback[data-theme="business-english"] nav button span {
+  color: hsl(200, 20%, 65%) !important;
+}
+
+/* Target navigation items more specifically - override any white backgrounds */
+.browser-fallback nav.flex.flex-col a,
+.browser-fallback nav.flex.flex-col button {
+  background-color: transparent !important;
+}
+
+.browser-fallback[data-theme="pre-school"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="pre-school"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="pre-school"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="pre-school"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(45, 100%, 75%) !important;
+  color: hsl(45, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="primary-school"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="primary-school"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="primary-school"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="primary-school"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(200, 100%, 75%) !important;
+  color: hsl(200, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="secondary-school"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="secondary-school"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="secondary-school"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="secondary-school"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(25, 100%, 75%) !important;
+  color: hsl(25, 100%, 75%) !important;
+}
+
+.browser-fallback[data-theme="high-school"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="high-school"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="high-school"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="high-school"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(120, 80%, 70%) !important;
+  color: hsl(120, 80%, 70%) !important;
+}
+
+.browser-fallback[data-theme="university"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="university"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="university"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="university"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(270, 70%, 65%) !important;
+  color: hsl(270, 70%, 65%) !important;
+}
+
+.browser-fallback[data-theme="business-english"] nav.flex.flex-col a.bg-sidebar-primary,
+.browser-fallback[data-theme="business-english"] nav.flex.flex-col button.bg-sidebar-primary,
+.browser-fallback[data-theme="business-english"] nav.flex.flex-col a[class*="bg-sidebar"],
+.browser-fallback[data-theme="business-english"] nav.flex.flex-col button[class*="bg-sidebar"] {
+  background-color: hsl(200, 20%, 65%) !important;
+  color: hsl(200, 20%, 65%) !important;
+}

@@ -237,6 +237,46 @@
           
           // Store colors for later use
           window.__fallbackColors = colors;
+          
+          // Apply colors to navigation menu items immediately
+          setTimeout(function() {
+            var applyNavColors = function() {
+              var themeColors = {
+                'pre-school': { primary: 'hsl(45, 100%, 75%)' },
+                'primary-school': { primary: 'hsl(200, 100%, 75%)' },
+                'secondary-school': { primary: 'hsl(25, 100%, 75%)' },
+                'high-school': { primary: 'hsl(120, 80%, 70%)' },
+                'university': { primary: 'hsl(270, 70%, 65%)' },
+                'business-english': { primary: 'hsl(200, 20%, 65%)' },
+                'default': { primary: 'hsl(0, 0%, 20%)' }
+              };
+              
+              var currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+              var navColor = themeColors[currentTheme] ? themeColors[currentTheme].primary : themeColors['default'].primary;
+              
+              // Find all navigation menu items
+              var navItems = document.querySelectorAll('nav.flex.flex-col a, nav.flex.flex-col button');
+              navItems.forEach(function(item) {
+                // Only apply if it has bg-sidebar-primary class or similar
+                if (item.className && (item.className.includes('bg-sidebar-primary') || item.className.includes('bg-sidebar'))) {
+                  item.style.backgroundColor = navColor;
+                  item.style.color = navColor;
+                  // Also apply to child spans
+                  var spans = item.querySelectorAll('span');
+                  spans.forEach(function(span) {
+                    span.style.color = navColor;
+                  });
+                }
+              });
+            };
+            
+            // Apply immediately
+            applyNavColors();
+            
+            // Also apply after a short delay to catch dynamically rendered items
+            setTimeout(applyNavColors, 100);
+            setTimeout(applyNavColors, 500);
+          }, 50);
         }
         
         // Log to console with styling
