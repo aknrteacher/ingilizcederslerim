@@ -238,45 +238,103 @@
           // Store colors for later use
           window.__fallbackColors = colors;
           
-          // Apply colors to navigation menu items immediately
-          setTimeout(function() {
-            var applyNavColors = function() {
-              var themeColors = {
-                'pre-school': { primary: 'hsl(45, 100%, 75%)' },
-                'primary-school': { primary: 'hsl(200, 100%, 75%)' },
-                'secondary-school': { primary: 'hsl(25, 100%, 75%)' },
-                'high-school': { primary: 'hsl(120, 80%, 70%)' },
-                'university': { primary: 'hsl(270, 70%, 65%)' },
-                'business-english': { primary: 'hsl(200, 20%, 65%)' },
-                'default': { primary: 'hsl(0, 0%, 20%)' }
-              };
-              
-              var currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
-              var navColor = themeColors[currentTheme] ? themeColors[currentTheme].primary : themeColors['default'].primary;
-              
-              // Find all navigation menu items
-              var navItems = document.querySelectorAll('nav.flex.flex-col a, nav.flex.flex-col button');
-              navItems.forEach(function(item) {
-                // Only apply if it has bg-sidebar-primary class or similar
-                if (item.className && (item.className.includes('bg-sidebar-primary') || item.className.includes('bg-sidebar'))) {
-                  item.style.backgroundColor = navColor;
-                  item.style.color = navColor;
-                  // Also apply to child spans
-                  var spans = item.querySelectorAll('span');
-                  spans.forEach(function(span) {
-                    span.style.color = navColor;
-                  });
-                }
-              });
+          // Apply colors to navigation menu items - this function will be called repeatedly
+          var applyNavColors = function() {
+            var themeColors = {
+              'pre-school': { primary: 'hsl(45, 100%, 75%)' },
+              'primary-school': { primary: 'hsl(200, 100%, 75%)' },
+              'secondary-school': { primary: 'hsl(25, 100%, 75%)' },
+              'high-school': { primary: 'hsl(120, 80%, 70%)' },
+              'university': { primary: 'hsl(270, 70%, 65%)' },
+              'business-english': { primary: 'hsl(200, 20%, 65%)' },
+              'default': { primary: 'hsl(0, 0%, 20%)' }
             };
             
-            // Apply immediately
-            applyNavColors();
+            var currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
+            var navColor = themeColors[currentTheme] ? themeColors[currentTheme].primary : themeColors['default'].primary;
             
-            // Also apply after a short delay to catch dynamically rendered items
+            // Find all navigation menu items - be more aggressive in finding them
+            var navItems = document.querySelectorAll('nav a, nav button, [class*="flex-col"] a, [class*="flex-col"] button');
+            navItems.forEach(function(item) {
+              // Check if it's a navigation menu item (has bg-sidebar-primary or is in a nav with flex-col)
+              var isNavItem = false;
+              if (item.className) {
+                isNavItem = item.className.includes('bg-sidebar-primary') || 
+                           item.className.includes('bg-sidebar') ||
+                           (item.closest('nav') && item.closest('nav').className && item.closest('nav').className.includes('flex-col'));
+              }
+              
+              if (isNavItem) {
+                item.style.backgroundColor = navColor;
+                item.style.color = navColor;
+                // Also apply to child spans and icons
+                var spans = item.querySelectorAll('span, svg');
+                spans.forEach(function(span) {
+                  span.style.color = navColor;
+                });
+              }
+            });
+          };
+          
+          // Apply immediately
+          setTimeout(applyNavColors, 50);
+          
+          // Also apply after delays to catch dynamically rendered items
+          setTimeout(applyNavColors, 100);
+          setTimeout(applyNavColors, 500);
+          setTimeout(applyNavColors, 1000);
+          
+          // Watch for route changes (popstate event)
+          window.addEventListener('popstate', function() {
             setTimeout(applyNavColors, 100);
-            setTimeout(applyNavColors, 500);
-          }, 50);
+          });
+          
+          // Use MutationObserver to watch for DOM changes (when React re-renders navigation)
+          if (window.MutationObserver) {
+            var observer = new MutationObserver(function(mutations) {
+              var shouldApply = false;
+              mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                  // Check if any added nodes are navigation items
+                  for (var i = 0; i < mutation.addedNodes.length; i++) {
+                    var node = mutation.addedNodes[i];
+                    if (node.nodeType === 1) { // Element node
+                      if (node.tagName === 'NAV' || 
+                          (node.querySelector && node.querySelector('nav')) ||
+                          (node.className && (node.className.includes('flex-col') || node.className.includes('bg-sidebar')))) {
+                        shouldApply = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+              });
+              
+              if (shouldApply) {
+                setTimeout(applyNavColors, 50);
+              }
+            });
+            
+            // Start observing when DOM is ready
+            setTimeout(function() {
+              var sidebar = document.querySelector('[class*="bg-sidebar"], [class*="flex"][class*="h-screen"]');
+              if (sidebar) {
+                observer.observe(sidebar, {
+                  childList: true,
+                  subtree: true
+                });
+              } else {
+                // Fallback: observe body
+                observer.observe(document.body, {
+                  childList: true,
+                  subtree: true
+                });
+              }
+            }, 500);
+          }
+          
+          // Store function globally so it can be called from React if needed
+          window.__applyNavColors = applyNavColors;
         }
         
         // Log to console with styling

@@ -108,6 +108,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
           (el as HTMLElement).style.backgroundColor = colors.bg
         })
       }
+      
+      // Call the navigation color application function if it exists
+      if (typeof (window as any).__applyNavColors === 'function') {
+        setTimeout(() => {
+          (window as any).__applyNavColors()
+        }, 100)
+      }
     }
   }, [location])
 
