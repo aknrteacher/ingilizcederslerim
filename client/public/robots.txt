@@ -1,0 +1,11 @@
+# robots.txt for Ingilizce Derslerim
+
+User-agent: *
+Allow: /
+
+# Block admin and private pages from indexing
+Disallow: /admin/
+Disallow: /yonetici/
+
+# Block API routes
+Disallow: /api/

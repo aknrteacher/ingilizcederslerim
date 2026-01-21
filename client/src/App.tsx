@@ -136,6 +136,11 @@ import WordSnakeGame from "@/pages/primary/grade2/theme1/games/2.1.word-snake";
 import WordBuilderGame from "@/pages/primary/grade2/theme1/games/2.1.word-builder";
 import StoriesMenu from "@/pages/primary/stories/stories-menu";
 import StoryReaderPage from "@/pages/primary/stories/story-reader";
+// Admin imports
+import { AdminGate } from "@/components/AdminGate";
+import AdminDashboard from "@/pages/admin/dashboard";
+import WordMapPage from "@/pages/admin/word-map";
+import WorkflowPage from "@/pages/admin/workflow";
 
 function Router() {
   return (
@@ -271,6 +276,37 @@ function Router() {
       {/* Story routes */}
       <Route path="/primary-school/stories" component={StoriesMenu} />
       <Route path="/primary-school/stories/:storyId" component={StoryReaderPage} />
+      
+      {/* Admin routes - protected with password */}
+      <Route path="/admin">
+        {() => (
+          <AdminGate>
+            <AdminDashboard />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/dashboard">
+        {() => (
+          <AdminGate>
+            <AdminDashboard />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/word-map">
+        {() => (
+          <AdminGate>
+            <WordMapPage />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/workflow">
+        {() => (
+          <AdminGate>
+            <WorkflowPage />
+          </AdminGate>
+        )}
+      </Route>
+      
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 

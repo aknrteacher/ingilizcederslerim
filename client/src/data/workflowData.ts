@@ -1,0 +1,697 @@
+// Content types that can exist for each theme/topic
+export type ContentType = 'vocab' | 'matching' | 'crossword' | 'spell-quest' | 'word-pop' | 'catch-that' | 'i-spy' | 'sound-match' | 'memory-flip' | 'word-race' | 'word-shooter' | 'word-snake' | 'word-builder' | 'stories' | 'songs' | 'exercises' | 'worksheets' | 'crafts';
+
+export interface ContentItem {
+  type: ContentType;
+  count: number; // 0 = not done (red), 1+ = done (green boxes)
+  path?: string;
+}
+
+export interface Theme {
+  id: string;
+  name: string;
+  content: ContentItem[];
+}
+
+export interface Grade {
+  id: string;
+  name: string;
+  themes: Theme[];
+}
+
+export interface Level {
+  id: string;
+  name: string;
+  grades: Grade[];
+}
+
+// Define what content types are expected for each level
+export const preschoolContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'songs'];
+export const primaryContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'sound-match', 'memory-flip', 'word-race', 'word-shooter', 'word-snake', 'word-builder', 'stories', 'songs', 'exercises', 'worksheets'];
+
+export const workflowData: Level[] = [
+  {
+    id: 'preschool',
+    name: 'PRE-SCHOOL',
+    grades: [
+      {
+        id: 'preschool-topics',
+        name: 'TOPICS',
+        themes: [
+          {
+            id: 'alphabet',
+            name: 'Alphabet',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'numbers',
+            name: 'Numbers',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'colours',
+            name: 'Colours',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'greetings',
+            name: 'Greetings',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'actions',
+            name: 'Actions',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'ourbody',
+            name: 'Our Body',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'ourclassroom',
+            name: 'Our Classroom',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'things',
+            name: 'Things',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'people',
+            name: 'People',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'animals',
+            name: 'Animals',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'aroundus',
+            name: 'Around Us',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+          {
+            id: 'food',
+            name: 'Food',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'crafts', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'primary',
+    name: 'PRIMARY SCHOOL',
+    grades: [
+      {
+        id: 'grade2',
+        name: 'GRADE 2',
+        themes: [
+          {
+            id: 'theme1',
+            name: 'Theme 1: School Life',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-shooter', count: 1 },
+              { type: 'word-snake', count: 1 },
+              { type: 'word-builder', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+          {
+            id: 'theme2',
+            name: 'Theme 2: My Town',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 0 },
+              { type: 'memory-flip', count: 0 },
+              { type: 'word-race', count: 0 },
+              { type: 'word-shooter', count: 0 },
+              { type: 'word-snake', count: 0 },
+              { type: 'word-builder', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+          {
+            id: 'theme3',
+            name: 'Theme 3: Weather & Nature',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 0 },
+              { type: 'memory-flip', count: 0 },
+              { type: 'word-race', count: 0 },
+              { type: 'word-shooter', count: 0 },
+              { type: 'word-snake', count: 0 },
+              { type: 'word-builder', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+          {
+            id: 'theme4',
+            name: 'Theme 4: Transportation',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 0 },
+              { type: 'memory-flip', count: 0 },
+              { type: 'word-race', count: 0 },
+              { type: 'word-shooter', count: 0 },
+              { type: 'word-snake', count: 0 },
+              { type: 'word-builder', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+          {
+            id: 'theme5',
+            name: 'Theme 5: Professions',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 0 },
+              { type: 'memory-flip', count: 0 },
+              { type: 'word-race', count: 0 },
+              { type: 'word-shooter', count: 0 },
+              { type: 'word-snake', count: 0 },
+              { type: 'word-builder', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade3',
+        name: 'GRADE 3',
+        themes: [
+          {
+            id: 'g3-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade4',
+        name: 'GRADE 4',
+        themes: [
+          {
+            id: 'g4-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'secondary',
+    name: 'SECONDARY SCHOOL',
+    grades: [
+      {
+        id: 'grade5',
+        name: 'GRADE 5',
+        themes: [
+          {
+            id: 'g5-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade6',
+        name: 'GRADE 6',
+        themes: [
+          {
+            id: 'g6-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade7',
+        name: 'GRADE 7',
+        themes: [
+          {
+            id: 'g7-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade8',
+        name: 'GRADE 8',
+        themes: [
+          {
+            id: 'g8-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'highschool',
+    name: 'HIGH SCHOOL',
+    grades: [
+      {
+        id: 'grade9',
+        name: 'GRADE 9',
+        themes: [
+          {
+            id: 'g9-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade10',
+        name: 'GRADE 10',
+        themes: [
+          {
+            id: 'g10-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade11',
+        name: 'GRADE 11',
+        themes: [
+          {
+            id: 'g11-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'grade12',
+        name: 'GRADE 12',
+        themes: [
+          {
+            id: 'g12-theme1',
+            name: 'Theme 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'university',
+    name: 'UNIVERSITY',
+    grades: [
+      {
+        id: 'uni-general',
+        name: 'GENERAL ENGLISH',
+        themes: [
+          {
+            id: 'uni-general-1',
+            name: 'Unit 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'business',
+    name: 'BUSINESS ENGLISH',
+    grades: [
+      {
+        id: 'business-general',
+        name: 'GENERAL',
+        themes: [
+          {
+            id: 'business-1',
+            name: 'Unit 1',
+            content: [
+              { type: 'vocab', count: 0 },
+              { type: 'matching', count: 0 },
+              { type: 'crossword', count: 0 },
+              { type: 'spell-quest', count: 0 },
+              { type: 'word-pop', count: 0 },
+              { type: 'catch-that', count: 0 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+// Helper to get content label
+export const contentLabels: Record<ContentType, string> = {
+  'vocab': 'VOC',
+  'matching': 'MAT',
+  'crossword': 'CRO',
+  'spell-quest': 'SPE',
+  'word-pop': 'POP',
+  'catch-that': 'CAT',
+  'i-spy': 'SPY',
+  'sound-match': 'SND',
+  'memory-flip': 'MEM',
+  'word-race': 'RAC',
+  'word-shooter': 'SHO',
+  'word-snake': 'SNA',
+  'word-builder': 'BLD',
+  'stories': 'STR',
+  'songs': 'SNG',
+  'exercises': 'EXE',
+  'worksheets': 'WRK',
+  'crafts': 'CRF',
+};
+
+// Game content types (for grouping)
+export const gameContentTypes: ContentType[] = [
+  'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'i-spy',
+  'sound-match', 'memory-flip', 'word-race', 'word-shooter', 'word-snake', 'word-builder'
+];
+
+// Non-game content types
+export const nonGameContentTypes: ContentType[] = ['vocab', 'songs', 'stories', 'exercises', 'worksheets', 'crafts'];
+
+// Calculate statistics (games counted as 1 item)
+export function getWorkflowStats() {
+  let totalContent = 0;
+  let completedContent = 0;
+
+  workflowData.forEach(level => {
+    level.grades.forEach(grade => {
+      grade.themes.forEach(theme => {
+        // Separate games from non-games
+        const games = theme.content.filter(c => gameContentTypes.includes(c.type));
+        const nonGames = theme.content.filter(c => !gameContentTypes.includes(c.type));
+        
+        // Count games as 1 item if any game types exist
+        if (games.length > 0) {
+          totalContent++;
+          const gamesCompleted = games.reduce((sum, g) => sum + g.count, 0);
+          if (gamesCompleted > 0) completedContent++;
+        }
+        
+        // Count non-games individually
+        nonGames.forEach(item => {
+          totalContent++;
+          if (item.count > 0) completedContent++;
+        });
+      });
+    });
+  });
+
+  return { totalContent, completedContent, percentage: Math.round((completedContent / totalContent) * 100) };
+}
