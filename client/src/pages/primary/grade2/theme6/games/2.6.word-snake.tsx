@@ -9,19 +9,17 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
-  { word: "hello", file: "hello.png", turkish: "merhaba" },
-  { word: "school", file: "school.png", turkish: "okul" },
-  { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
-  { word: "student", file: "student.png", turkish: "öğrenci" },
-  { word: "friend", file: "friend.png", turkish: "arkadaş" },
-  { word: "girl", file: "girl.png", turkish: "kız" },
-  { word: "boy", file: "boy.png", turkish: "erkek" },
-  { word: "day", file: "day.png", turkish: "gün" },
-  { word: "week", file: "week.png", turkish: "hafta" },
-  { word: "garden", file: "garden.png", turkish: "bahçe" },
-  { word: "what", file: "what.png", turkish: "ne" },
-  { word: "where", file: "where.png", turkish: "nerede" },
-  { word: "who", file: "who.png", turkish: "kim" },
+  { word: "fruit", file: "fruit.png", turkish: "meyve" },
+  { word: "apple", file: "apple.png", turkish: "elma" },
+  { word: "pear", file: "pear.png", turkish: "armut" },
+  { word: "water", file: "water.png", turkish: "su" },
+  { word: "milk", file: "milk.png", turkish: "süt" },
+  { word: "tea", file: "tea.png", turkish: "çay" },
+  { word: "bread", file: "bread.png", turkish: "ekmek" },
+  { word: "fish", file: "fish.png", turkish: "balık" },
+  { word: "egg", file: "egg.png", turkish: "yumurta" },
+  { word: "like", file: "like.png", turkish: "sevmek" },
+  { word: "meat", file: "meat.png", turkish: "et" },
 ];
 
 interface Position {
@@ -54,7 +52,6 @@ export default function WordSnakeGame() {
   const gameLoopRef = useRef<NodeJS.Timeout | null>(null);
   const directionRef = useRef(direction);
 
-  // Keep direction ref updated
   useEffect(() => {
     directionRef.current = direction;
   }, [direction]);
@@ -62,21 +59,14 @@ export default function WordSnakeGame() {
   const speakWord = useCallback((text: string) => {
     if (!text) return;
     try {
-      // Cancel any ongoing speech
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
       
-      // Small delay to ensure cancel completes
       setTimeout(() => {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'en-GB';
         utterance.rate = 0.85;
-        utterance.volume = 1;
-        
-        utterance.onstart = () => console.log('Speaking:', text);
-        utterance.onerror = (e) => console.error('Speech error:', e);
-        
         window.speechSynthesis.speak(utterance);
       }, 100);
     } catch (error) {
@@ -90,12 +80,7 @@ export default function WordSnakeGame() {
       const utterance = new SpeechSynthesisUtterance(letter);
       utterance.lang = 'en-GB';
       utterance.rate = 1.0;
-      utterance.volume = 1;
       utterance.pitch = 1.2;
-      
-      utterance.onstart = () => console.log('Speaking letter:', letter);
-      utterance.onerror = (e) => console.error('Letter speech error:', e);
-      
       window.speechSynthesis.speak(utterance);
     } catch (error) {
       console.error('Error speaking letter:', error);
@@ -148,12 +133,10 @@ export default function WordSnakeGame() {
     setTargetWord(vocab);
     setCollectedLetters([]);
 
-    // Place letters on the grid
     const occupied = [...snake];
     const newLetters: Letter[] = [];
 
-    // Place target letters
-    word.split('').forEach((char, index) => {
+    word.split('').forEach((char) => {
       const pos = getRandomPosition([...occupied, ...newLetters.map(l => l.position)]);
       newLetters.push({
         char: char.toUpperCase(),
@@ -162,13 +145,11 @@ export default function WordSnakeGame() {
       });
     });
 
-    // Place some decoy letters
     const decoyCount = Math.min(5, 26 - word.length);
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     for (let i = 0; i < decoyCount; i++) {
       const pos = getRandomPosition([...occupied, ...newLetters.map(l => l.position)]);
       let char = alphabet[Math.floor(Math.random() * 26)];
-      // Make sure decoy is not the next needed letter
       if (collectedLetters.length < word.length && char === word[collectedLetters.length].toUpperCase()) {
         char = alphabet[(alphabet.indexOf(char) + 1) % 26];
       }
@@ -180,11 +161,7 @@ export default function WordSnakeGame() {
     }
 
     setLetters(newLetters);
-    // Speak the word automatically with longer delay
-    setTimeout(() => {
-      console.log('Attempting to speak word:', vocab.word);
-      speakWord(vocab.word);
-    }, 800);
+    setTimeout(() => speakWord(vocab.word), 800);
   }, [snake, getRandomPosition, collectedLetters.length, speakWord]);
 
   const startGame = () => {
@@ -201,7 +178,6 @@ export default function WordSnakeGame() {
     setTimeout(() => setupWord(), 100);
   };
 
-  // Game loop
   useEffect(() => {
     if (!gameStarted || gameOver || isPaused) return;
 
@@ -227,13 +203,11 @@ export default function WordSnakeGame() {
             newHead = head;
         }
 
-        // Check collision with self
         if (prevSnake.some(s => s.x === newHead.x && s.y === newHead.y)) {
           setLives(l => l - 1);
-          return [{ x: 10, y: 10 }]; // Reset snake position
+          return [{ x: 10, y: 10 }];
         }
 
-        // Move snake: add new head, remove tail (unless we just ate a letter)
         return [newHead, ...prevSnake.slice(0, prevSnake.length - 1)];
       });
     }, 350);
@@ -245,7 +219,6 @@ export default function WordSnakeGame() {
     };
   }, [gameStarted, gameOver, isPaused]);
 
-  // Check letter collection
   useEffect(() => {
     if (!gameStarted || gameOver || !targetWord) return;
 
@@ -256,30 +229,20 @@ export default function WordSnakeGame() {
       const nextNeededLetter = targetWord.word[collectedLetters.length]?.toUpperCase();
 
       if (hitLetter.char === nextNeededLetter) {
-        // Correct letter!
         setCollectedLetters(prev => [...prev, hitLetter.char]);
         setLetters(prev => prev.filter(l => l !== hitLetter));
         setScore(prev => prev + 5);
-        // Grow the snake by adding a segment
         setSnake(prev => [...prev, prev[prev.length - 1]]);
         
-        // Play letter sound
-        console.log('Collected letter:', hitLetter.char);
         setTimeout(() => speakLetter(hitLetter.char), 50);
 
-        // Check if word is complete
         if (collectedLetters.length + 1 === targetWord.word.length) {
           setScore(prev => prev + 20);
           setWordsCompleted(prev => prev + 1);
           
-          // Speak the completed word
-          setTimeout(() => {
-            console.log('Word completed, speaking:', targetWord.word);
-            speakWord(targetWord.word);
-          }, 600);
+          setTimeout(() => speakWord(targetWord.word), 600);
           
           if (wordsCompleted + 1 >= 5) {
-            // Win!
             setGameOver(true);
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
           } else {
@@ -287,14 +250,12 @@ export default function WordSnakeGame() {
           }
         }
       } else if (hitLetter.isTarget) {
-        // Wrong order - put it back in a new position
         playBuzzSound();
         setLives(prev => prev - 1);
         const occupied = [...snake, ...letters.filter(l => l !== hitLetter).map(l => l.position)];
         const newPos = getRandomPosition(occupied);
         setLetters(prev => prev.map(l => l === hitLetter ? { ...l, position: newPos } : l));
       } else {
-        // Decoy letter - put it back in a new position
         playBuzzSound();
         setScore(prev => Math.max(0, prev - 2));
         const occupied = [...snake, ...letters.filter(l => l !== hitLetter).map(l => l.position)];
@@ -304,53 +265,43 @@ export default function WordSnakeGame() {
     }
   }, [snake, letters, targetWord, collectedLetters, gameStarted, gameOver, wordsCompleted, setupWord, speakWord, speakLetter, playBuzzSound, getRandomPosition]);
 
-  // Check game over
   useEffect(() => {
     if (lives <= 0 && gameStarted) {
       setGameOver(true);
     }
   }, [lives, gameStarted]);
 
-  // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!gameStarted || gameOver) return;
 
       switch (e.key) {
         case 'ArrowUp':
-          e.preventDefault(); // Prevent page scroll
+        case 'w':
+        case 'W':
+          e.preventDefault();
           if (directionRef.current !== 'down') setDirection('up');
           break;
         case 'ArrowDown':
-          e.preventDefault(); // Prevent page scroll
+        case 's':
+        case 'S':
+          e.preventDefault();
           if (directionRef.current !== 'up') setDirection('down');
           break;
         case 'ArrowLeft':
-          e.preventDefault(); // Prevent page scroll
+        case 'a':
+        case 'A':
+          e.preventDefault();
           if (directionRef.current !== 'right') setDirection('left');
           break;
         case 'ArrowRight':
-          e.preventDefault(); // Prevent page scroll
-          if (directionRef.current !== 'left') setDirection('right');
-          break;
-        case 'w':
-        case 'W':
-          if (directionRef.current !== 'down') setDirection('up');
-          break;
-        case 's':
-        case 'S':
-          if (directionRef.current !== 'up') setDirection('down');
-          break;
-        case 'a':
-        case 'A':
-          if (directionRef.current !== 'right') setDirection('left');
-          break;
         case 'd':
         case 'D':
+          e.preventDefault();
           if (directionRef.current !== 'left') setDirection('right');
           break;
         case ' ':
-          e.preventDefault(); // Prevent page scroll
+          e.preventDefault();
           setIsPaused(p => !p);
           break;
       }
@@ -373,7 +324,7 @@ export default function WordSnakeGame() {
         <div className="word-snake-container">
           <PrimarySchoolGameHeader
             gameName="Snake"
-            description="Grade 2 - Theme 1: School Life"
+            description="Grade 2 - Theme 6: Food & City Life"
             containerId="word-snake-game"
             icon={<span className="text-2xl">🐍</span>}
           />
@@ -398,14 +349,12 @@ export default function WordSnakeGame() {
 
           {gameStarted && !gameOver && (
             <>
-              {/* Game Grid */}
               <div 
                 className="game-grid"
                 style={{
-                  backgroundImage: targetWord ? `url(/images/primary/2.1/${targetWord.file})` : 'none'
+                  backgroundImage: targetWord ? `url(/images/primary/2.6/${targetWord.file})` : 'none'
                 }}
               >
-                {/* Overlay UI at top */}
                 <div className="game-overlay-top">
                   <div className="compact-stats">
                     <div className="stat-compact">
@@ -434,10 +383,7 @@ export default function WordSnakeGame() {
                       </div>
                       <button 
                         className="speak-btn-compact" 
-                        onClick={() => {
-                          console.log('Button clicked, speaking:', targetWord.word);
-                          speakWord(targetWord.word);
-                        }} 
+                        onClick={() => speakWord(targetWord.word)} 
                         title="Listen to word"
                       >
                         🔊
@@ -446,7 +392,6 @@ export default function WordSnakeGame() {
                   )}
                 </div>
 
-                {/* Snake */}
                 {snake.map((segment, idx) => (
                   <div
                     key={`snake-${idx}`}
@@ -460,7 +405,6 @@ export default function WordSnakeGame() {
                   />
                 ))}
 
-                {/* Letters */}
                 {letters.map((letter, idx) => (
                   <div
                     key={`letter-${idx}`}
@@ -484,7 +428,6 @@ export default function WordSnakeGame() {
                 )}
               </div>
 
-              {/* Mobile Controls */}
               <div className="mobile-controls">
                 <div className="control-row">
                   <button className="d-btn" onClick={() => directionRef.current !== 'down' && setDirection('up')}>⬆️</button>
@@ -498,7 +441,6 @@ export default function WordSnakeGame() {
             </>
           )}
 
-          {/* Game Over */}
           {gameOver && (
             <div className="game-end-modal">
               <div className="modal-content">
@@ -514,7 +456,7 @@ export default function WordSnakeGame() {
                   <Button variant="outline" onClick={shareGame}>
                     <Share2 className="h-4 w-4 mr-2" /> Share
                   </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-6/games")}>
                     Back to Games
                   </Button>
                 </div>
@@ -522,7 +464,6 @@ export default function WordSnakeGame() {
             </div>
           )}
 
-          {/* Footer */}
           <div className="primary-school-game-footer">
             <div className="footer-content">
               <div className="footer-left">
@@ -534,7 +475,7 @@ export default function WordSnakeGame() {
                 <Button onClick={startGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-6/games")}>
                   ← Back
                 </Button>
               </div>
@@ -582,7 +523,7 @@ export default function WordSnakeGame() {
         }
 
         .start-btn {
-          background: linear-gradient(135deg, #22c55e, #16a34a);
+          background: #F59E0B;
           color: white;
           font-size: 18px;
           padding: 16px 32px;
@@ -618,13 +559,11 @@ export default function WordSnakeGame() {
           align-items: center;
           gap: 4px;
           background: rgba(0, 0, 0, 0.7);
-          backdrop-filter: blur(4px);
           padding: 4px 10px;
           border-radius: 12px;
           font-weight: 600;
           font-size: 13px;
           color: white;
-          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .target-overlay {
@@ -632,10 +571,8 @@ export default function WordSnakeGame() {
           align-items: center;
           gap: 6px;
           background: rgba(0, 0, 0, 0.7);
-          backdrop-filter: blur(4px);
           padding: 6px;
           border-radius: 12px;
-          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .word-progress-compact {
@@ -657,40 +594,23 @@ export default function WordSnakeGame() {
         }
 
         .letter-box-small.collected {
-          background: #22c55e;
-          color: white;
+          background: #F59E0B;
         }
 
         .letter-box-small.next {
-          border: 2px solid #fbbf24;
+          border: 2px solid #D97706;
           animation: pulse 1s infinite;
         }
 
         .speak-btn-compact {
           width: 32px;
           height: 32px;
-          background: linear-gradient(135deg, #22c55e, #16a34a);
+          background: #F59E0B;
           border: 2px solid white;
           border-radius: 50%;
           font-size: 16px;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-          transition: all 0.2s ease;
-          flex-shrink: 0;
         }
-
-        .speak-btn-compact:hover {
-          transform: scale(1.1);
-          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-        }
-
-        .speak-btn-compact:active {
-          transform: scale(0.95);
-        }
-
 
         @keyframes pulse {
           0%, 100% { transform: scale(1); }
@@ -723,19 +643,18 @@ export default function WordSnakeGame() {
           position: absolute;
           border-radius: 2px;
           transition: all 0.1s linear;
-          box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
           z-index: 10;
         }
 
         .snake-segment.head {
-          background: linear-gradient(135deg, #22c55e, #16a34a);
+          background: #F59E0B;
           z-index: 20;
-          border: 2px solid #15803d;
+          border: 2px solid #D97706;
         }
 
         .snake-segment.body {
-          background: linear-gradient(135deg, #4ade80, #22c55e);
-          border: 1px solid #16a34a;
+          background: #D97706;
+          border: 1px solid #B45309;
           z-index: 15;
         }
 
@@ -747,28 +666,23 @@ export default function WordSnakeGame() {
           font-size: 12px;
           font-weight: 700;
           border-radius: 50%;
-          transition: all 0.2s ease;
           z-index: 10;
         }
 
         .grid-letter.target {
-          background: linear-gradient(135deg, #fbbf24, #f59e0b);
-          color: #1e293b;
-          box-shadow: 0 2px 8px rgba(251, 191, 36, 0.5);
+          background: #D97706;
+          color: white;
+          box-shadow: 0 2px 8px rgba(217, 119, 6, 0.5);
         }
 
         .grid-letter.decoy {
-          background: linear-gradient(135deg, #94a3b8, #64748b);
+          background: #64748b;
           color: white;
-          box-shadow: 0 2px 8px rgba(148, 163, 184, 0.4);
         }
 
         .pause-overlay {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          inset: 0;
           background: rgba(0, 0, 0, 0.8);
           display: flex;
           flex-direction: column;
@@ -777,11 +691,7 @@ export default function WordSnakeGame() {
           color: white;
           font-size: 32px;
           font-weight: 700;
-        }
-
-        .pause-overlay p {
-          font-size: 14px;
-          margin-top: 12px;
+          z-index: 50;
         }
 
         .mobile-controls {
@@ -808,7 +718,7 @@ export default function WordSnakeGame() {
         }
 
         .d-btn:active {
-          background: hsl(var(--primary));
+          background: #F59E0B;
         }
 
         .game-end-modal {
@@ -850,7 +760,7 @@ export default function WordSnakeGame() {
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #22c55e, #16a34a);
+          background: #F59E0B;
           color: white;
           border: none;
         }

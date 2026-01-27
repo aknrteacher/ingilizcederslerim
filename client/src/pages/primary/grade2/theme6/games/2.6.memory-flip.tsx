@@ -9,22 +9,22 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
-  { word: "hello", file: "hello.png", turkish: "merhaba" },
-  { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
-  { word: "school", file: "school.png", turkish: "okul" },
-  { word: "classroom", file: "classroom.png", turkish: "sınıf" },
-  { word: "library", file: "library.png", turkish: "kütüphane" },
-  { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
-  { word: "playground", file: "playground.png", turkish: "oyun alanı" },
-  { word: "garden", file: "garden.png", turkish: "bahçe" },
-  { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
-  { word: "student", file: "student.png", turkish: "öğrenci" },
-  { word: "girl", file: "girl.png", turkish: "kız" },
-  { word: "boy", file: "boy.png", turkish: "erkek" },
-  { word: "friend", file: "friend.png", turkish: "arkadaş" },
-  { word: "Monday", file: "Monday.png", turkish: "Pazartesi" },
-  { word: "Tuesday", file: "Tuesday.png", turkish: "Salı" },
-  { word: "Friday", file: "Friday.png", turkish: "Cuma" },
+  { word: "fruit", file: "fruit.png", turkish: "meyve" },
+  { word: "apple", file: "apple.png", turkish: "elma" },
+  { word: "orange", file: "orange.png", turkish: "portakal" },
+  { word: "banana", file: "banana.png", turkish: "muz" },
+  { word: "cherry", file: "cherry.png", turkish: "kiraz" },
+  { word: "grapes", file: "grapes.png", turkish: "üzüm" },
+  { word: "pear", file: "pear.png", turkish: "armut" },
+  { word: "strawberry", file: "strawberry.png", turkish: "çilek" },
+  { word: "tomatoes", file: "tomatoes.png", turkish: "domates" },
+  { word: "potatoes", file: "potatoes.png", turkish: "patates" },
+  { word: "cucumber", file: "cucumber.png", turkish: "salatalık" },
+  { word: "pepper", file: "pepper.png", turkish: "biber" },
+  { word: "broccoli", file: "broccoli.png", turkish: "brokoli" },
+  { word: "carrot", file: "carrot.png", turkish: "havuç" },
+  { word: "water", file: "water.png", turkish: "su" },
+  { word: "milk", file: "milk.png", turkish: "süt" },
 ];
 
 interface Card {
@@ -55,7 +55,6 @@ export default function MemoryFlipGame() {
     const gameCards: Card[] = [];
     
     shuffledVocab.forEach((vocab, index) => {
-      // Word card
       gameCards.push({
         id: `word-${index}`,
         word: vocab.word,
@@ -64,7 +63,6 @@ export default function MemoryFlipGame() {
         isFlipped: false,
         isMatched: false,
       });
-      // Picture card
       gameCards.push({
         id: `picture-${index}`,
         word: vocab.word,
@@ -75,7 +73,6 @@ export default function MemoryFlipGame() {
       });
     });
 
-    // Shuffle cards
     const shuffledCards = gameCards.sort(() => Math.random() - 0.5);
     setCards(shuffledCards);
     setFlippedCards([]);
@@ -92,7 +89,6 @@ export default function MemoryFlipGame() {
     initializeGame(pairCount);
   }, [pairCount]);
 
-  // Timer
   useEffect(() => {
     if (!startTime || gameComplete) return;
     const interval = setInterval(() => {
@@ -101,7 +97,6 @@ export default function MemoryFlipGame() {
     return () => clearInterval(interval);
   }, [startTime, gameComplete]);
 
-  // Check for game completion
   useEffect(() => {
     if (matchedPairs === pairCount && pairCount > 0) {
       setGameComplete(true);
@@ -140,7 +135,6 @@ export default function MemoryFlipGame() {
     if (!clickedCard || clickedCard.isFlipped || clickedCard.isMatched) return;
     if (flippedCards.length >= 2) return;
 
-    // Flip the card
     setCards(prev => prev.map(c => 
       c.id === cardId ? { ...c, isFlipped: true } : c
     ));
@@ -148,12 +142,10 @@ export default function MemoryFlipGame() {
     const newFlipped = [...flippedCards, cardId];
     setFlippedCards(newFlipped);
 
-    // Speak the word only if it's a word card, not a picture card
     if (clickedCard.type === 'word') {
       speakWord(clickedCard.word);
     }
 
-    // Check for match if two cards are flipped
     if (newFlipped.length === 2) {
       setMoves(prev => prev + 1);
       setIsProcessing(true);
@@ -163,11 +155,8 @@ export default function MemoryFlipGame() {
       const secondCard = cards.find(c => c.id === secondId);
 
       if (firstCard && secondCard && firstCard.word === secondCard.word && firstCard.type !== secondCard.type) {
-        // Match found! Show success briefly, then fade out and remove
         setTimeout(() => {
-          // Start fade out animation
           setCardsToRemove(prev => [...prev, firstId, secondId]);
-          // After animation completes, mark as matched and remove from removal list
           setTimeout(() => {
             setCards(prev => prev.map(c => 
               c.word === firstCard.word ? { ...c, isMatched: true, isFlipped: false } : c
@@ -179,7 +168,6 @@ export default function MemoryFlipGame() {
           }, 400);
         }, 600);
       } else {
-        // No match - flip back
         setTimeout(() => {
           setCards(prev => prev.map(c => 
             newFlipped.includes(c.id) ? { ...c, isFlipped: false } : c
@@ -209,9 +197,9 @@ export default function MemoryFlipGame() {
   };
 
   const getGridCols = () => {
-    if (pairCount === 4) return 4; // 4 pairs = 8 cards, 4x2 grid
-    if (pairCount === 6) return 4; // 6 pairs = 12 cards, 4x3 grid
-    return 4; // 8 pairs = 16 cards, 4x4 grid
+    if (pairCount === 4) return 4;
+    if (pairCount === 6) return 4;
+    return 4;
   };
 
   return (
@@ -220,12 +208,11 @@ export default function MemoryFlipGame() {
         <div className="memory-flip-container">
           <PrimarySchoolGameHeader
             gameName="Memory Flip"
-            description="Grade 2 - Theme 1: School Life"
+            description="Grade 2 - Theme 6: Food & City Life"
             containerId="memory-flip-game"
-            icon={<Grid3X3 className="h-7 w-7 text-green-600" />}
+            icon={<Grid3X3 className="h-7 w-7 text-amber-500" />}
           />
 
-          {/* Stats Bar */}
           <div className="stats-bar">
             <div className="stat-item">
               <Trophy className="h-4 w-4 text-yellow-500" />
@@ -240,7 +227,6 @@ export default function MemoryFlipGame() {
             </div>
           </div>
 
-          {/* Difficulty Selection */}
           <div className="difficulty-bar">
             <span>Pairs:</span>
             {[4, 6, 8].map(num => (
@@ -254,14 +240,13 @@ export default function MemoryFlipGame() {
             ))}
           </div>
 
-          {/* Game Board */}
           {!gameComplete && (
             <div 
               className="game-board"
               style={{ gridTemplateColumns: `repeat(${getGridCols()}, 1fr)` }}
             >
               {cards.map((card) => {
-                if (card.isMatched) return null; // Remove matched cards from DOM
+                if (card.isMatched) return null;
                 return (
                   <div
                     key={card.id}
@@ -276,7 +261,7 @@ export default function MemoryFlipGame() {
                         {card.type === 'word' ? (
                           <span className="word-text">{card.word}</span>
                         ) : (
-                          <img src={`/images/primary/2.1/${card.file}`} alt={card.word} />
+                          <img src={`/images/primary/2.6/${card.file}`} alt={card.word} />
                         )}
                       </div>
                     </div>
@@ -286,7 +271,6 @@ export default function MemoryFlipGame() {
             </div>
           )}
 
-          {/* Footer */}
           <div className="primary-school-game-footer">
             <div className="footer-content">
               <div className="footer-left">
@@ -298,7 +282,7 @@ export default function MemoryFlipGame() {
                 <Button onClick={resetGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-6/games")}>
                   ← Back
                 </Button>
               </div>
@@ -306,7 +290,6 @@ export default function MemoryFlipGame() {
           </div>
         </div>
 
-        {/* Game Complete */}
         {gameComplete && (
           <div className="game-end-modal">
             <div className="modal-content">
@@ -324,7 +307,7 @@ export default function MemoryFlipGame() {
                 <Button variant="outline" onClick={shareGame}>
                   <Share2 className="h-4 w-4 mr-2" /> Share
                 </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-6/games")}>
                   Back to Games
                 </Button>
               </div>
@@ -344,15 +327,6 @@ export default function MemoryFlipGame() {
           margin: 0 auto;
           width: 100%;
           position: relative;
-        }
-
-        .game-end-modal-wrapper {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 1000;
         }
 
         .stats-bar {
@@ -395,13 +369,13 @@ export default function MemoryFlipGame() {
         }
 
         .diff-btn:hover {
-          border-color: hsl(var(--primary));
+          border-color: #F59E0B;
         }
 
         .diff-btn.active {
-          background: hsl(var(--primary));
+          background: #F59E0B;
           color: white;
-          border-color: hsl(var(--primary));
+          border-color: #F59E0B;
         }
 
         .game-board {
@@ -414,28 +388,6 @@ export default function MemoryFlipGame() {
           box-sizing: border-box;
         }
 
-        @media (max-width: 640px) {
-          .game-board {
-            gap: 8px;
-            padding: 0 8px;
-            max-width: 100%;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .game-board {
-            gap: 6px;
-            padding: 0 5px;
-          }
-        }
-
-        @media (max-width: 360px) {
-          .game-board {
-            gap: 4px;
-            padding: 0 3px;
-          }
-        }
-
         .memory-card {
           aspect-ratio: 1;
           perspective: 1000px;
@@ -444,12 +396,6 @@ export default function MemoryFlipGame() {
           min-height: 0;
           width: 100%;
           height: auto;
-        }
-
-        @media (max-width: 480px) {
-          .memory-card {
-            font-size: 24px;
-          }
         }
 
         .card-inner {
@@ -479,7 +425,7 @@ export default function MemoryFlipGame() {
         }
 
         .card-front {
-          background: hsl(200, 100%, 75%);
+          background: #F59E0B;
           color: white;
           font-size: clamp(24px, 5vw, 32px);
           font-weight: bold;
@@ -507,9 +453,8 @@ export default function MemoryFlipGame() {
           word-break: break-word;
         }
 
-
         .memory-card:hover:not(.flipped):not(.matched) .card-front {
-          box-shadow: 0 8px 24px hsla(200, 100%, 75%, 0.4);
+          box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
           transform: scale(1.02);
         }
 
@@ -547,13 +492,8 @@ export default function MemoryFlipGame() {
           }
         }
 
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
         .modal-content {
-          background: linear-gradient(135deg, #1e3a8a, #1e40af);
+          background: #F59E0B;
           padding: 40px;
           border-radius: 24px;
           text-align: center;
@@ -570,12 +510,12 @@ export default function MemoryFlipGame() {
 
         .modal-content p {
           font-size: 18px;
-          color: #e0e7ff;
+          color: #fffbeb;
           margin-bottom: 8px;
         }
 
         .final-stats {
-          background: rgba(255, 255, 255, 0.15);
+          background: rgba(255, 255, 255, 0.2);
           padding: 16px;
           border-radius: 12px;
           margin: 16px 0;
@@ -583,7 +523,7 @@ export default function MemoryFlipGame() {
 
         .final-stats p {
           margin: 4px 0;
-          color: #e0e7ff;
+          color: #fffbeb;
         }
 
         .modal-buttons {
@@ -594,9 +534,27 @@ export default function MemoryFlipGame() {
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #667eea, #764ba2);
+          background: #D97706;
           color: white;
           border: none;
+        }
+
+        @media (max-width: 640px) {
+          .game-board {
+            gap: 8px;
+            padding: 0 8px;
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .game-board {
+            gap: 6px;
+            padding: 0 5px;
+          }
+          .memory-card {
+            font-size: 24px;
+          }
         }
       `}</style>
       </div>

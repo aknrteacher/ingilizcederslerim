@@ -1,5 +1,5 @@
 // Content types that can exist for each theme/topic
-export type ContentType = 'vocab' | 'matching' | 'crossword' | 'spell-quest' | 'word-pop' | 'catch-that' | 'i-spy' | 'sound-match' | 'memory-flip' | 'word-race' | 'word-shooter' | 'word-snake' | 'word-builder' | 'stories' | 'songs' | 'exercises' | 'worksheets' | 'crafts';
+export type ContentType = 'vocab' | 'matching' | 'crossword' | 'spell-quest' | 'word-pop' | 'catch-that' | 'i-spy' | 'sound-match' | 'memory-flip' | 'word-race' | 'word-snake' | 'stories' | 'songs' | 'exercises' | 'worksheets' | 'crafts';
 
 export interface ContentItem {
   type: ContentType;
@@ -27,7 +27,7 @@ export interface Level {
 
 // Define what content types are expected for each level
 export const preschoolContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'songs'];
-export const primaryContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'sound-match', 'memory-flip', 'word-race', 'word-shooter', 'word-snake', 'word-builder', 'stories', 'songs', 'exercises', 'worksheets'];
+export const primaryContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'sound-match', 'memory-flip', 'word-race', 'word-snake', 'stories', 'songs', 'exercises', 'worksheets'];
 
 export const workflowData: Level[] = [
   {
@@ -243,9 +243,7 @@ export const workflowData: Level[] = [
               { type: 'sound-match', count: 1 },
               { type: 'memory-flip', count: 1 },
               { type: 'word-race', count: 1 },
-              { type: 'word-shooter', count: 1 },
               { type: 'word-snake', count: 1 },
-              { type: 'word-builder', count: 1 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -265,9 +263,7 @@ export const workflowData: Level[] = [
               { type: 'sound-match', count: 0 },
               { type: 'memory-flip', count: 0 },
               { type: 'word-race', count: 0 },
-              { type: 'word-shooter', count: 0 },
               { type: 'word-snake', count: 0 },
-              { type: 'word-builder', count: 0 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -287,9 +283,7 @@ export const workflowData: Level[] = [
               { type: 'sound-match', count: 0 },
               { type: 'memory-flip', count: 0 },
               { type: 'word-race', count: 0 },
-              { type: 'word-shooter', count: 0 },
               { type: 'word-snake', count: 0 },
-              { type: 'word-builder', count: 0 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -309,9 +303,7 @@ export const workflowData: Level[] = [
               { type: 'sound-match', count: 0 },
               { type: 'memory-flip', count: 0 },
               { type: 'word-race', count: 0 },
-              { type: 'word-shooter', count: 0 },
               { type: 'word-snake', count: 0 },
-              { type: 'word-builder', count: 0 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -331,9 +323,7 @@ export const workflowData: Level[] = [
               { type: 'sound-match', count: 0 },
               { type: 'memory-flip', count: 0 },
               { type: 'word-race', count: 0 },
-              { type: 'word-shooter', count: 0 },
               { type: 'word-snake', count: 0 },
-              { type: 'word-builder', count: 0 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -646,9 +636,7 @@ export const contentLabels: Record<ContentType, string> = {
   'sound-match': 'SND',
   'memory-flip': 'MEM',
   'word-race': 'RAC',
-  'word-shooter': 'SHO',
   'word-snake': 'SNA',
-  'word-builder': 'BLD',
   'stories': 'STR',
   'songs': 'SNG',
   'exercises': 'EXE',
@@ -659,7 +647,7 @@ export const contentLabels: Record<ContentType, string> = {
 // Game content types (for grouping)
 export const gameContentTypes: ContentType[] = [
   'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'i-spy',
-  'sound-match', 'memory-flip', 'word-race', 'word-shooter', 'word-snake', 'word-builder'
+  'sound-match', 'memory-flip', 'word-race', 'word-snake'
 ];
 
 // Non-game content types

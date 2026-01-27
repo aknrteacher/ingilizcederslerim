@@ -9,27 +9,24 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
-  { word: "hello", file: "hello.png", turkish: "merhaba" },
-  { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
-  { word: "school", file: "school.png", turkish: "okul" },
-  { word: "classroom", file: "classroom.png", turkish: "sınıf" },
-  { word: "library", file: "library.png", turkish: "kütüphane" },
-  { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
-  { word: "playground", file: "playground.png", turkish: "oyun alanı" },
+  { word: "house", file: "house.png", turkish: "ev" },
   { word: "garden", file: "garden.png", turkish: "bahçe" },
-  { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
-  { word: "student", file: "student.png", turkish: "öğrenci" },
-  { word: "girl", file: "girl.png", turkish: "kız" },
-  { word: "boy", file: "boy.png", turkish: "erkek" },
-  { word: "friend", file: "friend.png", turkish: "arkadaş" },
-  { word: "day", file: "day.png", turkish: "gün" },
-  { word: "week", file: "week.png", turkish: "hafta" },
-  { word: "Monday", file: "Monday.png", turkish: "Pazartesi" },
-  { word: "Tuesday", file: "Tuesday.png", turkish: "Salı" },
-  { word: "Friday", file: "Friday.png", turkish: "Cuma" },
-  { word: "what", file: "what.png", turkish: "ne" },
-  { word: "where", file: "where.png", turkish: "nerede" },
-  { word: "who", file: "who.png", turkish: "kim" },
+  { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
+  { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
+  { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
+  { word: "door", file: "door.png", turkish: "kapı" },
+  { word: "window", file: "window.png", turkish: "pencere" },
+  { word: "sofa", file: "sofa.png", turkish: "kanepe" },
+  { word: "bed", file: "bed.png", turkish: "yatak" },
+  { word: "chair", file: "chair.png", turkish: "sandalye" },
+  { word: "dog", file: "dog.png", turkish: "köpek" },
+  { word: "cat", file: "cat.png", turkish: "kedi" },
+  { word: "bird", file: "bird.png", turkish: "kuş" },
+  { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
+  { word: "turtle", file: "turtle.png", turkish: "kaplumbağa" },
+  { word: "paw", file: "paw.png", turkish: "pati" },
+  { word: "tail", file: "tail.png", turkish: "kuyruk" },
+  { word: "happy", file: "happy.png", turkish: "mutlu" },
 ];
 
 interface FallingWord {
@@ -54,7 +51,6 @@ export default function WordRaceGame() {
   const [streak, setStreak] = useState(0);
   const [speed, setSpeed] = useState(1);
   const inputRef = useRef<HTMLInputElement>(null);
-  const gameAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
   const spawnTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -64,7 +60,7 @@ export default function WordRaceGame() {
       id: `word-${Date.now()}-${Math.random()}`,
       word: vocab.word.toLowerCase(),
       file: vocab.file,
-      x: Math.random() * 70 + 15, // 15% to 85%
+      x: Math.random() * 70 + 15,
       y: 0,
       typed: false,
     };
@@ -85,7 +81,6 @@ export default function WordRaceGame() {
     inputRef.current?.focus();
   };
 
-  // Game timer
   useEffect(() => {
     if (!gameStarted || gameOver) return;
     
@@ -102,7 +97,6 @@ export default function WordRaceGame() {
     return () => clearInterval(timer);
   }, [gameStarted, gameOver]);
 
-  // Spawn words
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
@@ -116,7 +110,6 @@ export default function WordRaceGame() {
     };
   }, [gameStarted, gameOver, speed, spawnWord]);
 
-  // Animate falling words
   useEffect(() => {
     if (!gameStarted || gameOver) return;
 
@@ -127,14 +120,12 @@ export default function WordRaceGame() {
           y: word.y + (0.04 * speed),
         }));
 
-        // Check for missed words
         const missed = updated.filter(w => w.y >= 100 && !w.typed);
         if (missed.length > 0) {
           setWordsMissed(m => m + missed.length);
           setStreak(0);
         }
 
-        // Remove words that are off screen or typed
         return updated.filter(w => w.y < 100 && !w.typed);
       });
 
@@ -150,15 +141,12 @@ export default function WordRaceGame() {
     };
   }, [gameStarted, gameOver, speed]);
 
-  // Handle input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
     setCurrentInput(value);
 
-    // Check if typed word matches any falling word
     const matchedWord = fallingWords.find(w => w.word === value && !w.typed);
     if (matchedWord) {
-      // Word typed correctly!
       setFallingWords(prev => prev.map(w => 
         w.id === matchedWord.id ? { ...w, typed: true } : w
       ));
@@ -169,12 +157,10 @@ export default function WordRaceGame() {
       setStreak(prev => prev + 1);
       setCurrentInput("");
 
-      // Speed up every 5 words
       if ((wordsTyped + 1) % 5 === 0) {
         setSpeed(prev => Math.min(prev + 0.2, 3));
       }
 
-      // Speak the word
       const utterance = new SpeechSynthesisUtterance(matchedWord.word);
       utterance.lang = 'en-GB';
       utterance.rate = 0.9;
@@ -182,7 +168,6 @@ export default function WordRaceGame() {
     }
   };
 
-  // End game confetti
   useEffect(() => {
     if (gameOver && wordsTyped >= 10) {
       confetti({
@@ -206,9 +191,9 @@ export default function WordRaceGame() {
         <div className="word-race-container">
           <PrimarySchoolGameHeader
             gameName="Word Race"
-            description="Grade 2 - Theme 1: School Life"
+            description="Grade 2 - Theme 5: Homes & Pets"
             containerId="word-race-game"
-            icon={<Keyboard className="h-7 w-7 text-orange-600" />}
+            icon={<Keyboard className="h-7 w-7 text-lime-500" />}
           />
 
           {!gameStarted && !gameOver && (
@@ -230,7 +215,6 @@ export default function WordRaceGame() {
 
           {gameStarted && !gameOver && (
             <>
-              {/* Stats Bar */}
               <div className="stats-bar">
                 <div className="stat-item">
                   <Trophy className="h-4 w-4 text-yellow-500" />
@@ -251,8 +235,7 @@ export default function WordRaceGame() {
                 )}
               </div>
 
-              {/* Game Area */}
-              <div className="game-area" ref={gameAreaRef}>
+              <div className="game-area">
                 {fallingWords.map(word => (
                   <div
                     key={word.id}
@@ -265,12 +248,9 @@ export default function WordRaceGame() {
                     {word.word}
                   </div>
                 ))}
-
-                {/* Danger zone indicator */}
                 <div className="danger-zone"></div>
               </div>
 
-              {/* Input Field */}
               <div className="input-section">
                 <input
                   ref={inputRef}
@@ -289,7 +269,6 @@ export default function WordRaceGame() {
             </>
           )}
 
-          {/* Game Over */}
           {gameOver && (
             <div className="game-end-modal">
               <div className="modal-content">
@@ -307,7 +286,7 @@ export default function WordRaceGame() {
                   <Button variant="outline" onClick={shareGame}>
                     <Share2 className="h-4 w-4 mr-2" /> Share
                   </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-5/games")}>
                     Back to Games
                   </Button>
                 </div>
@@ -315,7 +294,6 @@ export default function WordRaceGame() {
             </div>
           )}
 
-          {/* Footer */}
           <div className="primary-school-game-footer">
             <div className="footer-content">
               <div className="footer-left">
@@ -327,7 +305,7 @@ export default function WordRaceGame() {
                 <Button onClick={startGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-5/games")}>
                   ← Back
                 </Button>
               </div>
@@ -368,23 +346,14 @@ export default function WordRaceGame() {
           margin-bottom: 16px;
         }
 
-        .start-content p {
-          color: hsl(var(--muted-foreground));
-          margin-bottom: 20px;
-        }
-
         .start-content ul {
           text-align: left;
           margin: 20px auto;
           max-width: 250px;
         }
 
-        .start-content li {
-          margin: 8px 0;
-        }
-
         .start-btn {
-          background: linear-gradient(135deg, #f97316, #ea580c);
+          background: #84CC16;
           color: white;
           font-size: 18px;
           padding: 16px 32px;
@@ -411,21 +380,15 @@ export default function WordRaceGame() {
         }
 
         .stat-item.streak {
-          background: linear-gradient(135deg, #f97316, #ea580c);
+          background: #84CC16;
           color: white;
           border: none;
-          animation: pulse 0.5s ease;
-        }
-
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
         }
 
         .game-area {
           position: relative;
           height: 350px;
-          background: linear-gradient(180deg, #1e293b 0%, #334155 100%);
+          background: #1e293b;
           border-radius: 16px;
           overflow: hidden;
           margin-bottom: 16px;
@@ -434,14 +397,13 @@ export default function WordRaceGame() {
         .falling-word {
           position: absolute;
           transform: translateX(-50%);
-          background: linear-gradient(135deg, #fbbf24, #f59e0b);
-          color: #1e293b;
+          background: #65A30D;
+          color: white;
           padding: 8px 16px;
           border-radius: 8px;
           font-weight: 700;
           font-size: 16px;
           white-space: nowrap;
-          transition: opacity 0.2s ease;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
@@ -471,7 +433,7 @@ export default function WordRaceGame() {
           font-size: 20px;
           font-weight: 600;
           text-align: center;
-          border: 3px solid hsl(var(--primary));
+          border: 3px solid #84CC16;
           border-radius: 16px;
           background: hsl(var(--card));
           color: hsl(var(--foreground));
@@ -479,7 +441,7 @@ export default function WordRaceGame() {
         }
 
         .word-input:focus {
-          box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.2);
+          box-shadow: 0 0 0 4px rgba(132, 204, 22, 0.2);
         }
 
         .game-end-modal {
@@ -514,11 +476,6 @@ export default function WordRaceGame() {
           margin-bottom: 20px;
         }
 
-        .final-stats p {
-          margin: 8px 0;
-          font-size: 16px;
-        }
-
         .modal-buttons {
           display: flex;
           flex-direction: column;
@@ -526,7 +483,7 @@ export default function WordRaceGame() {
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #f97316, #ea580c);
+          background: #84CC16;
           color: white;
           border: none;
         }

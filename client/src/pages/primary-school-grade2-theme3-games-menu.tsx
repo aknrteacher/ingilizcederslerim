@@ -12,6 +12,10 @@ import gameTypeWordCross from "@/assets/word cross.png";
 import gameTypeSpellQuest from "@/assets/spell quest.png";
 import gameTypeWordPop from "@/assets/word pop.png";
 import gameTypeCatchThat from "@/assets/catch that.png";
+import gameTypeSayWhat from "@/assets/say what.png";
+import gameTypeMemoryFlip from "@/assets/memory flip.png";
+import gameTypeWordRace from "@/assets/word race.png";
+import gameTypeWordSnake from "@/assets/word snake.png";
 
 export default function PrimarySchoolGrade2Theme3GamesMenu() {
   // Game type configurations
@@ -55,6 +59,38 @@ export default function PrimarySchoolGrade2Theme3GamesMenu() {
       gradient: "purple-pink" as const,
       pathSuffix: "catch-that",
       image: gameTypeCatchThat,
+    },
+    {
+      id: "say-what",
+      name: "Say What?",
+      icon: "🔊",
+      gradient: "blue-purple" as const,
+      pathSuffix: "say-what",
+      image: gameTypeSayWhat,
+    },
+    {
+      id: "memory-flip",
+      name: "Memory Flip",
+      icon: "🧠",
+      gradient: "green-teal" as const,
+      pathSuffix: "memory-flip",
+      image: gameTypeMemoryFlip,
+    },
+    {
+      id: "word-race",
+      name: "Word Race",
+      icon: "🏎️",
+      gradient: "yellow-orange" as const,
+      pathSuffix: "word-race",
+      image: gameTypeWordRace,
+    },
+    {
+      id: "word-snake",
+      name: "Word Snake",
+      icon: "🐍",
+      gradient: "green-teal" as const,
+      pathSuffix: "word-snake",
+      image: gameTypeWordSnake,
     },
   ];
 
@@ -118,33 +154,39 @@ export default function PrimarySchoolGrade2Theme3GamesMenu() {
       </div>
 
       <style>{`
-        /* Game Type Buttons - Single Row Layout */
+        /* Game Type Buttons - Grid Layout */
         .game-type-buttons-row {
-          display: flex;
-          flex-wrap: nowrap;
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
           gap: 12px;
           width: 100%;
           margin-bottom: 32px;
-          justify-content: center;
-          align-items: stretch;
+          justify-items: center;
+        }
+
+        @media (max-width: 1200px) {
+          .game-type-buttons-row {
+            grid-template-columns: repeat(4, 1fr);
+          }
         }
 
         @media (max-width: 1024px) {
           .game-type-buttons-row {
-            flex-wrap: wrap;
+            grid-template-columns: repeat(3, 1fr);
           }
         }
 
         @media (max-width: 768px) {
           .game-type-buttons-row {
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
             margin-bottom: 24px;
-            flex-wrap: wrap;
           }
         }
 
         @media (max-width: 480px) {
           .game-type-buttons-row {
+            grid-template-columns: repeat(2, 1fr);
             gap: 8px;
           }
         }

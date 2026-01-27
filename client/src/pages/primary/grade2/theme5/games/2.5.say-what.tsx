@@ -2,41 +2,34 @@ import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Share2, Zap, Volume2, Trophy, Heart, RefreshCw } from "lucide-react";
+import { Share2, Volume2, Trophy, Heart, RefreshCw, Sparkles } from "lucide-react";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import confetti from "canvas-confetti";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
-  { word: "hello", file: "hello.png", turkish: "merhaba" },
-  { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
-  { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
-  { word: "I am fine", file: "I m fine.png", turkish: "iyiyim" },
-  { word: "school", file: "school.png", turkish: "okul" },
-  { word: "classroom", file: "classroom.png", turkish: "sınıf" },
-  { word: "library", file: "library.png", turkish: "kütüphane" },
-  { word: "canteen", file: "canteen.png", turkish: "kafeterya" },
-  { word: "sports hall", file: "sports hall.png", turkish: "spor salonu" },
-  { word: "playground", file: "playground.png", turkish: "oyun alanı" },
+  { word: "house", file: "house.png", turkish: "ev" },
   { word: "garden", file: "garden.png", turkish: "bahçe" },
-  { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
-  { word: "student", file: "student.png", turkish: "öğrenci" },
-  { word: "girl", file: "girl.png", turkish: "kız" },
-  { word: "boy", file: "boy.png", turkish: "erkek" },
-  { word: "friend", file: "friend.png", turkish: "arkadaş" },
-  { word: "day", file: "day.png", turkish: "gün" },
-  { word: "week", file: "week.png", turkish: "hafta" },
-  { word: "Monday", file: "Monday.png", turkish: "Pazartesi" },
-  { word: "Tuesday", file: "Tuesday.png", turkish: "Salı" },
-  { word: "Wednesday", file: "Wednesday.png", turkish: "Çarşamba" },
-  { word: "Thursday", file: "Thursday.png", turkish: "Perşembe" },
-  { word: "Friday", file: "Friday.png", turkish: "Cuma" },
-  { word: "Saturday", file: "Saturday.png", turkish: "Cumartesi" },
-  { word: "Sunday", file: "Sunday.png", turkish: "Pazar" },
-  { word: "what", file: "what.png", turkish: "ne" },
-  { word: "where", file: "where.png", turkish: "nerede" },
-  { word: "who", file: "who.png", turkish: "kim" },
+  { word: "living room", file: "living room.png", turkish: "oturma odası" },
+  { word: "dining room", file: "dining room.png", turkish: "yemek odası" },
+  { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
+  { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
+  { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
+  { word: "door", file: "door.png", turkish: "kapı" },
+  { word: "window", file: "window.png", turkish: "pencere" },
+  { word: "sofa", file: "sofa.png", turkish: "kanepe" },
+  { word: "bed", file: "bed.png", turkish: "yatak" },
+  { word: "chair", file: "chair.png", turkish: "sandalye" },
+  { word: "dog", file: "dog.png", turkish: "köpek" },
+  { word: "cat", file: "cat.png", turkish: "kedi" },
+  { word: "goldfish", file: "goldfish.png", turkish: "japon balığı" },
+  { word: "bird", file: "bird.png", turkish: "kuş" },
+  { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
+  { word: "turtle", file: "turtle.png", turkish: "kaplumbağa" },
+  { word: "paw", file: "paw.png", turkish: "pati" },
+  { word: "tail", file: "tail.png", turkish: "kuyruk" },
+  { word: "happy", file: "happy.png", turkish: "mutlu" },
 ];
 
 interface Option {
@@ -46,7 +39,7 @@ interface Option {
   isCorrect: boolean;
 }
 
-export default function SoundMatchGame() {
+export default function SayWhatGame() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -106,7 +99,6 @@ export default function SoundMatchGame() {
     setShowResult(false);
     setUsedWords(prev => [...prev, correct.word]);
 
-    // Auto-play the word after a short delay
     setTimeout(() => {
       speakWord(correct.word);
     }, 500);
@@ -145,7 +137,6 @@ export default function SoundMatchGame() {
       setScore(prev => prev + points);
       setStreak(prev => prev + 1);
       
-      // Play success sound effect
       speakWord(option.word);
 
       setTimeout(() => {
@@ -182,35 +173,35 @@ export default function SoundMatchGame() {
   };
 
   const shareGame = () => {
-    const text = `I scored ${score} points on Sound Match! Can you beat me? 🎧`;
+    const text = `I scored ${score} points on Say What?! Can you beat me? 🎧`;
     if (navigator.share) {
-      navigator.share({ title: "Sound Match", text, url: window.location.href });
+      navigator.share({ title: "Say What?", text, url: window.location.href });
     }
   };
 
   return (
     <Layout>
-      <div className="sound-match-wrapper primary-school-game" id="sound-match-game">
-        <div className="sound-match-container">
+      <div className="say-what-wrapper primary-school-game" id="say-what-game">
+        <div className="say-what-container">
           <PrimarySchoolGameHeader
-            gameName="Sound Match"
-            description="Grade 2 - Theme 1: School Life"
-            containerId="sound-match-game"
-            icon={<Volume2 className="h-7 w-7 text-purple-600" />}
+            gameName="Say What?"
+            description="Grade 2 - Theme 5: Homes & Pets"
+            containerId="say-what-game"
+            icon={<Volume2 className="h-7 w-7 text-lime-500" />}
           />
 
-          {/* Stats Bar */}
           <div className="stats-bar">
-            <div className="stat-item">
-              <Trophy className="h-4 w-4 text-yellow-500" />
-              <span>{score}</span>
+            <div className="stat-item score-item">
+              <Trophy className="h-5 w-5 text-yellow-500" />
+              <span className="stat-value">{score}</span>
             </div>
-            <div className="stat-item">
-              <Heart className="h-4 w-4 text-red-500" />
-              <span>{Array(lives).fill('❤️').join('')}</span>
+            <div className="stat-item lives-item">
+              <Heart className="h-5 w-5 text-red-500" />
+              <span className="stat-value">{Array(lives).fill('❤️').join('')}</span>
             </div>
-            <div className="stat-item">
-              <span>Round {Math.min(round, totalRounds)}/{totalRounds}</span>
+            <div className="stat-item round-item">
+              <Sparkles className="h-4 w-4 text-blue-500" />
+              <span className="stat-value">Round {Math.min(round, totalRounds)}/{totalRounds}</span>
             </div>
             {streak > 1 && (
               <div className="stat-item streak">
@@ -219,35 +210,47 @@ export default function SoundMatchGame() {
             )}
           </div>
 
-          {/* Game Area */}
           {!gameOver && !gameWon && currentWord && (
             <div className="game-area">
-              {/* Listen Button */}
               <div className="listen-section">
-                <button
-                  className="listen-btn"
-                  onClick={() => speakWord(currentWord.word)}
-                >
-                  <Volume2 className="h-12 w-12" />
-                  <span>Listen</span>
-                </button>
+                <div className="listen-button-wrapper">
+                  <button
+                    className="listen-btn"
+                    onClick={() => speakWord(currentWord.word)}
+                  >
+                    <div className="sound-waves">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <Volume2 className="h-14 w-14" />
+                    <span>Listen</span>
+                  </button>
+                  {showResult && (
+                    <div className={`result-popup ${isCorrect ? 'correct' : 'wrong'}`}>
+                      <div className="result-popup-content">
+                        {isCorrect ? '✅ Correct!' : `❌ Wrong!`}
+                      </div>
+                    </div>
+                  )}
+                </div>
                 <p className="instruction">Click to hear the word, then find the matching picture!</p>
               </div>
 
-              {/* Options Grid */}
               <div className="options-grid">
                 {options.map((option, index) => (
                   <button
                     key={index}
-                    className={`option-card ${selectedOption === option.word ? (option.isCorrect ? 'correct' : 'wrong') : ''} ${showResult && option.isCorrect ? 'highlight-correct' : ''}`}
+                    className={`option-card ${selectedOption === option.word ? (option.isCorrect ? 'correct' : 'wrong') : ''} ${showResult && selectedOption === option.word && option.isCorrect ? 'highlight-correct' : ''}`}
                     onClick={() => handleOptionClick(option)}
                     disabled={showResult}
                   >
+                    <div className="card-glow"></div>
                     <img
-                      src={`/images/primary/2.1/${option.file}`}
+                      src={`/images/primary/2.5/${option.file}`}
                       alt={option.word}
                     />
-                    {showResult && (
+                    {showResult && !isCorrect && (selectedOption === option.word || option.isCorrect) && (
                       <div className="option-label">
                         <span className="word">{option.word}</span>
                         <span className="turkish">{option.turkish}</span>
@@ -256,58 +259,9 @@ export default function SoundMatchGame() {
                   </button>
                 ))}
               </div>
-
-              {/* Result Message */}
-              {showResult && (
-                <div className={`result-message ${isCorrect ? 'correct' : 'wrong'}`}>
-                  {isCorrect ? '✅ Correct!' : `❌ Wrong! It was "${currentWord.word}"`}
-                </div>
-              )}
             </div>
           )}
 
-          {/* Game Over */}
-          {gameOver && (
-            <div className="game-end-modal">
-              <div className="modal-content">
-                <h2>💔 Game Over!</h2>
-                <p>Final Score: {score}</p>
-                <p>Rounds Completed: {round - 1}/{totalRounds}</p>
-                <div className="modal-buttons">
-                  <Button onClick={resetGame} className="btn-primary">
-                    <RefreshCw className="h-4 w-4 mr-2" /> Try Again
-                  </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
-                    Back to Games
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Game Won */}
-          {gameWon && (
-            <div className="game-end-modal won">
-              <div className="modal-content">
-                <h2>🎉 Congratulations!</h2>
-                <p>You completed all {totalRounds} rounds!</p>
-                <p>Final Score: {score}</p>
-                <div className="modal-buttons">
-                  <Button onClick={resetGame} className="btn-primary">
-                    <RefreshCw className="h-4 w-4 mr-2" /> Play Again
-                  </Button>
-                  <Button variant="outline" onClick={shareGame}>
-                    <Share2 className="h-4 w-4 mr-2" /> Share
-                  </Button>
-                  <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
-                    Back to Games
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Footer */}
           <div className="primary-school-game-footer">
             <div className="footer-content">
               <div className="footer-left">
@@ -319,22 +273,62 @@ export default function SoundMatchGame() {
                 <Button onClick={resetGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-2/theme-5/games")}>
                   ← Back
                 </Button>
               </div>
             </div>
           </div>
         </div>
+
+        {gameOver && (
+          <div className="game-end-modal">
+            <div className="modal-content">
+              <h2>💔 Game Over!</h2>
+              <p>Final Score: {score}</p>
+              <p>Rounds Completed: {round - 1}/{totalRounds}</p>
+              <div className="modal-buttons">
+                <Button onClick={resetGame} className="btn-primary">
+                  <RefreshCw className="h-4 w-4 mr-2" /> Try Again
+                </Button>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-5/games")}>
+                  Back to Games
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {gameWon && (
+          <div className="game-end-modal won">
+            <div className="modal-content">
+              <h2>🎉 Congratulations!</h2>
+              <p>You completed all {totalRounds} rounds!</p>
+              <p>Final Score: {score}</p>
+              <div className="modal-buttons">
+                <Button onClick={resetGame} className="btn-primary">
+                  <RefreshCw className="h-4 w-4 mr-2" /> Play Again
+                </Button>
+                <Button variant="outline" onClick={shareGame}>
+                  <Share2 className="h-4 w-4 mr-2" /> Share
+                </Button>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-2/theme-5/games")}>
+                  Back to Games
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <style>{`
-        .sound-match-wrapper {
+        .say-what-wrapper {
           min-height: 100vh;
           padding: 20px;
+          position: relative;
         }
 
-        .sound-match-container {
+        .say-what-container {
           max-width: 900px;
           margin: 0 auto;
         }
@@ -342,53 +336,57 @@ export default function SoundMatchGame() {
         .stats-bar {
           display: flex;
           justify-content: center;
-          gap: 20px;
-          margin-bottom: 20px;
+          gap: 16px;
+          margin-bottom: 24px;
           flex-wrap: wrap;
         }
 
         .stat-item {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 8px;
           background: hsl(var(--card));
-          padding: 8px 16px;
-          border-radius: 20px;
+          padding: 10px 18px;
+          border-radius: 24px;
           font-weight: 600;
           border: 2px solid hsl(var(--border));
         }
 
         .stat-item.streak {
-          background: linear-gradient(135deg, #ff6b6b, #ffa500);
+          background: #84CC16;
           color: white;
           border: none;
-          animation: pulse 0.5s ease-in-out;
+          animation: pulse 1s ease-in-out infinite;
         }
 
         @keyframes pulse {
           0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.1); }
+          50% { transform: scale(1.05); }
         }
 
         .game-area {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 30px;
+          gap: 40px;
         }
 
         .listen-section {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 12px;
+          gap: 16px;
+        }
+
+        .listen-button-wrapper {
+          position: relative;
         }
 
         .listen-btn {
-          width: 120px;
-          height: 120px;
+          width: 140px;
+          height: 140px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #667eea, #764ba2);
+          background: #84CC16;
           color: white;
           border: none;
           cursor: pointer;
@@ -396,32 +394,60 @@ export default function SoundMatchGame() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 8px;
-          font-size: 14px;
+          gap: 10px;
+          font-size: 16px;
           font-weight: 600;
           transition: all 0.3s ease;
-          box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+          box-shadow: 0 8px 24px rgba(132, 204, 22, 0.4);
+          position: relative;
+          overflow: visible;
         }
 
         .listen-btn:hover {
           transform: scale(1.1);
-          box-shadow: 0 12px 32px rgba(102, 126, 234, 0.5);
+          box-shadow: 0 12px 32px rgba(132, 204, 22, 0.6);
         }
 
-        .listen-btn:active {
-          transform: scale(0.95);
+        .sound-waves {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          pointer-events: none;
+        }
+
+        .sound-waves span {
+          width: 4px;
+          height: 20px;
+          background: rgba(255, 255, 255, 0.6);
+          border-radius: 2px;
+          animation: wave 1.2s ease-in-out infinite;
+        }
+
+        .sound-waves span:nth-child(2) { animation-delay: 0.2s; }
+        .sound-waves span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes wave {
+          0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+          50% { transform: scaleY(1); opacity: 1; }
         }
 
         .instruction {
           color: hsl(var(--muted-foreground));
-          font-size: 14px;
+          font-size: 15px;
           text-align: center;
         }
 
         .options-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 16px;
+          gap: 20px;
           max-width: 500px;
           width: 100%;
         }
@@ -436,7 +462,7 @@ export default function SoundMatchGame() {
         .option-card {
           aspect-ratio: 1;
           border: 3px solid hsl(var(--border));
-          border-radius: 16px;
+          border-radius: 20px;
           background: hsl(var(--card));
           cursor: pointer;
           overflow: hidden;
@@ -446,48 +472,40 @@ export default function SoundMatchGame() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 8px;
+          padding: 10px;
         }
 
         .option-card:hover:not(:disabled) {
-          transform: translateY(-4px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-          border-color: hsl(var(--primary));
+          transform: translateY(-6px) scale(1.02);
+          border-color: #84CC16;
         }
 
         .option-card img {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          border-radius: 8px;
+          border-radius: 12px;
         }
 
         .option-card.correct {
           border-color: #22c55e;
-          background: rgba(34, 197, 94, 0.1);
-          animation: correctPulse 0.5s ease;
+          animation: correctPulse 0.6s ease;
         }
 
         .option-card.wrong {
           border-color: #ef4444;
-          background: rgba(239, 68, 68, 0.1);
           animation: shake 0.5s ease;
-        }
-
-        .option-card.highlight-correct {
-          border-color: #22c55e;
-          box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
         }
 
         @keyframes correctPulse {
           0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          50% { transform: scale(1.08); }
         }
 
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
+          25% { transform: translateX(-8px); }
+          75% { transform: translateX(8px); }
         }
 
         .option-label {
@@ -495,9 +513,9 @@ export default function SoundMatchGame() {
           bottom: 0;
           left: 0;
           right: 0;
-          background: rgba(0, 0, 0, 0.8);
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
           color: white;
-          padding: 8px 4px;
+          padding: 6px 4px;
           text-align: center;
         }
 
@@ -513,46 +531,47 @@ export default function SoundMatchGame() {
           color: #a0a0a0;
         }
 
-        .result-message {
-          font-size: 20px;
+        .result-popup {
+          position: absolute;
+          top: -90px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 2000;
+          animation: popupAppear 0.4s ease;
+        }
+
+        .result-popup-content {
+          font-size: 22px;
           font-weight: 700;
-          padding: 12px 24px;
-          border-radius: 12px;
-          animation: slideIn 0.3s ease;
+          padding: 14px 28px;
+          border-radius: 16px;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .result-message.correct {
-          background: rgba(34, 197, 94, 0.2);
-          color: #22c55e;
+        .result-popup.correct .result-popup-content {
+          background: #22c55e;
+          color: white;
         }
 
-        .result-message.wrong {
-          background: rgba(239, 68, 68, 0.2);
-          color: #ef4444;
+        .result-popup.wrong .result-popup-content {
+          background: #ef4444;
+          color: white;
         }
 
-        @keyframes slideIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes popupAppear {
+          0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+          100% { opacity: 1; transform: translateX(-50%) scale(1); }
         }
 
         .game-end-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.8);
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.85);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          border-radius: 16px;
         }
 
         .modal-content {
@@ -569,12 +588,6 @@ export default function SoundMatchGame() {
           margin-bottom: 16px;
         }
 
-        .modal-content p {
-          font-size: 18px;
-          color: hsl(var(--muted-foreground));
-          margin-bottom: 8px;
-        }
-
         .modal-buttons {
           display: flex;
           flex-direction: column;
@@ -583,17 +596,14 @@ export default function SoundMatchGame() {
         }
 
         .btn-primary {
-          background: linear-gradient(135deg, #667eea, #764ba2);
+          background: #84CC16;
           color: white;
           border: none;
         }
 
         .game-end-modal.won .modal-content {
-          background: linear-gradient(135deg, #fef3c7, #fcd34d);
-        }
-
-        .game-end-modal.won h2 {
-          color: #92400e;
+          background: #65A30D;
+          color: white;
         }
       `}</style>
     </Layout>

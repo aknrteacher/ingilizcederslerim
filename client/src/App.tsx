@@ -135,12 +135,35 @@ import CatchThatGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.catch-that
 import CatchThatGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.catch-that";
 import CatchThatGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.catch-that";
 // New Theme 1 Games
-import SoundMatchGame from "@/pages/primary/grade2/theme1/games/2.1.sound-match";
+import SayWhatGame from "@/pages/primary/grade2/theme1/games/2.1.say-what";
 import MemoryFlipGame from "@/pages/primary/grade2/theme1/games/2.1.memory-flip";
 import WordRaceGame from "@/pages/primary/grade2/theme1/games/2.1.word-race";
-import WordShooterGame from "@/pages/primary/grade2/theme1/games/2.1.word-shooter";
 import WordSnakeGame from "@/pages/primary/grade2/theme1/games/2.1.word-snake";
-import WordBuilderGame from "@/pages/primary/grade2/theme1/games/2.1.word-builder";
+// New Theme 2 Games
+import SayWhatGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.say-what";
+import MemoryFlipGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.memory-flip";
+import WordRaceGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.word-race";
+import WordSnakeGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.word-snake";
+// New Theme 3 Games
+import SayWhatGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.say-what";
+import MemoryFlipGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.memory-flip";
+import WordRaceGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.word-race";
+import WordSnakeGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.word-snake";
+// New Theme 4 Games
+import SayWhatGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.say-what";
+import MemoryFlipGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.memory-flip";
+import WordRaceGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.word-race";
+import WordSnakeGame2_4 from "@/pages/primary/grade2/theme4/games/2.4.word-snake";
+// New Theme 5 Games
+import SayWhatGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.say-what";
+import MemoryFlipGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.memory-flip";
+import WordRaceGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.word-race";
+import WordSnakeGame2_5 from "@/pages/primary/grade2/theme5/games/2.5.word-snake";
+// New Theme 6 Games
+import SayWhatGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.say-what";
+import MemoryFlipGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.memory-flip";
+import WordRaceGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.word-race";
+import WordSnakeGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.word-snake";
 import StoriesMenu from "@/pages/primary/stories/stories-menu";
 import StoryReaderPage from "@/pages/primary/stories/story-reader";
 // Admin imports
@@ -200,17 +223,41 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-5/word-pop" component={WordPopGame2_5} />
       <Route path="/primary-school/grade-2/theme-6/word-pop" component={WordPopGame2_6} />
       <Route path="/primary-school/grade-2/theme-1/catch-that" component={CatchThatGame} />
-      <Route path="/primary-school/grade-2/theme-1/sound-match" component={SoundMatchGame} />
+      <Route path="/primary-school/grade-2/theme-1/sound-match" component={SayWhatGame} />
+      <Route path="/primary-school/grade-2/theme-1/say-what" component={SayWhatGame} />
       <Route path="/primary-school/grade-2/theme-1/memory-flip" component={MemoryFlipGame} />
       <Route path="/primary-school/grade-2/theme-1/word-race" component={WordRaceGame} />
-      <Route path="/primary-school/grade-2/theme-1/word-shooter" component={WordShooterGame} />
       <Route path="/primary-school/grade-2/theme-1/word-snake" component={WordSnakeGame} />
-      <Route path="/primary-school/grade-2/theme-1/word-builder" component={WordBuilderGame} />
       <Route path="/primary-school/grade-2/theme-2/catch-that" component={CatchThatGame2_2} />
       <Route path="/primary-school/grade-2/theme-3/catch-that" component={CatchThatGame2_3} />
       <Route path="/primary-school/grade-2/theme-4/catch-that" component={CatchThatGame2_4} />
       <Route path="/primary-school/grade-2/theme-5/catch-that" component={CatchThatGame2_5} />
       <Route path="/primary-school/grade-2/theme-6/catch-that" component={CatchThatGame2_6} />
+      {/* Theme 2 new games */}
+      <Route path="/primary-school/grade-2/theme-2/say-what" component={SayWhatGame2_2} />
+      <Route path="/primary-school/grade-2/theme-2/memory-flip" component={MemoryFlipGame2_2} />
+      <Route path="/primary-school/grade-2/theme-2/word-race" component={WordRaceGame2_2} />
+      <Route path="/primary-school/grade-2/theme-2/word-snake" component={WordSnakeGame2_2} />
+      {/* Theme 3 new games */}
+      <Route path="/primary-school/grade-2/theme-3/say-what" component={SayWhatGame2_3} />
+      <Route path="/primary-school/grade-2/theme-3/memory-flip" component={MemoryFlipGame2_3} />
+      <Route path="/primary-school/grade-2/theme-3/word-race" component={WordRaceGame2_3} />
+      <Route path="/primary-school/grade-2/theme-3/word-snake" component={WordSnakeGame2_3} />
+      {/* Theme 4 new games */}
+      <Route path="/primary-school/grade-2/theme-4/say-what" component={SayWhatGame2_4} />
+      <Route path="/primary-school/grade-2/theme-4/memory-flip" component={MemoryFlipGame2_4} />
+      <Route path="/primary-school/grade-2/theme-4/word-race" component={WordRaceGame2_4} />
+      <Route path="/primary-school/grade-2/theme-4/word-snake" component={WordSnakeGame2_4} />
+      {/* Theme 5 new games */}
+      <Route path="/primary-school/grade-2/theme-5/say-what" component={SayWhatGame2_5} />
+      <Route path="/primary-school/grade-2/theme-5/memory-flip" component={MemoryFlipGame2_5} />
+      <Route path="/primary-school/grade-2/theme-5/word-race" component={WordRaceGame2_5} />
+      <Route path="/primary-school/grade-2/theme-5/word-snake" component={WordSnakeGame2_5} />
+      {/* Theme 6 new games */}
+      <Route path="/primary-school/grade-2/theme-6/say-what" component={SayWhatGame2_6} />
+      <Route path="/primary-school/grade-2/theme-6/memory-flip" component={MemoryFlipGame2_6} />
+      <Route path="/primary-school/grade-2/theme-6/word-race" component={WordRaceGame2_6} />
+      <Route path="/primary-school/grade-2/theme-6/word-snake" component={WordSnakeGame2_6} />
       <Route path="/pre-school/kelime-kartlari" component={PreSchoolVocabMenu} />
       <Route path="/pre-school/kelime-kartlari/0.0-alphabet" component={AlphabetVocabulary} />
       <Route path="/pre-school/kelime-kartlari/0.1-numbers" component={NumbersVocabulary} />
