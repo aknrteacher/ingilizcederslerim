@@ -25,9 +25,69 @@ export interface Level {
   grades: Grade[];
 }
 
+export interface LandingPage {
+  id: string;
+  /** Human-friendly label for the landing page */
+  name: string;
+  /** Route path, e.g. "/primary-school" */
+  path: string;
+  /**
+   * Whether this landing page currently exists in the app.
+   * Set to false for planned pages so the workflow can show them as missing.
+   */
+  exists: boolean;
+}
+
 // Define what content types are expected for each level
 export const preschoolContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'songs'];
 export const primaryContentTypes: ContentType[] = ['vocab', 'matching', 'crossword', 'spell-quest', 'word-pop', 'catch-that', 'sound-match', 'memory-flip', 'word-race', 'word-snake', 'stories', 'songs', 'exercises', 'worksheets'];
+
+// High-level landing pages (home + level landings)
+// Update this list when you add/remove major landing routes in App.tsx
+export const landingPages: LandingPage[] = [
+  {
+    id: 'home',
+    name: 'Main Landing',
+    path: '/',
+    exists: true,
+  },
+  {
+    id: 'preschool',
+    name: 'Pre-school Landing',
+    path: '/pre-school',
+    exists: true,
+  },
+  {
+    id: 'primary',
+    name: 'Primary School Landing',
+    path: '/primary-school',
+    exists: true,
+  },
+  {
+    id: 'secondary',
+    name: 'Secondary School Landing',
+    path: '/secondary-school',
+    exists: true,
+  },
+  {
+    id: 'highschool',
+    name: 'High School Landing',
+    path: '/high-school',
+    exists: true,
+  },
+  {
+    id: 'university',
+    name: 'University Landing',
+    path: '/university',
+    exists: true,
+  },
+  {
+    id: 'business',
+    name: 'Business English Landing',
+    path: '/business-english',
+    exists: true,
+  },
+];
 
 export const workflowData: Level[] = [
   {
@@ -260,10 +320,10 @@ export const workflowData: Level[] = [
               { type: 'spell-quest', count: 1 },
               { type: 'word-pop', count: 1 },
               { type: 'catch-that', count: 1 },
-              { type: 'sound-match', count: 0 },
-              { type: 'memory-flip', count: 0 },
-              { type: 'word-race', count: 0 },
-              { type: 'word-snake', count: 0 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-snake', count: 1 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -280,10 +340,10 @@ export const workflowData: Level[] = [
               { type: 'spell-quest', count: 1 },
               { type: 'word-pop', count: 1 },
               { type: 'catch-that', count: 1 },
-              { type: 'sound-match', count: 0 },
-              { type: 'memory-flip', count: 0 },
-              { type: 'word-race', count: 0 },
-              { type: 'word-snake', count: 0 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-snake', count: 1 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -300,10 +360,10 @@ export const workflowData: Level[] = [
               { type: 'spell-quest', count: 1 },
               { type: 'word-pop', count: 1 },
               { type: 'catch-that', count: 1 },
-              { type: 'sound-match', count: 0 },
-              { type: 'memory-flip', count: 0 },
-              { type: 'word-race', count: 0 },
-              { type: 'word-snake', count: 0 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-snake', count: 1 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },
@@ -320,10 +380,30 @@ export const workflowData: Level[] = [
               { type: 'spell-quest', count: 1 },
               { type: 'word-pop', count: 1 },
               { type: 'catch-that', count: 1 },
-              { type: 'sound-match', count: 0 },
-              { type: 'memory-flip', count: 0 },
-              { type: 'word-race', count: 0 },
-              { type: 'word-snake', count: 0 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-snake', count: 1 },
+              { type: 'songs', count: 0 },
+              { type: 'stories', count: 0 },
+              { type: 'exercises', count: 0 },
+              { type: 'worksheets', count: 0 },
+            ],
+          },
+          {
+            id: 'theme6',
+            name: 'Theme 6: Life in the City & the World',
+            content: [
+              { type: 'vocab', count: 1 },
+              { type: 'matching', count: 1 },
+              { type: 'crossword', count: 1 },
+              { type: 'spell-quest', count: 1 },
+              { type: 'word-pop', count: 1 },
+              { type: 'catch-that', count: 1 },
+              { type: 'sound-match', count: 1 },
+              { type: 'memory-flip', count: 1 },
+              { type: 'word-race', count: 1 },
+              { type: 'word-snake', count: 1 },
               { type: 'songs', count: 0 },
               { type: 'stories', count: 0 },
               { type: 'exercises', count: 0 },

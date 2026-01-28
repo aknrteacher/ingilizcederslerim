@@ -117,23 +117,8 @@ export default function PrimarySchoolGrade2Theme3GamesMenu() {
   return (
     <Layout>
       <div className="oyunlar-container">
-        <div className="oyunlar-header">
-          <div>
-            <h1 className="oyunlar-title">2. Sınıf - Tema 3: Kişisel Hayat</h1>
-            <p className="oyunlar-subtitle">Kişisel hayatla ilgili kelimeleri öğren ve oyunlarla pekiştir</p>
-          </div>
-        </div>
-
-        {/* Primary School Games */}
+        {/* Combined Game Buttons - Single Row Layout */}
         <section className="games-section">
-          <div className="section-header">
-            <h2 className="section-title">Mevcut Oyunlar</h2>
-            <p className="section-description">
-              Eğlenerek İngilizce öğren
-            </p>
-          </div>
-
-          {/* Combined Game Buttons - Single Row Layout */}
           <div className="game-type-buttons-row">
             {gameCombinations.map((game) => (
               <CombinedGameButton

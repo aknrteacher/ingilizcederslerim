@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Share2, RefreshCw, Trophy, Heart } from "lucide-react";
+import { Share2, RefreshCw, Trophy } from "lucide-react";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import confetti from "canvas-confetti";
 import "@/styles/primary-school-game-header.css";
@@ -53,6 +53,19 @@ export default function WordSnakeGame() {
   const [isPaused, setIsPaused] = useState(false);
   const gameLoopRef = useRef<NodeJS.Timeout | null>(null);
   const directionRef = useRef(direction);
+  const gameContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to center the game when page loads
+  useEffect(() => {
+    if (gameContainerRef.current) {
+      setTimeout(() => {
+        gameContainerRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }, 100);
+    }
+  }, []);
 
   useEffect(() => {
     directionRef.current = direction;
@@ -91,22 +104,9 @@ export default function WordSnakeGame() {
 
   const playBuzzSound = useCallback(() => {
     try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      oscillator.type = 'sawtooth';
-      oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 0.2);
-      
-      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.2);
+      const audio = new Audio('/sounds/low.mp3');
+      audio.volume = 0.5;
+      audio.play().catch(err => console.error('Error playing sound:', err));
     } catch (error) {
       console.error('Error playing buzz sound:', error);
     }
@@ -323,7 +323,7 @@ export default function WordSnakeGame() {
   return (
     <Layout>
       <div className="word-snake-wrapper primary-school-game" id="word-snake-game">
-        <div className="word-snake-container">
+        <div className="word-snake-container" ref={gameContainerRef}>
           <PrimarySchoolGameHeader
             gameName="Snake"
             description="Grade 2 - Theme 2: Classroom Life"
@@ -351,49 +351,51 @@ export default function WordSnakeGame() {
 
           {gameStarted && !gameOver && (
             <>
+              {/* Stats Bar - Outside the grid */}
+              <div className="game-stats-bar">
+                <div className="compact-stats">
+                  <div className="stat-compact">
+                    <Trophy className="h-3 w-3" />
+                    <span>{score}</span>
+                  </div>
+                  <div className="stat-compact">
+                    <span>{Array(lives).fill('❤️').join('')}</span>
+                  </div>
+                  <div className="stat-compact">
+                    <span>{wordsCompleted}/5</span>
+                  </div>
+                </div>
+                
+                {targetWord && (
+                  <div className="target-overlay">
+                    <div className="word-progress-compact">
+                      {targetWord.word.split('').map((char, idx) => (
+                        <span 
+                          key={idx} 
+                          className={`letter-box-small ${idx < collectedLetters.length ? 'collected' : idx === collectedLetters.length ? 'next' : ''}`}
+                        >
+                          {idx < collectedLetters.length ? char.toUpperCase() : '_'}
+                        </span>
+                      ))}
+                    </div>
+                    <button 
+                      className="speak-btn-compact" 
+                      onClick={() => speakWord(targetWord.word)} 
+                      title="Listen to word"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Game Grid */}
               <div 
                 className="game-grid"
                 style={{
                   backgroundImage: targetWord ? `url(/images/primary/2.2/${targetWord.file})` : 'none'
                 }}
               >
-                <div className="game-overlay-top">
-                  <div className="compact-stats">
-                    <div className="stat-compact">
-                      <Trophy className="h-3 w-3" />
-                      <span>{score}</span>
-                    </div>
-                    <div className="stat-compact">
-                      <span>{Array(lives).fill('❤️').join('')}</span>
-                    </div>
-                    <div className="stat-compact">
-                      <span>{wordsCompleted}/5</span>
-                    </div>
-                  </div>
-                  
-                  {targetWord && (
-                    <div className="target-overlay">
-                      <div className="word-progress-compact">
-                        {targetWord.word.split('').map((char, idx) => (
-                          <span 
-                            key={idx} 
-                            className={`letter-box-small ${idx < collectedLetters.length ? 'collected' : idx === collectedLetters.length ? 'next' : ''}`}
-                          >
-                            {idx < collectedLetters.length ? char.toUpperCase() : '_'}
-                          </span>
-                        ))}
-                      </div>
-                      <button 
-                        className="speak-btn-compact" 
-                        onClick={() => speakWord(targetWord.word)} 
-                        title="Listen to word"
-                      >
-                        🔊
-                      </button>
-                    </div>
-                  )}
-                </div>
-
                 {snake.map((segment, idx) => (
                   <div
                     key={`snake-${idx}`}
@@ -488,14 +490,31 @@ export default function WordSnakeGame() {
 
       <style>{`
         .word-snake-wrapper {
-          min-height: 100vh;
+          min-height: calc(100vh - 80px);
           padding: 10px;
           position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
 
         .word-snake-container {
-          max-width: 650px;
+          max-width: 550px;
+          width: 100%;
           margin: 0 auto;
+        }
+        
+        @media (max-height: 800px) {
+          .word-snake-container {
+            max-width: 480px;
+          }
+        }
+        
+        @media (max-height: 700px) {
+          .word-snake-container {
+            max-width: 420px;
+          }
         }
 
         .start-screen {
@@ -532,27 +551,19 @@ export default function WordSnakeGame() {
           margin-top: 16px;
         }
 
-        .game-overlay-top {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          padding: 8px;
+        .game-stats-bar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          z-index: 100;
-          background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
-          pointer-events: none;
-        }
-
-        .game-overlay-top > * {
-          pointer-events: auto;
+          padding: 10px 12px;
+          background: linear-gradient(135deg, #1e293b, #334155);
+          border-radius: 12px 12px 0 0;
+          margin-bottom: 0;
         }
 
         .compact-stats {
           display: flex;
-          gap: 6px;
+          gap: 8px;
           flex-wrap: wrap;
         }
 
@@ -560,58 +571,72 @@ export default function WordSnakeGame() {
           display: flex;
           align-items: center;
           gap: 4px;
-          background: rgba(0, 0, 0, 0.7);
-          padding: 4px 10px;
-          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 6px 12px;
+          border-radius: 8px;
           font-weight: 600;
-          font-size: 13px;
+          font-size: 14px;
           color: white;
         }
 
         .target-overlay {
           display: flex;
           align-items: center;
-          gap: 6px;
-          background: rgba(0, 0, 0, 0.7);
-          padding: 6px;
-          border-radius: 12px;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 6px 10px;
+          border-radius: 8px;
         }
 
         .word-progress-compact {
           display: flex;
-          gap: 3px;
+          gap: 4px;
         }
 
         .letter-box-small {
-          width: 22px;
-          height: 26px;
+          width: 26px;
+          height: 30px;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(255, 255, 255, 0.2);
-          border-radius: 4px;
+          background: rgba(255, 255, 255, 0.15);
+          border-radius: 6px;
           font-weight: 700;
-          font-size: 14px;
+          font-size: 15px;
           color: white;
+          border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .letter-box-small.collected {
           background: #FF6B6B;
+          color: white;
+          border-color: #e55555;
         }
 
         .letter-box-small.next {
           border: 2px solid #FF8C42;
           animation: pulse 1s infinite;
+          background: rgba(255, 140, 66, 0.2);
         }
 
         .speak-btn-compact {
-          width: 32px;
-          height: 32px;
-          background: #FF6B6B;
-          border: 2px solid white;
+          width: 34px;
+          height: 34px;
+          background: linear-gradient(135deg, #FF6B6B, #e55555);
+          border: none;
           border-radius: 50%;
           font-size: 16px;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+          transition: all 0.2s ease;
+          flex-shrink: 0;
+        }
+
+        .speak-btn-compact:hover {
+          transform: scale(1.1);
         }
 
         @keyframes pulse {
@@ -627,7 +652,7 @@ export default function WordSnakeGame() {
           background-position: center;
           background-size: 50%;
           background-repeat: no-repeat;
-          border-radius: 12px;
+          border-radius: 0 0 12px 12px;
           overflow: hidden;
           margin-bottom: 8px;
         }
@@ -700,27 +725,36 @@ export default function WordSnakeGame() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 8px;
-          margin-bottom: 16px;
+          gap: 4px;
+          margin-bottom: 8px;
+          margin-top: 4px;
         }
 
         .control-row {
           display: flex;
-          gap: 8px;
+          gap: 6px;
         }
 
         .d-btn {
-          width: 60px;
-          height: 60px;
-          border-radius: 12px;
+          width: 50px;
+          height: 50px;
+          border-radius: 10px;
           border: 2px solid hsl(var(--border));
           background: hsl(var(--card));
-          font-size: 24px;
+          font-size: 20px;
           cursor: pointer;
         }
 
         .d-btn:active {
           background: #FF6B6B;
+        }
+        
+        @media (max-height: 700px) {
+          .d-btn {
+            width: 44px;
+            height: 44px;
+            font-size: 18px;
+          }
         }
 
         .game-end-modal {

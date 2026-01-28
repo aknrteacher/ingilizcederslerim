@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { NoIndex } from '@/components/NoIndex';
 import { Link } from 'wouter';
-import { workflowData, getWorkflowStats, gameContentTypes, ContentItem } from '@/data/workflowData';
+import { workflowData, getWorkflowStats, gameContentTypes, ContentItem, landingPages } from '@/data/workflowData';
 
 export default function WorkflowPage() {
   const [expandedLevels, setExpandedLevels] = useState<Set<string>>(new Set());
@@ -238,6 +238,7 @@ export default function WorkflowPage() {
           <div className="space-y-1.5">
             {workflowData.map((level) => {
               const levelStat = getLevelStats(level.id);
+              const levelLanding = landingPages.find(lp => lp.id === level.id);
               
               return (
                 <div key={level.id} className="bg-neutral-900/30 border border-neutral-800/50 rounded-lg overflow-hidden">
@@ -251,6 +252,18 @@ export default function WorkflowPage() {
                         ›
                       </span>
                       <span className={`text-xs font-medium uppercase tracking-wide ${levelStat.done === 0 ? 'text-red-500' : 'text-white'}`}>{level.name}</span>
+                      {levelLanding && (
+                        <span
+                          className={`ml-2 inline-flex items-center justify-center px-1.5 h-5 text-[9px] font-semibold rounded border ${
+                            levelLanding.exists
+                              ? 'border-green-500/70 text-green-400'
+                              : 'border-red-500/70 text-red-400'
+                          }`}
+                          title={`${levelLanding.exists ? 'Landing exists' : 'Landing missing'} · ${levelLanding.path}`}
+                        >
+                          LP
+                        </span>
+                      )}
                       <span className="text-neutral-600 text-[10px] ml-auto">{levelStat.done}/{levelStat.total}</span>
                     </button>
                     <button
