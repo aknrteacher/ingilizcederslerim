@@ -102,13 +102,20 @@ export default function WordMapPage() {
             if (previousOccurrences.length === 0) {
               stats.unique++;
             } else {
-              const first = previousOccurrences[0];
-              if (first.gradeId === grade.id) {
+              // Priority rule: same-grade (GREEN) > same-level (YELLOW) > different-level (BLUE)
+              // Check if word appears in same grade (highest priority)
+              const hasSameGrade = previousOccurrences.some(occ => occ.gradeId === grade.id);
+              if (hasSameGrade) {
                 stats.sameGrade++;
-              } else if (first.levelId === level.id) {
-                stats.sameLevel++;
               } else {
-                stats.differentLevel++;
+                // Check if word appears in same level but different grade
+                const hasSameLevel = previousOccurrences.some(occ => occ.levelId === level.id && occ.gradeId !== grade.id);
+                if (hasSameLevel) {
+                  stats.sameLevel++;
+                } else {
+                  // Otherwise it's in a different level
+                  stats.differentLevel++;
+                }
               }
             }
           });
@@ -145,14 +152,26 @@ export default function WordMapPage() {
       return { status: 'unique', previousOccurrences: [] };
     }
 
-    const firstOccurrence = previousOccurrences[0];
+    // Priority rule: Check all previous occurrences and find the highest priority match
+    // Priority order: same-grade (GREEN) > same-level (YELLOW) > different-level (BLUE)
+    
+    // Check if word appears in same grade (highest priority - GREEN)
+    const sameGradeOccurrences = previousOccurrences.filter(
+      occ => occ.gradeId === currentGradeId
+    );
+    if (sameGradeOccurrences.length > 0) {
+      return { status: 'same-grade', previousOccurrences: sameGradeOccurrences };
+    }
 
-    if (firstOccurrence.gradeId === currentGradeId) {
-      return { status: 'same-grade', previousOccurrences };
+    // Check if word appears in same level but different grade (YELLOW)
+    const sameLevelOccurrences = previousOccurrences.filter(
+      occ => occ.levelId === currentLevelId && occ.gradeId !== currentGradeId
+    );
+    if (sameLevelOccurrences.length > 0) {
+      return { status: 'same-level', previousOccurrences: sameLevelOccurrences };
     }
-    if (firstOccurrence.levelId === currentLevelId) {
-      return { status: 'same-level', previousOccurrences };
-    }
+
+    // Otherwise it's in a different level (BLUE)
     return { status: 'different-level', previousOccurrences };
   };
 

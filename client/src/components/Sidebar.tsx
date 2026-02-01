@@ -35,7 +35,11 @@ const grade2Themes = Array.from({ length: 6 }, (_, i) => ({
 
 const grade3Units = Array.from({ length: 10 }, (_, i) => ({
   title: `Ünite ${i + 1}`,
-  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-3/unit-${i + 1}/${act.href}` }))
+  items: activityItems.map(act => {
+    // For vocab, use unit-specific format (3.1-vocab, 3.2-vocab, etc.)
+    const vocabHref = act.href === "vocab" ? `3.${i + 1}-vocab` : act.href;
+    return { ...act, href: `/primary-school/grade-3/unit-${i + 1}/${vocabHref}` };
+  })
 }))
 
 const grade4Units = Array.from({ length: 10 }, (_, i) => ({

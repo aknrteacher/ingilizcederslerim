@@ -65,7 +65,7 @@ function flattenNavItems(): SearchableItem[] {
   for (let i = 1; i <= 10; i++) {
     items.push(
       { title: `Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/games`, category: "3. Sınıf", theme: "primary-school" },
-      { title: `Kelime Kartları - Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/vocab`, category: `3. Sınıf - Ünite ${i}`, theme: "primary-school" },
+      { title: `Kelime Kartları - Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/3.${i}-vocab`, category: `3. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Oyunlar - Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/games`, category: `3. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Şarkılar - Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/songs`, category: `3. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Hikayeler - Ünite ${i}`, href: `/primary-school/grade-3/unit-${i}/stories`, category: `3. Sınıf - Ünite ${i}`, theme: "primary-school" },

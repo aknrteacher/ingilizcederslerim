@@ -570,6 +570,217 @@ FUNCTIONS:
           },
         ],
       },
+      {
+        id: "grade-3",
+        name: "Grade 3",
+        nameTr: "3. Sınıf",
+        themes: [
+          {
+            id: "3.1",
+            name: "Unit 1",
+            nameTr: "Ünite 1",
+            notes: `GRAMMAR:
+• Greetings: Hello, Hi, Good morning, Good afternoon, Good evening, Good night, Goodbye
+• Introducing oneself and meeting others
+• Numbers: eleven, twelve, twenty
+• Basic math operations: plus, minus, count
+• Asking about age: How old are you?
+• Actions: say, write, draw
+
+FUNCTIONS:
+• Greeting people at different times of day
+• Introducing yourself and meeting others
+• Counting and basic math
+• Asking and answering about age
+• Describing actions`,
+            words: [
+              { word: "hello", turkish: "merhaba" },
+              { word: "hi", turkish: "selam" },
+              { word: "good morning", turkish: "günaydın" },
+              { word: "good afternoon", turkish: "iyi öğleden sonraları" },
+              { word: "good evening", turkish: "iyi akşamlar" },
+              { word: "good night", turkish: "iyi geceler" },
+              { word: "goodbye", turkish: "hoşça kal" },
+              { word: "take care", turkish: "kendine iyi bak" },
+              { word: "nice to meet you", turkish: "tanıştığımıza memnun oldum" },
+              { word: "see you soon", turkish: "yakında görüşürüz" },
+              { word: "alphabet", turkish: "alfabe" },
+              { word: "letters", turkish: "harfler" },
+              { word: "spell", turkish: "hecelemek" },
+              { word: "student", turkish: "öğrenci" },
+              { word: "numbers", turkish: "sayılar" },
+              { word: "eleven", turkish: "on bir" },
+              { word: "twelve", turkish: "on iki" },
+              { word: "twenty", turkish: "yirmi" },
+              { word: "count", turkish: "saymak" },
+              { word: "plus", turkish: "artı" },
+              { word: "minus", turkish: "eksi" },
+              { word: "birthday", turkish: "doğum günü" },
+              { word: "how old are you?", turkish: "kaç yaşındasın?" },
+              { word: "years old", turkish: "yaşında" },
+              { word: "age", turkish: "yaş" },
+              { word: "say", turkish: "söylemek" },
+              { word: "write", turkish: "yazmak" },
+              { word: "draw", turkish: "çizmek" },
+              { word: "picture", turkish: "resim" },
+            ],
+          },
+          {
+            id: "3.2",
+            name: "Unit 2",
+            nameTr: "Ünite 2",
+            notes: `GRAMMAR:
+• Family members vocabulary
+• Demonstrative pronouns: this, that
+• Question word: who
+• Possessive: my
+• Verb: has got
+• Introducing people
+• Asking about age: How old is he?
+• Family tree
+
+FUNCTIONS:
+• Introducing family members
+• Describing family relationships
+• Asking and answering about family members
+• Talking about age
+• Building a family tree`,
+            words: [
+              { word: "family", turkish: "aile" },
+              { word: "member", turkish: "üye" },
+              { word: "father", turkish: "baba" },
+              { word: "mother", turkish: "anne" },
+              { word: "brother", turkish: "erkek kardeş" },
+              { word: "sister", turkish: "kız kardeş" },
+              { word: "son", turkish: "oğul" },
+              { word: "daughter", turkish: "kız" },
+              { word: "uncle", turkish: "amca/dayı" },
+              { word: "aunt", turkish: "hala/teyze" },
+              { word: "grandfather", turkish: "büyükbaba" },
+              { word: "grandmother", turkish: "büyükanne" },
+              { word: "cousin", turkish: "kuzen" },
+              { word: "children", turkish: "çocuklar" },
+              { word: "grandchildren", turkish: "torunlar" },
+              { word: "who", turkish: "kim" },
+              { word: "this", turkish: "bu" },
+              { word: "that", turkish: "şu/o" },
+              { word: "say", turkish: "söylemek" },
+              { word: "student", turkish: "öğrenci" },
+              { word: "age", turkish: "yaş" },
+              { word: "how old is he?", turkish: "o kaç yaşında?" },
+              { word: "years old", turkish: "yaşında" },
+              { word: "my", turkish: "benim" },
+              { word: "name", turkish: "isim" },
+              { word: "is", turkish: "dır/dir" },
+              { word: "has got", turkish: "sahip" },
+              { word: "introduce", turkish: "tanıtmak" },
+              { word: "people", turkish: "insanlar" },
+              { word: "tree", turkish: "ağaç" },
+            ],
+          },
+          {
+            id: "3.3",
+            name: "Unit 3",
+            nameTr: "Ünite 3",
+            notes: `GRAMMAR:
+• Adjectives: small, big, old, young, short, tall, fast, slow, strong, weak, fat, slim
+• Action verbs: dance, walk, swim, talk, play, run, fly, jump, ride, climb, sing, lift, carry, draw
+• Present simple tense for actions
+• Describing people and abilities
+• Can/Can't for abilities
+
+FUNCTIONS:
+• Describing physical characteristics
+• Talking about abilities and actions
+• Comparing people and things
+• Expressing what people can do`,
+            words: [
+              { word: "small", turkish: "küçük" },
+              { word: "big", turkish: "büyük" },
+              { word: "old", turkish: "yaşlı" },
+              { word: "young", turkish: "genç" },
+              { word: "short", turkish: "kısa" },
+              { word: "tall", turkish: "uzun boylu" },
+              { word: "fast", turkish: "hızlı" },
+              { word: "slow", turkish: "yavaş" },
+              { word: "strong", turkish: "güçlü" },
+              { word: "weak", turkish: "zayıf" },
+              { word: "fat", turkish: "şişman" },
+              { word: "slim", turkish: "ince" },
+              { word: "dance", turkish: "dans etmek" },
+              { word: "walk", turkish: "yürümek" },
+              { word: "swim", turkish: "yüzmek" },
+              { word: "talk", turkish: "konuşmak" },
+              { word: "play", turkish: "oynamak" },
+              { word: "run", turkish: "koşmak" },
+              { word: "fly", turkish: "uçmak" },
+              { word: "jump", turkish: "zıplamak" },
+              { word: "ride", turkish: "binmek" },
+              { word: "climb", turkish: "tırmanmak" },
+              { word: "sing", turkish: "şarkı söylemek" },
+              { word: "lift", turkish: "kaldırmak" },
+              { word: "carry", turkish: "taşımak" },
+              { word: "draw", turkish: "çizmek" },
+              { word: "people", turkish: "insanlar" },
+              { word: "friend", turkish: "arkadaş" },
+              { word: "superhero", turkish: "süper kahraman" },
+              { word: "kite", turkish: "uçurtma" },
+              { word: "bike", turkish: "bisiklet" },
+            ],
+          },
+          {
+            id: "3.4",
+            name: "Unit 4",
+            nameTr: "Ünite 4",
+            notes: `GRAMMAR:
+• Feelings vocabulary: good, bad, happy, unhappy (sad), angry, surprised, energetic, tired, hungry, thirsty, full, bored, feel
+• Action verbs: eat, drink, walk, study, cook, watch, swim, read, sleep, run, sing a song, listen, look
+• Suggestions: Let's go
+• Questions: How are you?
+• Nouns: cake, water
+
+FUNCTIONS:
+• Expressing feelings and emotions
+• Making suggestions
+• Asking about feelings
+• Describing actions
+• Talking about basic needs`,
+            words: [
+              { word: "good", turkish: "iyi" },
+              { word: "bad", turkish: "kötü" },
+              { word: "happy", turkish: "mutlu" },
+              { word: "unhappy", turkish: "mutsuz" },
+              { word: "sad", turkish: "üzgün" },
+              { word: "angry", turkish: "kızgın" },
+              { word: "surprised", turkish: "şaşkın" },
+              { word: "energetic", turkish: "enerjik" },
+              { word: "tired", turkish: "yorgun" },
+              { word: "hungry", turkish: "aç" },
+              { word: "thirsty", turkish: "susamış" },
+              { word: "full", turkish: "tok" },
+              { word: "bored", turkish: "sıkılmış" },
+              { word: "feel", turkish: "hissetmek" },
+              { word: "eat", turkish: "yemek" },
+              { word: "drink", turkish: "içmek" },
+              { word: "walk", turkish: "yürümek" },
+              { word: "study", turkish: "çalışmak" },
+              { word: "cook", turkish: "pişirmek" },
+              { word: "watch", turkish: "izlemek" },
+              { word: "swim", turkish: "yüzmek" },
+              { word: "read", turkish: "okumak" },
+              { word: "sleep", turkish: "uyumak" },
+              { word: "run", turkish: "koşmak" },
+              { word: "sing a song", turkish: "şarkı söylemek" },
+              { word: "listen", turkish: "dinlemek" },
+              { word: "look", turkish: "bakmak" },
+              { word: "let's go", turkish: "hadi gidelim" },
+              { word: "how are you?", turkish: "nasılsın?" },
+              { word: "cake", turkish: "pasta" },
+              { word: "water", turkish: "su" },
+            ],
+          },
+        ],
+      },
     ],
   },
 ];
