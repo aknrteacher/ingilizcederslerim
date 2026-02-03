@@ -24,6 +24,7 @@ import VocabularyCards2_6 from "@/pages/primary/grade2/theme6/vocab/2.6.voc";
 import VocabularyCards3_1 from "@/pages/primary/grade3/unit1/vocab/3.1.voc";
 import VocabularyCards3_2 from "@/pages/primary/grade3/unit2/vocab/3.2.voc";
 import VocabularyCards3_3 from "@/pages/primary/grade3/unit3/vocab/3.3.voc";
+import VocabularyCards4_6 from "@/pages/primary/grade4/unit6/vocab/4.6.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/0.2-colours/0.1.voc";
 import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.voc";
 import AlphabetVocabulary from "@/pages/preschool/vocab/0.0-alphabet/0.1-alphabet.voc";
@@ -240,6 +241,7 @@ function Router() {
       <Route path="/primary-school/grade-3/unit-1/3.1-vocab" component={VocabularyCards3_1} />
       <Route path="/primary-school/grade-3/unit-2/3.2-vocab" component={VocabularyCards3_2} />
       <Route path="/primary-school/grade-3/unit-3/3.3-vocab" component={VocabularyCards3_3} />
+      <Route path="/primary-school/grade-4/unit-6/4.6-vocab" component={VocabularyCards4_6} />
       <Route path="/primary-school/grade-3/unit-1/3.1-matching-game" component={MatchingGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/crossword" component={CrosswordGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/spell-quest" component={SpellQuestGame3_1} />

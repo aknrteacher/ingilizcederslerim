@@ -44,7 +44,11 @@ const grade3Units = Array.from({ length: 10 }, (_, i) => ({
 
 const grade4Units = Array.from({ length: 10 }, (_, i) => ({
   title: `Ünite ${i + 1}`,
-  items: activityItems.map(act => ({ ...act, href: `/primary-school/grade-4/unit-${i + 1}/${act.href}` }))
+  items: activityItems.map(act => {
+    // For vocab, use unit-specific format (4.1-vocab, 4.2-vocab, etc.)
+    const vocabHref = act.href === "vocab" ? `4.${i + 1}-vocab` : act.href;
+    return { ...act, href: `/primary-school/grade-4/unit-${i + 1}/${vocabHref}` };
+  })
 }))
 
 const levelItems = [
