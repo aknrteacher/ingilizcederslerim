@@ -1,0 +1,679 @@
+.spell-quest-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.spell-quest-wrapper.primary-school-game {
+  padding: 0;
+}
+
+/* Cloud animations */
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(10px);
+  }
+}
+
+@keyframes cloud-float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+}
+
+.spell-quest-wrapper .cloud-float {
+  animation: cloud-float 4s ease-in-out infinite;
+}
+
+.spell-quest-wrapper .cloud-float-delayed {
+  animation: cloud-float-delayed 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.spell-quest-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.spell-quest-container {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Header */
+.spell-quest-wrapper .game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.spell-quest-wrapper .header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.spell-quest-wrapper .game-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.spell-quest-wrapper .sparkle-icon {
+  color: #fbbf24;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.1); }
+  75% { transform: rotate(10deg) scale(1.1); }
+}
+
+.spell-quest-wrapper .game-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Stats row - flex-shrink-0 to prevent compression */
+.spell-quest-container > div:nth-child(2) {
+  flex-shrink: 0;
+}
+
+.spell-quest-wrapper .game-stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.spell-quest-wrapper .stat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  border-radius: 2rem;
+}
+
+.spell-quest-wrapper .score-stat {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.spell-quest-wrapper .streak-stat {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  animation: pulse 0.5s ease-in-out;
+}
+
+.spell-quest-wrapper .stat-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #f59e0b;
+}
+
+.spell-quest-wrapper .stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.spell-quest-wrapper .stat-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.spell-quest-wrapper .streak-fire {
+  font-size: 1.25rem;
+}
+
+/* Main Game Area */
+.spell-quest-wrapper .game-main {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+/* Picture Area */
+.spell-quest-wrapper .picture-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.spell-quest-wrapper .picture-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  border: 3px solid #93c5fd;
+}
+
+.spell-quest-wrapper .word-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 1rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.spell-quest-wrapper .turkish-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+}
+
+.spell-quest-wrapper .hint-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.spell-quest-wrapper .hint-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e40af;
+}
+
+.spell-quest-wrapper .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.spell-quest-wrapper .hint-btn,
+.spell-quest-wrapper .sound-btn {
+  background: white;
+  border: 2px solid #e2e8f0;
+}
+
+.spell-quest-wrapper .hint-btn:hover,
+.spell-quest-wrapper .sound-btn:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.spell-quest-wrapper .first-letter-hint {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: #92400e;
+}
+
+.spell-quest-wrapper .first-letter-hint strong {
+  font-size: 1.25rem;
+  color: #78350f;
+}
+
+/* Spelling Area */
+.spell-quest-wrapper .spelling-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Answer Slots */
+.spell-quest-wrapper .answer-slots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.spell-quest-wrapper .answer-slot {
+  width: 50px;
+  height: 60px;
+  border: 3px dashed #93c5fd;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.spell-quest-wrapper .answer-slot.space-slot {
+  width: 20px;
+  border: none;
+  background: transparent;
+  cursor: default;
+  pointer-events: none;
+}
+
+.spell-quest-wrapper .answer-slot.space-slot:hover {
+  border: none;
+  background: transparent;
+}
+
+.spell-quest-wrapper .space-indicator {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #93c5fd;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.spell-quest-wrapper .answer-slot:hover {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.spell-quest-wrapper .answer-slot.filled {
+  border-style: solid;
+  border-color: transparent;
+}
+
+.spell-quest-wrapper .answer-slot.correct {
+  animation: correctPulse 0.5s ease;
+}
+
+.spell-quest-wrapper .answer-slot.wrong {
+  animation: shake 0.4s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.spell-quest-wrapper .slot-letter {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  border-radius: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Letter Bank */
+.spell-quest-wrapper .letter-bank {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 1rem;
+  border: 2px solid #93c5fd;
+}
+
+.spell-quest-wrapper .letter-tile {
+  width: 55px;
+  height: 65px;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.spell-quest-wrapper .letter-tile:hover:not(.used) {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+.spell-quest-wrapper .letter-tile.used {
+  opacity: 0.3;
+  transform: scale(0.9);
+  cursor: not-allowed;
+}
+
+.spell-quest-wrapper .reset-btn {
+  color: #6b7280;
+  gap: 0.5rem;
+}
+
+.spell-quest-wrapper .reset-btn:hover {
+  color: #4b5563;
+  background: #eff6ff;
+}
+
+/* Success Overlay */
+.spell-quest-wrapper .success-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.spell-quest-wrapper .success-content {
+  text-align: center;
+}
+
+.spell-quest-wrapper .success-stars {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  animation: bounceIn 0.6s ease;
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.spell-quest-wrapper .success-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #059669;
+  margin: 0 0 0.5rem 0;
+}
+
+.spell-quest-wrapper .success-word {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: 0.1em;
+}
+
+.spell-quest-wrapper .next-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spell-quest-wrapper .next-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+/* Complete Screen */
+.spell-quest-wrapper .complete-screen {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.spell-quest-wrapper .trophy-container {
+  margin-bottom: 1.5rem;
+}
+
+.spell-quest-wrapper .trophy-icon {
+  width: 80px;
+  height: 80px;
+  color: #f59e0b;
+  animation: trophyBounce 1s ease infinite;
+}
+
+@keyframes trophyBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.spell-quest-wrapper .complete-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e40af;
+  margin: 0 0 0.5rem 0;
+}
+
+.spell-quest-wrapper .complete-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin: 0 0 2rem 0;
+}
+
+.spell-quest-wrapper .final-stats {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.spell-quest-wrapper .final-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-radius: 1rem;
+}
+
+.spell-quest-wrapper .final-stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spell-quest-wrapper .final-stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e40af;
+}
+
+.spell-quest-wrapper .complete-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.spell-quest-wrapper .play-again-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+}
+
+.spell-quest-wrapper .play-again-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+/* Footer */
+.spell-quest-wrapper .primary-school-game-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.spell-quest-wrapper .footer-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.spell-quest-wrapper .footer-button {
+  background: white;
+  border: 2px solid #e2e8f0;
+  gap: 0.5rem;
+}
+
+.spell-quest-wrapper .footer-button:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+
+.spell-quest-wrapper .back-link {
+  color: #6b7280;
+}
+
+.spell-quest-wrapper .back-link:hover {
+  color: #4b5563;
+}
+
+.spell-quest-wrapper .loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  font-size: 1.25rem;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .spell-quest-wrapper .game-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .spell-quest-wrapper .game-main {
+    padding: 1.5rem 1rem;
+  }
+  
+  .spell-quest-wrapper .word-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .spell-quest-wrapper .answer-slot {
+    width: 40px;
+    height: 50px;
+  }
+  
+  .spell-quest-wrapper .slot-letter {
+    font-size: 1.25rem;
+  }
+  
+  .spell-quest-wrapper .letter-tile {
+    width: 45px;
+    height: 55px;
+    font-size: 1.5rem;
+  }
+  
+  .spell-quest-wrapper .final-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .spell-quest-wrapper .game-footer {
+    flex-direction: column;
+  }
+}
+
+/* Fullscreen Styles */
+.spell-quest-wrapper.fullscreen-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  padding: 1.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.spell-quest-wrapper.fullscreen-active .spell-quest-container {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+}
+
+.spell-quest-wrapper.fullscreen-active .game-main {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.spell-quest-wrapper.fullscreen-active .word-image {
+  width: 150px;
+  height: 150px;
+}
+
+.spell-quest-wrapper.fullscreen-active .answer-slot {
+  width: 55px;
+  height: 65px;
+}
+
+.spell-quest-wrapper.fullscreen-active .letter-tile {
+  width: 60px;
+  height: 70px;
+  font-size: 1.875rem;
+}
+
+.spell-quest-wrapper.fullscreen-active .complete-screen {
+  padding: 1.5rem;
+}

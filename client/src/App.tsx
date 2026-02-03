@@ -24,6 +24,7 @@ import VocabularyCards2_6 from "@/pages/primary/grade2/theme6/vocab/2.6.voc";
 import VocabularyCards3_1 from "@/pages/primary/grade3/unit1/vocab/3.1.voc";
 import VocabularyCards3_2 from "@/pages/primary/grade3/unit2/vocab/3.2.voc";
 import VocabularyCards3_3 from "@/pages/primary/grade3/unit3/vocab/3.3.voc";
+import VocabularyCards3_6 from "@/pages/primary/grade3/unit6/vocab/3.6.voc";
 import VocabularyCards4_6 from "@/pages/primary/grade4/unit6/vocab/4.6.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/0.2-colours/0.1.voc";
 import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.voc";
@@ -48,6 +49,8 @@ import PrimarySchoolGrade2Theme6GamesMenu from "@/pages/primary-school-grade2-th
 import PrimarySchoolGrade3Unit1GamesMenu from "@/pages/primary-school-grade3-unit1-games-menu";
 import PrimarySchoolGrade3Unit2GamesMenu from "@/pages/primary-school-grade3-unit2-games-menu";
 import PrimarySchoolGrade3Unit3GamesMenu from "@/pages/primary-school-grade3-unit3-games-menu";
+import PrimarySchoolGrade3Unit6GamesMenu from "@/pages/primary-school-grade3-unit6-games-menu";
+import PrimarySchoolGrade4Unit6GamesMenu from "@/pages/primary-school-grade4-unit6-games-menu";
 import MatchingGame from "@/pages/primary/grade2/theme1/games/2.1.matching-game";
 import MatchingGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.matching-game";
 import MatchingGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.matching-game";
@@ -175,6 +178,16 @@ import WordSnakeGame2_6 from "@/pages/primary/grade2/theme6/games/2.6.word-snake
 import MatchingGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.matching-game";
 import CrosswordGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.crossword";
 import SpellQuestGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.spell-quest";
+// Grade 4 Unit 6 Games
+import MatchingGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.matching-game";
+import CrosswordGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.crossword";
+import SpellQuestGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.spell-quest";
+import WordPopGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.word-pop";
+import CatchThatGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.catch-that";
+import SayWhatGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.say-what";
+import MemoryFlipGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.memory-flip";
+import WordRaceGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.word-race";
+import WordSnakeGame4_6 from "@/pages/primary/grade4/unit6/games/4.6.word-snake";
 import WordPopGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.word-pop";
 import CatchThatGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.catch-that";
 import SayWhatGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.say-what";
@@ -201,6 +214,16 @@ import SayWhatGame3_3 from "@/pages/primary/grade3/unit3/games/3.3.say-what";
 import MemoryFlipGame3_3 from "@/pages/primary/grade3/unit3/games/3.3.memory-flip";
 import WordRaceGame3_3 from "@/pages/primary/grade3/unit3/games/3.3.word-race";
 import WordSnakeGame3_3 from "@/pages/primary/grade3/unit3/games/3.3.word-snake";
+// Unit 6 games
+import MatchingGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.matching-game";
+import CrosswordGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.crossword";
+import SpellQuestGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.spell-quest";
+import WordPopGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.word-pop";
+import CatchThatGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.catch-that";
+import SayWhatGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.say-what";
+import MemoryFlipGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.memory-flip";
+import WordRaceGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.word-race";
+import WordSnakeGame3_6 from "@/pages/primary/grade3/unit6/games/3.6.word-snake";
 import StoriesMenu from "@/pages/primary/stories/stories-menu";
 import StoryReaderPage from "@/pages/primary/stories/story-reader";
 // Admin imports
@@ -232,6 +255,8 @@ function Router() {
       <Route path="/primary-school/grade-3/unit-1/games" component={PrimarySchoolGrade3Unit1GamesMenu} />
       <Route path="/primary-school/grade-3/unit-2/games" component={PrimarySchoolGrade3Unit2GamesMenu} />
       <Route path="/primary-school/grade-3/unit-3/games" component={PrimarySchoolGrade3Unit3GamesMenu} />
+      <Route path="/primary-school/grade-3/unit-6/games" component={PrimarySchoolGrade3Unit6GamesMenu} />
+      <Route path="/primary-school/grade-4/unit-6/games" component={PrimarySchoolGrade4Unit6GamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-2/2.2-vocab" component={VocabularyCards2_2} />
       <Route path="/primary-school/grade-2/theme-3/2.3-vocab" component={VocabularyCards2_3} />
@@ -241,7 +266,17 @@ function Router() {
       <Route path="/primary-school/grade-3/unit-1/3.1-vocab" component={VocabularyCards3_1} />
       <Route path="/primary-school/grade-3/unit-2/3.2-vocab" component={VocabularyCards3_2} />
       <Route path="/primary-school/grade-3/unit-3/3.3-vocab" component={VocabularyCards3_3} />
+      <Route path="/primary-school/grade-3/unit-6/3.6-vocab" component={VocabularyCards3_6} />
       <Route path="/primary-school/grade-4/unit-6/4.6-vocab" component={VocabularyCards4_6} />
+      <Route path="/primary-school/grade-4/unit-6/4.6-matching-game" component={MatchingGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/crossword" component={CrosswordGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/spell-quest" component={SpellQuestGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/word-pop" component={WordPopGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/catch-that" component={CatchThatGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/say-what" component={SayWhatGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/memory-flip" component={MemoryFlipGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/word-race" component={WordRaceGame4_6} />
+      <Route path="/primary-school/grade-4/unit-6/word-snake" component={WordSnakeGame4_6} />
       <Route path="/primary-school/grade-3/unit-1/3.1-matching-game" component={MatchingGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/crossword" component={CrosswordGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/spell-quest" component={SpellQuestGame3_1} />
@@ -271,6 +306,16 @@ function Router() {
       <Route path="/primary-school/grade-3/unit-1/memory-flip" component={MemoryFlipGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/word-race" component={WordRaceGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/word-snake" component={WordSnakeGame3_1} />
+      {/* Unit 6 games */}
+      <Route path="/primary-school/grade-3/unit-6/3.6-matching-game" component={MatchingGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/crossword" component={CrosswordGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/spell-quest" component={SpellQuestGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/word-pop" component={WordPopGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/catch-that" component={CatchThatGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/say-what" component={SayWhatGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/memory-flip" component={MemoryFlipGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/word-race" component={WordRaceGame3_6} />
+      <Route path="/primary-school/grade-3/unit-6/word-snake" component={WordSnakeGame3_6} />
       <Route path="/primary-school/grade-2/theme-1/2.1-matching-game" component={MatchingGame} />
       <Route path="/primary-school/grade-2/theme-2/2.2-matching-game" component={MatchingGame2_2} />
       <Route path="/primary-school/grade-2/theme-3/2.3-matching-game" component={MatchingGame2_3} />

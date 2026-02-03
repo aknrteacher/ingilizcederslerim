@@ -17,35 +17,40 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
-  { word: "HI", turkish: "Selam", file: "hi.png" },
-  { word: "GOOD MORNING", turkish: "Günaydın", file: "good morning.png" },
-  { word: "GOOD AFTERNOON", turkish: "İyi öğleden sonraları", file: "good afternoon.png" },
-  { word: "GOOD EVENING", turkish: "İyi akşamlar", file: "good evening.png" },
-  { word: "GOOD NIGHT", turkish: "İyi geceler", file: "good night.png" },
-  { word: "GOODBYE", turkish: "Hoşça kal", file: "goodbye.png" },
-  { word: "TAKE CARE", turkish: "Kendine iyi bak", file: "take care.png" },
-  { word: "NICE TO MEET YOU", turkish: "Tanıştığımıza memnun oldum", file: "nice to meet you.png" },
-  { word: "SEE YOU SOON", turkish: "Yakında görüşürüz", file: "see you soon.png" },
-  { word: "ALPHABET", turkish: "Alfabe", file: "alphabet.png" },
-  { word: "LETTERS", turkish: "Harfler", file: "letters.png" },
-  { word: "SPELL", turkish: "Hecelemek", file: "spell.png" },
-  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
-  { word: "NUMBERS", turkish: "Sayılar", file: "numbers.png" },
-  { word: "ELEVEN", turkish: "On bir", file: "eleven.png" },
-  { word: "TWELVE", turkish: "On iki", file: "twelve.png" },
-  { word: "TWENTY", turkish: "Yirmi", file: "twenty.png" },
-  { word: "COUNT", turkish: "Saymak", file: "count.png" },
-  { word: "PLUS", turkish: "Artı", file: "plus.png" },
-  { word: "MINUS", turkish: "Eksi", file: "minus.png" },
-  { word: "BIRTHDAY", turkish: "Doğum günü", file: "birthday.png" },
-  { word: "HOW OLD ARE YOU?", turkish: "Kaç yaşındasın?", file: "how old are you.png" },
-  { word: "YEARS OLD", turkish: "Yaşında", file: "years old.png" },
-  { word: "AGE", turkish: "Yaş", file: "age.png" },
-  { word: "SAY", turkish: "Söylemek", file: "say.png" },
-  { word: "WRITE", turkish: "Yazmak", file: "write.png" },
-  { word: "DRAW", turkish: "Çizmek", file: "draw.png" },
-  { word: "PICTURE", turkish: "Resim", file: "picture.png" },
+  { word: "HOUSE", turkish: "Ev", file: "house.png" },
+  { word: "ROOM", turkish: "Oda", file: "room.png" },
+  { word: "LIVINGROOM", turkish: "Oturma odası", file: "living_room.png" },
+  { word: "PLAYROOM", turkish: "Oyun odası", file: "playroom.png" },
+  { word: "BEDROOM", turkish: "Yatak odası", file: "bedroom.png" },
+  { word: "KITCHEN", turkish: "Mutfak", file: "kitchen.png" },
+  { word: "BATHROOM", turkish: "Banyo", file: "bathroom.png" },
+  { word: "GARAGE", turkish: "Garaj", file: "garage.png" },
+  { word: "WHERE", turkish: "Nerede", file: "where.png" },
+  { word: "BED", turkish: "Yatak", file: "bed.png" },
+  { word: "CHAIR", turkish: "Sandalye", file: "chair.png" },
+  { word: "CUP", turkish: "Fincan", file: "cup.png" },
+  { word: "SOAP", turkish: "Sabun", file: "soap.png" },
+  { word: "SHAMPOO", turkish: "Şampuan", file: "shampoo.png" },
+  { word: "FRIDGE", turkish: "Buzdolabı", file: "fridge.png" },
+  { word: "SOFA", turkish: "Kanepe", file: "sofa.png" },
+  { word: "LAMP", turkish: "Lamba", file: "lamp.png" },
+  { word: "TABLE", turkish: "Masa", file: "table.png" },
+  { word: "KETTLE", turkish: "Çaydanlık", file: "kettle.png" },
+  { word: "TOY", turkish: "Oyuncak", file: "toy.png" },
+  { word: "DOLL", turkish: "Bebek", file: "doll.png" },
+  { word: "BOX", turkish: "Kutu", file: "box.png" },
+  { word: "BALL", turkish: "Top", file: "ball.png" },
+  { word: "KITE", turkish: "Uçurtma", file: "kite.png" },
+  { word: "IN", turkish: "İçinde", file: "in.png" },
+  { word: "ON", turkish: "Üzerinde", file: "on.png" },
+  { word: "UNDER", turkish: "Altında", file: "under.png" },
+  { word: "SHAPE", turkish: "Şekil", file: "shape.png" },
+  { word: "CIRCLE", turkish: "Daire", file: "circle.png" },
+  { word: "SQUARE", turkish: "Kare", file: "square.png" },
+  { word: "TRIANGLE", turkish: "Üçgen", file: "triangle.png" },
+  { word: "RECTANGLE", turkish: "Dikdörtgen", file: "rectangle.png" },
+  { word: "ROUND", turkish: "Yuvarlak", file: "round.png" },
+  { word: "HAPPY", turkish: "Mutlu", file: "happy.png" },
 ];
 
 const letterColors = [
@@ -255,7 +260,7 @@ export default function SpellQuestGame() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="Grade 3 - Unit 1: Hello!"
+            description="Grade 3 - Unit 6: My House"
             containerId="spell-quest-game"
             icon="✨"
           />
@@ -291,7 +296,7 @@ export default function SpellQuestGame() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/primary/3.1/${currentWord.file}`} 
+                    src={`/images/primary/3.6/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />
@@ -452,7 +457,7 @@ export default function SpellQuestGame() {
                   <Button onClick={startNewGame} className="play-again-btn" data-testid="button-play-again">
                     Play Again
                   </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
                   Back to Games
                 </Button>
                 </div>
@@ -475,7 +480,7 @@ export default function SpellQuestGame() {
                 <Button onClick={startNewGame} variant="outline" className="footer-button" data-testid="button-new-game">
                   New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
                   ← Back
                 </Button>
               </div>

@@ -6,45 +6,52 @@ import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
-import "@/styles/3.1.word-pop.css";
+import "@/styles/4.6.word-pop.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const vocabulary = [
-  { word: "HOUSE", turkish: "Ev", file: "house.png" },
-  { word: "ROOM", turkish: "Oda", file: "room.png" },
-  { word: "LIVINGROOM", turkish: "Oturma odası", file: "living_room.png" },
-  { word: "PLAYROOM", turkish: "Oyun odası", file: "playroom.png" },
-  { word: "BEDROOM", turkish: "Yatak odası", file: "bedroom.png" },
-  { word: "KITCHEN", turkish: "Mutfak", file: "kitchen.png" },
-  { word: "BATHROOM", turkish: "Banyo", file: "bathroom.png" },
-  { word: "GARAGE", turkish: "Garaj", file: "garage.png" },
-  { word: "WHERE", turkish: "Nerede", file: "where.png" },
-  { word: "BED", turkish: "Yatak", file: "bed.png" },
-  { word: "CHAIR", turkish: "Sandalye", file: "chair.png" },
-  { word: "CUP", turkish: "Fincan", file: "cup.png" },
-  { word: "SOAP", turkish: "Sabun", file: "soap.png" },
-  { word: "SHAMPOO", turkish: "Şampuan", file: "shampoo.png" },
-  { word: "FRIDGE", turkish: "Buzdolabı", file: "fridge.png" },
-  { word: "SOFA", turkish: "Kanepe", file: "sofa.png" },
-  { word: "LAMP", turkish: "Lamba", file: "lamp.png" },
-  { word: "TABLE", turkish: "Masa", file: "table.png" },
-  { word: "KETTLE", turkish: "Çaydanlık", file: "kettle.png" },
-  { word: "TOY", turkish: "Oyuncak", file: "toy.png" },
-  { word: "DOLL", turkish: "Bebek", file: "doll.png" },
-  { word: "BOX", turkish: "Kutu", file: "box.png" },
-  { word: "BALL", turkish: "Top", file: "ball.png" },
-  { word: "KITE", turkish: "Uçurtma", file: "kite.png" },
-  { word: "IN", turkish: "İçinde", file: "in.png" },
-  { word: "ON", turkish: "Üzerinde", file: "on.png" },
-  { word: "UNDER", turkish: "Altında", file: "under.png" },
-  { word: "SHAPE", turkish: "Şekil", file: "shape.png" },
-  { word: "CIRCLE", turkish: "Daire", file: "circle.png" },
-  { word: "SQUARE", turkish: "Kare", file: "square.png" },
-  { word: "TRIANGLE", turkish: "Üçgen", file: "triangle.png" },
-  { word: "RECTANGLE", turkish: "Dikdörtgen", file: "rectangle.png" },
-  { word: "ROUND", turkish: "Yuvarlak", file: "round.png" },
-  { word: "HAPPY", turkish: "Mutlu", file: "happy.png" },
+  { word: "FUN", turkish: "eğlence", file: "fun.png" },
+  { word: "SCIENCE", turkish: "bilim", file: "science.png" },
+  { word: "COLOUR", turkish: "renk", file: "colour.png" },
+  { word: "RAINBOW", turkish: "gökkuşağı", file: "rainbow.png" },
+  { word: "TAIL", turkish: "kuyruk", file: "tail.png" },
+  { word: "BOWL", turkish: "kase", file: "bowl.png" },
+  { word: "MILK", turkish: "süt", file: "milk.png" },
+  { word: "DISH", turkish: "tabak", file: "dish.png" },
+  { word: "SOAP", turkish: "sabun", file: "soap.png" },
+  { word: "COTTON", turkish: "pamuk", file: "cotton.png" },
+  { word: "FOOD", turkish: "yiyecek", file: "food.png" },
+  { word: "PRIMARY", turkish: "birincil", file: "primary.png" },
+  { word: "SECONDARY", turkish: "ikincil", file: "secondary.png" },
+  { word: "MIX", turkish: "karıştırmak", file: "mix.png" },
+  { word: "GET", turkish: "almak", file: "get.png" },
+  { word: "PAINT", turkish: "boya", file: "paint.png" },
+  { word: "BRUSH", turkish: "fırça", file: "brush.png" },
+  { word: "BOX", turkish: "kutu", file: "box.png" },
+  { word: "SALT", turkish: "tuz", file: "salt.png" },
+  { word: "SAUCEPAN", turkish: "tencere", file: "saucepan.png" },
+  { word: "CLOCK", turkish: "saat", file: "clock.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
+  { word: "CUP", turkish: "fincan", file: "cup.png" },
+  { word: "BOARD", turkish: "tahta", file: "board.png" },
+  { word: "SCALE", turkish: "terazi", file: "scale.png" },
+  { word: "BED", turkish: "yatak", file: "bed.png" },
+  { word: "PAPER", turkish: "kağıt", file: "paper.png" },
+  { word: "LOOK", turkish: "bakmak", file: "look.png" },
+  { word: "STONE", turkish: "taş", file: "stone.png" },
+  { word: "CHARCOAL", turkish: "kömür", file: "charcoal.png" },
+  { word: "JAR", turkish: "kavanoz", file: "jar.png" },
+  { word: "SOIL", turkish: "toprak", file: "soil.png" },
+  { word: "PLANT", turkish: "bitki", file: "plant.png" },
+  { word: "LID", turkish: "kapak", file: "lid.png" },
+  { word: "CANDLE", turkish: "mum", file: "candle.png" },
+  { word: "LIQUID", turkish: "sıvı", file: "liquid.png" },
+  { word: "HEAT", turkish: "ısı", file: "heat.png" },
+  { word: "GLASS", turkish: "cam", file: "glass.png" },
+  { word: "SHAKE", turkish: "sallamak", file: "shake.png" },
+  { word: "FLOWER", turkish: "çiçek", file: "flower.png" },
+  { word: "RESULT", turkish: "sonuç", file: "result.png" },
 ];
 
 const balloonStyles = [
@@ -123,7 +130,7 @@ function BalloonShape({ style, word }: { style: typeof balloonStyles[0], word: s
   }
 }
 
-export default function WordPopGame() {
+export default function WordPopGame4_6() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
@@ -375,7 +382,7 @@ export default function WordPopGame() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Word Pop"
-            description="Grade 3 - Unit 6: My House"
+            description="Grade 4 - Unit 6"
             containerId="word-pop-game"
             icon="🎈"
           />
@@ -428,7 +435,7 @@ export default function WordPopGame() {
             >
               <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3 mx-auto">
                 <img 
-                  src={`/images/primary/3.6/${currentWord.file}`} 
+                  src={`/images/primary/4.6/${currentWord.file}`} 
                   alt={currentWord.word}
                   className="w-28 h-28 sm:w-40 sm:h-40 object-contain"
                 />
@@ -545,7 +552,7 @@ export default function WordPopGame() {
                 <Button onClick={resetGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   ← Back
                 </Button>
               </div>
@@ -611,7 +618,7 @@ export default function WordPopGame() {
                     Play Again
                   </Button>
                   <Button
-                    onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}
+                    onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}
                     variant="ghost"
                     size="lg"
                     className="w-full"

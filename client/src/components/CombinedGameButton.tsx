@@ -72,7 +72,7 @@ export function CombinedGameButton({
   topicImage,
   gameTypeImage,
 }: CombinedGameButtonProps) {
-  const gameStyle = gradientStyles[gameGradient];
+  const gameStyle = gradientStyles[gameGradient] || gradientStyles["yellow-orange"];
   const topicGradient = topicColors[topicValue] || "linear-gradient(135deg, #E0E0E0 0%, #B0B0B0 100%)";
 
   return (

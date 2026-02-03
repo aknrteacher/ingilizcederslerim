@@ -10,37 +10,42 @@ import "@/styles/3.1.crossword.css"; // Reusing styles
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Vocabulary from 3.1 (Unit 1: Hello!)
+// Vocabulary from 3.6 (Unit 6: My House)
 const vocabulary = [
-  { word: "HELLO", clue: "Merhaba", file: "hello.png" },
-  { word: "HI", clue: "Selam", file: "hi.png" },
-  { word: "GOODMORNING", clue: "Günaydın", file: "good morning.png" },
-  { word: "GOODAFTERNOON", clue: "İyi öğleden sonraları", file: "good afternoon.png" },
-  { word: "GOODEVENING", clue: "İyi akşamlar", file: "good evening.png" },
-  { word: "GOODNIGHT", clue: "İyi geceler", file: "good night.png" },
-  { word: "GOODBYE", clue: "Hoşça kal", file: "goodbye.png" },
-  { word: "TAKECARE", clue: "Kendine iyi bak", file: "take care.png" },
-  { word: "NICETOMEETYOU", clue: "Tanıştığımıza memnun oldum", file: "nice to meet you.png" },
-  { word: "SEEYOUSOON", clue: "Yakında görüşürüz", file: "see you soon.png" },
-  { word: "ALPHABET", clue: "Alfabe", file: "alphabet.png" },
-  { word: "LETTERS", clue: "Harfler", file: "letters.png" },
-  { word: "SPELL", clue: "Hecelemek", file: "spell.png" },
-  { word: "STUDENT", clue: "Öğrenci", file: "student.png" },
-  { word: "NUMBERS", clue: "Sayılar", file: "numbers.png" },
-  { word: "ELEVEN", clue: "On bir", file: "eleven.png" },
-  { word: "TWELVE", clue: "On iki", file: "twelve.png" },
-  { word: "TWENTY", clue: "Yirmi", file: "twenty.png" },
-  { word: "COUNT", clue: "Saymak", file: "count.png" },
-  { word: "PLUS", clue: "Artı", file: "plus.png" },
-  { word: "MINUS", clue: "Eksi", file: "minus.png" },
-  { word: "BIRTHDAY", clue: "Doğum günü", file: "birthday.png" },
-  { word: "HOWOLDAREYOU", clue: "Kaç yaşındasın?", file: "how old are you.png" },
-  { word: "YEARSOLD", clue: "Yaşında", file: "years old.png" },
-  { word: "AGE", clue: "Yaş", file: "age.png" },
-  { word: "SAY", clue: "Söylemek", file: "say.png" },
-  { word: "WRITE", clue: "Yazmak", file: "write.png" },
-  { word: "DRAW", clue: "Çizmek", file: "draw.png" },
-  { word: "PICTURE", clue: "Resim", file: "picture.png" },
+  { word: "HOUSE", clue: "Ev", file: "house.png" },
+  { word: "ROOM", clue: "Oda", file: "room.png" },
+  { word: "LIVINGROOM", clue: "Oturma odası", file: "living_room.png" },
+  { word: "PLAYROOM", clue: "Oyun odası", file: "playroom.png" },
+  { word: "BEDROOM", clue: "Yatak odası", file: "bedroom.png" },
+  { word: "KITCHEN", clue: "Mutfak", file: "kitchen.png" },
+  { word: "BATHROOM", clue: "Banyo", file: "bathroom.png" },
+  { word: "GARAGE", clue: "Garaj", file: "garage.png" },
+  { word: "WHERE", clue: "Nerede", file: "where.png" },
+  { word: "BED", clue: "Yatak", file: "bed.png" },
+  { word: "CHAIR", clue: "Sandalye", file: "chair.png" },
+  { word: "CUP", clue: "Fincan", file: "cup.png" },
+  { word: "SOAP", clue: "Sabun", file: "soap.png" },
+  { word: "SHAMPOO", clue: "Şampuan", file: "shampoo.png" },
+  { word: "FRIDGE", clue: "Buzdolabı", file: "fridge.png" },
+  { word: "SOFA", clue: "Kanepe", file: "sofa.png" },
+  { word: "LAMP", clue: "Lamba", file: "lamp.png" },
+  { word: "TABLE", clue: "Masa", file: "table.png" },
+  { word: "KETTLE", clue: "Çaydanlık", file: "kettle.png" },
+  { word: "TOY", clue: "Oyuncak", file: "toy.png" },
+  { word: "DOLL", clue: "Bebek", file: "doll.png" },
+  { word: "BOX", clue: "Kutu", file: "box.png" },
+  { word: "BALL", clue: "Top", file: "ball.png" },
+  { word: "KITE", clue: "Uçurtma", file: "kite.png" },
+  { word: "IN", clue: "İçinde", file: "in.png" },
+  { word: "ON", clue: "Üzerinde", file: "on.png" },
+  { word: "UNDER", clue: "Altında", file: "under.png" },
+  { word: "SHAPE", clue: "Şekil", file: "shape.png" },
+  { word: "CIRCLE", clue: "Daire", file: "circle.png" },
+  { word: "SQUARE", clue: "Kare", file: "square.png" },
+  { word: "TRIANGLE", clue: "Üçgen", file: "triangle.png" },
+  { word: "RECTANGLE", clue: "Dikdörtgen", file: "rectangle.png" },
+  { word: "ROUND", clue: "Yuvarlak", file: "round.png" },
+  { word: "HAPPY", clue: "Mutlu", file: "happy.png" },
 ];
 
 interface Cell {
@@ -89,7 +94,7 @@ export default function CrosswordGame() {
   // Background collage images
   const collageImages = placedWords.map(pw => {
       const vocab = vocabulary.find(v => v.word === pw.word);
-      return vocab?.file ? `/images/primary/3.1/${vocab.file}` : null;
+      return vocab?.file ? `/images/primary/3.6/${vocab.file}` : null;
   }).filter(Boolean) as string[];
 
   const speakWord = (word: string) => {
@@ -408,7 +413,7 @@ export default function CrosswordGame() {
 
             <PrimarySchoolGameHeader 
               gameName="Word Cross"
-              description="Grade 3 - Unit 1: Hello!"
+              description="Grade 3 - Unit 6: My House"
               containerId="crossword-game-wrapper"
               icon="🧩"
             />
@@ -612,7 +617,7 @@ export default function CrosswordGame() {
                   <Button onClick={generateGrid} variant="outline" className="footer-button">
                     <RefreshCw className="h-4 w-4" /> New Game
                   </Button>
-                  <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                  <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
                     ← Back
                   </Button>
                 </div>
@@ -659,7 +664,7 @@ export default function CrosswordGame() {
                     <Button onClick={generateGrid} size="lg" className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-xl shadow-lg shadow-blue-200">
                       Play Again
                     </Button>
-                    <Button onClick={() => setLocation("/primary-school/grade-3/unit-1/games")} variant="ghost" size="lg" className="w-full text-slate-600 hover:bg-slate-50 rounded-xl">
+                    <Button onClick={() => setLocation("/primary-school/grade-3/unit-6/games")} variant="ghost" size="lg" className="w-full text-slate-600 hover:bg-slate-50 rounded-xl">
                       Back to Games
                     </Button>
                   </div>

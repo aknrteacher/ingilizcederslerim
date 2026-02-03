@@ -6,7 +6,7 @@ import { Share2, Zap, Sparkles, Volume2, Star, Trophy, ChevronRight, RotateCcw }
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
-import "@/styles/3.1.spell-quest.css";
+import "@/styles/4.6.spell-quest.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
@@ -17,35 +17,47 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
-  { word: "HI", turkish: "Selam", file: "hi.png" },
-  { word: "GOOD MORNING", turkish: "Günaydın", file: "good morning.png" },
-  { word: "GOOD AFTERNOON", turkish: "İyi öğleden sonraları", file: "good afternoon.png" },
-  { word: "GOOD EVENING", turkish: "İyi akşamlar", file: "good evening.png" },
-  { word: "GOOD NIGHT", turkish: "İyi geceler", file: "good night.png" },
-  { word: "GOODBYE", turkish: "Hoşça kal", file: "goodbye.png" },
-  { word: "TAKE CARE", turkish: "Kendine iyi bak", file: "take care.png" },
-  { word: "NICE TO MEET YOU", turkish: "Tanıştığımıza memnun oldum", file: "nice to meet you.png" },
-  { word: "SEE YOU SOON", turkish: "Yakında görüşürüz", file: "see you soon.png" },
-  { word: "ALPHABET", turkish: "Alfabe", file: "alphabet.png" },
-  { word: "LETTERS", turkish: "Harfler", file: "letters.png" },
-  { word: "SPELL", turkish: "Hecelemek", file: "spell.png" },
-  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
-  { word: "NUMBERS", turkish: "Sayılar", file: "numbers.png" },
-  { word: "ELEVEN", turkish: "On bir", file: "eleven.png" },
-  { word: "TWELVE", turkish: "On iki", file: "twelve.png" },
-  { word: "TWENTY", turkish: "Yirmi", file: "twenty.png" },
-  { word: "COUNT", turkish: "Saymak", file: "count.png" },
-  { word: "PLUS", turkish: "Artı", file: "plus.png" },
-  { word: "MINUS", turkish: "Eksi", file: "minus.png" },
-  { word: "BIRTHDAY", turkish: "Doğum günü", file: "birthday.png" },
-  { word: "HOW OLD ARE YOU?", turkish: "Kaç yaşındasın?", file: "how old are you.png" },
-  { word: "YEARS OLD", turkish: "Yaşında", file: "years old.png" },
-  { word: "AGE", turkish: "Yaş", file: "age.png" },
-  { word: "SAY", turkish: "Söylemek", file: "say.png" },
-  { word: "WRITE", turkish: "Yazmak", file: "write.png" },
-  { word: "DRAW", turkish: "Çizmek", file: "draw.png" },
-  { word: "PICTURE", turkish: "Resim", file: "picture.png" },
+  { word: "FUN", turkish: "eğlence", file: "fun.png" },
+  { word: "SCIENCE", turkish: "bilim", file: "science.png" },
+  { word: "COLOUR", turkish: "renk", file: "colour.png" },
+  { word: "RAINBOW", turkish: "gökkuşağı", file: "rainbow.png" },
+  { word: "TAIL", turkish: "kuyruk", file: "tail.png" },
+  { word: "BOWL", turkish: "kase", file: "bowl.png" },
+  { word: "MILK", turkish: "süt", file: "milk.png" },
+  { word: "DISH", turkish: "tabak", file: "dish.png" },
+  { word: "SOAP", turkish: "sabun", file: "soap.png" },
+  { word: "COTTON", turkish: "pamuk", file: "cotton.png" },
+  { word: "FOOD", turkish: "yiyecek", file: "food.png" },
+  { word: "PRIMARY", turkish: "birincil", file: "primary.png" },
+  { word: "SECONDARY", turkish: "ikincil", file: "secondary.png" },
+  { word: "MIX", turkish: "karıştırmak", file: "mix.png" },
+  { word: "GET", turkish: "almak", file: "get.png" },
+  { word: "PAINT", turkish: "boya", file: "paint.png" },
+  { word: "BRUSH", turkish: "fırça", file: "brush.png" },
+  { word: "BOX", turkish: "kutu", file: "box.png" },
+  { word: "SALT", turkish: "tuz", file: "salt.png" },
+  { word: "SAUCEPAN", turkish: "tencere", file: "saucepan.png" },
+  { word: "CLOCK", turkish: "saat", file: "clock.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
+  { word: "CUP", turkish: "fincan", file: "cup.png" },
+  { word: "BOARD", turkish: "tahta", file: "board.png" },
+  { word: "SCALE", turkish: "terazi", file: "scale.png" },
+  { word: "BED", turkish: "yatak", file: "bed.png" },
+  { word: "PAPER", turkish: "kağıt", file: "paper.png" },
+  { word: "LOOK", turkish: "bakmak", file: "look.png" },
+  { word: "STONE", turkish: "taş", file: "stone.png" },
+  { word: "CHARCOAL", turkish: "kömür", file: "charcoal.png" },
+  { word: "JAR", turkish: "kavanoz", file: "jar.png" },
+  { word: "SOIL", turkish: "toprak", file: "soil.png" },
+  { word: "PLANT", turkish: "bitki", file: "plant.png" },
+  { word: "LID", turkish: "kapak", file: "lid.png" },
+  { word: "CANDLE", turkish: "mum", file: "candle.png" },
+  { word: "LIQUID", turkish: "sıvı", file: "liquid.png" },
+  { word: "HEAT", turkish: "ısı", file: "heat.png" },
+  { word: "GLASS", turkish: "cam", file: "glass.png" },
+  { word: "SHAKE", turkish: "sallamak", file: "shake.png" },
+  { word: "FLOWER", turkish: "çiçek", file: "flower.png" },
+  { word: "RESULT", turkish: "sonuç", file: "result.png" },
 ];
 
 const letterColors = [
@@ -59,7 +71,7 @@ const letterColors = [
   "bg-gradient-to-br from-red-400 to-red-600",
 ];
 
-export default function SpellQuestGame() {
+export default function SpellQuestGame4_6() {
   const [, setLocation] = useLocation();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [scrambledLetters, setScrambledLetters] = useState<{ letter: string; id: number; used: boolean; color: string }[]>([]);
@@ -255,7 +267,7 @@ export default function SpellQuestGame() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="Grade 3 - Unit 1: Hello!"
+            description="Grade 4 - Unit 6"
             containerId="spell-quest-game"
             icon="✨"
           />
@@ -291,7 +303,7 @@ export default function SpellQuestGame() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/primary/3.1/${currentWord.file}`} 
+                    src={`/images/primary/4.6/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />
@@ -452,7 +464,7 @@ export default function SpellQuestGame() {
                   <Button onClick={startNewGame} className="play-again-btn" data-testid="button-play-again">
                     Play Again
                   </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   Back to Games
                 </Button>
                 </div>
@@ -475,7 +487,7 @@ export default function SpellQuestGame() {
                 <Button onClick={startNewGame} variant="outline" className="footer-button" data-testid="button-new-game">
                   New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   ← Back
                 </Button>
               </div>

@@ -1,0 +1,256 @@
+/* Primary School Crossword Game Wrapper */
+.crossword-game-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.crossword-game-wrapper.primary-school-game {
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+}
+
+.crossword-game-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Background Collage - Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0);
+  will-change: transform;
+  isolation: isolate;
+}
+
+/* Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Scoped to primary school game only */
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card-inner {
+  width: 100%;
+  height: 100%;
+  background: rgba(219, 234, 254, 0.85);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+  animation: floatCard 6s ease-in-out infinite;
+  border: 2px solid rgba(96, 165, 250, 0.3);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-card-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.crossword-game-wrapper.primary-school-game .crossword-background-collage .collage-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.3), rgba(147, 197, 253, 0.4));
+  pointer-events: none;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+
+/* Cloud animations */
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(10px);
+  }
+}
+
+@keyframes cloud-float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+}
+
+.crossword-game-wrapper .cloud-float {
+  animation: cloud-float 4s ease-in-out infinite;
+}
+
+.crossword-game-wrapper .cloud-float-delayed {
+  animation: cloud-float-delayed 5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* Custom scrollbar for clues */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
+
+#crossword-game.fullscreen-active {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: transparent;
+  padding: 24px;
+  margin: 0 !important;
+  border-radius: 0;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 24px;
+  overflow: hidden;
+}
+
+/* Ensure background is handled by React component */
+#crossword-game.fullscreen-active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+  z-index: -2;
+}
+
+#crossword-game.fullscreen-active #crossword-grid-area {
+  grid-column: 1;
+  grid-row: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+#crossword-game.fullscreen-active #crossword-clues-area {
+  grid-column: 2;
+  grid-row: 1;
+  height: 100%;
+  overflow: hidden;
+  z-index: 10;
+}
+
+#crossword-game.fullscreen-active #crossword-footer-area {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  z-index: 10;
+}
+
+/* Bigger clue text in fullscreen mode */
+#crossword-game.fullscreen-active #crossword-clues-area h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ACROSS / DOWN section headers */
+#crossword-game.fullscreen-active #crossword-clues-area h4.text-sm.font-black {
+  font-size: 1.75rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Clue list items - make them bigger */
+#crossword-game.fullscreen-active #crossword-clues-area li {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Clue number (e.g., "1.", "2.") */
+#crossword-game.fullscreen-active #crossword-clues-area li span.font-bold.text-sm {
+  font-size: 3rem;
+  min-width: 3rem;
+}
+
+/* Actual clue text (e.g., "Cuma", "Bahçe") - Make it much bigger */
+#crossword-game.fullscreen-active #crossword-clues-area li span.text-sm.font-medium {
+  font-size: 3rem !important;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+/* Active clue banner text bigger in fullscreen */
+#crossword-game.fullscreen-active .text-lg {
+  font-size: 2rem;
+}
+
+/* Drag functionality for crossword grid */
+.crossword-grid-container {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.crossword-grid-container input {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto;
+}
+
+/* Prevent text selection during drag */
+body.dragging-crossword {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  cursor: grabbing !important;
+}
+
+@media (max-width: 1024px) {
+  #crossword-game.fullscreen-active {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  
+  #crossword-game.fullscreen-active #crossword-grid-area {
+    flex: none;
+    height: auto;
+  }
+  
+  #crossword-game.fullscreen-active #crossword-clues-area {
+    flex: none;
+    height: auto;
+  }
+
+  #crossword-game.fullscreen-active #crossword-footer-area {
+    flex: none;
+  }
+}

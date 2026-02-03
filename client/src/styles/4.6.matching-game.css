@@ -675,6 +675,10 @@
   position: relative;
 }
 
+.picture-card:active {
+  cursor: grabbing;
+}
+
 .fullscreen-active .picture-card {
   min-height: clamp(60px, 7vh, 100px);
   aspect-ratio: 1;
@@ -796,6 +800,10 @@
   box-shadow: 0 3px 10px rgba(236, 72, 153, 0.2);
   user-select: none;
   min-height: clamp(32px, 6vw, 80px);
+}
+
+.word-card:active {
+  cursor: grabbing;
 }
 
 .fullscreen-active .word-card {

@@ -6,41 +6,53 @@ import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
-import "@/styles/3.1.catch-that.css";
+import "@/styles/4.6.catch-that.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Unit 1 vocabulary - uppercase single words for catch-that
+// Unit 6 vocabulary - uppercase single words for catch-that
 const vocabulary = [
-  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
-  { word: "HI", turkish: "Selam", file: "hi.png" },
-  { word: "GOODMORNING", turkish: "Günaydın", file: "good morning.png" },
-  { word: "GOODAFTERNOON", turkish: "İyi öğleden sonraları", file: "good afternoon.png" },
-  { word: "GOODEVENING", turkish: "İyi akşamlar", file: "good evening.png" },
-  { word: "GOODNIGHT", turkish: "İyi geceler", file: "good night.png" },
-  { word: "GOODBYE", turkish: "Hoşça kal", file: "goodbye.png" },
-  { word: "TAKECARE", turkish: "Kendine iyi bak", file: "take care.png" },
-  { word: "NICETOMEETYOU", turkish: "Tanıştığımıza memnun oldum", file: "nice to meet you.png" },
-  { word: "SEEYOUSOON", turkish: "Yakında görüşürüz", file: "see you soon.png" },
-  { word: "ALPHABET", turkish: "Alfabe", file: "alphabet.png" },
-  { word: "LETTERS", turkish: "Harfler", file: "letters.png" },
-  { word: "SPELL", turkish: "Hecelemek", file: "spell.png" },
-  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
-  { word: "NUMBERS", turkish: "Sayılar", file: "numbers.png" },
-  { word: "ELEVEN", turkish: "On bir", file: "eleven.png" },
-  { word: "TWELVE", turkish: "On iki", file: "twelve.png" },
-  { word: "TWENTY", turkish: "Yirmi", file: "twenty.png" },
-  { word: "COUNT", turkish: "Saymak", file: "count.png" },
-  { word: "PLUS", turkish: "Artı", file: "plus.png" },
-  { word: "MINUS", turkish: "Eksi", file: "minus.png" },
-  { word: "BIRTHDAY", turkish: "Doğum günü", file: "birthday.png" },
-  { word: "HOWOLDAREYOU", turkish: "Kaç yaşındasın?", file: "how old are you.png" },
-  { word: "YEARSOLD", turkish: "Yaşında", file: "years old.png" },
-  { word: "AGE", turkish: "Yaş", file: "age.png" },
-  { word: "SAY", turkish: "Söylemek", file: "say.png" },
-  { word: "WRITE", turkish: "Yazmak", file: "write.png" },
-  { word: "DRAW", turkish: "Çizmek", file: "draw.png" },
-  { word: "PICTURE", turkish: "Resim", file: "picture.png" },
+  { word: "FUN", turkish: "eğlence", file: "fun.png" },
+  { word: "SCIENCE", turkish: "bilim", file: "science.png" },
+  { word: "COLOUR", turkish: "renk", file: "colour.png" },
+  { word: "RAINBOW", turkish: "gökkuşağı", file: "rainbow.png" },
+  { word: "TAIL", turkish: "kuyruk", file: "tail.png" },
+  { word: "BOWL", turkish: "kase", file: "bowl.png" },
+  { word: "MILK", turkish: "süt", file: "milk.png" },
+  { word: "DISH", turkish: "tabak", file: "dish.png" },
+  { word: "SOAP", turkish: "sabun", file: "soap.png" },
+  { word: "COTTON", turkish: "pamuk", file: "cotton.png" },
+  { word: "FOOD", turkish: "yiyecek", file: "food.png" },
+  { word: "PRIMARY", turkish: "birincil", file: "primary.png" },
+  { word: "SECONDARY", turkish: "ikincil", file: "secondary.png" },
+  { word: "MIX", turkish: "karıştırmak", file: "mix.png" },
+  { word: "GET", turkish: "almak", file: "get.png" },
+  { word: "PAINT", turkish: "boya", file: "paint.png" },
+  { word: "BRUSH", turkish: "fırça", file: "brush.png" },
+  { word: "BOX", turkish: "kutu", file: "box.png" },
+  { word: "SALT", turkish: "tuz", file: "salt.png" },
+  { word: "SAUCEPAN", turkish: "tencere", file: "saucepan.png" },
+  { word: "CLOCK", turkish: "saat", file: "clock.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
+  { word: "CUP", turkish: "fincan", file: "cup.png" },
+  { word: "BOARD", turkish: "tahta", file: "board.png" },
+  { word: "SCALE", turkish: "terazi", file: "scale.png" },
+  { word: "BED", turkish: "yatak", file: "bed.png" },
+  { word: "PAPER", turkish: "kağıt", file: "paper.png" },
+  { word: "LOOK", turkish: "bakmak", file: "look.png" },
+  { word: "STONE", turkish: "taş", file: "stone.png" },
+  { word: "CHARCOAL", turkish: "kömür", file: "charcoal.png" },
+  { word: "JAR", turkish: "kavanoz", file: "jar.png" },
+  { word: "SOIL", turkish: "toprak", file: "soil.png" },
+  { word: "PLANT", turkish: "bitki", file: "plant.png" },
+  { word: "LID", turkish: "kapak", file: "lid.png" },
+  { word: "CANDLE", turkish: "mum", file: "candle.png" },
+  { word: "LIQUID", turkish: "sıvı", file: "liquid.png" },
+  { word: "HEAT", turkish: "ısı", file: "heat.png" },
+  { word: "GLASS", turkish: "cam", file: "glass.png" },
+  { word: "SHAKE", turkish: "sallamak", file: "shake.png" },
+  { word: "FLOWER", turkish: "çiçek", file: "flower.png" },
+  { word: "RESULT", turkish: "sonuç", file: "result.png" },
 ];
 
 // Word style colors - diverse vibrant colors different from each other and from game's orange theme
@@ -79,7 +91,7 @@ interface FallingPrize {
   caught: boolean;
 }
 
-export default function CatchThatGame3_1() {
+export default function CatchThatGame4_6() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(10);
@@ -706,7 +718,7 @@ export default function CatchThatGame3_1() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Catch That"
-            description="Grade 3 - Unit 1: Hello!"
+            description="Grade 4 - Unit 6"
             containerId="catch-that-game"
             icon="🎯"
           />
@@ -776,7 +788,7 @@ export default function CatchThatGame3_1() {
             >
               <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-64 h-64 ' : '') + 'rounded-2xl bg-orange-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
                 <img 
-                  src={'/images/primary/3.1/' + currentWord.file} 
+                  src={'/images/primary/4.6/' + currentWord.file} 
                   alt={currentWord.word}
                   className={'w-28 h-28 sm:w-40 sm:h-40 ' + (isFullscreen ? 'w-56 h-56 ' : '') + 'object-contain'}
                 />
@@ -952,7 +964,7 @@ export default function CatchThatGame3_1() {
                 <Button onClick={resetGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   ← Back
                 </Button>
               </div>
@@ -1018,7 +1030,7 @@ export default function CatchThatGame3_1() {
                     Play Again
                   </Button>
                   <Button
-                    onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}
+                    onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}
                     variant="ghost"
                     size="lg"
                     className="w-full"

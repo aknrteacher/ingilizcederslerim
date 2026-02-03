@@ -9,40 +9,50 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
-  { word: "house", file: "house.png", turkish: "ev" },
-  { word: "room", file: "room.png", turkish: "oda" },
-  { word: "living room", file: "living_room.png", turkish: "oturma odası" },
-  { word: "playroom", file: "playroom.png", turkish: "oyun odası" },
-  { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
-  { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
-  { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
-  { word: "garage", file: "garage.png", turkish: "garaj" },
-  { word: "where", file: "where.png", turkish: "nerede" },
-  { word: "bed", file: "bed.png", turkish: "yatak" },
-  { word: "chair", file: "chair.png", turkish: "sandalye" },
-  { word: "cup", file: "cup.png", turkish: "fincan" },
+  { word: "fun", file: "fun.png", turkish: "eğlence" },
+  { word: "science", file: "science.png", turkish: "bilim" },
+  { word: "colour", file: "colour.png", turkish: "renk" },
+  { word: "rainbow", file: "rainbow.png", turkish: "gökkuşağı" },
+  { word: "tail", file: "tail.png", turkish: "kuyruk" },
+  { word: "bowl", file: "bowl.png", turkish: "kase" },
+  { word: "milk", file: "milk.png", turkish: "süt" },
+  { word: "dish", file: "dish.png", turkish: "tabak" },
   { word: "soap", file: "soap.png", turkish: "sabun" },
-  { word: "shampoo", file: "shampoo.png", turkish: "şampuan" },
-  { word: "fridge", file: "fridge.png", turkish: "buzdolabı" },
-  { word: "sofa", file: "sofa.png", turkish: "kanepe" },
-  { word: "lamp", file: "lamp.png", turkish: "lamba" },
-  { word: "table", file: "table.png", turkish: "masa" },
-  { word: "kettle", file: "kettle.png", turkish: "çaydanlık" },
-  { word: "toy", file: "toy.png", turkish: "oyuncak" },
-  { word: "doll", file: "doll.png", turkish: "bebek" },
+  { word: "cotton", file: "cotton.png", turkish: "pamuk" },
+  { word: "food", file: "food.png", turkish: "yiyecek" },
+  { word: "primary", file: "primary.png", turkish: "birincil" },
+  { word: "secondary", file: "secondary.png", turkish: "ikincil" },
+  { word: "mix", file: "mix.png", turkish: "karıştırmak" },
+  { word: "get", file: "get.png", turkish: "almak" },
+  { word: "paint", file: "paint.png", turkish: "boya" },
+  { word: "brush", file: "brush.png", turkish: "fırça" },
   { word: "box", file: "box.png", turkish: "kutu" },
-  { word: "ball", file: "ball.png", turkish: "top" },
-  { word: "kite", file: "kite.png", turkish: "uçurtma" },
-  { word: "in", file: "in.png", turkish: "içinde" },
-  { word: "on", file: "on.png", turkish: "üzerinde" },
-  { word: "under", file: "under.png", turkish: "altında" },
-  { word: "shape", file: "shape.png", turkish: "şekil" },
-  { word: "circle", file: "circle.png", turkish: "daire" },
-  { word: "square", file: "square.png", turkish: "kare" },
-  { word: "triangle", file: "triangle.png", turkish: "üçgen" },
-  { word: "rectangle", file: "rectangle.png", turkish: "dikdörtgen" },
-  { word: "round", file: "round.png", turkish: "yuvarlak" },
-  { word: "happy", file: "happy.png", turkish: "mutlu" },
+  { word: "in front of", file: "in front of.png", turkish: "önünde" },
+  { word: "behind", file: "behind.png", turkish: "arkasında" },
+  { word: "near", file: "near.png", turkish: "yakın" },
+  { word: "salt", file: "salt.png", turkish: "tuz" },
+  { word: "saucepan", file: "saucepan.png", turkish: "tencere" },
+  { word: "clock", file: "clock.png", turkish: "saat" },
+  { word: "table", file: "table.png", turkish: "masa" },
+  { word: "cup", file: "cup.png", turkish: "fincan" },
+  { word: "board", file: "board.png", turkish: "tahta" },
+  { word: "scale", file: "scale.png", turkish: "terazi" },
+  { word: "bed", file: "bed.png", turkish: "yatak" },
+  { word: "paper", file: "paper.png", turkish: "kağıt" },
+  { word: "look", file: "look.png", turkish: "bakmak" },
+  { word: "stone", file: "stone.png", turkish: "taş" },
+  { word: "charcoal", file: "charcoal.png", turkish: "kömür" },
+  { word: "jar", file: "jar.png", turkish: "kavanoz" },
+  { word: "soil", file: "soil.png", turkish: "toprak" },
+  { word: "plant", file: "plant.png", turkish: "bitki" },
+  { word: "lid", file: "lid.png", turkish: "kapak" },
+  { word: "candle", file: "candle.png", turkish: "mum" },
+  { word: "liquid", file: "liquid.png", turkish: "sıvı" },
+  { word: "heat", file: "heat.png", turkish: "ısı" },
+  { word: "glass", file: "glass.png", turkish: "cam" },
+  { word: "shake", file: "shake.png", turkish: "sallamak" },
+  { word: "flower", file: "flower.png", turkish: "çiçek" },
+  { word: "result", file: "result.png", turkish: "sonuç" },
 ];
 
 interface Card {
@@ -54,7 +64,7 @@ interface Card {
   isMatched: boolean;
 }
 
-export default function MemoryFlipGame() {
+export default function MemoryFlipGame4_6() {
   const [, setLocation] = useLocation();
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedCards, setFlippedCards] = useState<string[]>([]);
@@ -238,7 +248,7 @@ export default function MemoryFlipGame() {
         <div className="memory-flip-container">
           <PrimarySchoolGameHeader
             gameName="Memory Flip"
-            description="Grade 3 - Unit 6: My House"
+            description="Grade 4 - Unit 6: Fun with Science"
             containerId="memory-flip-game"
             icon={<Grid3X3 className="h-7 w-7 text-green-600" />}
           />
@@ -294,7 +304,7 @@ export default function MemoryFlipGame() {
                         {card.type === 'word' ? (
                           <span className="word-text">{card.word}</span>
                         ) : (
-                          <img src={`/images/primary/3.6/${card.file}`} alt={card.word} />
+                          <img src={`/images/primary/4.6/${card.file}`} alt={card.word} />
                         )}
                       </div>
                     </div>
@@ -316,7 +326,7 @@ export default function MemoryFlipGame() {
                 <Button onClick={resetGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   ← Back
                 </Button>
               </div>
@@ -342,7 +352,7 @@ export default function MemoryFlipGame() {
                 <Button variant="outline" onClick={shareGame}>
                   <Share2 className="h-4 w-4 mr-2" /> Share
                 </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}>
                   Back to Games
                 </Button>
               </div>

@@ -4,7 +4,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Share2, Zap, Puzzle, Trophy, Clock } from "lucide-react";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
-import "@/styles/4.6.matching-game.css";
+import "@/styles/3.1.matching-game.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
@@ -22,53 +22,43 @@ const getRandomHatchling = () => {
   return `/images/hatchlings/hatchling${randomNum}.png`;
 };
 
-export default function MatchingGame4_6() {
+export default function MatchingGame() {
   const [, setLocation] = useLocation();
   const allVocabulary = [
-    { word: "fun", file: "fun.png", turkish: "eğlence" },
-    { word: "science", file: "science.png", turkish: "bilim" },
-    { word: "colour", file: "colour.png", turkish: "renk" },
-    { word: "rainbow", file: "rainbow.png", turkish: "gökkuşağı" },
-    { word: "tail", file: "tail.png", turkish: "kuyruk" },
-    { word: "bowl", file: "bowl.png", turkish: "kase" },
-    { word: "milk", file: "milk.png", turkish: "süt" },
-    { word: "dish", file: "dish.png", turkish: "tabak" },
-    { word: "soap", file: "soap.png", turkish: "sabun" },
-    { word: "cotton", file: "cotton.png", turkish: "pamuk" },
-    { word: "food", file: "food.png", turkish: "yiyecek" },
-    { word: "primary", file: "primary.png", turkish: "birincil" },
-    { word: "secondary", file: "secondary.png", turkish: "ikincil" },
-    { word: "mix", file: "mix.png", turkish: "karıştırmak" },
-    { word: "get", file: "get.png", turkish: "almak" },
-    { word: "paint", file: "paint.png", turkish: "boya" },
-    { word: "brush", file: "brush.png", turkish: "fırça" },
-    { word: "box", file: "box.png", turkish: "kutu" },
-    { word: "in front of", file: "in front of.png", turkish: "önünde" },
-    { word: "behind", file: "behind.png", turkish: "arkasında" },
-    { word: "near", file: "near.png", turkish: "yakın" },
-    { word: "salt", file: "salt.png", turkish: "tuz" },
-    { word: "saucepan", file: "saucepan.png", turkish: "tencere" },
-    { word: "clock", file: "clock.png", turkish: "saat" },
-    { word: "table", file: "table.png", turkish: "masa" },
-    { word: "cup", file: "cup.png", turkish: "fincan" },
-    { word: "board", file: "board.png", turkish: "tahta" },
-    { word: "scale", file: "scale.png", turkish: "terazi" },
+    { word: "house", file: "house.png", turkish: "ev" },
+    { word: "room", file: "room.png", turkish: "oda" },
+    { word: "living room", file: "living_room.png", turkish: "oturma odası" },
+    { word: "playroom", file: "playroom.png", turkish: "oyun odası" },
+    { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
+    { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
+    { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
+    { word: "garage", file: "garage.png", turkish: "garaj" },
+    { word: "where", file: "where.png", turkish: "nerede" },
     { word: "bed", file: "bed.png", turkish: "yatak" },
-    { word: "paper", file: "paper.png", turkish: "kağıt" },
-    { word: "look", file: "look.png", turkish: "bakmak" },
-    { word: "stone", file: "stone.png", turkish: "taş" },
-    { word: "charcoal", file: "charcoal.png", turkish: "kömür" },
-    { word: "jar", file: "jar.png", turkish: "kavanoz" },
-    { word: "soil", file: "soil.png", turkish: "toprak" },
-    { word: "plant", file: "plant.png", turkish: "bitki" },
-    { word: "lid", file: "lid.png", turkish: "kapak" },
-    { word: "candle", file: "candle.png", turkish: "mum" },
-    { word: "liquid", file: "liquid.png", turkish: "sıvı" },
-    { word: "heat", file: "heat.png", turkish: "ısı" },
-    { word: "glass", file: "glass.png", turkish: "cam" },
-    { word: "shake", file: "shake.png", turkish: "sallamak" },
-    { word: "flower", file: "flower.png", turkish: "çiçek" },
-    { word: "result", file: "result.png", turkish: "sonuç" },
+    { word: "chair", file: "chair.png", turkish: "sandalye" },
+    { word: "cup", file: "cup.png", turkish: "fincan" },
+    { word: "soap", file: "soap.png", turkish: "sabun" },
+    { word: "shampoo", file: "shampoo.png", turkish: "şampuan" },
+    { word: "fridge", file: "fridge.png", turkish: "buzdolabı" },
+    { word: "sofa", file: "sofa.png", turkish: "kanepe" },
+    { word: "lamp", file: "lamp.png", turkish: "lamba" },
+    { word: "table", file: "table.png", turkish: "masa" },
+    { word: "kettle", file: "kettle.png", turkish: "çaydanlık" },
+    { word: "toy", file: "toy.png", turkish: "oyuncak" },
+    { word: "doll", file: "doll.png", turkish: "bebek" },
+    { word: "box", file: "box.png", turkish: "kutu" },
+    { word: "ball", file: "ball.png", turkish: "top" },
+    { word: "kite", file: "kite.png", turkish: "uçurtma" },
+    { word: "in", file: "in.png", turkish: "içinde" },
+    { word: "on", file: "on.png", turkish: "üzerinde" },
+    { word: "under", file: "under.png", turkish: "altında" },
+    { word: "shape", file: "shape.png", turkish: "şekil" },
+    { word: "circle", file: "circle.png", turkish: "daire" },
+    { word: "square", file: "square.png", turkish: "kare" },
+    { word: "triangle", file: "triangle.png", turkish: "üçgen" },
+    { word: "rectangle", file: "rectangle.png", turkish: "dikdörtgen" },
+    { word: "round", file: "round.png", turkish: "yuvarlak" },
+    { word: "happy", file: "happy.png", turkish: "mutlu" },
   ];
 
   const selectRandomCards = (count: number) => {
@@ -101,7 +91,7 @@ export default function MatchingGame4_6() {
     const words: GameCard[] = selectedCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
-      imageUrl: `/images/primary/4.6/${item.file}`,
+      imageUrl: `/images/primary/3.6/${item.file}`,
       turkish: item.turkish,
       type: "word",
     }));
@@ -109,7 +99,7 @@ export default function MatchingGame4_6() {
     const pictures: GameCard[] = selectedCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
-      imageUrl: `/images/primary/4.6/${item.file}`,
+      imageUrl: `/images/primary/3.6/${item.file}`,
       turkish: item.turkish,
       type: "picture",
     }));
@@ -282,7 +272,7 @@ export default function MatchingGame4_6() {
     const words: GameCard[] = newCards.map((item, idx) => ({
       id: `word-${idx}`,
       word: item.word,
-      imageUrl: `/images/primary/4.6/${item.file}`,
+      imageUrl: `/images/primary/3.6/${item.file}`,
       turkish: item.turkish,
       type: "word",
     }));
@@ -290,7 +280,7 @@ export default function MatchingGame4_6() {
     const pictures: GameCard[] = newCards.map((item, idx) => ({
       id: `picture-${idx}`,
       word: item.word,
-      imageUrl: `/images/primary/4.6/${item.file}`,
+      imageUrl: `/images/primary/3.6/${item.file}`,
       turkish: item.turkish,
       type: "picture",
     }));
@@ -354,7 +344,7 @@ export default function MatchingGame4_6() {
           <>
             <PrimarySchoolGameHeader 
               gameName="Matchlings"
-              description="Grade 4 - Unit 6: Fun with Science"
+              description="Grade 3 - Unit 6: My House"
               containerId="matchlings-game"
               icon={<Puzzle className="h-7 w-7 text-blue-600" />}
             />
@@ -411,7 +401,7 @@ export default function MatchingGame4_6() {
                         <button onClick={resetGame} className="btn-primary" data-testid="button-play-again">
                           Play Again
                         </button>
-                        <Button variant="ghost" onClick={() => setLocation("/primary-school/grade-4/unit-6/games")} className="btn-secondary">
+                        <Button variant="ghost" onClick={() => setLocation("/primary-school/grade-3/unit-6/games")} className="btn-secondary">
                           Back to Games
                         </Button>
                       </div>
@@ -503,7 +493,7 @@ export default function MatchingGame4_6() {
                     <Button
                       variant="outline"
                       className="footer-button"
-                      onClick={() => setLocation("/primary-school/grade-4/unit-6/games")}
+                      onClick={() => setLocation("/primary-school/grade-3/unit-6/games")}
                     >
                       ← Back
                     </Button>
