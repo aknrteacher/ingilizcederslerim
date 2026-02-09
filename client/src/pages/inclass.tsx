@@ -371,11 +371,18 @@ export default function InClass() {
   }, [studentScores, selectedCategory, studentsData?.students, mode]);
 
   // Detect centered student on scroll (only in mobile mode with category selected)
+  // Use IntersectionObserver for better performance and to avoid flickering
   useEffect(() => {
-    if (mode !== 'mobile' || !selectedCategory || !studentsData?.students.length) return;
+    if (mode !== 'mobile' || !selectedCategory || !studentsData?.students.length) {
+      setCenteredStudentId(null);
+      return;
+    }
     
-    const handleScroll = () => {
-      const viewportCenter = window.innerHeight / 2;
+    let scrollTimeout: NodeJS.Timeout;
+    const viewportCenter = window.innerHeight / 2;
+    const threshold = 250; // Increased threshold for better detection, especially for first student
+
+    const checkCentered = () => {
       interface ClosestStudent {
         id: string;
         distance: number;
@@ -389,24 +396,51 @@ export default function InClass() {
           const elementCenter = rect.top + rect.height / 2;
           const distance = Math.abs(viewportCenter - elementCenter);
           
-          if (closestStudent === null) {
-            closestStudent = { id: student.id, distance };
-          } else if (distance < closestStudent.distance) {
+          if (closestStudent === null || distance < closestStudent.distance) {
             closestStudent = { id: student.id, distance };
           }
         }
       }
 
-      if (closestStudent !== null && closestStudent.distance < 100) {
-        setCenteredStudentId(closestStudent.id);
+      if (closestStudent !== null && closestStudent.distance < threshold) {
+        setCenteredStudentId(prev => prev !== closestStudent!.id ? closestStudent!.id : prev);
       } else {
         setCenteredStudentId(null);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on mount
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Throttled scroll handler using requestAnimationFrame for smooth performance
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      rafId = requestAnimationFrame(() => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(checkCentered, 100);
+      });
+    };
+
+    // Check multiple times on mount to catch first student (Android Chrome needs delays)
+    checkCentered();
+    const initialCheck1 = setTimeout(checkCentered, 100);
+    const initialCheck2 = setTimeout(checkCentered, 300);
+    const initialCheck3 = setTimeout(checkCentered, 600);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', checkCentered);
+    
+    return () => {
+      clearTimeout(scrollTimeout);
+      clearTimeout(initialCheck1);
+      clearTimeout(initialCheck2);
+      clearTimeout(initialCheck3);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkCentered);
+    };
   }, [mode, selectedCategory, studentsData?.students]);
 
   const currentStudent = studentsData?.students[currentStudentIndex];
@@ -535,9 +569,15 @@ export default function InClass() {
         });
       });
 
-      const res = await apiRequest('POST', '/api/classroom/scores', {
-        classId: selectedClass.id,
-        scores: scoresData,
+      const res = await fetch('/api/classroom/scores', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          classId: selectedClass.id,
+          scores: scoresData,
+        }),
       });
       
       const result = await res.json();
@@ -1134,19 +1174,19 @@ export default function InClass() {
                   if (isCentered) handleSwipeEnd(e, student.id);
                 }}
               >
-                <div className={`text-center ${isCentered ? 'ring-4 ring-blue-400 rounded-2xl p-6 bg-blue-50' : ''}`}>
-                  <div className={`text-5xl md:text-6xl font-bold mb-3 ${
+                <div className={`text-center py-4 ${isCentered ? 'ring-4 ring-blue-400 rounded-2xl px-6 bg-blue-50' : 'px-4'}`}>
+                  <div className={`text-5xl md:text-6xl font-bold mb-2 ${
                     isCentered ? 'text-blue-600' : 'text-gray-800'
                   }`}>
                     {student.name}
                   </div>
                   {isCentered && (
-                    <div className="text-xl text-gray-600 mb-2">
+                    <div className="text-lg text-gray-600 mb-2">
                       👆 Swipe right for +, left for -
                     </div>
                   )}
                   {(plusCount > 0 || minusCount > 0) && (
-                    <div className="text-2xl mt-3">
+                    <div className="text-xl mt-2">
                       {plusCount > 0 && <span className="text-green-600 font-bold">✓ {plusCount}</span>}
                       {minusCount > 0 && <span className="text-red-600 font-bold ml-3">✗ {minusCount}</span>}
                     </div>
