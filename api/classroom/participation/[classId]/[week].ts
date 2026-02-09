@@ -1,5 +1,26 @@
 // Vercel serverless function for participation data API
-import { storage } from '../../_storage';
+
+// Inline storage to avoid module resolution issues in Vercel
+interface Participation {
+  id: string;
+  studentId: string;
+  classId: string;
+  week: string;
+  points: number;
+  assignments: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const participationMap = new Map<string, Participation>();
+
+const storage = {
+  getAllParticipationForClass: async (classId: string, week: string): Promise<Participation[]> => {
+    return Array.from(participationMap.values()).filter(
+      (p) => p.classId === classId && p.week === week,
+    );
+  },
+};
 
 export default async function handler(req: any, res: any) {
   // Enable CORS

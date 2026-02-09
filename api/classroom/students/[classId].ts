@@ -1,5 +1,4 @@
 // Vercel serverless function for classroom students API
-import { storage } from '../_storage';
 import { z } from 'zod';
 
 // Define schema inline to avoid import issues
@@ -7,6 +6,39 @@ const insertStudentSchema = z.object({
   classId: z.string().min(1),
   name: z.string().min(1),
 });
+
+// Simple UUID generator (no external dependencies)
+function generateId(): string {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+}
+
+// Inline storage to avoid module resolution issues in Vercel
+interface Student {
+  id: string;
+  classId: string;
+  name: string;
+  createdAt: Date;
+}
+
+const studentsMap = new Map<string, Student>();
+
+const storage = {
+  getStudentsByClass: async (classId: string): Promise<Student[]> => {
+    return Array.from(studentsMap.values()).filter(
+      (student) => student.classId === classId,
+    );
+  },
+  createStudent: async (data: { classId: string; name: string }): Promise<Student> => {
+    const id = generateId();
+    const student: Student = {
+      ...data,
+      id,
+      createdAt: new Date(),
+    };
+    studentsMap.set(id, student);
+    return student;
+  },
+};
 
 export default async function handler(req: any, res: any) {
   // Enable CORS

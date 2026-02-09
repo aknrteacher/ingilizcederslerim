@@ -1,5 +1,57 @@
 // Vercel serverless function for assignment points API
-import { storage } from '../_storage';
+
+// Simple UUID generator (no external dependencies)
+function generateId(): string {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+}
+
+// Inline storage to avoid module resolution issues in Vercel
+interface Participation {
+  id: string;
+  studentId: string;
+  classId: string;
+  week: string;
+  points: number;
+  assignments: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const participationMap = new Map<string, Participation>();
+
+const storage = {
+  getParticipation: async (studentId: string, classId: string, week: string): Promise<Participation | undefined> => {
+    return Array.from(participationMap.values()).find(
+      (p) => p.studentId === studentId && p.classId === classId && p.week === week,
+    );
+  },
+  addAssignmentPoint: async (studentId: string, classId: string, week: string): Promise<Participation> => {
+    const existing = await storage.getParticipation(studentId, classId, week);
+    if (existing) {
+      const updated: Participation = {
+        ...existing,
+        assignments: (existing.assignments || 0) + 1,
+        updatedAt: new Date(),
+      };
+      participationMap.set(existing.id, updated);
+      return updated;
+    } else {
+      const id = generateId();
+      const participation: Participation = {
+        id,
+        studentId,
+        classId,
+        week,
+        points: 0,
+        assignments: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      participationMap.set(id, participation);
+      return participation;
+    }
+  },
+};
 
 export default async function handler(req: any, res: any) {
   // Enable CORS
