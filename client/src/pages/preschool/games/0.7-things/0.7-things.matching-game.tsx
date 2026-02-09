@@ -47,7 +47,9 @@ export default function ThingsMatchingGame() {
   const [wordCards, setWordCards] = useState<GameCard[]>([]);
   const [pictureCards, setPictureCards] = useState<GameCard[]>([]);
   const [matches, setMatches] = useState<string[]>([]);
+  const [selectedCard, setSelectedCard] = useState<string | null>(null);
   const [draggedCard, setDraggedCard] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
@@ -120,6 +122,9 @@ export default function ThingsMatchingGame() {
 
   const handleDragStart = (cardId: string) => {
     setDraggedCard(cardId);
+    setIsDragging(true);
+    setSelectedCard(null); // Clear tap selection when dragging starts
+    
     const wordCard = wordCards.find((c) => c.id === cardId);
     if (wordCard) {
       speakWord(wordCard.word);
@@ -133,6 +138,7 @@ export default function ThingsMatchingGame() {
   const handleDrop = (targetCardId: string) => {
     if (!draggedCard || draggedCard === targetCardId) {
       setDraggedCard(null);
+      setIsDragging(false);
       return;
     }
 
@@ -155,11 +161,72 @@ export default function ThingsMatchingGame() {
     }
 
     setDraggedCard(null);
+    setIsDragging(false);
+  };
+
+  const handleCardClick = (cardId: string, cardType: "word" | "picture", e?: React.MouseEvent) => {
+    // Prevent click from firing after a drag operation
+    if (isDragging) {
+      setIsDragging(false);
+      return;
+    }
+
+    // If clicking the same card, deselect it
+    if (selectedCard === cardId) {
+      setSelectedCard(null);
+      return;
+    }
+
+    // If no card is selected, select this one
+    if (!selectedCard) {
+      setSelectedCard(cardId);
+      
+      // Speak the word if it's from word cards
+      if (cardType === "word") {
+        const wordCard = wordCards.find((c) => c.id === cardId);
+        if (wordCard) {
+          speakWord(wordCard.word);
+        }
+      }
+      return;
+    }
+
+    // If a card is already selected, try to match
+    const selectedCardData = wordCards.find((c) => c.id === selectedCard) || 
+                            pictureCards.find((c) => c.id === selectedCard);
+    const clickedCardData = wordCards.find((c) => c.id === cardId) || 
+                           pictureCards.find((c) => c.id === cardId);
+
+    if (!selectedCardData || !clickedCardData) {
+      // If we can't find the cards, just select the new one
+      setSelectedCard(cardId);
+      return;
+    }
+
+    // Check if they match (same word, different types)
+    const selectedIsWord = wordCards.some((c) => c.id === selectedCard);
+    const clickedIsWord = wordCards.some((c) => c.id === cardId);
+    
+    if (selectedCardData.word === clickedCardData.word && selectedIsWord !== clickedIsWord) {
+      // Match found!
+      setMatches([...matches, selectedCardData.word]);
+      setSelectedCard(null);
+    } else {
+      // No match, select the new card instead
+      setSelectedCard(cardId);
+      
+      // Speak the word if it's from word cards
+      if (cardType === "word") {
+        speakWord(clickedCardData.word);
+      }
+    }
   };
 
   const resetGame = () => {
     setMatches([]);
+    setSelectedCard(null);
     setDraggedCard(null);
+    setIsDragging(false);
     setGameComplete(false);
     setElapsedTime(0);
     setShowHatchingSequence(false);
@@ -290,7 +357,8 @@ export default function ThingsMatchingGame() {
                           onDragStart={() => handleDragStart(card.id)}
                           onDragOver={handleDragOver}
                           onDrop={() => handleDrop(card.id)}
-                          className={`word-card ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
+                          onClick={(e) => handleCardClick(card.id, "word", e)}
+                          className={`word-card ${selectedCard === card.id ? "selected" : ""} ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
                           data-testid={`card-word-${card.word}-${card.id}`}
                         >
                           <span>{card.word}</span>
@@ -312,7 +380,8 @@ export default function ThingsMatchingGame() {
                           onDragStart={() => handleDragStart(card.id)}
                           onDragOver={handleDragOver}
                           onDrop={() => handleDrop(card.id)}
-                          className={`picture-card ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
+                          onClick={(e) => handleCardClick(card.id, "picture", e)}
+                          className={`picture-card ${selectedCard === card.id ? "selected" : ""} ${draggedCard === card.id ? "dragging" : ""} ${hintCardId === card.id ? "hint-drag" : ""}`}
                           onMouseEnter={() => setHoveredPictureWord(card.word)}
                           onMouseLeave={() => setHoveredPictureWord(null)}
                           data-testid={`card-picture-${card.word}-${card.id}`}
