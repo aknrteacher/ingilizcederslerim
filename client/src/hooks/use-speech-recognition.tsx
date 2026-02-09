@@ -4,10 +4,13 @@ interface UseSpeechRecognitionOptions {
   onResult?: (transcript: string) => void;
   continuous?: boolean;
   lang?: string;
+  onStart?: () => void;
+  onError?: (error: string) => void;
+  onEnd?: () => void;
 }
 
 export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) {
-  const { onResult, continuous = true, lang = 'en-US' } = options;
+  const { onResult, continuous = true, lang = 'en-US', onStart, onError, onEnd } = options;
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +49,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
       setError(null);
       isRestartingRef.current = false;
       console.log('[Speech] Recognition started - microphone should be active');
+      if (onStart) onStart();
       setTranscript(''); // Clear previous transcript
     };
 
@@ -90,6 +94,9 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error('[Speech] Error:', event.error, 'Details:', event);
+      const errorMsg = event.error;
+      
+      if (onError) onError(errorMsg);
       
       // Handle different error types
       if (event.error === 'no-speech') {
@@ -117,6 +124,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.onend = () => {
       console.log('[Speech] Recognition ended, continuous:', continuous, 'shouldListen:', shouldListenRef.current);
       setIsListening(false);
+      if (onEnd) onEnd();
       // Restart if continuous mode and we should still be listening
       if (continuous && shouldListenRef.current && !isRestartingRef.current) {
         isRestartingRef.current = true;

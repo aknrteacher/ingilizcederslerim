@@ -108,15 +108,29 @@ export default function ClassroomMonitoring() {
   const [newStudentName, setNewStudentName] = useState('');
   const [bulkStudentText, setBulkStudentText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const [showDebug, setShowDebug] = useState(false);
   const currentWeek = getCurrentWeek();
   const queryClient = useQueryClient();
 
+  // Add debug logging function
+  const addDebugLog = (message: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setDebugLogs(prev => [...prev.slice(-9), `[${timestamp}] ${message}`]);
+    console.log(message);
+  };
+
   const { isListening, transcript, error, startListening, stopListening, isSupported } = useSpeechRecognition({
     onResult: (text) => {
+      addDebugLog(`Heard: "${text}"`);
       const command = parseCommand(text);
+      addDebugLog(`Command: ${command.type}${command.value ? ` (${command.value})` : ''}`);
       handleVoiceCommand(command, text);
     },
     continuous: true,
+    onStart: () => addDebugLog('Speech recognition started'),
+    onError: (err: string) => addDebugLog(`Error: ${err}`),
+    onEnd: () => addDebugLog('Speech recognition ended'),
   });
 
   // Fetch classes
@@ -403,11 +417,18 @@ export default function ClassroomMonitoring() {
         {isListening && (
           <Card className="mb-6 border-2 border-green-500 bg-green-50">
             <CardContent className="p-6">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
                   <strong className="text-lg text-green-800">🎤 LISTENING...</strong>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowDebug(!showDebug)}
+                >
+                  {showDebug ? 'Hide' : 'Show'} Debug
+                </Button>
               </div>
               <div className="mt-4 p-4 bg-white rounded border-2 border-green-300 min-h-[60px]">
                 {transcript ? (
@@ -419,16 +440,28 @@ export default function ClassroomMonitoring() {
                   <div className="text-gray-400 italic text-center py-2">
                     <div>Speak now... (waiting for input)</div>
                     <div className="text-xs mt-2 text-gray-500">
-                      💡 If nothing appears, check browser console (F12) for errors
+                      💡 Speak clearly into your microphone
                     </div>
                   </div>
                 )}
               </div>
+              
+              {/* Debug Panel */}
+              {showDebug && (
+                <div className="mt-4 p-3 bg-gray-900 text-green-400 rounded text-xs font-mono max-h-40 overflow-y-auto">
+                  <div className="text-white mb-2 font-bold">Debug Log:</div>
+                  {debugLogs.length > 0 ? (
+                    debugLogs.map((log, i) => (
+                      <div key={i} className="mb-1">{log}</div>
+                    ))
+                  ) : (
+                    <div className="text-gray-500">No events yet...</div>
+                  )}
+                </div>
+              )}
+              
               <div className="mt-2 text-xs text-gray-600">
                 💡 Say a student name, then "plus" for participation or "assignment" for homework
-              </div>
-              <div className="mt-2 text-xs text-orange-600">
-                ⚠️ If you see this but no text appears, open browser console (F12) to check for errors
               </div>
             </CardContent>
           </Card>
