@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLocation } from 'wouter';
+import { useRoute, useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface Class {
@@ -22,22 +22,54 @@ const CATEGORIES = [
   { value: 'advancement', label: 'Advancement', maxSquares: 5 },
 ];
 
-export default function ClassMonitor() {
+interface ClassMonitorProps {
+  code?: string;
+}
+
+export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {}) {
+  // Try to get code from prop first, then from route, then from location
+  const [match, params] = useRoute('/:code');
   const [location] = useLocation();
-  const code = location.split('/').pop();
+  const code = codeProp || params?.code || location.split('/').pop();
+  
+  console.log('[ClassMonitor] Component mounted!', {
+    code,
+    codeProp,
+    params,
+    location,
+    match,
+    codeValid: code && /^\d{4}$/.test(code || '')
+  });
+
+  const queryEnabled = !!code && /^\d{4}$/.test(code || '');
+  console.log('[ClassMonitor] Query enabled:', queryEnabled);
 
   const { data, isLoading, error } = useQuery({
     queryKey: [`/api/classroom/monitor/${code}`],
     queryFn: async () => {
-      const res = await fetch(`/api/classroom/monitor/${code}`);
-      if (!res.ok) throw new Error('Class not found');
-      return res.json();
+      console.log('[ClassMonitor] Fetching data for code:', code);
+      const url = `/api/classroom/monitor/${code}`;
+      console.log('[ClassMonitor] Fetch URL:', url);
+      const res = await fetch(url);
+      console.log('[ClassMonitor] Response status:', res.status);
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('[ClassMonitor] Error response:', errorText);
+        throw new Error(`Class not found: ${res.status} - ${errorText}`);
+      }
+      const json = await res.json();
+      console.log('[ClassMonitor] Data received:', json);
+      return json;
     },
-    enabled: !!code && /^\d{4}$/.test(code || ''),
+    enabled: queryEnabled,
     refetchInterval: 30000,
   });
 
+  console.log('[ClassMonitor] Query state:', { isLoading, error: error?.message, hasData: !!data });
+
+  // ALWAYS render something visible immediately for debugging
   if (!code || !/^\d{4}$/.test(code)) {
+    console.log('[ClassMonitor] Invalid code, showing error:', code);
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
@@ -45,6 +77,7 @@ export default function ClassMonitor() {
             <CardContent className="p-8 text-center">
               <h1 className="text-2xl font-bold text-red-600 mb-4">Invalid Monitor Code</h1>
               <p className="text-gray-600">Please check the code and try again.</p>
+              <p className="text-sm text-gray-500 mt-2">Code received: {code || 'undefined'}</p>
             </CardContent>
           </Card>
         </div>
@@ -52,14 +85,23 @@ export default function ClassMonitor() {
     );
   }
 
+  // Show loading state - this should ALWAYS be visible if component mounts
   if (isLoading) {
+    console.log('[ClassMonitor] Showing loading state');
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center py-20">
-            <div className="text-xl font-bold mb-2">Loading...</div>
-            <div className="text-gray-600">Fetching class data</div>
-          </div>
+          <Card className="shadow-2xl border-2 border-blue-200">
+            <CardHeader>
+              <CardTitle>Loading Class Data...</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-20">
+                <div className="text-xl font-bold mb-2">Loading...</div>
+                <div className="text-gray-600">Fetching class data for code: {code}</div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );

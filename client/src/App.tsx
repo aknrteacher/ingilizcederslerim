@@ -534,9 +534,10 @@ function Router() {
       <Route path="/:code">
         {({ params }: any) => {
           const code = params?.code || params;
+          console.log('[App] Monitor route matched, code:', code);
           // Only show ClassMonitor for 4-digit codes
           if (code && /^\d{4}$/.test(code)) {
-            return <ClassMonitor />;
+            return <ClassMonitor code={code} />;
           }
           return null;
         }}
