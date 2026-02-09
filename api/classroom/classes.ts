@@ -1,7 +1,6 @@
 // Vercel serverless function for classroom classes API
 /// <reference types="node" />
 import { z } from 'zod';
-import { getClassesMap, getStudentsMap, type Class } from './shared-storage';
 
 // Define schema inline to avoid import issues
 const insertClassSchema = z.object({
@@ -18,6 +17,41 @@ function generateMonitorCode(className: string): string {
   // Convert to lowercase and remove spaces/special chars, keep alphanumeric
   return className.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
+
+// Inline storage - MUST match shared-storage.ts exactly to share storage
+interface Class {
+  id: string;
+  name: string;
+  monitorCode: string;
+  createdAt: Date;
+}
+
+interface Student {
+  id: string;
+  classId: string;
+  name: string;
+  createdAt: Date;
+}
+
+// Global storage (shared across all API endpoints in the same runtime)
+declare global {
+  var __classesStorage: Map<string, Class> | undefined;
+  var __studentsStorage: Map<string, Student> | undefined;
+}
+
+const getClassesMap = (): Map<string, Class> => {
+  if (!global.__classesStorage) {
+    global.__classesStorage = new Map<string, Class>();
+  }
+  return global.__classesStorage;
+};
+
+const getStudentsMap = (): Map<string, Student> => {
+  if (!global.__studentsStorage) {
+    global.__studentsStorage = new Map<string, Student>();
+  }
+  return global.__studentsStorage;
+};
 
 const storage = {
   getAllClasses: async (): Promise<Class[]> => {
