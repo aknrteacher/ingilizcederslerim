@@ -51,39 +51,52 @@ function parseCommand(text: string): {
   value?: string;
 } {
   const lower = text.toLowerCase().trim();
+  console.log('[Command] Parsing:', lower);
 
-  // Class navigation: "2 - a", "2 a", "grade 2 a", "class 2 a"
-  const classMatch = lower.match(/(?:grade\s*)?(\d+)\s*[-]?\s*([a-z])/);
-  if (classMatch) {
-    return { type: 'class', value: `${classMatch[1]}-${classMatch[2].toUpperCase()}` };
+  // Points: "plus", "add point", "point", "+" (spoken as "plus")
+  if (lower === 'plus' || lower === '+' || lower.includes('plus') || 
+      (lower.includes('add') && lower.includes('point')) ||
+      lower === 'point' || lower === 'points') {
+    console.log('[Command] Matched: point');
+    return { type: 'point' };
+  }
+
+  // Assignments: "assignment", "homework", "home work"
+  if (lower.includes('homework') || lower.includes('home work') || 
+      (lower.includes('assignment') && !lower.includes('tab'))) {
+    console.log('[Command] Matched: assignment');
+    return { type: 'assignment' };
   }
 
   // Tab navigation: "assignments", "participation", "students"
-  if (lower.includes('assignment')) {
+  if (lower.includes('assignment') && lower.includes('tab')) {
     return { type: 'tab', value: 'assignments' };
   }
   if (lower.includes('participation') || lower.includes('participate')) {
     return { type: 'tab', value: 'participation' };
   }
-  if (lower.includes('student')) {
+  if (lower.includes('student') && lower.includes('tab')) {
     return { type: 'tab', value: 'students' };
   }
 
-  // Points: "plus", "add point", "point"
-  if (lower.includes('plus') || (lower.includes('add') && lower.includes('point'))) {
-    return { type: 'point' };
-  }
-
-  // Assignments: "assignment", "homework"
-  if (lower.includes('homework') || (lower.includes('assignment') && !lower.includes('tab'))) {
-    return { type: 'assignment' };
+  // Class navigation: "2 - a", "2 a", "grade 2 a", "class 2 a"
+  const classMatch = lower.match(/(?:grade\s*)?(\d+)\s*[-]?\s*([a-z])/);
+  if (classMatch) {
+    console.log('[Command] Matched: class', classMatch[1], classMatch[2]);
+    return { type: 'class', value: `${classMatch[1]}-${classMatch[2].toUpperCase()}` };
   }
 
   // Student name (if it's a name-like string, not a command)
-  if (lower.length > 2 && !lower.match(/^(plus|add|point|assignment|tab|class|grade)/)) {
+  // Exclude common command words
+  const commandWords = ['plus', 'add', 'point', 'points', 'assignment', 'assignments', 'tab', 'class', 'grade', 'participation', 'homework'];
+  const isCommand = commandWords.some(word => lower === word || lower.startsWith(word + ' '));
+  
+  if (!isCommand && lower.length > 1) {
+    console.log('[Command] Matched: student', text.trim());
     return { type: 'student', value: text.trim() };
   }
 
+  console.log('[Command] Unknown command');
   return { type: 'unknown' };
 }
 
@@ -142,6 +155,8 @@ export default function ClassroomMonitoring() {
   }, [participationData]);
 
   const handleVoiceCommand = async (command: { type: string; value?: string }, rawText: string) => {
+    console.log('[Voice] Processing command:', command, 'rawText:', rawText);
+    
     if (command.type === 'class' && command.value) {
       const cls = classesData?.classes.find(
         (c) => c.name.toLowerCase() === command.value.toLowerCase()
@@ -165,18 +180,30 @@ export default function ClassroomMonitoring() {
       } else {
         toast.error(`Student ${command.value} not found`);
       }
-    } else if (command.type === 'point' && selectedStudent && selectedClass) {
-      addParticipationMutation.mutate({
-        studentId: selectedStudent.id,
-        classId: selectedClass.id,
-        week: currentWeek,
-      });
-    } else if (command.type === 'assignment' && selectedStudent && selectedClass) {
-      addAssignmentMutation.mutate({
-        studentId: selectedStudent.id,
-        classId: selectedClass.id,
-        week: currentWeek,
-      });
+    } else if (command.type === 'point') {
+      if (selectedStudent && selectedClass) {
+        console.log('[Voice] Adding participation point for', selectedStudent.name);
+        addParticipationMutation.mutate({
+          studentId: selectedStudent.id,
+          classId: selectedClass.id,
+          week: currentWeek,
+        });
+      } else {
+        toast.error('Please select a student first');
+      }
+    } else if (command.type === 'assignment') {
+      if (selectedStudent && selectedClass) {
+        console.log('[Voice] Adding assignment point for', selectedStudent.name);
+        addAssignmentMutation.mutate({
+          studentId: selectedStudent.id,
+          classId: selectedClass.id,
+          week: currentWeek,
+        });
+      } else {
+        toast.error('Please select a student first');
+      }
+    } else if (command.type === 'unknown') {
+      console.log('[Voice] Unknown command, ignoring');
     }
   };
 
