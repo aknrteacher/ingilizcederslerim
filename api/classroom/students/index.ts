@@ -55,6 +55,11 @@ const storage = {
     console.log(`[index.ts] Created student ${student.name} (${student.id}) for class ${student.classId}, total students now: ${studentsMap.size}`);
     return student;
   },
+  deleteStudent: async (id: string): Promise<void> => {
+    const studentsMap = getStudentsMap();
+    studentsMap.delete(id);
+    console.log(`[index.ts] Deleted student ${id}, total students now: ${studentsMap.size}`);
+  },
 };
 
 export default async function handler(req: any, res: any) {
@@ -93,6 +98,22 @@ export default async function handler(req: any, res: any) {
       console.log('[index.ts] Student created:', student);
       
       return res.status(200).json({ student });
+    }
+
+    // Handle DELETE request
+    if (req.method === 'DELETE') {
+      const { id } = req.query;
+      if (!id || typeof id !== 'string') {
+        return res.status(400).json({ message: 'Student ID is required as query parameter' });
+      }
+
+      try {
+        await storage.deleteStudent(id);
+        return res.status(200).json({ success: true });
+      } catch (err: any) {
+        console.error('[index.ts] Error deleting student:', err);
+        return res.status(500).json({ message: err?.message || 'Failed to delete student' });
+      }
     }
 
     return res.status(405).json({ message: `Method ${req.method} not allowed` });

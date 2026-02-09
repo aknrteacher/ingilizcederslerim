@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeft, ChevronRight, Download, Plus, Users, Upload } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Plus, Users, Upload, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 // @ts-ignore
 import jsPDF from 'jspdf';
@@ -16,6 +16,7 @@ import 'jspdf-autotable';
 interface Class {
   id: string;
   name: string;
+  monitorCode: string;
   createdAt: string;
 }
 
@@ -53,11 +54,17 @@ export default function InClass() {
   const [swipeStart, setSwipeStart] = useState<{ x: number; y: number } | null>(null);
   const studentRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
   
+  // Store all category scores separately (studentId -> category -> scores[])
+  const [allCategoryScores, setAllCategoryScores] = useState<Map<string, Map<Category, number[]>>>(new Map());
+  
   // Admin mode states
   const [newClassName, setNewClassName] = useState('');
   const [newStudentName, setNewStudentName] = useState('');
   const [bulkStudentText, setBulkStudentText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
+  
+  // Store all category scores separately (studentId -> category -> scores[])
+  const [allCategoryScores, setAllCategoryScores] = useState<Map<string, Map<Category, number[]>>>(new Map());
 
   const queryClient = useQueryClient();
 
@@ -114,6 +121,98 @@ export default function InClass() {
       toast.error('Failed to add student');
     },
   });
+
+  const deleteClassMutation = useMutation({
+    mutationFn: async (classId: string) => {
+      const res = await apiRequest('DELETE', `/api/classroom/classes?id=${classId}`, {});
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/classroom/classes'] });
+      if (selectedClass) {
+        setSelectedClass(null);
+      }
+      toast.success('Class deleted successfully!');
+    },
+    onError: (error: any) => {
+      toast.error('Failed to delete class');
+    },
+  });
+
+  const deleteStudentMutation = useMutation({
+    mutationFn: async (studentId: string) => {
+      const res = await apiRequest('DELETE', `/api/classroom/students?id=${studentId}`, {});
+      return res.json();
+    },
+    onSuccess: () => {
+      if (selectedClass) {
+        queryClient.invalidateQueries({ queryKey: ['/api/classroom/students', selectedClass.id] });
+      }
+      toast.success('Student deleted successfully!');
+    },
+    onError: (error: any) => {
+      toast.error('Failed to delete student');
+    },
+  });
+
+  const seedTestDataMutation = useMutation({
+    mutationFn: async () => {
+      const testClasses = [
+        { name: '2-A' },
+        { name: '3-B' },
+        { name: '4-C' },
+      ];
+      const testStudents = [
+        ['Ali Yılmaz', 'Ayşe Demir', 'Mehmet Kaya', 'Zeynep Şahin', 'Can Öztürk'],
+        ['Elif Arslan', 'Burak Çelik', 'Deniz Yıldız', 'Fatma Aydın', 'Gökhan Doğan'],
+        ['Hülya Kılıç', 'İbrahim Yücel', 'Jale Özdemir', 'Kemal Avcı', 'Leyla Çınar'],
+      ];
+
+      const createdClasses: Class[] = [];
+      
+      // Create classes
+      for (const cls of testClasses) {
+        const res = await apiRequest('POST', '/api/classroom/classes', cls);
+        const result = await res.json();
+        if (result.class) {
+          createdClasses.push(result.class);
+        }
+      }
+
+      // Create students for each class
+      for (let i = 0; i < createdClasses.length; i++) {
+        const classObj = createdClasses[i];
+        const students = testStudents[i];
+        for (const studentName of students) {
+          await apiRequest('POST', '/api/classroom/students', {
+            classId: classObj.id,
+            name: studentName,
+          });
+        }
+      }
+
+      return { classes: createdClasses };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/classroom/classes'] });
+      toast.success('Test data created successfully!');
+    },
+    onError: (error: any) => {
+      toast.error('Failed to create test data');
+    },
+  });
+
+  const handleDeleteClass = (classToDelete: Class) => {
+    if (window.confirm(`Are you sure you want to delete class "${classToDelete.name}"?\n\nThis will also delete all students in this class. This action cannot be undone.`)) {
+      deleteClassMutation.mutate(classToDelete.id);
+    }
+  };
+
+  const handleDeleteStudent = (student: Student) => {
+    if (window.confirm(`Are you sure you want to delete student "${student.name}"?\n\nThis action cannot be undone.`)) {
+      deleteStudentMutation.mutate(student.id);
+    }
+  };
 
   const handleCreateClass = () => {
     const trimmedName = newClassName.trim();
@@ -197,25 +296,29 @@ export default function InClass() {
     }
   };
 
-  // Mobile mode functions
+  // Mobile mode functions - load scores for selected category
   useEffect(() => {
     if (mode === 'mobile' && selectedClass && selectedCategory && studentsData?.students) {
       const category = CATEGORIES.find(c => c.value === selectedCategory);
       if (!category) return;
 
+      // Load existing scores for this category if available
       const newScores = new Map<string, StudentScore>();
       studentsData.students.forEach(student => {
+        const existingAllScores = allCategoryScores.get(student.id);
+        const existingForCategory = existingAllScores?.get(selectedCategory);
         const existing = studentScores.get(student.id);
+        
         newScores.set(student.id, {
           studentId: student.id,
           studentName: student.name,
-          scores: existing?.scores || new Array(category.maxSquares).fill(0),
+          scores: existingForCategory || existing?.scores || new Array(category.maxSquares).fill(0),
         });
       });
       setStudentScores(newScores);
       setCurrentStudentIndex(0);
     }
-  }, [mode, selectedClass, selectedCategory, studentsData]);
+  }, [mode, selectedClass, selectedCategory, studentsData, allCategoryScores]);
 
   const currentStudent = studentsData?.students[currentStudentIndex];
   const currentScore = currentStudent ? studentScores.get(currentStudent.id) : null;
@@ -308,6 +411,50 @@ export default function InClass() {
     setSwipeStart(null);
   };
 
+
+  const handleSaveScores = async () => {
+    if (!selectedClass || !studentsData?.students.length) {
+      toast.error('No data to save');
+      return;
+    }
+
+    try {
+      // Collect all scores for all categories
+      const scoresData: Record<string, Record<string, number[]>> = {};
+      studentsData.students.forEach(student => {
+        scoresData[student.id] = {};
+        const studentAllScores = allCategoryScores.get(student.id);
+        CATEGORIES.forEach(cat => {
+          if (studentAllScores && studentAllScores.has(cat.value)) {
+            scoresData[student.id][cat.value] = studentAllScores.get(cat.value)!;
+          } else if (cat.value === selectedCategory) {
+            // Use current scores for selected category
+            const currentScore = studentScores.get(student.id);
+            if (currentScore && currentScore.scores.length === cat.maxSquares) {
+              scoresData[student.id][cat.value] = currentScore.scores;
+            } else {
+              scoresData[student.id][cat.value] = new Array(cat.maxSquares).fill(0);
+            }
+          } else {
+            // Load from saved scores or default to empty
+            scoresData[student.id][cat.value] = new Array(cat.maxSquares).fill(0);
+          }
+        });
+      });
+
+      const res = await apiRequest('POST', '/api/classroom/scores', {
+        classId: selectedClass.id,
+        scores: scoresData,
+      });
+      
+      await res.json();
+      toast.success('Scores saved successfully! Monitor page updated.');
+    } catch (error: any) {
+      console.error('Error saving scores:', error);
+      toast.error('Failed to save scores');
+    }
+  };
+
   const handleSquareClick = (index: number, value: number) => {
     if (!currentStudent || !currentScore) return;
     
@@ -330,6 +477,63 @@ export default function InClass() {
     });
   };
 
+  const exportFullTableToPDF = () => {
+    if (!selectedClass || !studentsData?.students.length) return;
+
+    const doc = new jsPDF('landscape');
+    doc.setFontSize(18);
+    doc.text(`${selectedClass.name} - Complete Evaluation`, 14, 15);
+
+    // Prepare headers
+    const headers = ['Student Name', ...CATEGORIES.map(cat => cat.label)];
+
+    // Prepare table data
+    const tableData: any[] = [];
+    studentsData.students.forEach(student => {
+      const row: any[] = [student.name];
+      CATEGORIES.forEach(cat => {
+        const studentAllScores = allCategoryScores.get(student.id);
+        const catScores = studentAllScores?.get(cat.value) || new Array(cat.maxSquares).fill(0);
+        const plusCount = catScores.filter(s => s === 1).length;
+        const minusCount = catScores.filter(s => s === -1).length;
+        row.push(`${plusCount > 0 ? '✓'.repeat(plusCount) : ''}${minusCount > 0 ? '✗'.repeat(minusCount) : ''}${plusCount === 0 && minusCount === 0 ? '-' : ''}`);
+      });
+      tableData.push(row);
+    });
+
+    // @ts-ignore
+    (doc as any).autoTable({
+      head: [headers],
+      body: tableData,
+      startY: 25,
+      styles: {
+        fontSize: 9,
+        cellPadding: 3,
+      },
+      columnStyles: {
+        0: { cellWidth: 50 },
+      },
+      didParseCell: (data: any) => {
+        if (data.row.index === 0) return; // Skip header
+        const colIndex = data.column.index;
+        if (colIndex > 0) {
+          const value = data.cell.text[0] || '';
+          if (value.includes('✓')) {
+            data.cell.styles.textColor = [34, 197, 94]; // Green
+            data.cell.styles.fontStyle = 'bold';
+          } else if (value.includes('✗')) {
+            data.cell.styles.textColor = [239, 68, 68]; // Red
+            data.cell.styles.fontStyle = 'bold';
+          }
+        }
+      },
+    });
+
+    const fileName = `${selectedClass.name}_Complete_${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
+    toast.success('PDF exported successfully!');
+  };
+
   const exportToPDF = (categoryToExport?: Category) => {
     const exportCategory = categoryToExport || selectedCategory;
     if (!selectedClass || !exportCategory) return;
@@ -349,8 +553,8 @@ export default function InClass() {
       const row = [student.name];
       if (score) {
         score.scores.forEach(s => {
-          if (s === 1) row.push('+');
-          else if (s === -1) row.push('-');
+          if (s === 1) row.push('✓');
+          else if (s === -1) row.push('✗');
           else row.push('');
         });
       } else {
@@ -467,15 +671,27 @@ export default function InClass() {
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {classesData?.classes.map((cls) => (
-                      <Button
-                        key={cls.id}
-                        variant={selectedClass?.id === cls.id ? 'default' : 'outline'}
-                        size="lg"
-                        className="h-20 text-lg"
-                        onClick={() => setSelectedClass(cls)}
-                      >
-                        {cls.name}
-                      </Button>
+                      <div key={cls.id} className="relative group">
+                        <Button
+                          variant={selectedClass?.id === cls.id ? 'default' : 'outline'}
+                          size="lg"
+                          className="h-20 text-lg w-full"
+                          onClick={() => setSelectedClass(cls)}
+                        >
+                          {cls.name}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-700 hover:bg-red-50"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClass(cls);
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     ))}
                     {(!classesData?.classes || classesData.classes.length === 0) && (
                       <div className="col-span-full text-center text-gray-500 py-8">
@@ -483,6 +699,17 @@ export default function InClass() {
                       </div>
                     )}
                   </div>
+                  {(!classesData?.classes || classesData.classes.length === 0) && (
+                    <div className="mt-4 text-center">
+                      <Button
+                        onClick={() => seedTestDataMutation.mutate()}
+                        variant="outline"
+                        disabled={seedTestDataMutation.isPending}
+                      >
+                        {seedTestDataMutation.isPending ? 'Creating...' : '🎲 Create Test Data (3 classes, 5 students each)'}
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -561,25 +788,29 @@ export default function InClass() {
               </CardContent>
             </Card>
 
-            {/* Export Options */}
+            {/* Export Full Table */}
             <Card>
               <CardHeader>
-                <CardTitle>Export to PDF</CardTitle>
+                <CardTitle>Export Full Table</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {CATEGORIES.map((cat) => (
-                    <Button
-                      key={cat.value}
-                      onClick={() => exportToPDF(cat.value)}
-                      variant="outline"
-                      className="w-full justify-start"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Export {cat.label} ({cat.maxSquares} squares)
-                    </Button>
-                  ))}
-                </div>
+                <Button
+                  onClick={() => exportFullTableToPDF()}
+                  variant="outline"
+                  className="w-full justify-start"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Complete Table to PDF
+                </Button>
+                {selectedClass?.monitorCode && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded">
+                    <div className="text-sm font-semibold text-blue-900">Monitor Code:</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-1">{selectedClass.monitorCode}</div>
+                    <div className="text-xs text-blue-700 mt-1">
+                      Parents can view at: /{selectedClass.monitorCode}
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -606,28 +837,40 @@ export default function InClass() {
                   </thead>
                   <tbody>
                     {studentsData?.students.map((student) => (
-                      <tr key={student.id}>
-                        <td className="border p-2 font-semibold">{student.name}</td>
+                      <tr key={student.id} className="hover:bg-gray-50">
+                        <td className="border p-2 font-semibold">
+                          <div className="flex items-center justify-between">
+                            <span>{student.name}</span>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              onClick={() => handleDeleteStudent(student)}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </td>
                         {CATEGORIES.map((cat) => {
                           const score = studentScores.get(student.id);
                           const scores = score?.scores || new Array(cat.maxSquares).fill(0);
+                          const plusCount = scores.filter(s => s === 1).length;
+                          const minusCount = scores.filter(s => s === -1).length;
                           return (
-                            <td key={cat.value} className="border p-2">
-                              <div className="flex flex-wrap gap-1 justify-center">
-                                {scores.map((s, i) => (
-                                  <div
-                                    key={i}
-                                    className={`w-6 h-6 rounded text-xs flex items-center justify-center ${
-                                      s === 1
-                                        ? 'bg-green-500 text-white'
-                                        : s === -1
-                                        ? 'bg-red-500 text-white'
-                                        : 'bg-gray-100 border border-gray-300'
-                                    }`}
-                                  >
-                                    {s === 1 ? '+' : s === -1 ? '−' : ''}
-                                  </div>
-                                ))}
+                            <td key={cat.value} className="border p-2 text-center">
+                              <div className="flex items-center justify-center gap-1">
+                                {plusCount > 0 && (
+                                  <span className="text-green-600 font-bold text-lg">✓</span>
+                                )}
+                                {minusCount > 0 && (
+                                  <span className="text-red-600 font-bold text-lg">✗</span>
+                                )}
+                                {plusCount === 0 && minusCount === 0 && (
+                                  <span className="text-gray-400 text-sm">-</span>
+                                )}
+                                <span className="text-xs text-gray-500 ml-1">
+                                  ({plusCount > 0 ? `+${plusCount}` : ''}{minusCount > 0 ? `-${minusCount}` : ''})
+                                </span>
                               </div>
                             </td>
                           );
@@ -718,11 +961,13 @@ export default function InClass() {
 
     // Detect centered student on scroll
     useEffect(() => {
+      if (!studentsData?.students.length) return;
+      
       const handleScroll = () => {
         const viewportCenter = window.innerHeight / 2;
         let closestStudent: { id: string; distance: number } | null = null;
 
-        studentsData?.students.forEach(student => {
+        studentsData.students.forEach(student => {
           const element = studentRefs.current.get(student.id);
           if (element) {
             const rect = element.getBoundingClientRect();
@@ -737,35 +982,45 @@ export default function InClass() {
 
         if (closestStudent && closestStudent.distance < 100) {
           setCenteredStudentId(closestStudent.id);
+        } else {
+          setCenteredStudentId(null);
         }
       };
 
       window.addEventListener('scroll', handleScroll);
       handleScroll(); // Check on mount
       return () => window.removeEventListener('scroll', handleScroll);
-    }, [studentsData]);
+    }, [studentsData?.students]);
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         {/* Header */}
         <div className="bg-white shadow-sm p-4 sticky top-0 z-10">
-          <div className="max-w-md mx-auto flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={() => setSelectedCategory(null)}
-              className="text-2xl"
-            >
-              ←
-            </Button>
-            <div className="text-center flex-1">
-              <div className="text-xl font-bold">{selectedClass.name}</div>
-              <div className="text-lg text-gray-600">{category.label}</div>
+          <div className="max-w-md mx-auto">
+            {selectedClass?.monitorCode && (
+              <div className="text-center mb-2">
+                <div className="text-xs text-gray-500">Monitor Code:</div>
+                <div className="text-sm font-mono font-bold text-blue-600">{selectedClass.monitorCode}</div>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => setSelectedCategory(null)}
+                className="text-2xl"
+              >
+                ←
+              </Button>
+              <div className="text-center flex-1">
+                <div className="text-xl font-bold">{selectedClass.name}</div>
+                <div className="text-lg text-gray-600">{category.label}</div>
+              </div>
+              <div className="w-12" />
             </div>
-            <div className="w-12" />
-          </div>
-          <div className="text-center text-sm text-gray-500 mt-2">
-            Scroll to find student, swipe when centered
+            <div className="text-center text-sm text-gray-500 mt-2">
+              Scroll to find student, swipe when centered
+            </div>
           </div>
         </div>
 
@@ -846,14 +1101,22 @@ export default function InClass() {
 
         {/* Fixed Bottom Save Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-10">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto space-y-2">
+            <Button
+              onClick={handleSaveScores}
+              className="w-full h-14 text-lg font-bold"
+              size="lg"
+            >
+              💾 Save Scores
+            </Button>
             <Button
               onClick={() => exportToPDF()}
-              className="w-full h-16 text-xl font-bold"
+              variant="outline"
+              className="w-full h-14 text-lg font-bold"
               size="lg"
             >
               <Download className="w-6 h-6 mr-2" />
-              Save & Export PDF
+              Export PDF
             </Button>
           </div>
         </div>

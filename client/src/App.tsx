@@ -245,6 +245,7 @@ import WordMapPage from "@/pages/admin/word-map";
 import WorkflowPage from "@/pages/admin/workflow";
 import ClassroomMonitoring from "@/pages/classroom-monitoring";
 import InClass from "@/pages/inclass";
+import ClassMonitor from "@/pages/class-monitor";
 
 function Router() {
   return (
@@ -527,6 +528,16 @@ function Router() {
       </Route>
       <Route path="/classroom">
         <ClassroomMonitoring />
+      </Route>
+      <Route path="/:code">
+        {({ params }: any) => {
+          const code = params?.code || params;
+          // Only show ClassMonitor for 4-digit codes
+          if (code && /^\d{4}$/.test(code)) {
+            return <ClassMonitor />;
+          }
+          return null;
+        }}
       </Route>
       
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 

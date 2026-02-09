@@ -17,12 +17,19 @@ function generateId(): string {
 interface Class {
   id: string;
   name: string;
+  monitorCode: string; // 4-digit unique code
   createdAt: Date;
+}
+
+// Generate 4-digit code
+function generateMonitorCode(): string {
+  return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
 // Global storage (shared across invocations in same container)
 declare global {
   var __classesStorage: Map<string, Class> | undefined;
+  var __studentsStorage: Map<string, any> | undefined;
 }
 
 const getClassesMap = (): Map<string, Class> => {
@@ -40,15 +47,46 @@ const storage = {
   createClass: async (data: { name: string }): Promise<Class> => {
     const classesMap = getClassesMap();
     const id = generateId();
+    let monitorCode = generateMonitorCode();
+    // Ensure unique code
+    while (Array.from(classesMap.values()).some(c => c.monitorCode === monitorCode)) {
+      monitorCode = generateMonitorCode();
+    }
     const cls: Class = {
       name: data.name,
       id,
+      monitorCode,
       createdAt: new Date(),
     };
     classesMap.set(id, cls);
-    console.log(`[classes.ts] Created class ${cls.name} (${cls.id}), total classes: ${classesMap.size}`);
+    console.log(`[classes.ts] Created class ${cls.name} (${cls.id}) with code ${monitorCode}, total classes: ${classesMap.size}`);
     return cls;
   },
+  getClassByCode: async (code: string): Promise<Class | null> => {
+    const classesMap = getClassesMap();
+    const cls = Array.from(classesMap.values()).find(c => c.monitorCode === code);
+    return cls || null;
+  },
+  deleteClass: async (id: string): Promise<void> => {
+    const classesMap = getClassesMap();
+    // Also delete related students (they're stored in global.__studentsStorage)
+    const studentsMap = getStudentsMap();
+    if (studentsMap) {
+      const studentsToDelete = Array.from(studentsMap.values()).filter(s => s.classId === id);
+      studentsToDelete.forEach(s => studentsMap.delete(s.id));
+      console.log(`[classes.ts] Deleted ${studentsToDelete.length} students for class ${id}`);
+    }
+    classesMap.delete(id);
+    console.log(`[classes.ts] Deleted class ${id}, total classes: ${classesMap.size}`);
+  },
+};
+
+// Helper to get students map (for deletion)
+const getStudentsMap = (): Map<string, any> => {
+  if (!global.__studentsStorage) {
+    global.__studentsStorage = new Map();
+  }
+  return global.__studentsStorage;
 };
 
 export default async function handler(req: any, res: any) {
@@ -109,6 +147,21 @@ export default async function handler(req: any, res: any) {
           });
         }
         throw err;
+      }
+    }
+
+    if (method === 'DELETE') {
+      const { id } = req.query;
+      if (!id || typeof id !== 'string') {
+        return res.status(400).json({ message: 'Class ID is required as query parameter' });
+      }
+
+      try {
+        await storage.deleteClass(id);
+        return res.status(200).json({ success: true });
+      } catch (err: any) {
+        console.error('Error deleting class:', err);
+        return res.status(500).json({ message: err?.message || 'Failed to delete class' });
       }
     }
 
