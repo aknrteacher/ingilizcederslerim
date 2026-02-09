@@ -577,22 +577,19 @@ FUNCTIONS:
         themes: [
           {
             id: "3.1",
-            name: "Unit 1",
-            nameTr: "Ünite 1",
+            name: "Unit 1: Greeting",
+            nameTr: "Ünite 1: Selamlaşma",
             notes: `GRAMMAR:
-• Greetings: Hello, Hi, Good morning, Good afternoon, Good evening, Good night, Goodbye
-• Introducing oneself and meeting others
-• Numbers: eleven, twelve, twenty
-• Basic math operations: plus, minus, count
-• Asking about age: How old are you?
-• Actions: say, write, draw
+• Greetings
+• The alphabet
+• Numbers 1 to 20
+• Introducing oneself
 
 FUNCTIONS:
-• Greeting people at different times of day
-• Introducing yourself and meeting others
-• Counting and basic math
-• Asking and answering about age
-• Describing actions`,
+• Greeting people
+• Using the alphabet
+• Counting from 1 to 20
+• Introducing yourself`,
             words: [
               { word: "hello", turkish: "merhaba" },
               { word: "hi", turkish: "selam" },
@@ -627,24 +624,15 @@ FUNCTIONS:
           },
           {
             id: "3.2",
-            name: "Unit 2",
-            nameTr: "Ünite 2",
+            name: "Unit 2: My Family",
+            nameTr: "Ünite 2: Ailem",
             notes: `GRAMMAR:
-• Family members vocabulary
-• Demonstrative pronouns: this, that
-• Question word: who
-• Possessive: my
-• Verb: has got
-• Introducing people
-• Asking about age: How old is he?
-• Family tree
+• Family members
+• Introducing someone
 
 FUNCTIONS:
-• Introducing family members
-• Describing family relationships
-• Asking and answering about family members
-• Talking about age
-• Building a family tree`,
+• Talking about family members
+• Introducing family members to others`,
             words: [
               { word: "family", turkish: "aile" },
               { word: "member", turkish: "üye" },
@@ -680,20 +668,15 @@ FUNCTIONS:
           },
           {
             id: "3.3",
-            name: "Unit 3",
-            nameTr: "Ünite 3",
+            name: "Unit 3: People I Love",
+            nameTr: "Ünite 3: Sevdiğim İnsanlar",
             notes: `GRAMMAR:
-• Adjectives: small, big, old, young, short, tall, fast, slow, strong, weak, fat, slim
-• Action verbs: dance, walk, swim, talk, play, run, fly, jump, ride, climb, sing, lift, carry, draw
-• Present simple tense for actions
-• Describing people and abilities
-• Can/Can't for abilities
+• Describing someone
+• Abilities
 
 FUNCTIONS:
-• Describing physical characteristics
-• Talking about abilities and actions
-• Comparing people and things
-• Expressing what people can do`,
+• Describing people
+• Talking about what people can do`,
             words: [
               { word: "small", turkish: "küçük" },
               { word: "big", turkish: "büyük" },
@@ -730,21 +713,15 @@ FUNCTIONS:
           },
           {
             id: "3.4",
-            name: "Unit 4",
-            nameTr: "Ünite 4",
+            name: "Unit 4: Feelings",
+            nameTr: "Ünite 4: Duygular",
             notes: `GRAMMAR:
-• Feelings vocabulary: good, bad, happy, unhappy (sad), angry, surprised, energetic, tired, hungry, thirsty, full, bored, feel
-• Action verbs: eat, drink, walk, study, cook, watch, swim, read, sleep, run, sing a song, listen, look
-• Suggestions: Let's go
-• Questions: How are you?
-• Nouns: cake, water
+• Feelings
+• Suggestions
 
 FUNCTIONS:
 • Expressing feelings and emotions
-• Making suggestions
-• Asking about feelings
-• Describing actions
-• Talking about basic needs`,
+• Making suggestions`,
             words: [
               { word: "good", turkish: "iyi" },
               { word: "bad", turkish: "kötü" },
@@ -778,6 +755,130 @@ FUNCTIONS:
               { word: "cake", turkish: "pasta" },
               { word: "water", turkish: "su" },
             ],
+          },
+          {
+            id: "3.5",
+            name: "Unit 5: Toys and Games",
+            nameTr: "Ünite 5: Oyuncaklar ve Oyunlar",
+            notes: `GRAMMAR:
+• Toys and possessions vocabulary
+• Quantity of things: how many
+• Have got / Has got
+• There is / There are
+• Colors vocabulary
+• Possessive pronouns: my, your
+• Action verbs: play, look
+
+FUNCTIONS:
+• Talking about toys and games
+• Describing possessions
+• Asking about quantity
+• Expressing ownership
+• Describing colors
+• Talking about what exists`,
+            words: [
+              { word: "toy", turkish: "oyuncak" },
+              { word: "game", turkish: "oyun" },
+              { word: "ball", turkish: "top" },
+              { word: "doll", turkish: "oyuncak bebek" },
+              { word: "teddy bear", turkish: "oyuncak ayı" },
+              { word: "kite", turkish: "uçurtma" },
+              { word: "blocks", turkish: "bloklar" },
+              { word: "chess", turkish: "satranç" },
+              { word: "computer", turkish: "bilgisayar" },
+              { word: "card", turkish: "kart" },
+              { word: "colour", turkish: "renk" },
+              { word: "red", turkish: "kırmızı" },
+              { word: "blue", turkish: "mavi" },
+              { word: "white", turkish: "beyaz" },
+              { word: "black", turkish: "siyah" },
+              { word: "green", turkish: "yeşil" },
+              { word: "yellow", turkish: "sarı" },
+              { word: "orange", turkish: "turuncu" },
+              { word: "pink", turkish: "pembe" },
+              { word: "purple", turkish: "mor" },
+              { word: "brown", turkish: "kahverengi" },
+              { word: "grey", turkish: "gri" },
+              { word: "how many", turkish: "kaç tane" },
+              { word: "have got", turkish: "sahip olmak" },
+              { word: "has got", turkish: "sahip olmak" },
+              { word: "there is", turkish: "var (tekil)" },
+              { word: "there are", turkish: "var (çoğul)" },
+              { word: "play", turkish: "oynamak" },
+              { word: "look", turkish: "bakmak" },
+              { word: "box", turkish: "kutu" },
+              { word: "my", turkish: "benim" },
+              { word: "your", turkish: "senin" },
+            ],
+          },
+          {
+            id: "3.6",
+            name: "Unit 6: My House",
+            nameTr: "Ünite 6: Evim",
+            notes: `GRAMMAR:
+• Shapes
+• Parts of a house
+• House objects
+• Prepositions
+
+FUNCTIONS:
+• Describing shapes
+• Talking about parts of a house
+• Identifying house objects
+• Using prepositions to describe location`,
+            words: [],
+          },
+          {
+            id: "3.7",
+            name: "Unit 7: In My City",
+            nameTr: "Ünite 7: Şehrimde",
+            notes: `GRAMMAR:
+• Buildings
+• Places
+
+FUNCTIONS:
+• Talking about buildings in the city
+• Describing places`,
+            words: [],
+          },
+          {
+            id: "3.8",
+            name: "Unit 8: Transportation",
+            nameTr: "Ünite 8: Ulaşım",
+            notes: `GRAMMAR:
+• Vehicles
+
+FUNCTIONS:
+• Talking about different vehicles
+• Describing transportation methods`,
+            words: [],
+          },
+          {
+            id: "3.9",
+            name: "Unit 9: Weather",
+            nameTr: "Ünite 9: Hava Durumu",
+            notes: `GRAMMAR:
+• Weather vocabulary
+
+FUNCTIONS:
+• Describing weather conditions
+• Talking about the weather`,
+            words: [],
+          },
+          {
+            id: "3.10",
+            name: "Unit 10: Nature",
+            nameTr: "Ünite 10: Doğa",
+            notes: `GRAMMAR:
+• Animals
+• Nature
+• Like / Dislike
+
+FUNCTIONS:
+• Talking about animals
+• Describing nature
+• Expressing likes and dislikes`,
+            words: [],
           },
         ],
       },

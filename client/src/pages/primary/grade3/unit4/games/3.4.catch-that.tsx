@@ -80,7 +80,7 @@ interface FallingPrize {
   caught: boolean;
 }
 
-export default function CatchThatGame3_1() {
+export default function CatchThatGame3_4() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(10);
