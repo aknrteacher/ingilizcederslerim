@@ -92,6 +92,31 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
       }
     };
 
+    // Add audiostart event to verify microphone is working
+    recognition.onaudiostart = () => {
+      console.log('[Speech] Audio capture started - microphone is active');
+    };
+
+    recognition.onaudioend = () => {
+      console.log('[Speech] Audio capture ended');
+    };
+
+    recognition.onsoundstart = () => {
+      console.log('[Speech] Sound detected!');
+    };
+
+    recognition.onsoundend = () => {
+      console.log('[Speech] Sound ended');
+    };
+
+    recognition.onspeechstart = () => {
+      console.log('[Speech] Speech detected!');
+    };
+
+    recognition.onspeechend = () => {
+      console.log('[Speech] Speech ended');
+    };
+
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.error('[Speech] Error:', event.error, 'Details:', event);
       const errorMsg = event.error;
@@ -159,11 +184,16 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     if (recognitionRef.current && !isListening) {
       shouldListenRef.current = true;
       try {
+        console.log('[Speech] Attempting to start recognition...');
         recognitionRef.current.start();
-      } catch (e) {
-        setError('Failed to start speech recognition');
+        console.log('[Speech] Start() called successfully');
+      } catch (e: any) {
+        console.error('[Speech] Failed to start:', e);
+        setError(`Failed to start speech recognition: ${e.message || e}`);
         shouldListenRef.current = false;
       }
+    } else {
+      console.log('[Speech] Cannot start - recognition:', !!recognitionRef.current, 'isListening:', isListening);
     }
   }, [isListening]);
 

@@ -122,15 +122,15 @@ export default function ClassroomMonitoring() {
 
   const { isListening, transcript, error, startListening, stopListening, isSupported } = useSpeechRecognition({
     onResult: (text) => {
-      addDebugLog(`Heard: "${text}"`);
+      addDebugLog(`✅ Heard: "${text}"`);
       const command = parseCommand(text);
-      addDebugLog(`Command: ${command.type}${command.value ? ` (${command.value})` : ''}`);
+      addDebugLog(`📝 Command: ${command.type}${command.value ? ` (${command.value})` : ''}`);
       handleVoiceCommand(command, text);
     },
     continuous: true,
-    onStart: () => addDebugLog('Speech recognition started'),
-    onError: (err: string) => addDebugLog(`Error: ${err}`),
-    onEnd: () => addDebugLog('Speech recognition ended'),
+    onStart: () => addDebugLog('🎤 Speech recognition started'),
+    onError: (err: string) => addDebugLog(`❌ Error: ${err}`),
+    onEnd: () => addDebugLog('⏹️ Speech recognition ended (will restart if continuous)'),
   });
 
   // Fetch classes
@@ -448,15 +448,32 @@ export default function ClassroomMonitoring() {
               
               {/* Debug Panel */}
               {showDebug && (
-                <div className="mt-4 p-3 bg-gray-900 text-green-400 rounded text-xs font-mono max-h-40 overflow-y-auto">
-                  <div className="text-white mb-2 font-bold">Debug Log:</div>
+                <div className="mt-4 p-3 bg-gray-900 text-green-400 rounded text-xs font-mono max-h-60 overflow-y-auto">
+                  <div className="text-white mb-2 font-bold flex items-center justify-between">
+                    <span>Debug Log:</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 text-xs"
+                      onClick={() => setDebugLogs([])}
+                    >
+                      Clear
+                    </Button>
+                  </div>
                   {debugLogs.length > 0 ? (
-                    debugLogs.map((log, i) => (
-                      <div key={i} className="mb-1">{log}</div>
-                    ))
+                    <div className="space-y-1">
+                      {debugLogs.map((log, i) => (
+                        <div key={i} className="mb-1 break-words">{log}</div>
+                      ))}
+                    </div>
                   ) : (
-                    <div className="text-gray-500">No events yet...</div>
+                    <div className="text-gray-500">No events yet... Speak to see activity</div>
                   )}
+                  <div className="mt-2 pt-2 border-t border-gray-700 text-gray-400 text-xs">
+                    💡 If you see "Recognition started" but nothing else, the microphone may not be capturing audio.
+                    <br />
+                    Check: Browser permissions, device microphone settings, try speaking louder.
+                  </div>
                 </div>
               )}
               
