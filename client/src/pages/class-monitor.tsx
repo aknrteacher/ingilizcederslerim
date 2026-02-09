@@ -27,22 +27,46 @@ interface ClassMonitorProps {
 }
 
 export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {}) {
-  // Try to get code from prop first, then from route, then from location
-  const [match, params] = useRoute('/:code');
+  // Get code from location URL - most reliable method
   const [location] = useLocation();
-  const code = codeProp || params?.code || location.split('/').pop();
+  const codeFromUrl = location.split('/').filter(Boolean).pop(); // Get last non-empty segment
+  const code = codeProp || codeFromUrl;
   
   console.log('[ClassMonitor] Component mounted!', {
     code,
     codeProp,
-    params,
     location,
-    match,
+    codeFromUrl,
     codeValid: code && /^\d{4}$/.test(code || '')
   });
 
+  // ALWAYS render something - even if code is invalid, show a message
+  // This ensures the component is visible and we can debug
+  
   const queryEnabled = !!code && /^\d{4}$/.test(code || '');
   console.log('[ClassMonitor] Query enabled:', queryEnabled);
+
+  // Render immediately - don't wait for query
+  // This ensures something is always visible
+  if (!code || !/^\d{4}$/.test(code || '')) {
+    console.log('[ClassMonitor] Invalid code, showing error:', code);
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
+        <div className="max-w-7xl mx-auto">
+          <Card className="shadow-2xl border-2 border-red-200">
+            <CardHeader className="bg-red-500 text-white">
+              <CardTitle className="text-2xl font-bold">Invalid Monitor Code</CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-600 mb-4">Please check the code and try again.</p>
+              <p className="text-sm text-gray-500">Code received: <strong>{code || 'undefined'}</strong></p>
+              <p className="text-xs text-gray-400 mt-2">URL should be: /8375 (4 digits)</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   const { data, isLoading, error } = useQuery({
     queryKey: [`/api/classroom/monitor/${code}`],
@@ -66,24 +90,6 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
   });
 
   console.log('[ClassMonitor] Query state:', { isLoading, error: error?.message, hasData: !!data });
-
-  // ALWAYS render something visible immediately for debugging
-  if (!code || !/^\d{4}$/.test(code)) {
-    console.log('[ClassMonitor] Invalid code, showing error:', code);
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
-        <div className="max-w-7xl mx-auto">
-          <Card>
-            <CardContent className="p-8 text-center">
-              <h1 className="text-2xl font-bold text-red-600 mb-4">Invalid Monitor Code</h1>
-              <p className="text-gray-600">Please check the code and try again.</p>
-              <p className="text-sm text-gray-500 mt-2">Code received: {code || 'undefined'}</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   // Show loading state - this should ALWAYS be visible if component mounts
   if (isLoading) {

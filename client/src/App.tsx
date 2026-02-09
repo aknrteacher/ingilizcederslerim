@@ -532,14 +532,12 @@ function Router() {
       
       {/* Monitor page route - must be before catch-all, matches 4-digit codes */}
       <Route path="/:code">
-        {({ params }: any) => {
-          const code = params?.code || params;
-          console.log('[App] Monitor route matched, code:', code);
-          // Only show ClassMonitor for 4-digit codes
-          if (code && /^\d{4}$/.test(code)) {
-            return <ClassMonitor code={code} />;
-          }
-          return null;
+        {(props: any) => {
+          console.log('[App] Monitor route matched, props:', props);
+          const code = props?.params?.code || props?.code || (props?.params && typeof props.params === 'string' ? props.params : null);
+          console.log('[App] Extracted code:', code, 'is4digit:', code && /^\d{4}$/.test(code));
+          // Always render ClassMonitor - let it handle invalid codes
+          return <ClassMonitor code={code} />;
         }}
       </Route>
       
