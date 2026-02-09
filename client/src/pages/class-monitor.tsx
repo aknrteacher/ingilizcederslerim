@@ -36,7 +36,7 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
   codeFromUrl = pathParts[pathParts.length - 1]; // Last segment
   
   // Also try window.location as fallback (works in production)
-  if (!codeFromUrl || !/^\d{4}$/.test(codeFromUrl)) {
+  if (!codeFromUrl) {
     try {
       const windowPath = window.location.pathname.split('/').filter(Boolean);
       codeFromUrl = windowPath[windowPath.length - 1];
@@ -53,7 +53,7 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
     location,
     codeFromUrl,
     windowPath: typeof window !== 'undefined' ? window.location.pathname : 'N/A',
-    codeValid: code && /^\d{4}$/.test(code || '')
+    codeValid: code && code.length > 0
   });
 
   // ALWAYS render something - even if code is invalid, show a message
