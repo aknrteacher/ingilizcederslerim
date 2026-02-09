@@ -1,23 +1,6 @@
 // Vercel serverless function for getting students by class (GET /api/classroom/students/:classId)
 // This uses the SAME global storage as index.ts
-interface Student {
-  id: string;
-  classId: string;
-  name: string;
-  createdAt: Date;
-}
-
-// Global storage (MUST match index.ts exactly)
-declare global {
-  var __studentsStorage: Map<string, Student> | undefined;
-}
-
-const getStudentsMap = (): Map<string, Student> => {
-  if (!global.__studentsStorage) {
-    global.__studentsStorage = new Map<string, Student>();
-  }
-  return global.__studentsStorage;
-};
+import { getStudentsMap, type Student } from '../shared-storage';
 
 const storage = {
   getStudentsByClass: async (classId: string): Promise<Student[]> => {

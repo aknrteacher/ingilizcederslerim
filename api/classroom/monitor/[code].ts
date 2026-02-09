@@ -1,53 +1,7 @@
 // Vercel serverless function for public class monitoring
 /// <reference types="node" />
 import { z } from 'zod';
-
-interface Class {
-  id: string;
-  name: string;
-  monitorCode: string;
-  createdAt: Date;
-}
-
-interface Student {
-  id: string;
-  classId: string;
-  name: string;
-  createdAt: Date;
-}
-
-interface ClassScores {
-  classId: string;
-  scores: Record<string, Record<string, number[]>>;
-  updatedAt: Date;
-}
-
-declare global {
-  var __classesStorage: Map<string, Class> | undefined;
-  var __studentsStorage: Map<string, Student> | undefined;
-  var __classScoresStorage: Map<string, ClassScores> | undefined;
-}
-
-const getClassesMap = (): Map<string, Class> => {
-  if (!global.__classesStorage) {
-    global.__classesStorage = new Map<string, Class>();
-  }
-  return global.__classesStorage;
-};
-
-const getStudentsMap = (): Map<string, Student> => {
-  if (!global.__studentsStorage) {
-    global.__studentsStorage = new Map<string, Student>();
-  }
-  return global.__studentsStorage;
-};
-
-const getScoresMap = (): Map<string, ClassScores> => {
-  if (!global.__classScoresStorage) {
-    global.__classScoresStorage = new Map<string, ClassScores>();
-  }
-  return global.__classScoresStorage;
-};
+import { getClassesMap, getStudentsMap, getScoresMap, type Class, type Student, type ClassScores } from '../shared-storage';
 
 export default async function handler(req: any, res: any) {
   try {

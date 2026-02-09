@@ -1,28 +1,12 @@
 // Vercel serverless function for saving class scores
 /// <reference types="node" />
 import { z } from 'zod';
+import { getScoresMap, type ClassScores } from './shared-storage';
 
 const saveScoresSchema = z.object({
   classId: z.string(),
   scores: z.record(z.record(z.array(z.number()))),
 });
-
-interface ClassScores {
-  classId: string;
-  scores: Record<string, Record<string, number[]>>;
-  updatedAt: Date;
-}
-
-declare global {
-  var __classScoresStorage: Map<string, ClassScores> | undefined;
-}
-
-const getScoresMap = (): Map<string, ClassScores> => {
-  if (!global.__classScoresStorage) {
-    global.__classScoresStorage = new Map<string, ClassScores>();
-  }
-  return global.__classScoresStorage;
-};
 
 export default async function handler(req: any, res: any) {
   try {

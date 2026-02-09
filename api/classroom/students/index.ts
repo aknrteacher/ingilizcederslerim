@@ -1,6 +1,7 @@
 // Vercel serverless function for students API
 // Handles both POST /api/classroom/students and GET /api/classroom/students?classId=xxx
 import { z } from 'zod';
+import { getStudentsMap, type Student } from '../shared-storage';
 
 // Define schema inline to avoid import issues
 const insertStudentSchema = z.object({
@@ -12,26 +13,6 @@ const insertStudentSchema = z.object({
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
-
-// Inline storage - shared storage for this function
-interface Student {
-  id: string;
-  classId: string;
-  name: string;
-  createdAt: Date;
-}
-
-// Global storage (shared across all invocations in the same container)
-declare global {
-  var __studentsStorage: Map<string, Student> | undefined;
-}
-
-const getStudentsMap = (): Map<string, Student> => {
-  if (!global.__studentsStorage) {
-    global.__studentsStorage = new Map<string, Student>();
-  }
-  return global.__studentsStorage;
-};
 
 const storage = {
   getStudentsByClass: async (classId: string): Promise<Student[]> => {

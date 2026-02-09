@@ -1,7 +1,7 @@
 // Vercel serverless function for classroom classes API
-// Self-contained - no external storage imports
 /// <reference types="node" />
 import { z } from 'zod';
+import { getClassesMap, getStudentsMap, type Class } from './shared-storage';
 
 // Define schema inline to avoid import issues
 const insertClassSchema = z.object({
@@ -13,32 +13,11 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// Inline storage to avoid module resolution issues in Vercel
-interface Class {
-  id: string;
-  name: string;
-  monitorCode: string; // URL-safe class name (lowercased)
-  createdAt: Date;
-}
-
 // Generate URL-safe monitor code from class name
 function generateMonitorCode(className: string): string {
   // Convert to lowercase and remove spaces/special chars, keep alphanumeric
   return className.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
-
-// Global storage (shared across invocations in same container)
-declare global {
-  var __classesStorage: Map<string, Class> | undefined;
-  var __studentsStorage: Map<string, any> | undefined;
-}
-
-const getClassesMap = (): Map<string, Class> => {
-  if (!global.__classesStorage) {
-    global.__classesStorage = new Map<string, Class>();
-  }
-  return global.__classesStorage;
-};
 
 const storage = {
   getAllClasses: async (): Promise<Class[]> => {
@@ -98,14 +77,6 @@ const storage = {
     classesMap.delete(id);
     console.log(`[classes.ts] Deleted class ${id}, total classes: ${classesMap.size}`);
   },
-};
-
-// Helper to get students map (for deletion)
-const getStudentsMap = (): Map<string, any> => {
-  if (!global.__studentsStorage) {
-    global.__studentsStorage = new Map();
-  }
-  return global.__studentsStorage;
 };
 
 export default async function handler(req: any, res: any) {
