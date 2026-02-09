@@ -121,7 +121,15 @@ export default function ClassroomMonitoring() {
 
   // Fetch students for selected class
   const { data: studentsData } = useQuery<{ students: Student[] }>({
-    queryKey: [`/api/classroom/students/${selectedClass?.id}`],
+    queryKey: ['/api/classroom/students', selectedClass?.id],
+    queryFn: async () => {
+      if (!selectedClass?.id) return { students: [] };
+      const res = await fetch(`/api/classroom/students?classId=${selectedClass.id}`, {
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error(`Failed to fetch students: ${res.status}`);
+      return res.json();
+    },
     enabled: !!selectedClass,
   });
 
@@ -249,7 +257,7 @@ export default function ClassroomMonitoring() {
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/classroom/students/${selectedClass?.id}`] });
+      queryClient.invalidateQueries({ queryKey: ['/api/classroom/students', selectedClass?.id] });
       setIsAddingStudent(false);
       setNewStudentName('');
       toast.success('Student added!');
@@ -355,7 +363,7 @@ export default function ClassroomMonitoring() {
       }
 
       // Refresh students list
-      queryClient.invalidateQueries({ queryKey: [`/api/classroom/students/${selectedClass.id}`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/classroom/students?classId=${selectedClass.id}`] });
       
       setIsBulkImport(false);
       setBulkStudentText('');
