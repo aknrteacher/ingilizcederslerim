@@ -221,6 +221,11 @@ export default function ClassroomMonitoring() {
       setNewClassSection('');
       toast.success('Class created!');
     },
+    onError: (error: any) => {
+      console.error('Error creating class:', error);
+      const errorMessage = error?.message || 'Failed to create class. Please check the console for details.';
+      toast.error(errorMessage);
+    },
   });
 
   const createStudentMutation = useMutation({
