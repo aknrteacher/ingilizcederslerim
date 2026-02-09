@@ -1,5 +1,5 @@
 // Vercel serverless function for classroom classes API
-// This works alongside the Express server routes for production deployment
+// Self-contained - no external storage imports
 import { z } from 'zod';
 
 // Define schema inline to avoid import issues
