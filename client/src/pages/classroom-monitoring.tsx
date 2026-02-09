@@ -399,27 +399,49 @@ export default function ClassroomMonitoring() {
           </div>
         </div>
 
+        {/* Large microphone status and transcript display at top */}
+        {isListening && (
+          <Card className="mb-6 border-2 border-green-500 bg-green-50">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 bg-green-500 rounded-full animate-pulse"></div>
+                  <strong className="text-lg text-green-800">🎤 LISTENING...</strong>
+                </div>
+              </div>
+              <div className="mt-4 p-4 bg-white rounded border-2 border-green-300 min-h-[60px]">
+                {transcript ? (
+                  <div>
+                    <div className="text-xs text-gray-500 mb-1">Hearing:</div>
+                    <div className="text-2xl font-semibold text-gray-900">{transcript}</div>
+                  </div>
+                ) : (
+                  <div className="text-gray-400 italic text-center py-2">
+                    Speak now... (waiting for input)
+                  </div>
+                )}
+              </div>
+              <div className="mt-2 text-xs text-gray-600">
+                💡 Say a student name, then "plus" for participation or "assignment" for homework
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {error && (
           <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
             {error}
           </div>
         )}
-
-        {isListening && (
-          <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <strong>Listening...</strong>
-            {transcript && <span className="ml-2">Heard: "{transcript}"</span>}
-          </div>
-        )}
         
         {selectedStudent && (
-          <div className="mb-4 p-3 bg-purple-100 border border-purple-400 text-purple-700 rounded">
-            <strong>Selected Student:</strong> {selectedStudent.name}
+          <div className="mb-4 p-3 bg-purple-100 border border-purple-400 text-purple-700 rounded flex items-center justify-between">
+            <div>
+              <strong>Selected Student:</strong> {selectedStudent.name}
+            </div>
             <Button
               variant="ghost"
               size="sm"
-              className="ml-2"
               onClick={() => setSelectedStudent(null)}
             >
               Clear
