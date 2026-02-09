@@ -293,6 +293,40 @@ export default function InClass() {
     }
   };
 
+  // Load saved scores when class/category changes
+  useEffect(() => {
+    if (selectedClass && selectedCategory && studentsData?.students) {
+      const loadScores = async () => {
+        try {
+          const res = await fetch(`/api/classroom/scores?classId=${selectedClass.id}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.scores && Object.keys(data.scores).length > 0) {
+              // Update allCategoryScores from saved data
+              const updatedAllScores = new Map<string, Map<Category, number[]>>();
+              studentsData.students.forEach(student => {
+                const studentScoresData = data.scores[student.id];
+                if (studentScoresData) {
+                  updatedAllScores.set(student.id, new Map());
+                  CATEGORIES.forEach(cat => {
+                    const catScores = studentScoresData[cat.value] || new Array(cat.maxSquares).fill(0);
+                    updatedAllScores.get(student.id)!.set(cat.value, catScores);
+                  });
+                }
+              });
+              if (updatedAllScores.size > 0) {
+                setAllCategoryScores(updatedAllScores);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error loading scores:', error);
+        }
+      };
+      loadScores();
+    }
+  }, [selectedClass, selectedCategory, studentsData?.students]);
+
   // Mobile mode functions - load scores for selected category
   useEffect(() => {
     if (mode === 'mobile' && selectedClass && selectedCategory && studentsData?.students) {
@@ -304,18 +338,17 @@ export default function InClass() {
       studentsData.students.forEach(student => {
         const existingAllScores = allCategoryScores.get(student.id);
         const existingForCategory = existingAllScores?.get(selectedCategory);
-        const existing = studentScores.get(student.id);
         
         newScores.set(student.id, {
           studentId: student.id,
           studentName: student.name,
-          scores: existingForCategory || existing?.scores || new Array(category.maxSquares).fill(0),
+          scores: existingForCategory || new Array(category.maxSquares).fill(0),
         });
       });
       setStudentScores(newScores);
       setCurrentStudentIndex(0);
     }
-  }, [mode, selectedClass, selectedCategory, studentsData?.students]);
+  }, [mode, selectedClass, selectedCategory, studentsData?.students, allCategoryScores]);
 
   // Update allCategoryScores when studentScores change for current category
   useEffect(() => {
@@ -469,30 +502,34 @@ export default function InClass() {
 
 
   const handleSaveScores = async () => {
-    if (!selectedClass || !studentsData?.students.length) {
+    if (!selectedClass || !selectedCategory || !studentsData?.students.length) {
       toast.error('No data to save');
       return;
     }
 
     try {
+      // First, update allCategoryScores with current studentScores for selected category
+      const updatedAllScores = new Map(allCategoryScores);
+      studentsData.students.forEach(student => {
+        const currentScore = studentScores.get(student.id);
+        if (currentScore) {
+          if (!updatedAllScores.has(student.id)) {
+            updatedAllScores.set(student.id, new Map());
+          }
+          updatedAllScores.get(student.id)!.set(selectedCategory, currentScore.scores);
+        }
+      });
+      setAllCategoryScores(updatedAllScores);
+
       // Collect all scores for all categories
       const scoresData: Record<string, Record<string, number[]>> = {};
       studentsData.students.forEach(student => {
         scoresData[student.id] = {};
-        const studentAllScores = allCategoryScores.get(student.id);
+        const studentAllScores = updatedAllScores.get(student.id);
         CATEGORIES.forEach(cat => {
           if (studentAllScores && studentAllScores.has(cat.value)) {
             scoresData[student.id][cat.value] = studentAllScores.get(cat.value)!;
-          } else if (cat.value === selectedCategory) {
-            // Use current scores for selected category
-            const currentScore = studentScores.get(student.id);
-            if (currentScore && currentScore.scores.length === cat.maxSquares) {
-              scoresData[student.id][cat.value] = currentScore.scores;
-            } else {
-              scoresData[student.id][cat.value] = new Array(cat.maxSquares).fill(0);
-            }
           } else {
-            // Load from saved scores or default to empty
             scoresData[student.id][cat.value] = new Array(cat.maxSquares).fill(0);
           }
         });
@@ -503,11 +540,15 @@ export default function InClass() {
         scores: scoresData,
       });
       
-      await res.json();
-      toast.success('Scores saved successfully! Monitor page updated.');
+      const result = await res.json();
+      if (res.ok && result.success) {
+        toast.success('Scores saved successfully! Monitor page updated.');
+      } else {
+        throw new Error(result.message || 'Failed to save');
+      }
     } catch (error: any) {
       console.error('Error saving scores:', error);
-      toast.error('Failed to save scores');
+      toast.error(error?.message || 'Failed to save scores');
     }
   };
 
@@ -871,36 +912,45 @@ export default function InClass() {
             </Card>
           </div>
 
-          {/* Data Table */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Current Data - {selectedClass.name}</CardTitle>
+          {/* Data Table - Enhanced Visuals with Gradients and Animations */}
+          <Card className="shadow-2xl border-2 border-blue-200 overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-black opacity-10"></div>
+              <CardTitle className="text-2xl font-bold relative z-10 flex items-center gap-2">
+                <span>📊 Current Data - {selectedClass.name}</span>
+              </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0 bg-gradient-to-br from-gray-50 to-white">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-100">
-                      <th className="border p-2 text-left">Student Name</th>
+                    <tr className="bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100">
+                      <th className="border-2 border-gray-300 p-4 text-left font-bold text-gray-800 text-lg">Student Name</th>
                       {CATEGORIES.map((cat) => (
-                        <th key={cat.value} className="border p-2 text-center">
-                          {cat.label}
-                          <br />
-                          <span className="text-xs text-gray-500">({cat.maxSquares} squares)</span>
+                        <th key={cat.value} className="border-2 border-gray-300 p-4 text-center font-bold text-gray-800">
+                          <div className="flex flex-col items-center gap-1">
+                            <span className="text-base">{cat.label}</span>
+                            <span className="text-xs text-gray-600 font-normal bg-gray-200 px-2 py-0.5 rounded-full">({cat.maxSquares})</span>
+                          </div>
                         </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {studentsData?.students.map((student) => (
-                      <tr key={student.id} className="hover:bg-gray-50">
-                        <td className="border p-2 font-semibold">
+                    {studentsData?.students.map((student, idx) => (
+                      <tr 
+                        key={student.id} 
+                        className={`hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 ${
+                          idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                        }`}
+                      >
+                        <td className="border-2 border-gray-200 p-4 font-semibold">
                           <div className="flex items-center justify-between">
-                            <span>{student.name}</span>
+                            <span className="text-gray-800 text-lg">{student.name}</span>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-6 w-6 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="h-8 w-8 p-0 text-red-600 hover:text-white hover:bg-red-600 rounded-full transition-all"
                               onClick={() => handleDeleteStudent(student)}
                             >
                               <Trash2 className="h-4 w-4" />
@@ -908,25 +958,28 @@ export default function InClass() {
                           </div>
                         </td>
                         {CATEGORIES.map((cat) => {
-                          const score = studentScores.get(student.id);
-                          const scores = score?.scores || new Array(cat.maxSquares).fill(0);
-                          const plusCount = scores.filter(s => s === 1).length;
-                          const minusCount = scores.filter(s => s === -1).length;
+                          const studentAllScores = allCategoryScores.get(student.id);
+                          const catScores = studentAllScores?.get(cat.value) || new Array(cat.maxSquares).fill(0);
+                          const plusCount = catScores.filter(s => s === 1).length;
+                          const minusCount = catScores.filter(s => s === -1).length;
                           return (
-                            <td key={cat.value} className="border p-2 text-center">
-                              <div className="flex items-center justify-center gap-1">
+                            <td key={cat.value} className="border-2 border-gray-200 p-4 text-center">
+                              <div className="flex items-center justify-center gap-2">
                                 {plusCount > 0 && (
-                                  <span className="text-green-600 font-bold text-lg">✓</span>
+                                  <div className="flex items-center gap-1 bg-gradient-to-r from-green-100 to-emerald-100 px-3 py-1.5 rounded-full shadow-sm border border-green-300">
+                                    <span className="text-green-700 font-bold text-xl">✓</span>
+                                    <span className="text-green-700 font-semibold text-sm">{plusCount}</span>
+                                  </div>
                                 )}
                                 {minusCount > 0 && (
-                                  <span className="text-red-600 font-bold text-lg">✗</span>
+                                  <div className="flex items-center gap-1 bg-gradient-to-r from-red-100 to-rose-100 px-3 py-1.5 rounded-full shadow-sm border border-red-300">
+                                    <span className="text-red-700 font-bold text-xl">✗</span>
+                                    <span className="text-red-700 font-semibold text-sm">{minusCount}</span>
+                                  </div>
                                 )}
                                 {plusCount === 0 && minusCount === 0 && (
                                   <span className="text-gray-400 text-sm">-</span>
                                 )}
-                                <span className="text-xs text-gray-500 ml-1">
-                                  ({plusCount > 0 ? `+${plusCount}` : ''}{minusCount > 0 ? `-${minusCount}` : ''})
-                                </span>
                               </div>
                             </td>
                           );
@@ -935,7 +988,7 @@ export default function InClass() {
                     ))}
                     {(!studentsData?.students || studentsData.students.length === 0) && (
                       <tr>
-                        <td colSpan={CATEGORIES.length + 1} className="border p-8 text-center text-gray-500">
+                        <td colSpan={CATEGORIES.length + 1} className="border-2 border-gray-200 p-12 text-center text-gray-500 text-lg">
                           No students yet. Add students above.
                         </td>
                       </tr>
@@ -1047,13 +1100,13 @@ export default function InClass() {
           </div>
         </div>
 
-        {/* Scrollable Student List */}
-        <div className="pb-32">
-          {studentsData?.students.map((student, index) => {
-            const score = studentScores.get(student.id);
+        {/* Scrollable Student List - Simple Large Font Names */}
+        <div className="pb-24">
+          {studentsData?.students.map((student) => {
             const isCentered = centeredStudentId === student.id;
-            const squareIndex = score ? score.scores.findIndex(s => s === 0) : 0;
-            const activeSquareIndex = squareIndex !== -1 ? squareIndex : (category.maxSquares - 1);
+            const score = studentScores.get(student.id);
+            const plusCount = score ? score.scores.filter(s => s === 1).length : 0;
+            const minusCount = score ? score.scores.filter(s => s === -1).length : 0;
 
             return (
               <div
@@ -1065,7 +1118,7 @@ export default function InClass() {
                     studentRefs.current.delete(student.id);
                   }
                 }}
-                className={`max-w-md mx-auto p-4 transition-all ${
+                className={`max-w-md mx-auto py-8 px-6 transition-all ${
                   isCentered ? 'scale-105 z-20' : 'scale-100'
                 }`}
                 onTouchStart={(e) => {
@@ -1081,42 +1134,24 @@ export default function InClass() {
                   if (isCentered) handleSwipeEnd(e, student.id);
                 }}
               >
-                <Card className={`${isCentered ? 'ring-4 ring-blue-400 shadow-xl' : ''}`}>
-                  <CardContent className="p-6">
-                    <div className="text-center mb-4">
-                      <div className={`text-4xl font-bold mb-2 ${isCentered ? 'text-blue-600' : ''}`}>
-                        {student.name}
-                      </div>
-                      {isCentered && (
-                        <div className="text-lg text-gray-600 mb-2">
-                          👆 Swipe right for +, left for -
-                        </div>
-                      )}
+                <div className={`text-center ${isCentered ? 'ring-4 ring-blue-400 rounded-2xl p-6 bg-blue-50' : ''}`}>
+                  <div className={`text-5xl md:text-6xl font-bold mb-3 ${
+                    isCentered ? 'text-blue-600' : 'text-gray-800'
+                  }`}>
+                    {student.name}
+                  </div>
+                  {isCentered && (
+                    <div className="text-xl text-gray-600 mb-2">
+                      👆 Swipe right for +, left for -
                     </div>
-
-                    {/* Squares Grid */}
-                    <div className="grid grid-cols-6 gap-2">
-                      {score?.scores.map((value, idx) => (
-                        <div
-                          key={idx}
-                          className={`aspect-square rounded-lg border-2 font-bold text-lg flex items-center justify-center ${
-                            idx === activeSquareIndex && isCentered
-                              ? 'ring-4 ring-blue-400 ring-offset-2'
-                              : ''
-                          } ${
-                            value === 1
-                              ? 'bg-green-500 border-green-600 text-white'
-                              : value === -1
-                              ? 'bg-red-500 border-red-600 text-white'
-                              : 'bg-gray-100 border-gray-300 text-gray-400'
-                          }`}
-                        >
-                          {value === 1 ? '+' : value === -1 ? '−' : ''}
-                        </div>
-                      ))}
+                  )}
+                  {(plusCount > 0 || minusCount > 0) && (
+                    <div className="text-2xl mt-3">
+                      {plusCount > 0 && <span className="text-green-600 font-bold">✓ {plusCount}</span>}
+                      {minusCount > 0 && <span className="text-red-600 font-bold ml-3">✗ {minusCount}</span>}
                     </div>
-                  </CardContent>
-                </Card>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -1124,22 +1159,13 @@ export default function InClass() {
 
         {/* Fixed Bottom Save Button */}
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-10">
-          <div className="max-w-md mx-auto space-y-2">
+          <div className="max-w-md mx-auto">
             <Button
               onClick={handleSaveScores}
-              className="w-full h-14 text-lg font-bold"
+              className="w-full h-16 text-xl font-bold bg-blue-600 hover:bg-blue-700"
               size="lg"
             >
               💾 Save Scores
-            </Button>
-            <Button
-              onClick={() => exportToPDF()}
-              variant="outline"
-              className="w-full h-14 text-lg font-bold"
-              size="lg"
-            >
-              <Download className="w-6 h-6 mr-2" />
-              Export PDF
             </Button>
           </div>
         </div>

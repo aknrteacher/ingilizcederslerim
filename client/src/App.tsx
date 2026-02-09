@@ -529,23 +529,23 @@ function Router() {
       <Route path="/classroom">
         <ClassroomMonitoring />
       </Route>
-      <Route path="/:code">
-        {({ params }: any) => {
-          const code = params?.code || params;
-          // Only show ClassMonitor for 4-digit codes
-          if (code && /^\d{4}$/.test(code)) {
-            return <ClassMonitor />;
-          }
-          return null;
-        }}
-      </Route>
       
       {/* Catch-all for sub-routes to show the layout with placeholder content or redirect to home 
           In a real app, we'd have specific components for these routes.
           For this prototype, we'll route everything to Home to show the persistent layout 
           but ideally we would have a generic page component.
       */}
-      <Route path="/:rest*" component={Home} />
+      <Route path="/:rest*">
+        {({ params }: any) => {
+          const rest = params?.rest || params;
+          // Check if it's a 4-digit code for monitor page
+          if (rest && /^\d{4}$/.test(rest)) {
+            return <ClassMonitor />;
+          }
+          // Otherwise show Home
+          return <Home />;
+        }}
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRoute } from 'wouter';
+import { useLocation } from 'wouter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle2, XCircle } from 'lucide-react';
 
@@ -24,8 +24,8 @@ const CATEGORIES = [
 ];
 
 export default function ClassMonitor() {
-  const [match, params] = useRoute('/:code');
-  const code = params?.code;
+  const [location] = useLocation();
+  const code = location.split('/').pop();
 
   const { data, isLoading, error } = useQuery({
     queryKey: [`/api/classroom/monitor/${code}`],
