@@ -315,7 +315,66 @@ export default function InClass() {
       setStudentScores(newScores);
       setCurrentStudentIndex(0);
     }
-  }, [mode, selectedClass, selectedCategory, studentsData, allCategoryScores]);
+  }, [mode, selectedClass, selectedCategory, studentsData?.students]);
+
+  // Update allCategoryScores when studentScores change for current category
+  useEffect(() => {
+    if (selectedCategory && studentsData?.students && mode === 'mobile') {
+      setAllCategoryScores(prev => {
+        const updated = new Map(prev);
+        studentsData.students.forEach(student => {
+          const score = studentScores.get(student.id);
+          if (score) {
+            if (!updated.has(student.id)) {
+              updated.set(student.id, new Map());
+            }
+            const studentScoresMap = updated.get(student.id)!;
+            studentScoresMap.set(selectedCategory, score.scores);
+          }
+        });
+        return updated;
+      });
+    }
+  }, [studentScores, selectedCategory, studentsData?.students, mode]);
+
+  // Detect centered student on scroll (only in mobile mode with category selected)
+  useEffect(() => {
+    if (mode !== 'mobile' || !selectedCategory || !studentsData?.students.length) return;
+    
+    const handleScroll = () => {
+      const viewportCenter = window.innerHeight / 2;
+      interface ClosestStudent {
+        id: string;
+        distance: number;
+      }
+      let closestStudent: ClosestStudent | null = null;
+
+      for (const student of studentsData.students) {
+        const element = studentRefs.current.get(student.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const elementCenter = rect.top + rect.height / 2;
+          const distance = Math.abs(viewportCenter - elementCenter);
+          
+          if (closestStudent === null) {
+            closestStudent = { id: student.id, distance };
+          } else if (distance < closestStudent.distance) {
+            closestStudent = { id: student.id, distance };
+          }
+        }
+      }
+
+      if (closestStudent !== null && closestStudent.distance < 100) {
+        setCenteredStudentId(closestStudent.id);
+      } else {
+        setCenteredStudentId(null);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check on mount
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [mode, selectedCategory, studentsData?.students]);
 
   const currentStudent = studentsData?.students[currentStudentIndex];
   const currentScore = currentStudent ? studentScores.get(currentStudent.id) : null;
@@ -955,45 +1014,6 @@ export default function InClass() {
 
     // Step 3: Student Scoring - Continuous Scrollable List
     if (!category) return null;
-
-    // Detect centered student on scroll
-    useEffect(() => {
-      if (!studentsData?.students.length) return;
-      
-      const handleScroll = () => {
-        const viewportCenter = window.innerHeight / 2;
-        interface ClosestStudent {
-          id: string;
-          distance: number;
-        }
-        let closestStudent: ClosestStudent | null = null;
-
-        for (const student of studentsData.students) {
-          const element = studentRefs.current.get(student.id);
-          if (element) {
-            const rect = element.getBoundingClientRect();
-            const elementCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(viewportCenter - elementCenter);
-            
-            if (closestStudent === null) {
-              closestStudent = { id: student.id, distance };
-            } else if (distance < closestStudent.distance) {
-              closestStudent = { id: student.id, distance };
-            }
-          }
-        }
-
-        if (closestStudent !== null && closestStudent.distance < 100) {
-          setCenteredStudentId(closestStudent.id);
-        } else {
-          setCenteredStudentId(null);
-        }
-      };
-
-      window.addEventListener('scroll', handleScroll);
-      handleScroll(); // Check on mount
-      return () => window.removeEventListener('scroll', handleScroll);
-    }, [studentsData?.students]);
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
