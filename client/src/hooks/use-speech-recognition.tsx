@@ -32,39 +32,55 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.continuous = continuous;
     recognition.interimResults = true; // Enable interim results to see what's being recognized
     recognition.lang = lang;
+    recognition.maxAlternatives = 1; // Only get one alternative
+    
+    console.log('[Speech] Recognition configured:', {
+      continuous,
+      interimResults: true,
+      lang,
+      maxAlternatives: 1
+    });
 
     recognition.onstart = () => {
       setIsListening(true);
       setError(null);
       isRestartingRef.current = false;
-      console.log('[Speech] Recognition started');
+      console.log('[Speech] Recognition started - microphone should be active');
+      setTranscript(''); // Clear previous transcript
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
+      console.log('[Speech] onresult fired! Results count:', event.results.length);
+      
       // Build full transcript from all results for better display
       let fullTranscript = '';
       let hasFinal = false;
       
       for (let i = 0; i < event.results.length; i++) {
         const result = event.results[i];
-        fullTranscript += result[0].transcript;
+        const transcript = result[0].transcript;
+        const confidence = result[0].confidence;
+        console.log(`[Speech] Result ${i}: "${transcript}" (confidence: ${confidence}, isFinal: ${result.isFinal})`);
+        fullTranscript += transcript + ' ';
         if (result.isFinal) {
           hasFinal = true;
         }
       }
       
       const text = fullTranscript.trim();
-      console.log('[Speech] Result:', text, 'isFinal:', hasFinal, 'results count:', event.results.length);
+      console.log('[Speech] Full transcript:', text, 'hasFinal:', hasFinal);
       
       // Always update transcript for real-time display (both interim and final)
-      setTranscript(text);
+      if (text) {
+        setTranscript(text);
+      }
       
       // Only process final results (not interim) to avoid duplicate processing
       if (hasFinal && text) {
         const lastIndex = event.results.length - 1;
         const lastResult = event.results[lastIndex];
         if (lastResult.isFinal) {
-          console.log('[Speech] Final result:', text);
+          console.log('[Speech] Processing final result:', text);
           if (onResult) {
             onResult(text);
           }
@@ -73,29 +89,46 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error('[Speech] Error:', event.error);
-      // Don't stop on 'no-speech' error in continuous mode
-      if (event.error === 'no-speech' && continuous) {
-        // Just restart
+      console.error('[Speech] Error:', event.error, 'Details:', event);
+      
+      // Handle different error types
+      if (event.error === 'no-speech') {
+        console.log('[Speech] No speech detected - this is normal if you\'re not speaking');
+        if (continuous) {
+          // Don't show error for no-speech in continuous mode, just log
+          return;
+        }
+        setError('No speech detected. Please speak clearly.');
+      } else if (event.error === 'audio-capture') {
+        setError('No microphone found. Please check your microphone connection.');
+        setIsListening(false);
+      } else if (event.error === 'not-allowed') {
+        setError('Microphone permission denied. Please allow microphone access in browser settings.');
+        setIsListening(false);
+      } else if (event.error === 'aborted') {
+        console.log('[Speech] Recognition aborted (this is normal when stopping)');
         return;
+      } else {
+        setError(`Speech recognition error: ${event.error}`);
+        setIsListening(false);
       }
-      setError(`Speech recognition error: ${event.error}`);
-      setIsListening(false);
     };
 
     recognition.onend = () => {
-      console.log('[Speech] Recognition ended, continuous:', continuous);
+      console.log('[Speech] Recognition ended, continuous:', continuous, 'shouldListen:', shouldListenRef.current);
       setIsListening(false);
       // Restart if continuous mode and we should still be listening
       if (continuous && shouldListenRef.current && !isRestartingRef.current) {
         isRestartingRef.current = true;
+        console.log('[Speech] Restarting recognition...');
         setTimeout(() => {
           try {
             if (recognitionRef.current && shouldListenRef.current) {
               recognitionRef.current.start();
+              console.log('[Speech] Restarted successfully');
             }
           } catch (e) {
-            console.log('[Speech] Could not restart:', e);
+            console.error('[Speech] Could not restart:', e);
             isRestartingRef.current = false;
           }
         }, 100);

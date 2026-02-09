@@ -417,12 +417,18 @@ export default function ClassroomMonitoring() {
                   </div>
                 ) : (
                   <div className="text-gray-400 italic text-center py-2">
-                    Speak now... (waiting for input)
+                    <div>Speak now... (waiting for input)</div>
+                    <div className="text-xs mt-2 text-gray-500">
+                      💡 If nothing appears, check browser console (F12) for errors
+                    </div>
                   </div>
                 )}
               </div>
               <div className="mt-2 text-xs text-gray-600">
                 💡 Say a student name, then "plus" for participation or "assignment" for homework
+              </div>
+              <div className="mt-2 text-xs text-orange-600">
+                ⚠️ If you see this but no text appears, open browser console (F12) to check for errors
               </div>
             </CardContent>
           </Card>
