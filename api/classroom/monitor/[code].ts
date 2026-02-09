@@ -65,32 +65,60 @@ export default async function handler(req: any, res: any) {
 
     console.log('[monitor] Request query:', req.query);
     console.log('[monitor] Request URL:', req.url);
+    console.log('[monitor] Request params:', (req as any).params);
     
     // Try different ways to get the code (Vercel might pass it differently)
-    const code = req.query.code || req.query?.code || (req.url ? req.url.split('/').pop()?.split('?')[0] : null);
+    // In Vercel, dynamic route params can be in req.query or req.params
+    let code: string | null = null;
+    
+    // Try req.query.code first (Vercel's standard way)
+    if (req.query && typeof req.query.code === 'string') {
+      code = req.query.code;
+    }
+    // Try req.params.code (some Vercel setups use this)
+    else if ((req as any).params && typeof (req as any).params.code === 'string') {
+      code = (req as any).params.code;
+    }
+    // Fallback: extract from URL
+    else if (req.url) {
+      const urlParts = req.url.split('/').filter(Boolean);
+      // Find the part after 'monitor'
+      const monitorIndex = urlParts.indexOf('monitor');
+      if (monitorIndex >= 0 && monitorIndex < urlParts.length - 1) {
+        code = urlParts[monitorIndex + 1].split('?')[0];
+      } else {
+        // Last resort: take the last part
+        code = urlParts[urlParts.length - 1]?.split('?')[0] || null;
+      }
+    }
+    
     console.log('[monitor] Extracted code:', code);
     
-    if (!code || typeof code !== 'string') {
+    if (!code || typeof code !== 'string' || code.length === 0) {
       console.error('[monitor] Invalid code:', code);
       return res.status(400).json({ message: 'Invalid monitor code' });
     }
     
     // Convert to lowercase for matching (class names are stored as lowercase)
-    const codeLower = code.toLowerCase();
+    const codeLower = code.toLowerCase().trim();
 
     const classesMap = getClassesMap();
     
-    // Migration: Update old classes that have 4-digit codes to use class name as monitorCode
+    // Migration: Ensure all classes have monitorCode based on their name
+    // This handles both old 4-digit codes and any classes that might have been created incorrectly
     const allClasses = Array.from(classesMap.values());
     let migrated = 0;
     allClasses.forEach(cls => {
-      // If monitorCode is a 4-digit number, update it to use class name
-      if (/^\d{4}$/.test(cls.monitorCode)) {
-        const newMonitorCode = cls.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-        cls.monitorCode = newMonitorCode;
+      // Generate expected monitorCode from class name
+      const expectedMonitorCode = cls.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      
+      // If monitorCode doesn't match expected format, update it
+      if (cls.monitorCode !== expectedMonitorCode) {
+        const oldCode = cls.monitorCode;
+        cls.monitorCode = expectedMonitorCode;
         classesMap.set(cls.id, cls);
         migrated++;
-        console.log(`[monitor] Migrated class ${cls.name}: old code -> ${newMonitorCode}`);
+        console.log(`[monitor] Migrated class "${cls.name}": "${oldCode}" -> "${expectedMonitorCode}"`);
       }
     });
     if (migrated > 0) {

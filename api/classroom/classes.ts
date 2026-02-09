@@ -45,16 +45,20 @@ const storage = {
     const classesMap = getClassesMap();
     const classes = Array.from(classesMap.values());
     
-    // Migration: Update old classes that have 4-digit codes to use class name as monitorCode
+    // Migration: Ensure all classes have monitorCode based on their name
+    // This handles both old 4-digit codes and any classes that might have been created incorrectly
     let updated = 0;
     classes.forEach(cls => {
-      // If monitorCode is a 4-digit number, update it to use class name
-      if (/^\d{4}$/.test(cls.monitorCode)) {
-        const newMonitorCode = generateMonitorCode(cls.name);
-        cls.monitorCode = newMonitorCode;
+      // Generate expected monitorCode from class name
+      const expectedMonitorCode = generateMonitorCode(cls.name);
+      
+      // If monitorCode doesn't match expected format, update it
+      if (cls.monitorCode !== expectedMonitorCode) {
+        const oldCode = cls.monitorCode;
+        cls.monitorCode = expectedMonitorCode;
         classesMap.set(cls.id, cls);
         updated++;
-        console.log(`[classes.ts] Migrated class ${cls.name}: old code -> ${newMonitorCode}`);
+        console.log(`[classes.ts] Migrated class "${cls.name}": "${oldCode}" -> "${expectedMonitorCode}"`);
       }
     });
     if (updated > 0) {
