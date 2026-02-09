@@ -171,14 +171,23 @@ export default function ClassroomMonitoring() {
       setActiveTab(command.value);
       toast.success(`Switched to ${command.value} tab`);
     } else if (command.type === 'student' && command.value && selectedClass) {
-      const student = studentsData?.students.find(
-        (s) => s.name.toLowerCase().includes(command.value!.toLowerCase())
+      // Try exact match first, then partial match
+      const exactMatch = studentsData?.students.find(
+        (s) => s.name.toLowerCase() === command.value!.toLowerCase()
       );
+      const partialMatch = studentsData?.students.find(
+        (s) => s.name.toLowerCase().includes(command.value!.toLowerCase()) ||
+               command.value!.toLowerCase().includes(s.name.toLowerCase())
+      );
+      const student = exactMatch || partialMatch;
+      
       if (student) {
         setSelectedStudent(student);
-        toast.success(`Selected student ${student.name}`);
+        toast.success(`✓ Selected student: ${student.name}`);
+        console.log('[Voice] Selected student:', student.name);
       } else {
-        toast.error(`Student ${command.value} not found`);
+        toast.error(`Student "${command.value}" not found. Available: ${studentsData?.students.map(s => s.name).join(', ') || 'none'}`);
+        console.log('[Voice] Student not found. Available students:', studentsData?.students.map(s => s.name));
       }
     } else if (command.type === 'point') {
       if (selectedStudent && selectedClass) {
@@ -189,7 +198,7 @@ export default function ClassroomMonitoring() {
           week: currentWeek,
         });
       } else {
-        toast.error('Please select a student first');
+        toast.error('Please select a student first (say the student name)');
       }
     } else if (command.type === 'assignment') {
       if (selectedStudent && selectedClass) {
@@ -200,10 +209,11 @@ export default function ClassroomMonitoring() {
           week: currentWeek,
         });
       } else {
-        toast.error('Please select a student first');
+        toast.error('Please select a student first (say the student name)');
       }
     } else if (command.type === 'unknown') {
-      console.log('[Voice] Unknown command, ignoring');
+      console.log('[Voice] Unknown command:', rawText);
+      // Don't show error for unknown commands, just log
     }
   };
 
@@ -395,9 +405,25 @@ export default function ClassroomMonitoring() {
           </div>
         )}
 
-        {transcript && (
-          <div className="mb-4 p-3 bg-blue-100 border border-blue-400 text-blue-700 rounded">
-            <strong>Heard:</strong> {transcript}
+        {isListening && (
+          <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded flex items-center gap-2">
+            <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            <strong>Listening...</strong>
+            {transcript && <span className="ml-2">Heard: "{transcript}"</span>}
+          </div>
+        )}
+        
+        {selectedStudent && (
+          <div className="mb-4 p-3 bg-purple-100 border border-purple-400 text-purple-700 rounded">
+            <strong>Selected Student:</strong> {selectedStudent.name}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="ml-2"
+              onClick={() => setSelectedStudent(null)}
+            >
+              Clear
+            </Button>
           </div>
         )}
 
@@ -513,10 +539,20 @@ export default function ClassroomMonitoring() {
                     {studentsData?.students.map((student) => (
                       <div
                         key={student.id}
-                        className="p-2 bg-gray-50 rounded text-sm hover:bg-gray-100 cursor-pointer"
-                        onClick={() => setSelectedStudent(student)}
+                        className={`p-2 rounded text-sm cursor-pointer transition-colors ${
+                          selectedStudent?.id === student.id
+                            ? 'bg-purple-200 border-2 border-purple-500 font-semibold'
+                            : 'bg-gray-50 hover:bg-gray-100'
+                        }`}
+                        onClick={() => {
+                          setSelectedStudent(student);
+                          toast.success(`Selected ${student.name}`);
+                        }}
                       >
                         {student.name}
+                        {selectedStudent?.id === student.id && (
+                          <span className="ml-2 text-purple-600">✓</span>
+                        )}
                       </div>
                     ))}
                     {!studentsData?.students.length && (

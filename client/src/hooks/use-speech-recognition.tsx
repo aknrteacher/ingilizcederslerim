@@ -41,26 +41,22 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      // Process all results, not just the last one
-      let fullTranscript = '';
-      for (let i = 0; i < event.results.length; i++) {
-        const result = event.results[i];
-        fullTranscript += result[0].transcript;
-      }
+      // Get the latest result (most recent recognition)
+      const lastIndex = event.results.length - 1;
+      const lastResult = event.results[lastIndex];
+      const text = lastResult[0].transcript.trim();
       
-      const text = fullTranscript.trim();
-      console.log('[Speech] Recognized:', text, 'isFinal:', event.results[event.results.length - 1].isFinal);
+      console.log('[Speech] Result index:', lastIndex, 'text:', text, 'isFinal:', lastResult.isFinal);
       
-      // Only process final results (not interim)
-      const lastResult = event.results[event.results.length - 1];
-      if (lastResult.isFinal) {
-        setTranscript(text);
+      // Update transcript for display (both interim and final)
+      setTranscript(text);
+      
+      // Only process final results (not interim) to avoid duplicate processing
+      if (lastResult.isFinal && text) {
+        console.log('[Speech] Final result:', text);
         if (onResult) {
           onResult(text);
         }
-      } else {
-        // Update transcript with interim results for display
-        setTranscript(text);
       }
     };
 
