@@ -43,7 +43,25 @@ const getClassesMap = (): Map<string, Class> => {
 const storage = {
   getAllClasses: async (): Promise<Class[]> => {
     const classesMap = getClassesMap();
-    return Array.from(classesMap.values());
+    const classes = Array.from(classesMap.values());
+    
+    // Migration: Update old classes that have 4-digit codes to use class name as monitorCode
+    let updated = 0;
+    classes.forEach(cls => {
+      // If monitorCode is a 4-digit number, update it to use class name
+      if (/^\d{4}$/.test(cls.monitorCode)) {
+        const newMonitorCode = generateMonitorCode(cls.name);
+        cls.monitorCode = newMonitorCode;
+        classesMap.set(cls.id, cls);
+        updated++;
+        console.log(`[classes.ts] Migrated class ${cls.name}: old code -> ${newMonitorCode}`);
+      }
+    });
+    if (updated > 0) {
+      console.log(`[classes.ts] Migrated ${updated} classes to use class names as monitor codes`);
+    }
+    
+    return classes;
   },
   createClass: async (data: { name: string }): Promise<Class> => {
     const classesMap = getClassesMap();
