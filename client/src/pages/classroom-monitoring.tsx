@@ -120,7 +120,7 @@ export default function ClassroomMonitoring() {
     console.log(message);
   };
 
-  const { isListening, transcript, error, startListening, stopListening, isSupported } = useSpeechRecognition({
+  const { isListening, transcript, error, startListening, stopListening, isSupported, requestMicrophonePermission } = useSpeechRecognition({
     onResult: (text) => {
       addDebugLog(`✅ Heard: "${text}"`);
       const command = parseCommand(text);
@@ -389,24 +389,40 @@ export default function ClassroomMonitoring() {
           </div>
           <div className="flex items-center gap-4">
             {isSupported ? (
-              <Button
-                onClick={isListening ? stopListening : startListening}
-                variant={isListening ? 'destructive' : 'default'}
-                size="lg"
-                className="gap-2"
-              >
-                {isListening ? (
-                  <>
-                    <MicOff className="w-5 h-5" />
-                    Stop Listening
-                  </>
-                ) : (
-                  <>
-                    <Mic className="w-5 h-5" />
-                    Start Voice Input
-                  </>
+              <>
+                <Button
+                  onClick={isListening ? stopListening : startListening}
+                  variant={isListening ? 'destructive' : 'default'}
+                  size="lg"
+                  className="gap-2"
+                >
+                  {isListening ? (
+                    <>
+                      <MicOff className="w-5 h-5" />
+                      Stop Listening
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="w-5 h-5" />
+                      Start Voice Input
+                    </>
+                  )}
+                </Button>
+                {error && error.includes('permission') && (
+                  <Button
+                    onClick={async () => {
+                      const granted = await requestMicrophonePermission();
+                      if (granted) {
+                        toast.success('Microphone permission granted! Try starting voice input again.');
+                      }
+                    }}
+                    variant="outline"
+                    size="sm"
+                  >
+                    Request Mic Permission
+                  </Button>
                 )}
-              </Button>
+              </>
             ) : (
               <Badge variant="secondary">Speech recognition not supported</Badge>
             )}
