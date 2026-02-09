@@ -133,6 +133,19 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const isNotFound = errorMessage.includes('404') || errorMessage.includes('not found');
     
+    // Try to extract available classes from error response
+    let availableClasses: any[] = [];
+    try {
+      const errorData = error instanceof Error && error.message.includes('{') 
+        ? JSON.parse(errorMessage.split('{')[1].split('}')[0] + '}') 
+        : null;
+      if (errorData?.availableClasses) {
+        availableClasses = errorData.availableClasses;
+      }
+    } catch (e) {
+      // Ignore
+    }
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
@@ -145,12 +158,24 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
             <CardContent className="p-8 text-center">
               <p className="text-gray-600 mb-4">
                 {isNotFound 
-                  ? `No class found with monitor code: ${code}`
-                  : `The monitor code ${code} could not be loaded.`
+                  ? `No class found with name: ${code}`
+                  : `The class ${code} could not be loaded.`
                 }
               </p>
-              <p className="text-sm text-gray-500">
-                Please check the code and try again. The code should be a 4-digit number assigned to the class.
+              {availableClasses.length > 0 && (
+                <div className="mt-4 p-4 bg-gray-100 rounded">
+                  <p className="text-sm font-semibold mb-2">Available classes:</p>
+                  <div className="space-y-1">
+                    {availableClasses.map((cls: any, idx: number) => (
+                      <div key={idx} className="text-xs text-gray-700">
+                        Name: "{cls.name}" → URL: /{cls.monitorCode}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <p className="text-sm text-gray-500 mt-4">
+                Please check the class name and try again. Use the class name in lowercase (e.g., /2a, /3a, /4a, /4b).
               </p>
             </CardContent>
           </Card>

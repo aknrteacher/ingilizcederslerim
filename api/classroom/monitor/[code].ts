@@ -90,46 +90,58 @@ export default async function handler(req: any, res: any) {
         cls.monitorCode = newMonitorCode;
         classesMap.set(cls.id, cls);
         migrated++;
-        console.log(`[monitor] Migrated class ${cls.name}: ${cls.monitorCode} -> ${newMonitorCode}`);
+        console.log(`[monitor] Migrated class ${cls.name}: old code -> ${newMonitorCode}`);
       }
     });
     if (migrated > 0) {
       console.log(`[monitor] Migrated ${migrated} classes to use class names as monitor codes`);
     }
     
+    // Refresh after migration
+    const updatedClasses = Array.from(classesMap.values());
+    
     console.log('[monitor] Total classes:', classesMap.size);
-    console.log('[monitor] All monitor codes:', allClasses.map(c => `${c.name} -> ${c.monitorCode}`));
+    console.log('[monitor] All classes:', updatedClasses.map(c => `"${c.name}" -> monitorCode:"${c.monitorCode}"`));
     console.log('[monitor] Searching for code:', codeLower);
     
     // Find by monitor code (which is now the class name in lowercase)
-    let classObj = allClasses.find(c => c.monitorCode === codeLower);
-    console.log('[monitor] Match by monitorCode:', classObj ? classObj.name : 'NOT FOUND');
+    let classObj = updatedClasses.find(c => c.monitorCode === codeLower);
+    console.log('[monitor] Match by monitorCode:', classObj ? `FOUND: ${classObj.name}` : 'NOT FOUND');
     
     // Fallback: if not found by monitorCode, try matching by class name (for existing classes)
-    // Also normalize class names (remove spaces, special chars, lowercase)
     if (!classObj) {
       // Try exact lowercase match first
-      classObj = allClasses.find(c => c.name.toLowerCase() === codeLower);
-      console.log('[monitor] Tried exact name match:', classObj ? classObj.name : 'NOT FOUND');
+      classObj = updatedClasses.find(c => c.name.toLowerCase() === codeLower);
+      console.log('[monitor] Tried exact name match:', classObj ? `FOUND: ${classObj.name}` : 'NOT FOUND');
       
       // Try normalized match (remove all non-alphanumeric)
       if (!classObj) {
-        classObj = allClasses.find(c => {
+        classObj = updatedClasses.find(c => {
           const normalizedName = c.name.toLowerCase().replace(/[^a-z0-9]/g, '');
           const normalizedCode = codeLower.replace(/[^a-z0-9]/g, '');
-          const match = normalizedName === normalizedCode;
-          if (match) {
-            console.log('[monitor] Normalized match found:', c.name, 'normalized:', normalizedName, 'vs', normalizedCode);
-          }
-          return match;
+          return normalizedName === normalizedCode;
         });
+        if (classObj) {
+          console.log('[monitor] Normalized match FOUND:', classObj.name);
+        } else {
+          console.log('[monitor] Normalized match NOT FOUND');
+        }
       }
     }
     
     console.log('[monitor] Final result - Found class:', classObj ? classObj.name : 'NOT FOUND');
     
     if (!classObj) {
-      return res.status(404).json({ message: 'Class not found' });
+      // Return detailed error with available classes for debugging
+      return res.status(404).json({ 
+        message: 'Class not found',
+        searchedFor: codeLower,
+        availableClasses: updatedClasses.map(c => ({
+          name: c.name,
+          monitorCode: c.monitorCode,
+          normalizedName: c.name.toLowerCase().replace(/[^a-z0-9]/g, '')
+        }))
+      });
     }
 
     const studentsMap = getStudentsMap();
