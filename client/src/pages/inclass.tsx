@@ -325,6 +325,7 @@ export default function InClass() {
   }, [selectedClass, selectedCategory, studentsData?.students]);
 
   // Mobile mode functions - load scores for selected category
+  // ONLY reload when category/class changes, NOT when allCategoryScores updates (to prevent losing current edits)
   useEffect(() => {
     if (mode === 'mobile' && selectedClass && selectedCategory && studentsData?.students) {
       const category = CATEGORIES.find(c => c.value === selectedCategory);
@@ -345,7 +346,8 @@ export default function InClass() {
       setStudentScores(newScores);
       setSelectedStudentId(null);
     }
-  }, [mode, selectedClass, selectedCategory, studentsData?.students, allCategoryScores]);
+    // REMOVED allCategoryScores from dependencies - we don't want to reload when scores update!
+  }, [mode, selectedClass, selectedCategory, studentsData?.students]);
 
   const category = selectedCategory ? CATEGORIES.find(c => c.value === selectedCategory) : null;
 
@@ -427,6 +429,7 @@ export default function InClass() {
 
     try {
       // First, update allCategoryScores with current studentScores for selected category
+      // This ensures we capture any unsaved changes in the current view
       const updatedAllScores = new Map(allCategoryScores);
       if (selectedCategory) {
         studentsData.students.forEach(student => {
@@ -439,7 +442,6 @@ export default function InClass() {
           }
         });
       }
-      setAllCategoryScores(updatedAllScores);
 
       // Collect all scores for all categories
       const scoresData: Record<string, Record<string, number[]>> = {};
@@ -460,6 +462,13 @@ export default function InClass() {
         scores: scoresData,
       };
 
+      console.log('[SAVE] Sending scores:', {
+        classId: selectedClass.id,
+        studentCount: Object.keys(scoresData).length,
+        sampleStudent: Object.keys(scoresData)[0],
+        sampleScores: scoresData[Object.keys(scoresData)[0]]
+      });
+
       const res = await fetch('/api/classroom/scores', {
         method: 'POST',
         headers: {
@@ -468,8 +477,11 @@ export default function InClass() {
         body: JSON.stringify(requestBody),
       });
       
+      console.log('[SAVE] Response status:', res.status);
+      
       if (!res.ok) {
         const errorText = await res.text();
+        console.error('[SAVE] Error response:', errorText);
         let errorMessage = `Failed to save: ${res.status}`;
         try {
           const errorJson = JSON.parse(errorText);
@@ -481,13 +493,17 @@ export default function InClass() {
       }
       
       const result = await res.json();
+      console.log('[SAVE] Response data:', result);
+      
       if (result.success) {
+        // Update allCategoryScores state after successful save
+        setAllCategoryScores(updatedAllScores);
         toast.success('Scores saved successfully!');
       } else {
         throw new Error(result.message || 'Save failed');
       }
     } catch (error: any) {
-      console.error('Error saving scores:', error);
+      console.error('[SAVE] Error:', error);
       toast.error(error?.message || 'Failed to save scores');
     }
   };
