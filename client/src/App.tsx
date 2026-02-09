@@ -530,6 +530,20 @@ function Router() {
         <ClassroomMonitoring />
       </Route>
       
+      {/* Permanent class pages - must be before catch-all */}
+      <Route path="/edincik2a">
+        {() => <ClassMonitor code="2a" />}
+      </Route>
+      <Route path="/edincik3a">
+        {() => <ClassMonitor code="3a" />}
+      </Route>
+      <Route path="/edincik4a">
+        {() => <ClassMonitor code="4a" />}
+      </Route>
+      <Route path="/edincik4b">
+        {() => <ClassMonitor code="4b" />}
+      </Route>
+      
       {/* Monitor page route - must be before catch-all, matches class names */}
       <Route path="/:className">
         {(props: any) => {

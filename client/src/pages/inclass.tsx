@@ -62,6 +62,33 @@ export default function InClass() {
 
   const queryClient = useQueryClient();
 
+  // Initialize permanent classes on mount
+  useEffect(() => {
+    const initializePermanentClasses = async () => {
+      try {
+        const res = await fetch('/api/classroom/init-permanent-classes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (res.ok) {
+          const result = await res.json();
+          if (result.success) {
+            console.log('[InClass] Permanent classes initialized:', result);
+            // Invalidate queries to refresh the class list
+            queryClient.invalidateQueries({ queryKey: ['/api/classroom/classes'] });
+          }
+        }
+      } catch (error) {
+        console.error('[InClass] Error initializing permanent classes:', error);
+      }
+    };
+    
+    // Only initialize once when component mounts
+    initializePermanentClasses();
+  }, []); // Empty dependency array - only run once
+
   // Fetch classes
   const { data: classesData } = useQuery<{ classes: Class[] }>({
     queryKey: ['/api/classroom/classes'],
