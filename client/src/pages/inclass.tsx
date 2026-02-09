@@ -48,11 +48,8 @@ export default function InClass() {
   const [mode, setMode] = useState<'admin' | 'mobile' | null>(null);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
-  const [centeredStudentId, setCenteredStudentId] = useState<string | null>(null);
+  const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
   const [studentScores, setStudentScores] = useState<Map<string, StudentScore>>(new Map());
-  const [swipeStart, setSwipeStart] = useState<{ x: number; y: number } | null>(null);
-  const studentRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
   
   // Store all category scores separately (studentId -> category -> scores[])
   const [allCategoryScores, setAllCategoryScores] = useState<Map<string, Map<Category, number[]>>>(new Map());
@@ -346,100 +343,11 @@ export default function InClass() {
         });
       });
       setStudentScores(newScores);
-      setCurrentStudentIndex(0);
+      setSelectedStudentId(null);
     }
   }, [mode, selectedClass, selectedCategory, studentsData?.students, allCategoryScores]);
 
-  // Removed useEffect - we update allCategoryScores directly in handleSwipeEnd to prevent flickering
-
-  // Detect centered student on scroll (only in mobile mode with category selected)
-  // Use IntersectionObserver for better performance and to avoid flickering
-  useEffect(() => {
-    if (mode !== 'mobile' || !selectedCategory || !studentsData?.students.length) {
-      setCenteredStudentId(null);
-      return;
-    }
-    
-    let scrollTimeout: NodeJS.Timeout;
-    const viewportCenter = window.innerHeight / 2;
-    const threshold = 250; // Increased threshold for better detection, especially for first student
-
-    const checkCentered = () => {
-      interface ClosestStudent {
-        id: string;
-        distance: number;
-      }
-      let closestStudent: ClosestStudent | null = null;
-
-      for (const student of studentsData.students) {
-        const element = studentRefs.current.get(student.id);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          const elementCenter = rect.top + rect.height / 2;
-          const distance = Math.abs(viewportCenter - elementCenter);
-          
-          if (closestStudent === null || distance < closestStudent.distance) {
-            closestStudent = { id: student.id, distance };
-          }
-        }
-      }
-
-      if (closestStudent !== null && closestStudent.distance < threshold) {
-        setCenteredStudentId(prev => {
-          // Only update if different to prevent unnecessary re-renders
-          if (prev !== closestStudent!.id) {
-            return closestStudent!.id;
-          }
-          return prev;
-        });
-      } else {
-        setCenteredStudentId(prev => prev !== null ? null : prev);
-      }
-    };
-
-    // Throttled scroll handler using requestAnimationFrame for smooth performance
-    let rafId: number | null = null;
-    const handleScroll = () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-      rafId = requestAnimationFrame(() => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(checkCentered, 100);
-      });
-    };
-
-    // Check multiple times on mount to catch first student (Android Chrome needs delays)
-    checkCentered();
-    const initialCheck1 = setTimeout(checkCentered, 100);
-    const initialCheck2 = setTimeout(checkCentered, 300);
-    const initialCheck3 = setTimeout(checkCentered, 600);
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', checkCentered);
-    
-    return () => {
-      clearTimeout(scrollTimeout);
-      clearTimeout(initialCheck1);
-      clearTimeout(initialCheck2);
-      clearTimeout(initialCheck3);
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', checkCentered);
-    };
-  }, [mode, selectedCategory, studentsData?.students]);
-
-  const currentStudent = studentsData?.students[currentStudentIndex];
-  const currentScore = currentStudent ? studentScores.get(currentStudent.id) : null;
   const category = selectedCategory ? CATEGORIES.find(c => c.value === selectedCategory) : null;
-
-  const getCurrentSquareIndex = (): number => {
-    if (!currentScore || !category) return 0;
-    const firstEmpty = currentScore.scores.findIndex(s => s === 0);
-    return firstEmpty !== -1 ? firstEmpty : category.maxSquares - 1;
-  };
 
   // Play sound effect
   const playSound = (type: 'plus' | 'minus') => {
@@ -452,10 +360,10 @@ export default function InClass() {
       gainNode.connect(audioContext.destination);
       
       if (type === 'plus') {
-        oscillator.frequency.value = 800; // Higher pitch for plus
+        oscillator.frequency.value = 800;
         oscillator.type = 'sine';
       } else {
-        oscillator.frequency.value = 400; // Lower pitch for minus
+        oscillator.frequency.value = 400;
         oscillator.type = 'sawtooth';
       }
       
@@ -465,98 +373,72 @@ export default function InClass() {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.1);
     } catch (e) {
-      // Sound not supported, continue silently
+      // Sound not supported
     }
   };
 
-  const handleSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    setSwipeStart({ x: clientX, y: clientY });
-  };
-
-  const handleSwipeEnd = (e: React.TouchEvent | React.MouseEvent, studentId: string) => {
-    if (!swipeStart || !category) return;
-
-    const student = studentsData?.students.find(s => s.id === studentId);
-    if (!student) return;
-
+  // Handle adding plus or minus to selected student
+  const handleAddScore = (studentId: string, value: 1 | -1) => {
+    if (!category) return;
+    
     const score = studentScores.get(studentId);
     if (!score) return;
 
-    const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
-    const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : e.clientY;
+    const firstEmpty = score.scores.findIndex(s => s === 0);
+    const squareIndex = firstEmpty !== -1 ? firstEmpty : category.maxSquares - 1;
+    const newScores = [...score.scores];
+    newScores[squareIndex] = value;
+
+    // Update scores
+    setStudentScores(prev => {
+      const updated = new Map(prev);
+      updated.set(studentId, {
+        ...score,
+        scores: newScores,
+      });
+      return updated;
+    });
     
-    const deltaX = clientX - swipeStart.x;
-    const deltaY = clientY - swipeStart.y;
-    const absDeltaX = Math.abs(deltaX);
-    const absDeltaY = Math.abs(deltaY);
-
-    if (absDeltaX > absDeltaY && absDeltaX > 50) {
-      const firstEmpty = score.scores.findIndex(s => s === 0);
-      const squareIndex = firstEmpty !== -1 ? firstEmpty : category.maxSquares - 1;
-      const newScores = [...score.scores];
-      
-      if (deltaX > 0) {
-        // Swipe right = plus
-        newScores[squareIndex] = 1;
-        playSound('plus');
-        toast.success('✓ Plus added', { duration: 500 });
-      } else {
-        // Swipe left = minus
-        newScores[squareIndex] = -1;
-        playSound('minus');
-        toast.error('✗ Minus added', { duration: 500 });
+    // Update allCategoryScores immediately
+    setAllCategoryScores(prev => {
+      const updated = new Map(prev);
+      if (!updated.has(studentId)) {
+        updated.set(studentId, new Map());
       }
+      updated.get(studentId)!.set(selectedCategory!, newScores);
+      return updated;
+    });
 
-      // Update scores without causing flicker
-      setStudentScores(prev => {
-        const updated = new Map(prev);
-        updated.set(studentId, {
-          ...score,
-          scores: newScores,
-        });
-        return updated;
-      });
-      
-      // Update allCategoryScores immediately to prevent re-render flicker
-      setAllCategoryScores(prev => {
-        const updated = new Map(prev);
-        if (!updated.has(studentId)) {
-          updated.set(studentId, new Map());
-        }
-        updated.get(studentId)!.set(selectedCategory!, newScores);
-        return updated;
-      });
+    if (value === 1) {
+      playSound('plus');
+      toast.success('✓ Plus added', { duration: 500 });
+    } else {
+      playSound('minus');
+      toast.error('✗ Minus added', { duration: 500 });
     }
-
-    setSwipeStart(null);
   };
 
 
   const handleSaveScores = async () => {
-    if (!selectedClass || !selectedCategory || !studentsData?.students.length) {
+    if (!selectedClass || !studentsData?.students.length) {
       toast.error('No data to save');
       return;
     }
 
     try {
-      console.log('[handleSaveScores] Starting save...');
-      console.log('[handleSaveScores] Selected class:', selectedClass.id);
-      console.log('[handleSaveScores] Selected category:', selectedCategory);
-      console.log('[handleSaveScores] Students count:', studentsData.students.length);
-
       // First, update allCategoryScores with current studentScores for selected category
       const updatedAllScores = new Map(allCategoryScores);
-      studentsData.students.forEach(student => {
-        const currentScore = studentScores.get(student.id);
-        if (currentScore) {
-          if (!updatedAllScores.has(student.id)) {
-            updatedAllScores.set(student.id, new Map());
+      if (selectedCategory) {
+        studentsData.students.forEach(student => {
+          const currentScore = studentScores.get(student.id);
+          if (currentScore) {
+            if (!updatedAllScores.has(student.id)) {
+              updatedAllScores.set(student.id, new Map());
+            }
+            updatedAllScores.get(student.id)!.set(selectedCategory, currentScore.scores);
           }
-          updatedAllScores.get(student.id)!.set(selectedCategory, currentScore.scores);
-        }
-      });
+        });
+      }
       setAllCategoryScores(updatedAllScores);
 
       // Collect all scores for all categories
@@ -573,18 +455,11 @@ export default function InClass() {
         });
       });
 
-      console.log('[handleSaveScores] Prepared scores data:', {
-        classId: selectedClass.id,
-        studentCount: Object.keys(scoresData).length,
-        firstStudentScores: scoresData[studentsData.students[0]?.id]
-      });
-
       const requestBody = {
         classId: selectedClass.id,
         scores: scoresData,
       };
 
-      console.log('[handleSaveScores] Sending request...');
       const res = await fetch('/api/classroom/scores', {
         method: 'POST',
         headers: {
@@ -593,43 +468,30 @@ export default function InClass() {
         body: JSON.stringify(requestBody),
       });
       
-      console.log('[handleSaveScores] Response status:', res.status);
-      const result = await res.json();
-      console.log('[handleSaveScores] Response:', result);
+      if (!res.ok) {
+        const errorText = await res.text();
+        let errorMessage = `Failed to save: ${res.status}`;
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
       
-      if (res.ok) {
-        toast.success('Scores saved!');
+      const result = await res.json();
+      if (result.success) {
+        toast.success('Scores saved successfully!');
       } else {
-        throw new Error(result.message || `Failed to save: ${res.status}`);
+        throw new Error(result.message || 'Save failed');
       }
     } catch (error: any) {
-      console.error('[handleSaveScores] Error:', error);
-      console.error('[handleSaveScores] Error stack:', error?.stack);
+      console.error('Error saving scores:', error);
       toast.error(error?.message || 'Failed to save scores');
     }
   };
 
-  const handleSquareClick = (index: number, value: number) => {
-    if (!currentStudent || !currentScore) return;
-    
-    const newScores = [...currentScore.scores];
-    if (value === 0) {
-      newScores[index] = 1;
-    } else if (value === 1) {
-      newScores[index] = -1;
-    } else {
-      newScores[index] = 0;
-    }
-
-    setStudentScores(prev => {
-      const updated = new Map(prev);
-      updated.set(currentStudent.id, {
-        ...currentScore,
-        scores: newScores,
-      });
-      return updated;
-    });
-  };
 
   const exportFullTableToPDF = () => {
     if (!selectedClass || !studentsData?.students.length) return;
@@ -1152,15 +1014,15 @@ export default function InClass() {
               <div className="w-12" />
             </div>
             <div className="text-center text-sm text-gray-500 mt-2">
-              Scroll to find student, swipe when centered
+              Click student name to select, then click + or -
             </div>
           </div>
         </div>
 
-        {/* Scrollable Student List - SUPER SIMPLE */}
+        {/* Scrollable Student List - SIMPLE WITH BUTTONS */}
         <div className="pb-24">
           {studentsData?.students.map((student) => {
-            const isCentered = centeredStudentId === student.id;
+            const isSelected = selectedStudentId === student.id;
             const score = studentScores.get(student.id);
             const plusCount = score ? score.scores.filter(s => s === 1).length : 0;
             const minusCount = score ? score.scores.filter(s => s === -1).length : 0;
@@ -1168,42 +1030,67 @@ export default function InClass() {
             return (
               <div
                 key={student.id}
-                ref={(el) => {
-                  if (el) {
-                    studentRefs.current.set(student.id, el);
-                  } else {
-                    studentRefs.current.delete(student.id);
-                  }
-                }}
-                className="max-w-md mx-auto py-12 px-4"
-                onTouchStart={(e) => {
-                  if (isCentered) handleSwipeStart(e);
-                }}
-                onTouchEnd={(e) => {
-                  if (isCentered) handleSwipeEnd(e, student.id);
-                }}
-                onMouseDown={(e) => {
-                  if (isCentered) handleSwipeStart(e);
-                }}
-                onMouseUp={(e) => {
-                  if (isCentered) handleSwipeEnd(e, student.id);
-                }}
+                className="max-w-md mx-auto py-8 px-4"
               >
-                <div className="text-center">
-                  <div className={`text-6xl font-bold ${isCentered ? 'text-blue-600' : 'text-black'}`}>
-                    {student.name}
+                <div className="flex items-center justify-between gap-4">
+                  {/* Minus Button */}
+                  <Button
+                    onClick={() => {
+                      if (isSelected) {
+                        handleAddScore(student.id, -1);
+                      } else {
+                        setSelectedStudentId(student.id);
+                      }
+                    }}
+                    variant={isSelected ? "default" : "outline"}
+                    size="lg"
+                    className={`h-20 w-20 text-4xl font-bold ${
+                      isSelected 
+                        ? 'bg-red-600 hover:bg-red-700 text-white' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                    }`}
+                  >
+                    −
+                  </Button>
+
+                  {/* Student Name */}
+                  <div 
+                    className="flex-1 text-center cursor-pointer"
+                    onClick={() => setSelectedStudentId(isSelected ? null : student.id)}
+                  >
+                    <div className={`text-5xl font-bold ${isSelected ? 'text-blue-600' : 'text-black'}`}>
+                      {student.name}
+                    </div>
+                    {(plusCount > 0 || minusCount > 0) && (
+                      <div className="text-lg mt-2">
+                        {plusCount > 0 && <span className="text-green-600 font-bold">✓{plusCount}</span>}
+                        {minusCount > 0 && <span className="text-red-600 ml-4 font-bold">✗{minusCount}</span>}
+                      </div>
+                    )}
+                    {isSelected && (
+                      <div className="text-sm text-gray-500 mt-1">Click + or - to score</div>
+                    )}
                   </div>
-                  {isCentered && (
-                    <div className="text-base text-gray-600 mt-2">
-                      Swipe right for +, left for -
-                    </div>
-                  )}
-                  {(plusCount > 0 || minusCount > 0) && (
-                    <div className="text-lg mt-3">
-                      {plusCount > 0 && <span className="text-green-600">✓{plusCount}</span>}
-                      {minusCount > 0 && <span className="text-red-600 ml-4">✗{minusCount}</span>}
-                    </div>
-                  )}
+
+                  {/* Plus Button */}
+                  <Button
+                    onClick={() => {
+                      if (isSelected) {
+                        handleAddScore(student.id, 1);
+                      } else {
+                        setSelectedStudentId(student.id);
+                      }
+                    }}
+                    variant={isSelected ? "default" : "outline"}
+                    size="lg"
+                    className={`h-20 w-20 text-4xl font-bold ${
+                      isSelected 
+                        ? 'bg-green-600 hover:bg-green-700 text-white' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                    }`}
+                  >
+                    +
+                  </Button>
                 </div>
               </div>
             );
