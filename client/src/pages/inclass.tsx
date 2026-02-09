@@ -350,25 +350,7 @@ export default function InClass() {
     }
   }, [mode, selectedClass, selectedCategory, studentsData?.students, allCategoryScores]);
 
-  // Update allCategoryScores when studentScores change for current category
-  useEffect(() => {
-    if (selectedCategory && studentsData?.students && mode === 'mobile') {
-      setAllCategoryScores(prev => {
-        const updated = new Map(prev);
-        studentsData.students.forEach(student => {
-          const score = studentScores.get(student.id);
-          if (score) {
-            if (!updated.has(student.id)) {
-              updated.set(student.id, new Map());
-            }
-            const studentScoresMap = updated.get(student.id)!;
-            studentScoresMap.set(selectedCategory, score.scores);
-          }
-        });
-        return updated;
-      });
-    }
-  }, [studentScores, selectedCategory, studentsData?.students, mode]);
+  // Removed useEffect - we update allCategoryScores directly in handleSwipeEnd to prevent flickering
 
   // Detect centered student on scroll (only in mobile mode with category selected)
   // Use IntersectionObserver for better performance and to avoid flickering
@@ -403,9 +385,15 @@ export default function InClass() {
       }
 
       if (closestStudent !== null && closestStudent.distance < threshold) {
-        setCenteredStudentId(prev => prev !== closestStudent!.id ? closestStudent!.id : prev);
+        setCenteredStudentId(prev => {
+          // Only update if different to prevent unnecessary re-renders
+          if (prev !== closestStudent!.id) {
+            return closestStudent!.id;
+          }
+          return prev;
+        });
       } else {
-        setCenteredStudentId(null);
+        setCenteredStudentId(prev => prev !== null ? null : prev);
       }
     };
 
@@ -521,12 +509,23 @@ export default function InClass() {
         toast.error('✗ Minus added', { duration: 500 });
       }
 
+      // Update scores without causing flicker
       setStudentScores(prev => {
         const updated = new Map(prev);
         updated.set(studentId, {
           ...score,
           scores: newScores,
         });
+        return updated;
+      });
+      
+      // Update allCategoryScores immediately to prevent re-render flicker
+      setAllCategoryScores(prev => {
+        const updated = new Map(prev);
+        if (!updated.has(studentId)) {
+          updated.set(studentId, new Map());
+        }
+        updated.get(studentId)!.set(selectedCategory!, newScores);
         return updated;
       });
     }
@@ -581,8 +580,8 @@ export default function InClass() {
       });
       
       const result = await res.json();
-      if (res.ok && result.success) {
-        toast.success('Scores saved successfully! Monitor page updated.');
+      if (res.ok) {
+        toast.success('Scores saved!');
       } else {
         throw new Error(result.message || 'Failed to save');
       }
@@ -1140,7 +1139,7 @@ export default function InClass() {
           </div>
         </div>
 
-        {/* Scrollable Student List - Simple Large Font Names */}
+        {/* Scrollable Student List - SUPER SIMPLE */}
         <div className="pb-24">
           {studentsData?.students.map((student) => {
             const isCentered = centeredStudentId === student.id;
@@ -1158,9 +1157,7 @@ export default function InClass() {
                     studentRefs.current.delete(student.id);
                   }
                 }}
-                className={`max-w-md mx-auto py-8 px-6 transition-all ${
-                  isCentered ? 'scale-105 z-20' : 'scale-100'
-                }`}
+                className="max-w-md mx-auto py-12 px-4"
                 onTouchStart={(e) => {
                   if (isCentered) handleSwipeStart(e);
                 }}
@@ -1174,21 +1171,19 @@ export default function InClass() {
                   if (isCentered) handleSwipeEnd(e, student.id);
                 }}
               >
-                <div className={`text-center py-4 ${isCentered ? 'ring-4 ring-blue-400 rounded-2xl px-6 bg-blue-50' : 'px-4'}`}>
-                  <div className={`text-5xl md:text-6xl font-bold mb-2 ${
-                    isCentered ? 'text-blue-600' : 'text-gray-800'
-                  }`}>
+                <div className="text-center">
+                  <div className={`text-6xl font-bold ${isCentered ? 'text-blue-600' : 'text-black'}`}>
                     {student.name}
                   </div>
                   {isCentered && (
-                    <div className="text-lg text-gray-600 mb-2">
-                      👆 Swipe right for +, left for -
+                    <div className="text-base text-gray-600 mt-2">
+                      Swipe right for +, left for -
                     </div>
                   )}
                   {(plusCount > 0 || minusCount > 0) && (
-                    <div className="text-xl mt-2">
-                      {plusCount > 0 && <span className="text-green-600 font-bold">✓ {plusCount}</span>}
-                      {minusCount > 0 && <span className="text-red-600 font-bold ml-3">✗ {minusCount}</span>}
+                    <div className="text-lg mt-3">
+                      {plusCount > 0 && <span className="text-green-600">✓{plusCount}</span>}
+                      {minusCount > 0 && <span className="text-red-600 ml-4">✗{minusCount}</span>}
                     </div>
                   )}
                 </div>
