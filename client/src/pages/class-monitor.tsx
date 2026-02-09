@@ -59,24 +59,24 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
   // ALWAYS render something - even if code is invalid, show a message
   // This ensures the component is visible and we can debug
   
-  const queryEnabled = !!code && /^\d{4}$/.test(code || '');
+  const queryEnabled = !!code && code.length > 0;
   console.log('[ClassMonitor] Query enabled:', queryEnabled);
 
   // Render immediately - don't wait for query
   // This ensures something is always visible
-  if (!code || !/^\d{4}$/.test(code || '')) {
+  if (!code || code.length === 0) {
     console.log('[ClassMonitor] Invalid code, showing error:', code);
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
           <Card className="shadow-2xl border-2 border-red-200">
             <CardHeader className="bg-red-500 text-white">
-              <CardTitle className="text-2xl font-bold">Invalid Monitor Code</CardTitle>
+              <CardTitle className="text-2xl font-bold">Invalid Class Name</CardTitle>
             </CardHeader>
             <CardContent className="p-8 text-center">
-              <p className="text-gray-600 mb-4">Please check the code and try again.</p>
-              <p className="text-sm text-gray-500">Code received: <strong>{code || 'undefined'}</strong></p>
-              <p className="text-xs text-gray-400 mt-2">URL should be: /8375 (4 digits)</p>
+              <p className="text-gray-600 mb-4">Please check the class name and try again.</p>
+              <p className="text-sm text-gray-500">Class name received: <strong>{code || 'undefined'}</strong></p>
+              <p className="text-xs text-gray-400 mt-2">URL should be: /2a, /3a, /4a, /4b, etc.</p>
             </CardContent>
           </Card>
         </div>
@@ -129,16 +129,44 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
     );
   }
 
-  if (error || !data) {
+  if (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isNotFound = errorMessage.includes('404') || errorMessage.includes('not found');
+    
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
-          <Card>
+          <Card className="shadow-2xl border-2 border-red-200">
+            <CardHeader className="bg-red-500 text-white">
+              <CardTitle className="text-2xl font-bold">
+                {isNotFound ? 'Class Not Found' : 'Error Loading Data'}
+              </CardTitle>
+            </CardHeader>
             <CardContent className="p-8 text-center">
-              <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Data</h1>
-              <p className="text-gray-600">The monitor code {code} could not be loaded.</p>
+              <p className="text-gray-600 mb-4">
+                {isNotFound 
+                  ? `No class found with monitor code: ${code}`
+                  : `The monitor code ${code} could not be loaded.`
+                }
+              </p>
+              <p className="text-sm text-gray-500">
+                Please check the code and try again. The code should be a 4-digit number assigned to the class.
+              </p>
             </CardContent>
           </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center py-20">
+            <div className="text-xl font-bold mb-2">Loading...</div>
+            <div className="text-gray-600">Fetching class data</div>
+          </div>
         </div>
       </div>
     );

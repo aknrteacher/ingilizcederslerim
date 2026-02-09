@@ -530,14 +530,14 @@ function Router() {
         <ClassroomMonitoring />
       </Route>
       
-      {/* Monitor page route - must be before catch-all, matches 4-digit codes */}
-      <Route path="/:code">
+      {/* Monitor page route - must be before catch-all, matches class names */}
+      <Route path="/:className">
         {(props: any) => {
           console.log('[App] Monitor route matched, props:', props);
-          const code = props?.params?.code || props?.code || (props?.params && typeof props.params === 'string' ? props.params : null);
-          console.log('[App] Extracted code:', code, 'is4digit:', code && /^\d{4}$/.test(code));
-          // Always render ClassMonitor - let it handle invalid codes
-          return <ClassMonitor code={code} />;
+          const className = props?.params?.className || props?.className || (props?.params && typeof props.params === 'string' ? props.params : null);
+          console.log('[App] Extracted class name:', className);
+          // Always render ClassMonitor - let it handle invalid class names
+          return <ClassMonitor code={className} />;
         }}
       </Route>
       

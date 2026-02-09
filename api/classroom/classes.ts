@@ -17,13 +17,14 @@ function generateId(): string {
 interface Class {
   id: string;
   name: string;
-  monitorCode: string; // 4-digit unique code
+  monitorCode: string; // URL-safe class name (lowercased)
   createdAt: Date;
 }
 
-// Generate 4-digit code
-function generateMonitorCode(): string {
-  return Math.floor(1000 + Math.random() * 9000).toString();
+// Generate URL-safe monitor code from class name
+function generateMonitorCode(className: string): string {
+  // Convert to lowercase and remove spaces/special chars, keep alphanumeric
+  return className.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 // Global storage (shared across invocations in same container)
@@ -47,11 +48,7 @@ const storage = {
   createClass: async (data: { name: string }): Promise<Class> => {
     const classesMap = getClassesMap();
     const id = generateId();
-    let monitorCode = generateMonitorCode();
-    // Ensure unique code
-    while (Array.from(classesMap.values()).some(c => c.monitorCode === monitorCode)) {
-      monitorCode = generateMonitorCode();
-    }
+    const monitorCode = generateMonitorCode(data.name);
     const cls: Class = {
       name: data.name,
       id,
@@ -59,7 +56,7 @@ const storage = {
       createdAt: new Date(),
     };
     classesMap.set(id, cls);
-    console.log(`[classes.ts] Created class ${cls.name} (${cls.id}) with code ${monitorCode}, total classes: ${classesMap.size}`);
+    console.log(`[classes.ts] Created class ${cls.name} (${cls.id}) with monitor code ${monitorCode}, total classes: ${classesMap.size}`);
     return cls;
   },
   getClassByCode: async (code: string): Promise<Class | null> => {

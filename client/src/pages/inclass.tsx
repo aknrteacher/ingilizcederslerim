@@ -836,10 +836,10 @@ export default function InClass() {
                 </Button>
                 {selectedClass?.monitorCode && (
                   <div className="mt-4 p-3 bg-blue-50 rounded">
-                    <div className="text-sm font-semibold text-blue-900">Monitor Code:</div>
-                    <div className="text-2xl font-bold text-blue-600 mt-1">{selectedClass.monitorCode}</div>
+                    <div className="text-sm font-semibold text-blue-900">Live Page URL:</div>
+                    <div className="text-2xl font-bold text-blue-600 mt-1">/{selectedClass.monitorCode}</div>
                     <div className="text-xs text-blue-700 mt-1">
-                      Parents can view at: /{selectedClass.monitorCode}
+                      Parents can view at: https://www.ingilizcederslerim.com/{selectedClass.monitorCode}
                     </div>
                   </div>
                 )}
@@ -1010,8 +1010,8 @@ export default function InClass() {
           <div className="max-w-md mx-auto">
             {selectedClass?.monitorCode && (
               <div className="text-center mb-2">
-                <div className="text-xs text-gray-500">Monitor Code:</div>
-                <div className="text-sm font-mono font-bold text-blue-600">{selectedClass.monitorCode}</div>
+                <div className="text-xs text-gray-500">Live Page:</div>
+                <div className="text-sm font-mono font-bold text-blue-600">/{selectedClass.monitorCode}</div>
               </div>
             )}
             <div className="flex items-center justify-between">

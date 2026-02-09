@@ -70,17 +70,29 @@ export default async function handler(req: any, res: any) {
     const code = req.query.code || req.query?.code || (req.url ? req.url.split('/').pop()?.split('?')[0] : null);
     console.log('[monitor] Extracted code:', code);
     
-    if (!code || !/^\d{4}$/.test(code)) {
+    if (!code || typeof code !== 'string') {
       console.error('[monitor] Invalid code:', code);
       return res.status(400).json({ message: 'Invalid monitor code' });
     }
+    
+    // Convert to lowercase for matching (class names are stored as lowercase)
+    const codeLower = code.toLowerCase();
 
     const classesMap = getClassesMap();
     console.log('[monitor] Total classes:', classesMap.size);
     const allClasses = Array.from(classesMap.values());
     console.log('[monitor] All monitor codes:', allClasses.map(c => c.monitorCode));
+    console.log('[monitor] All class names:', allClasses.map(c => c.name));
     
-    const classObj = allClasses.find(c => c.monitorCode === code);
+    // Find by monitor code (which is now the class name in lowercase)
+    let classObj = allClasses.find(c => c.monitorCode === codeLower);
+    
+    // Fallback: if not found by monitorCode, try matching by class name (for existing classes)
+    if (!classObj) {
+      classObj = allClasses.find(c => c.name.toLowerCase() === codeLower);
+      console.log('[monitor] Tried fallback match by name');
+    }
+    
     console.log('[monitor] Found class:', classObj ? classObj.name : 'NOT FOUND');
     
     if (!classObj) {
