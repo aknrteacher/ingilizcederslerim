@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Button } from '@/components/ui/button';
@@ -48,8 +48,10 @@ export default function InClass() {
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
+  const [centeredStudentId, setCenteredStudentId] = useState<string | null>(null);
   const [studentScores, setStudentScores] = useState<Map<string, StudentScore>>(new Map());
   const [swipeStart, setSwipeStart] = useState<{ x: number; y: number } | null>(null);
+  const studentRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
   
   // Admin mode states
   const [newClassName, setNewClassName] = useState('');
@@ -225,14 +227,48 @@ export default function InClass() {
     return firstEmpty !== -1 ? firstEmpty : category.maxSquares - 1;
   };
 
+  // Play sound effect
+  const playSound = (type: 'plus' | 'minus') => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      if (type === 'plus') {
+        oscillator.frequency.value = 800; // Higher pitch for plus
+        oscillator.type = 'sine';
+      } else {
+        oscillator.frequency.value = 400; // Lower pitch for minus
+        oscillator.type = 'sawtooth';
+      }
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (e) {
+      // Sound not supported, continue silently
+    }
+  };
+
   const handleSwipeStart = (e: React.TouchEvent | React.MouseEvent) => {
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     setSwipeStart({ x: clientX, y: clientY });
   };
 
-  const handleSwipeEnd = (e: React.TouchEvent | React.MouseEvent) => {
-    if (!swipeStart || !currentStudent || !category || !currentScore) return;
+  const handleSwipeEnd = (e: React.TouchEvent | React.MouseEvent, studentId: string) => {
+    if (!swipeStart || !category) return;
+
+    const student = studentsData?.students.find(s => s.id === studentId);
+    if (!student) return;
+
+    const score = studentScores.get(studentId);
+    if (!score) return;
 
     const clientX = 'changedTouches' in e ? e.changedTouches[0].clientX : e.clientX;
     const clientY = 'changedTouches' in e ? e.changedTouches[0].clientY : e.clientY;
@@ -243,21 +279,26 @@ export default function InClass() {
     const absDeltaY = Math.abs(deltaY);
 
     if (absDeltaX > absDeltaY && absDeltaX > 50) {
-      const squareIndex = getCurrentSquareIndex();
-      const newScores = [...currentScore.scores];
+      const firstEmpty = score.scores.findIndex(s => s === 0);
+      const squareIndex = firstEmpty !== -1 ? firstEmpty : category.maxSquares - 1;
+      const newScores = [...score.scores];
       
       if (deltaX > 0) {
+        // Swipe right = plus
         newScores[squareIndex] = 1;
+        playSound('plus');
         toast.success('✓ Plus added', { duration: 500 });
       } else {
+        // Swipe left = minus
         newScores[squareIndex] = -1;
+        playSound('minus');
         toast.error('✗ Minus added', { duration: 500 });
       }
 
       setStudentScores(prev => {
         const updated = new Map(prev);
-        updated.set(currentStudent.id, {
-          ...currentScore,
+        updated.set(studentId, {
+          ...score,
           scores: newScores,
         });
         return updated;
@@ -672,15 +713,42 @@ export default function InClass() {
       );
     }
 
-    // Step 3: Student Scoring
-    if (!currentStudent || !category) return null;
+    // Step 3: Student Scoring - Continuous Scrollable List
+    if (!category) return null;
 
-    const squareIndex = getCurrentSquareIndex();
-    const progress = ((currentStudentIndex + 1) / (studentsData?.students.length || 1)) * 100;
+    // Detect centered student on scroll
+    useEffect(() => {
+      const handleScroll = () => {
+        const viewportCenter = window.innerHeight / 2;
+        let closestStudent: { id: string; distance: number } | null = null;
+
+        studentsData?.students.forEach(student => {
+          const element = studentRefs.current.get(student.id);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            const elementCenter = rect.top + rect.height / 2;
+            const distance = Math.abs(viewportCenter - elementCenter);
+            
+            if (!closestStudent || distance < closestStudent.distance) {
+              closestStudent = { id: student.id, distance };
+            }
+          }
+        });
+
+        if (closestStudent && closestStudent.distance < 100) {
+          setCenteredStudentId(closestStudent.id);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Check on mount
+      return () => window.removeEventListener('scroll', handleScroll);
+    }, [studentsData]);
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="bg-white shadow-sm p-4">
+        {/* Header */}
+        <div className="bg-white shadow-sm p-4 sticky top-0 z-10">
           <div className="max-w-md mx-auto flex items-center justify-between">
             <Button
               variant="ghost"
@@ -696,88 +764,88 @@ export default function InClass() {
             </div>
             <div className="w-12" />
           </div>
-          <div className="max-w-md mx-auto mt-2">
-            <div className="bg-gray-200 rounded-full h-3">
-              <div
-                className="bg-blue-500 h-3 rounded-full transition-all"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="text-center text-sm text-gray-600 mt-1">
-              {currentStudentIndex + 1} / {studentsData?.students.length || 0}
-            </div>
+          <div className="text-center text-sm text-gray-500 mt-2">
+            Scroll to find student, swipe when centered
           </div>
         </div>
 
-        <div className="p-4 max-w-md mx-auto">
-          <Card
-            className="touch-none select-none"
-            onTouchStart={handleSwipeStart}
-            onTouchEnd={handleSwipeEnd}
-            onMouseDown={handleSwipeStart}
-            onMouseUp={handleSwipeEnd}
-          >
-            <CardContent className="p-6">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-bold mb-2">{currentStudent.name}</div>
-                <div className="text-lg text-gray-600">Swipe right for +, left for -</div>
-              </div>
+        {/* Scrollable Student List */}
+        <div className="pb-32">
+          {studentsData?.students.map((student, index) => {
+            const score = studentScores.get(student.id);
+            const isCentered = centeredStudentId === student.id;
+            const squareIndex = score ? score.scores.findIndex(s => s === 0) : 0;
+            const activeSquareIndex = squareIndex !== -1 ? squareIndex : (category.maxSquares - 1);
 
-              <div className="grid grid-cols-6 gap-2 mb-6">
-                {currentScore?.scores.map((value, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleSquareClick(index, value)}
-                    className={`aspect-square rounded-lg border-2 font-bold text-lg transition-all ${
-                      index === squareIndex
-                        ? 'ring-4 ring-blue-400 ring-offset-2'
-                        : ''
-                    } ${
-                      value === 1
-                        ? 'bg-green-500 border-green-600 text-white'
-                        : value === -1
-                        ? 'bg-red-500 border-red-600 text-white'
-                        : 'bg-gray-100 border-gray-300 text-gray-400'
-                    }`}
-                  >
-                    {value === 1 ? '+' : value === -1 ? '−' : ''}
-                  </button>
-                ))}
-              </div>
+            return (
+              <div
+                key={student.id}
+                ref={(el) => {
+                  if (el) {
+                    studentRefs.current.set(student.id, el);
+                  } else {
+                    studentRefs.current.delete(student.id);
+                  }
+                }}
+                className={`max-w-md mx-auto p-4 transition-all ${
+                  isCentered ? 'scale-105 z-20' : 'scale-100'
+                }`}
+                onTouchStart={(e) => {
+                  if (isCentered) handleSwipeStart(e);
+                }}
+                onTouchEnd={(e) => {
+                  if (isCentered) handleSwipeEnd(e, student.id);
+                }}
+                onMouseDown={(e) => {
+                  if (isCentered) handleSwipeStart(e);
+                }}
+                onMouseUp={(e) => {
+                  if (isCentered) handleSwipeEnd(e, student.id);
+                }}
+              >
+                <Card className={`${isCentered ? 'ring-4 ring-blue-400 shadow-xl' : ''}`}>
+                  <CardContent className="p-6">
+                    <div className="text-center mb-4">
+                      <div className={`text-4xl font-bold mb-2 ${isCentered ? 'text-blue-600' : ''}`}>
+                        {student.name}
+                      </div>
+                      {isCentered && (
+                        <div className="text-lg text-gray-600 mb-2">
+                          👆 Swipe right for +, left for -
+                        </div>
+                      )}
+                    </div>
 
-              <div className="flex gap-4">
-                <Button
-                  onClick={() => {
-                    if (currentStudentIndex > 0) {
-                      setCurrentStudentIndex(currentStudentIndex - 1);
-                    }
-                  }}
-                  disabled={currentStudentIndex === 0}
-                  className="flex-1 h-16 text-xl"
-                  size="lg"
-                >
-                  <ChevronLeft className="w-6 h-6 mr-2" />
-                  Previous
-                </Button>
-                <Button
-                  onClick={() => {
-                    if (studentsData?.students && currentStudentIndex < studentsData.students.length - 1) {
-                      setCurrentStudentIndex(currentStudentIndex + 1);
-                    }
-                  }}
-                  disabled={currentStudentIndex === (studentsData?.students.length || 0) - 1}
-                  className="flex-1 h-16 text-xl"
-                  size="lg"
-                >
-                  Next
-                  <ChevronRight className="w-6 h-6 ml-2" />
-                </Button>
+                    {/* Squares Grid */}
+                    <div className="grid grid-cols-6 gap-2">
+                      {score?.scores.map((value, idx) => (
+                        <div
+                          key={idx}
+                          className={`aspect-square rounded-lg border-2 font-bold text-lg flex items-center justify-center ${
+                            idx === activeSquareIndex && isCentered
+                              ? 'ring-4 ring-blue-400 ring-offset-2'
+                              : ''
+                          } ${
+                            value === 1
+                              ? 'bg-green-500 border-green-600 text-white'
+                              : value === -1
+                              ? 'bg-red-500 border-red-600 text-white'
+                              : 'bg-gray-100 border-gray-300 text-gray-400'
+                          }`}
+                        >
+                          {value === 1 ? '+' : value === -1 ? '−' : ''}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
+            );
+          })}
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg">
+        {/* Fixed Bottom Save Button */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-lg z-10">
           <div className="max-w-md mx-auto">
             <Button
               onClick={() => exportToPDF()}
