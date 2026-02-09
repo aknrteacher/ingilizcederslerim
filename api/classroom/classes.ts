@@ -1,12 +1,11 @@
 // Vercel serverless function for classroom classes API
 // Self-contained - no external storage imports
+/// <reference types="node" />
 import { z } from 'zod';
 
 // Define schema inline to avoid import issues
 const insertClassSchema = z.object({
   name: z.string().min(1),
-  grade: z.number().int().min(1).max(12),
-  section: z.string().min(1).max(10),
 });
 
 // Simple UUID generator (no external dependencies)
@@ -18,25 +17,36 @@ function generateId(): string {
 interface Class {
   id: string;
   name: string;
-  grade: number;
-  section: string;
   createdAt: Date;
 }
 
-const classesMap = new Map<string, Class>();
+// Global storage (shared across invocations in same container)
+declare global {
+  var __classesStorage: Map<string, Class> | undefined;
+}
+
+const getClassesMap = (): Map<string, Class> => {
+  if (!global.__classesStorage) {
+    global.__classesStorage = new Map<string, Class>();
+  }
+  return global.__classesStorage;
+};
 
 const storage = {
   getAllClasses: async (): Promise<Class[]> => {
+    const classesMap = getClassesMap();
     return Array.from(classesMap.values());
   },
-  createClass: async (data: { name: string; grade: number; section: string }): Promise<Class> => {
+  createClass: async (data: { name: string }): Promise<Class> => {
+    const classesMap = getClassesMap();
     const id = generateId();
     const cls: Class = {
-      ...data,
+      name: data.name,
       id,
       createdAt: new Date(),
     };
     classesMap.set(id, cls);
+    console.log(`[classes.ts] Created class ${cls.name} (${cls.id}), total classes: ${classesMap.size}`);
     return cls;
   },
 };

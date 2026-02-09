@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Mic, MicOff, Users } from 'lucide-react';
+import { Mic, MicOff, Plus, CheckCircle2, XCircle, Users, BookOpen, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Class {
@@ -98,7 +98,7 @@ export default function ClassroomMonitoring() {
   const currentWeek = getCurrentWeek();
   const queryClient = useQueryClient();
 
-  const { isListening, transcript, error, startListening, stopListening, isSupported } = useSpeechRecognition({
+  const { isListening, transcript, error, startListening, stopListening, clearTranscript, isSupported } = useSpeechRecognition({
     onResult: (text) => {
       const command = parseCommand(text);
       handleVoiceCommand(command, text);
@@ -143,6 +143,7 @@ export default function ClassroomMonitoring() {
 
   const handleVoiceCommand = async (command: { type: string; value?: string }, rawText: string) => {
     if (command.type === 'class' && command.value) {
+      // Find class by name
       const cls = classesData?.classes.find(
         (c) => c.name.toLowerCase() === command.value.toLowerCase()
       );
@@ -156,6 +157,7 @@ export default function ClassroomMonitoring() {
       setActiveTab(command.value);
       toast.success(`Switched to ${command.value} tab`);
     } else if (command.type === 'student' && command.value && selectedClass) {
+      // Find student by name
       const student = studentsData?.students.find(
         (s) => s.name.toLowerCase().includes(command.value!.toLowerCase())
       );
@@ -207,13 +209,19 @@ export default function ClassroomMonitoring() {
   const createClassMutation = useMutation({
     mutationFn: async (data: { name: string }) => {
       console.log('Creating class with data:', data);
-      const res = await apiRequest('POST', '/api/classroom/classes', data);
-      const result = await res.json();
-      console.log('Class created successfully:', result);
-      if (result.class) {
-        setSelectedClass(result.class);
+      try {
+        const res = await apiRequest('POST', '/api/classroom/classes', data);
+        const result = await res.json();
+        console.log('Class created successfully:', result);
+        // Auto-select the newly created class
+        if (result.class) {
+          setSelectedClass(result.class);
+        }
+        return result;
+      } catch (error: any) {
+        console.error('API request failed:', error);
+        throw error;
       }
-      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/classroom/classes'] });
@@ -247,11 +255,15 @@ export default function ClassroomMonitoring() {
 
   const handleCreateClass = () => {
     const trimmedName = newClassName.trim();
+    
     if (!trimmedName) {
       toast.error('Please enter a class name');
       return;
     }
-    createClassMutation.mutate({ name: trimmedName });
+    
+    createClassMutation.mutate({
+      name: trimmedName,
+    });
   };
 
   const handleAddStudent = () => {
@@ -265,19 +277,26 @@ export default function ClassroomMonitoring() {
     });
   };
 
+  // Parse bulk student text (format: "01	name surname" or "01 name surname")
   const parseBulkStudents = (text: string): string[] => {
     const lines = text.split('\n');
     const students: string[] = [];
+    
     for (const line of lines) {
       const trimmed = line.trim();
-      if (!trimmed) continue;
+      if (!trimmed) continue; // Skip empty lines
+      
+      // Match patterns like: "01	name surname", "01 name surname", "1. name surname", "1 name surname"
+      // Or just "name surname" if no number
       const match = trimmed.match(/^\d+[.\s\t]+(.+)$/);
       if (match) {
         students.push(match[1].trim());
       } else {
+        // If no number prefix, use the whole line as name
         students.push(trimmed);
       }
     }
+    
     return students.filter(name => name.length > 0);
   };
 
@@ -298,6 +317,7 @@ export default function ClassroomMonitoring() {
     let errorCount = 0;
 
     try {
+      // Import students one by one
       for (const studentName of students) {
         try {
           const res = await apiRequest('POST', '/api/classroom/students', {
@@ -312,8 +332,10 @@ export default function ClassroomMonitoring() {
         }
       }
 
+      // Refresh students list - wait a bit then invalidate
       await new Promise(resolve => setTimeout(resolve, 500));
       queryClient.invalidateQueries({ queryKey: ['/api/classroom/students', selectedClass.id] });
+      
       setBulkStudentText('');
       
       if (errorCount === 0) {
@@ -331,11 +353,13 @@ export default function ClassroomMonitoring() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Classroom Monitoring</h1>
             <p className="text-gray-600 mt-1">Track student participation and assignments</p>
           </div>
+          
           <div className="flex items-center gap-4">
             {isSupported ? (
               <Button
@@ -374,6 +398,7 @@ export default function ClassroomMonitoring() {
           </div>
         )}
 
+        {/* Create Class Section - Always Visible */}
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Create or Select Class</CardTitle>
@@ -402,6 +427,7 @@ export default function ClassroomMonitoring() {
               </Button>
             </div>
             
+            {/* Class List */}
             {classesData?.classes && classesData.classes.length > 0 && (
               <div className="mt-4 pt-4 border-t">
                 <Label className="mb-2 block">Select Existing Class:</Label>
@@ -422,8 +448,10 @@ export default function ClassroomMonitoring() {
           </CardContent>
         </Card>
 
+        {/* Main Content - Only show when class is selected */}
         {selectedClass ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Add Students */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -432,6 +460,7 @@ export default function ClassroomMonitoring() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Single Student Add */}
                 <div>
                   <Label htmlFor="studentName">Add Single Student</Label>
                   <div className="flex gap-2 mt-2">
@@ -455,6 +484,7 @@ export default function ClassroomMonitoring() {
                   </div>
                 </div>
 
+                {/* Bulk Import */}
                 <div>
                   <Label htmlFor="bulkStudents">Bulk Import Students</Label>
                   <Textarea
@@ -480,6 +510,7 @@ export default function ClassroomMonitoring() {
                   </Button>
                 </div>
 
+                {/* Students List */}
                 <div className="pt-4 border-t">
                   <Label className="mb-2 block">Students ({studentsData?.students.length || 0})</Label>
                   <div className="space-y-1 max-h-64 overflow-y-auto">
@@ -500,6 +531,7 @@ export default function ClassroomMonitoring() {
               </CardContent>
             </Card>
 
+            {/* Right Column - Participation & Assignments */}
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
