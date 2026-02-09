@@ -210,8 +210,18 @@ export default function ClassroomMonitoring() {
 
   const createClassMutation = useMutation({
     mutationFn: async (data: { name: string; grade: number; section: string }) => {
-      const res = await apiRequest('POST', '/api/classroom/classes', data);
-      return res.json();
+      console.log('Creating class with data:', data);
+      try {
+        const res = await apiRequest('POST', '/api/classroom/classes', data);
+        const result = await res.json();
+        console.log('Class created successfully:', result);
+        return result;
+      } catch (error: any) {
+        console.error('API request failed:', error);
+        console.error('Request URL:', '/api/classroom/classes');
+        console.error('Request data:', data);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/classroom/classes'] });
@@ -223,7 +233,12 @@ export default function ClassroomMonitoring() {
     },
     onError: (error: any) => {
       console.error('Error creating class:', error);
-      const errorMessage = error?.message || 'Failed to create class. Please check the console for details.';
+      console.error('Error details:', {
+        message: error?.message,
+        status: error?.status,
+        response: error?.response,
+      });
+      const errorMessage = error?.message || error?.response?.message || 'Failed to create class. Please check the browser console (F12) for details.';
       toast.error(errorMessage);
     },
   });
@@ -242,15 +257,30 @@ export default function ClassroomMonitoring() {
   });
 
   const handleCreateClass = () => {
-    const grade = parseInt(newClassGrade);
-    if (!newClassName || !grade || !newClassSection) {
+    const trimmedName = newClassName.trim();
+    const trimmedGrade = newClassGrade.trim();
+    const trimmedSection = newClassSection.trim();
+    
+    if (!trimmedName || !trimmedGrade || !trimmedSection) {
       toast.error('Please fill all fields');
       return;
     }
+    
+    const grade = parseInt(trimmedGrade);
+    if (isNaN(grade) || grade < 1 || grade > 12) {
+      toast.error('Please enter a valid grade (1-12)');
+      return;
+    }
+    
+    if (trimmedSection.length !== 1 || !/^[A-Z]$/i.test(trimmedSection)) {
+      toast.error('Section must be a single letter (A-Z)');
+      return;
+    }
+    
     createClassMutation.mutate({
-      name: newClassName,
+      name: trimmedName,
       grade,
-      section: newClassSection.toUpperCase(),
+      section: trimmedSection.toUpperCase(),
     });
   };
 
@@ -411,11 +441,31 @@ export default function ClassroomMonitoring() {
                       value={newClassSection}
                       onChange={(e) => setNewClassSection(e.target.value.toUpperCase())}
                       placeholder="A"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          handleCreateClass();
+                        }
+                      }}
                     />
                   </div>
-                  <Button onClick={handleCreateClass} className="w-full">
-                    Create Class
+                  <Button 
+                    onClick={handleCreateClass} 
+                    className="w-full"
+                    disabled={createClassMutation.isPending}
+                    type="button"
+                  >
+                    {createClassMutation.isPending ? 'Creating...' : 'Create Class'}
                   </Button>
+                  {createClassMutation.isError && (
+                    <p className="text-sm text-red-600 mt-2">
+                      {createClassMutation.error?.message || 'Failed to create class. Please try again.'}
+                    </p>
+                  )}
+                  {createClassMutation.isError && (
+                    <p className="text-sm text-red-600">
+                      {createClassMutation.error?.message || 'Failed to create class'}
+                    </p>
+                  )}
                 </div>
               </DialogContent>
             </Dialog>
