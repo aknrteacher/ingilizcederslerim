@@ -532,16 +532,16 @@ function Router() {
       
       {/* Permanent class pages - must be before catch-all */}
       <Route path="/edincik2a">
-        {() => <ClassMonitor code="2a" />}
+        {() => <ClassMonitor code="edincik2a" />}
       </Route>
       <Route path="/edincik3a">
-        {() => <ClassMonitor code="3a" />}
+        {() => <ClassMonitor code="edincik3a" />}
       </Route>
       <Route path="/edincik4a">
-        {() => <ClassMonitor code="4a" />}
+        {() => <ClassMonitor code="edincik4a" />}
       </Route>
       <Route path="/edincik4b">
-        {() => <ClassMonitor code="4b" />}
+        {() => <ClassMonitor code="edincik4b" />}
       </Route>
       
       {/* Monitor page route - must be before catch-all, matches class names */}

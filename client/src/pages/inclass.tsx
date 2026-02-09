@@ -225,9 +225,9 @@ export default function InClass() {
 
   const handleDeleteClass = (classToDelete: Class) => {
     // Prevent deletion of permanent classes
-    const permanentClasses = ['2a', '3a', '4a', '4b'];
-    if (permanentClasses.includes(classToDelete.name.toLowerCase())) {
-      toast.error('Cannot delete permanent classes (2a, 3a, 4a, 4b)');
+    const permanentClasses = ['edincik2A', 'edincik3A', 'edincik4A', 'edincik4B'];
+    if (permanentClasses.includes(classToDelete.name)) {
+      toast.error('Cannot delete permanent classes (edincik2A, edincik3A, edincik4A, edincik4B)');
       return;
     }
     
@@ -730,59 +730,14 @@ export default function InClass() {
                 </Card>
               </div>
 
-              {/* Permanent Classes Section */}
-              <Card className="mb-6 border-2 border-blue-300 bg-blue-50/50">
-                <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
-                  <CardTitle className="text-2xl">⭐ Permanent Classes</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {['2a', '3a', '4a', '4b'].map((className) => {
-                      const permanentClass = classesData?.classes.find(
-                        (c) => c.name.toLowerCase() === className.toLowerCase()
-                      );
-                      if (!permanentClass) {
-                        return (
-                          <div key={className} className="relative">
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              className="h-20 text-lg w-full border-dashed border-2 border-gray-300 opacity-50"
-                              disabled
-                            >
-                              {className} (Creating...)
-                            </Button>
-                          </div>
-                        );
-                      }
-                      return (
-                        <div key={permanentClass.id} className="relative group">
-                          <Button
-                            variant={selectedClass?.id === permanentClass.id ? 'default' : 'outline'}
-                            size="lg"
-                            className="h-20 text-lg w-full bg-white hover:bg-blue-100 border-2 border-blue-300 font-bold"
-                            onClick={() => setSelectedClass(permanentClass)}
-                          >
-                            {permanentClass.name}
-                          </Button>
-                          {/* No delete button for permanent classes */}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Other Classes Section */}
+              {/* Classes Section */}
               <Card>
                 <CardHeader>
                   <CardTitle>Select Class to Manage</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {classesData?.classes
-                      .filter((cls) => !['2a', '3a', '4a', '4b'].includes(cls.name.toLowerCase()))
-                      .map((cls) => (
+                    {classesData?.classes.map((cls) => (
                         <div key={cls.id} className="relative group">
                           <Button
                             variant={selectedClass?.id === cls.id ? 'default' : 'outline'}
@@ -805,8 +760,7 @@ export default function InClass() {
                           </Button>
                         </div>
                       ))}
-                    {(!classesData?.classes || 
-                      classesData.classes.filter((cls) => !['2a', '3a', '4a', '4b'].includes(cls.name.toLowerCase())).length === 0) && (
+                    {(!classesData?.classes || classesData.classes.length === 0) && (
                       <div className="col-span-full text-center text-gray-500 py-8">
                         No additional classes yet. Create one above.
                       </div>

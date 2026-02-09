@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const adminPages = [
     { name: 'Word Map', path: '/admin/word-map' },
     { name: 'Workflow', path: '/admin/workflow' },
+    { name: 'In Class', path: '/admin/inclass' },
   ];
 
   const placeholderButtons = [

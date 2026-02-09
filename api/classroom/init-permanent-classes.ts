@@ -1,4 +1,4 @@
-// API endpoint to initialize permanent classes: 2a, 3a, 4a, 4b
+// API endpoint to initialize permanent classes: edincik2A, edincik3A, edincik4A, edincik4B
 // Each class will have one student named "test"
 /// <reference types="node" />
 
@@ -64,7 +64,7 @@ export default async function handler(req: any, res: any) {
     const classesMap = getClassesMap();
     const studentsMap = getStudentsMap();
 
-    const permanentClasses = ['2a', '3a', '4a', '4b'];
+    const permanentClasses = ['edincik2A', 'edincik3A', 'edincik4A', 'edincik4B'];
     const createdClasses: Class[] = [];
     const createdStudents: Student[] = [];
 

@@ -139,5 +139,15 @@ export async function registerRoutes(
     }
   });
 
+  // Initialize permanent classes route
+  app.post("/api/classroom/init-permanent-classes", async (req, res) => {
+    try {
+      const { handler } = await import("../api/classroom/init-permanent-classes");
+      await handler(req, res);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Internal server error" });
+    }
+  });
+
   return httpServer;
 }
