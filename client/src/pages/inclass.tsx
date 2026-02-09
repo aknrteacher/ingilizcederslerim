@@ -224,6 +224,13 @@ export default function InClass() {
   });
 
   const handleDeleteClass = (classToDelete: Class) => {
+    // Prevent deletion of permanent classes
+    const permanentClasses = ['2a', '3a', '4a', '4b'];
+    if (permanentClasses.includes(classToDelete.name.toLowerCase())) {
+      toast.error('Cannot delete permanent classes (2a, 3a, 4a, 4b)');
+      return;
+    }
+    
     if (window.confirm(`Are you sure you want to delete class "${classToDelete.name}"?\n\nThis will also delete all students in this class. This action cannot be undone.`)) {
       deleteClassMutation.mutate(classToDelete.id);
     }
@@ -723,38 +730,85 @@ export default function InClass() {
                 </Card>
               </div>
 
+              {/* Permanent Classes Section */}
+              <Card className="mb-6 border-2 border-blue-300 bg-blue-50/50">
+                <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+                  <CardTitle className="text-2xl">⭐ Permanent Classes</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {['2a', '3a', '4a', '4b'].map((className) => {
+                      const permanentClass = classesData?.classes.find(
+                        (c) => c.name.toLowerCase() === className.toLowerCase()
+                      );
+                      if (!permanentClass) {
+                        return (
+                          <div key={className} className="relative">
+                            <Button
+                              variant="outline"
+                              size="lg"
+                              className="h-20 text-lg w-full border-dashed border-2 border-gray-300 opacity-50"
+                              disabled
+                            >
+                              {className} (Creating...)
+                            </Button>
+                          </div>
+                        );
+                      }
+                      return (
+                        <div key={permanentClass.id} className="relative group">
+                          <Button
+                            variant={selectedClass?.id === permanentClass.id ? 'default' : 'outline'}
+                            size="lg"
+                            className="h-20 text-lg w-full bg-white hover:bg-blue-100 border-2 border-blue-300 font-bold"
+                            onClick={() => setSelectedClass(permanentClass)}
+                          >
+                            {permanentClass.name}
+                          </Button>
+                          {/* No delete button for permanent classes */}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Other Classes Section */}
               <Card>
                 <CardHeader>
                   <CardTitle>Select Class to Manage</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    {classesData?.classes.map((cls) => (
-                      <div key={cls.id} className="relative group">
-                        <Button
-                          variant={selectedClass?.id === cls.id ? 'default' : 'outline'}
-                          size="lg"
-                          className="h-20 text-lg w-full"
-                          onClick={() => setSelectedClass(cls)}
-                        >
-                          {cls.name}
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-700 hover:bg-red-50"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteClass(cls);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    ))}
-                    {(!classesData?.classes || classesData.classes.length === 0) && (
+                    {classesData?.classes
+                      .filter((cls) => !['2a', '3a', '4a', '4b'].includes(cls.name.toLowerCase()))
+                      .map((cls) => (
+                        <div key={cls.id} className="relative group">
+                          <Button
+                            variant={selectedClass?.id === cls.id ? 'default' : 'outline'}
+                            size="lg"
+                            className="h-20 text-lg w-full"
+                            onClick={() => setSelectedClass(cls)}
+                          >
+                            {cls.name}
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity text-red-600 hover:text-red-700 hover:bg-red-50"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteClass(cls);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ))}
+                    {(!classesData?.classes || 
+                      classesData.classes.filter((cls) => !['2a', '3a', '4a', '4b'].includes(cls.name.toLowerCase())).length === 0) && (
                       <div className="col-span-full text-center text-gray-500 py-8">
-                        No classes yet. Create one above.
+                        No additional classes yet. Create one above.
                       </div>
                     )}
                   </div>
