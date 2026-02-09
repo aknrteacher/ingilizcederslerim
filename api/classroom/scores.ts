@@ -37,25 +37,53 @@ export default async function handler(req: any, res: any) {
     const method = req.method || 'GET';
 
     if (method === 'POST') {
+      console.log('[scores.ts] POST request received');
+      console.log('[scores.ts] req.body type:', typeof req.body);
+      console.log('[scores.ts] req.body:', JSON.stringify(req.body, null, 2));
+      
       let body = req.body;
       if (typeof body === 'string') {
         try {
           body = JSON.parse(body);
+          console.log('[scores.ts] Parsed string body');
         } catch (e) {
+          console.error('[scores.ts] JSON parse error:', e);
           return res.status(400).json({ message: 'Invalid JSON' });
         }
       }
 
-      const data = saveScoresSchema.parse(body);
-      const scoresMap = getScoresMap();
-      
-      scoresMap.set(data.classId, {
-        classId: data.classId,
-        scores: data.scores,
-        updatedAt: new Date(),
-      });
+      if (!body || typeof body !== 'object') {
+        console.error('[scores.ts] Invalid body:', body);
+        return res.status(400).json({ message: 'Request body is required and must be an object' });
+      }
 
-      return res.status(200).json({ success: true });
+      try {
+        console.log('[scores.ts] Validating with schema...');
+        const data = saveScoresSchema.parse(body);
+        console.log('[scores.ts] Validation passed, classId:', data.classId);
+        console.log('[scores.ts] Scores keys:', Object.keys(data.scores));
+        
+        const scoresMap = getScoresMap();
+        
+        scoresMap.set(data.classId, {
+          classId: data.classId,
+          scores: data.scores,
+          updatedAt: new Date(),
+        });
+
+        console.log('[scores.ts] Scores saved successfully for class:', data.classId);
+        return res.status(200).json({ success: true });
+      } catch (err: any) {
+        if (err instanceof z.ZodError) {
+          console.error('[scores.ts] Zod validation error:', err.errors);
+          return res.status(400).json({ 
+            message: err.errors[0]?.message || 'Validation error',
+            errors: err.errors 
+          });
+        }
+        console.error('[scores.ts] Unexpected error:', err);
+        throw err;
+      }
     }
 
     if (method === 'GET') {

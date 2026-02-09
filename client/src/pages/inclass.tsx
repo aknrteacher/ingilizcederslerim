@@ -541,6 +541,11 @@ export default function InClass() {
     }
 
     try {
+      console.log('[handleSaveScores] Starting save...');
+      console.log('[handleSaveScores] Selected class:', selectedClass.id);
+      console.log('[handleSaveScores] Selected category:', selectedCategory);
+      console.log('[handleSaveScores] Students count:', studentsData.students.length);
+
       // First, update allCategoryScores with current studentScores for selected category
       const updatedAllScores = new Map(allCategoryScores);
       studentsData.students.forEach(student => {
@@ -568,25 +573,38 @@ export default function InClass() {
         });
       });
 
+      console.log('[handleSaveScores] Prepared scores data:', {
+        classId: selectedClass.id,
+        studentCount: Object.keys(scoresData).length,
+        firstStudentScores: scoresData[studentsData.students[0]?.id]
+      });
+
+      const requestBody = {
+        classId: selectedClass.id,
+        scores: scoresData,
+      };
+
+      console.log('[handleSaveScores] Sending request...');
       const res = await fetch('/api/classroom/scores', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          classId: selectedClass.id,
-          scores: scoresData,
-        }),
+        body: JSON.stringify(requestBody),
       });
       
+      console.log('[handleSaveScores] Response status:', res.status);
       const result = await res.json();
+      console.log('[handleSaveScores] Response:', result);
+      
       if (res.ok) {
         toast.success('Scores saved!');
       } else {
-        throw new Error(result.message || 'Failed to save');
+        throw new Error(result.message || `Failed to save: ${res.status}`);
       }
     } catch (error: any) {
-      console.error('Error saving scores:', error);
+      console.error('[handleSaveScores] Error:', error);
+      console.error('[handleSaveScores] Error stack:', error?.stack);
       toast.error(error?.message || 'Failed to save scores');
     }
   };
