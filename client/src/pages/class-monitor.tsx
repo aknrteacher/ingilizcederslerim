@@ -27,9 +27,24 @@ interface ClassMonitorProps {
 }
 
 export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {}) {
-  // Get code from location URL - most reliable method
+  // Get code from location URL - most reliable method for production
   const [location] = useLocation();
-  const codeFromUrl = location.split('/').filter(Boolean).pop(); // Get last non-empty segment
+  
+  // Multiple ways to extract code - be very defensive
+  let codeFromUrl: string | undefined;
+  const pathParts = location.split('/').filter(Boolean);
+  codeFromUrl = pathParts[pathParts.length - 1]; // Last segment
+  
+  // Also try window.location as fallback (works in production)
+  if (!codeFromUrl || !/^\d{4}$/.test(codeFromUrl)) {
+    try {
+      const windowPath = window.location.pathname.split('/').filter(Boolean);
+      codeFromUrl = windowPath[windowPath.length - 1];
+    } catch (e) {
+      // Ignore
+    }
+  }
+  
   const code = codeProp || codeFromUrl;
   
   console.log('[ClassMonitor] Component mounted!', {
@@ -37,6 +52,7 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
     codeProp,
     location,
     codeFromUrl,
+    windowPath: typeof window !== 'undefined' ? window.location.pathname : 'N/A',
     codeValid: code && /^\d{4}$/.test(code || '')
   });
 
