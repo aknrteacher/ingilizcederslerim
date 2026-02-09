@@ -14,6 +14,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
   const [isSupported, setIsSupported] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const shouldListenRef = useRef(false);
+  const isRestartingRef = useRef(false);
 
   useEffect(() => {
     // Check if browser supports Web Speech API
@@ -31,8 +32,6 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.continuous = continuous;
     recognition.interimResults = true; // Enable interim results to see what's being recognized
     recognition.lang = lang;
-
-    const isRestartingRef = useRef(false);
 
     recognition.onstart = () => {
       setIsListening(true);
