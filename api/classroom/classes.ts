@@ -5,33 +5,75 @@ import { insertClassSchema } from '../../shared/schema';
 import { z } from 'zod';
 
 export default async function handler(req: any, res: any) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
   try {
-    if (req.method === 'GET') {
-      const classes = await storage.getAllClasses();
-      return res.status(200).json({ classes });
+    // Enable CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
     }
 
-    if (req.method === 'POST') {
-      const data = insertClassSchema.parse(req.body);
-      const cls = await storage.createClass(data);
-      return res.status(200).json({ class: cls });
+    const method = req.method || 'GET';
+    console.log(`[${method}] /api/classroom/classes`);
+
+    if (method === 'GET') {
+      try {
+        const classes = await storage.getAllClasses();
+        return res.status(200).json({ classes });
+      } catch (err: any) {
+        console.error('Error getting classes:', err);
+        throw err;
+      }
     }
 
-    return res.status(405).json({ message: 'Method not allowed' });
+    if (method === 'POST') {
+      console.log('POST request body:', JSON.stringify(req.body, null, 2));
+      
+      // Handle case where body might be a string
+      let body = req.body;
+      if (typeof body === 'string') {
+        try {
+          body = JSON.parse(body);
+        } catch (e) {
+          return res.status(400).json({ message: 'Invalid JSON in request body' });
+        }
+      }
+      
+      if (!body || typeof body !== 'object') {
+        return res.status(400).json({ message: 'Request body is required and must be an object' });
+      }
+
+      try {
+        const data = insertClassSchema.parse(body);
+        console.log('Parsed and validated data:', data);
+        
+        const cls = await storage.createClass(data);
+        console.log('Class created successfully:', cls);
+        
+        return res.status(200).json({ class: cls });
+      } catch (err: any) {
+        if (err instanceof z.ZodError) {
+          console.error('Zod validation error:', err.errors);
+          return res.status(400).json({ 
+            message: err.errors[0]?.message || 'Validation error',
+            errors: err.errors 
+          });
+        }
+        throw err;
+      }
+    }
+
+    return res.status(405).json({ message: `Method ${method} not allowed` });
   } catch (error: any) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: error.errors[0].message });
-    }
-    console.error('Error in classroom/classes:', error);
-    return res.status(500).json({ message: error.message || 'Internal server error' });
+    console.error('Unhandled error in classroom/classes:', error);
+    console.error('Error type:', error?.constructor?.name);
+    console.error('Error message:', error?.message);
+    console.error('Error stack:', error?.stack);
+    
+    return res.status(500).json({ 
+      message: error?.message || 'Internal server error'
+    });
   }
 }
