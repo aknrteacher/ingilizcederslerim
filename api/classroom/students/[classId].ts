@@ -1,7 +1,12 @@
 // Vercel serverless function for classroom students API
-import { storage } from '../../../server/storage';
-import { insertStudentSchema } from '../../../shared/schema';
+import { storage } from '../_storage';
 import { z } from 'zod';
+
+// Define schema inline to avoid import issues
+const insertStudentSchema = z.object({
+  classId: z.string().min(1),
+  name: z.string().min(1),
+});
 
 export default async function handler(req: any, res: any) {
   // Enable CORS

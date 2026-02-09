@@ -1,8 +1,14 @@
 // Vercel serverless function for classroom classes API
 // This works alongside the Express server routes for production deployment
-import { storage } from '../../server/storage';
-import { insertClassSchema } from '../../shared/schema';
+import { storage } from './_storage';
 import { z } from 'zod';
+
+// Define schema inline to avoid import issues
+const insertClassSchema = z.object({
+  name: z.string().min(1),
+  grade: z.number().int().min(1).max(12),
+  section: z.string().min(1).max(10),
+});
 
 export default async function handler(req: any, res: any) {
   try {
