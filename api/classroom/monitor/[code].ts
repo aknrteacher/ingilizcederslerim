@@ -63,13 +63,25 @@ export default async function handler(req: any, res: any) {
       return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const code = req.query.code;
+    console.log('[monitor] Request query:', req.query);
+    console.log('[monitor] Request URL:', req.url);
+    
+    // Try different ways to get the code (Vercel might pass it differently)
+    const code = req.query.code || req.query?.code || (req.url ? req.url.split('/').pop()?.split('?')[0] : null);
+    console.log('[monitor] Extracted code:', code);
+    
     if (!code || !/^\d{4}$/.test(code)) {
+      console.error('[monitor] Invalid code:', code);
       return res.status(400).json({ message: 'Invalid monitor code' });
     }
 
     const classesMap = getClassesMap();
-    const classObj = Array.from(classesMap.values()).find(c => c.monitorCode === code);
+    console.log('[monitor] Total classes:', classesMap.size);
+    const allClasses = Array.from(classesMap.values());
+    console.log('[monitor] All monitor codes:', allClasses.map(c => c.monitorCode));
+    
+    const classObj = allClasses.find(c => c.monitorCode === code);
+    console.log('[monitor] Found class:', classObj ? classObj.name : 'NOT FOUND');
     
     if (!classObj) {
       return res.status(404).json({ message: 'Class not found' });
@@ -77,11 +89,13 @@ export default async function handler(req: any, res: any) {
 
     const studentsMap = getStudentsMap();
     const students = Array.from(studentsMap.values()).filter(s => s.classId === classObj.id);
+    console.log('[monitor] Found students:', students.length);
 
     const scoresMap = getScoresMap();
     const scores = scoresMap.get(classObj.id);
+    console.log('[monitor] Scores found:', !!scores);
 
-    return res.status(200).json({
+    const response = {
       class: {
         id: classObj.id,
         name: classObj.name,
@@ -90,12 +104,20 @@ export default async function handler(req: any, res: any) {
       students: students.map(s => ({
         id: s.id,
         name: s.name,
-      })),
+      })) || [],
       scores: scores?.scores || {},
       updatedAt: scores?.updatedAt || null,
+    };
+    
+    console.log('[monitor] Returning response:', {
+      className: response.class.name,
+      studentCount: response.students.length,
+      studentNames: response.students.map(s => s.name),
+      hasScores: Object.keys(response.scores).length > 0
     });
+    return res.status(200).json(response);
   } catch (error: any) {
-    console.error('Error in monitor handler:', error);
+    console.error('[monitor] Error in monitor handler:', error);
     return res.status(500).json({ message: error?.message || 'Internal server error' });
   }
 }
