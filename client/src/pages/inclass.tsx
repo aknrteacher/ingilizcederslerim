@@ -45,7 +45,7 @@ const CATEGORIES: { value: Category; label: string; maxSquares: number }[] = [
 ];
 
 export default function InClass() {
-  const [mode, setMode] = useState<'admin' | 'mobile'>('admin');
+  const [mode, setMode] = useState<'admin' | 'mobile' | null>(null);
   const [selectedClass, setSelectedClass] = useState<Class | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
@@ -62,9 +62,6 @@ export default function InClass() {
   const [newStudentName, setNewStudentName] = useState('');
   const [bulkStudentText, setBulkStudentText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
-  
-  // Store all category scores separately (studentId -> category -> scores[])
-  const [allCategoryScores, setAllCategoryScores] = useState<Map<string, Map<Category, number[]>>>(new Map());
 
   const queryClient = useQueryClient();
 
@@ -965,22 +962,28 @@ export default function InClass() {
       
       const handleScroll = () => {
         const viewportCenter = window.innerHeight / 2;
-        let closestStudent: { id: string; distance: number } | null = null;
+        interface ClosestStudent {
+          id: string;
+          distance: number;
+        }
+        let closestStudent: ClosestStudent | null = null;
 
-        studentsData.students.forEach(student => {
+        for (const student of studentsData.students) {
           const element = studentRefs.current.get(student.id);
           if (element) {
             const rect = element.getBoundingClientRect();
             const elementCenter = rect.top + rect.height / 2;
             const distance = Math.abs(viewportCenter - elementCenter);
             
-            if (!closestStudent || distance < closestStudent.distance) {
+            if (closestStudent === null) {
+              closestStudent = { id: student.id, distance };
+            } else if (distance < closestStudent.distance) {
               closestStudent = { id: student.id, distance };
             }
           }
-        });
+        }
 
-        if (closestStudent && closestStudent.distance < 100) {
+        if (closestStudent !== null && closestStudent.distance < 100) {
           setCenteredStudentId(closestStudent.id);
         } else {
           setCenteredStudentId(null);
