@@ -244,6 +244,7 @@ import AdminDashboard from "@/pages/admin/dashboard";
 import WordMapPage from "@/pages/admin/word-map";
 import WorkflowPage from "@/pages/admin/workflow";
 import ClassroomMonitoring from "@/pages/classroom-monitoring";
+import InClass from "@/pages/inclass";
 
 function Router() {
   return (
@@ -514,6 +515,13 @@ function Router() {
         {() => (
           <AdminGate>
             <ClassroomMonitoring />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/inclass">
+        {() => (
+          <AdminGate>
+            <InClass />
           </AdminGate>
         )}
       </Route>
