@@ -12,6 +12,8 @@ import "@/styles/primary-school-game-footer.css";
 
 // Vocabulary from 3.1 (Unit 1: Hello!)
 const vocabulary = [
+  { word: "I", clue: "Ben", file: "I.png" },
+  { word: "YOU", clue: "Sen/siz", file: "you.png" },
   { word: "HELLO", clue: "Merhaba", file: "hello.png" },
   { word: "HI", clue: "Selam", file: "hi.png" },
   { word: "GOODMORNING", clue: "Günaydın", file: "good morning.png" },

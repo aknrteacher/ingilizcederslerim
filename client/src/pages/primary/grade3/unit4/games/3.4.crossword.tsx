@@ -12,6 +12,7 @@ import "@/styles/primary-school-game-footer.css";
 
 // Vocabulary from 3.4 (Unit 4: Feelings)
 const vocabulary = [
+  { word: "YOU", clue: "Sen/siz", file: "you.png" },
   { word: "GOOD", clue: "İyi", file: "good.png" },
   { word: "BAD", clue: "Kötü", file: "bad.png" },
   { word: "HAPPY", clue: "Mutlu", file: "happy.png" },

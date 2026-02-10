@@ -16,7 +16,7 @@ interface VocabWord {
   file: string;
 }
 
-// Unit 3 vocabulary - uppercase single words for spelling
+// Unit 3 vocabulary - uppercase single words for spelling (multi-word phrases converted to single words)
 const vocabulary: VocabWord[] = [
   { word: "PEOPLE", turkish: "İnsanlar", file: "people.png" },
   { word: "FRIEND", turkish: "Arkadaş", file: "friend.png" },

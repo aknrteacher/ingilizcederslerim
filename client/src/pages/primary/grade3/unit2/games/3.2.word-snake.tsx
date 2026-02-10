@@ -10,6 +10,9 @@ import "@/styles/primary-school-game-footer.css";
 
 // Unit 2 vocabulary - lowercase for snake game
 const allVocabulary = [
+  { word: "he", file: "he.png", turkish: "o (erkek)" },
+  { word: "she", file: "she.png", turkish: "o (kadın)" },
+  { word: "we", file: "we.png", turkish: "biz" },
   { word: "family", file: "family.png", turkish: "aile" },
   { word: "member", file: "member.png", turkish: "üye" },
   { word: "father", file: "father.png", turkish: "baba" },

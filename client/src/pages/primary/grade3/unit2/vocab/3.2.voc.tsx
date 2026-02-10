@@ -45,6 +45,9 @@ export default function VocabularyCards3_2() {
 
   // Vocabulary data for Grade 3 Unit 2
   const imageFiles = [
+    { word: "he", file: "he.png", turkish: "o (erkek)" },
+    { word: "she", file: "she.png", turkish: "o (kadın)" },
+    { word: "we", file: "we.png", turkish: "biz" },
     { word: "family", file: "family.png", turkish: "aile" },
     { word: "member", file: "member.png", turkish: "üye" },
     { word: "father", file: "father.png", turkish: "baba" },

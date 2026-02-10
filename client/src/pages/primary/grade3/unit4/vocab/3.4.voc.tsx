@@ -45,6 +45,7 @@ export default function VocabularyCards3_4() {
 
   // Vocabulary data for Grade 3 Unit 4: Feelings
   const imageFiles = [
+    { word: "you", file: "you.png", turkish: "sen/siz" },
     { word: "good", file: "good.png", turkish: "iyi" },
     { word: "bad", file: "bad.png", turkish: "kötü" },
     { word: "happy", file: "happy.png", turkish: "mutlu" },

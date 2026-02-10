@@ -12,6 +12,9 @@ import "@/styles/primary-school-game-footer.css";
 
 // Vocabulary from 3.2 (Unit 2)
 const vocabulary = [
+  { word: "HE", clue: "O (erkek)", file: "he.png" },
+  { word: "SHE", clue: "O (kadın)", file: "she.png" },
+  { word: "WE", clue: "Biz", file: "we.png" },
   { word: "FAMILY", clue: "Aile", file: "family.png" },
   { word: "MEMBER", clue: "Üye", file: "member.png" },
   { word: "FATHER", clue: "Baba", file: "father.png" },

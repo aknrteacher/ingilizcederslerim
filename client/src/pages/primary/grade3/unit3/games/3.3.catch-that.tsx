@@ -45,7 +45,7 @@ const vocabulary = [
   { word: "KITE", turkish: "Uçurtma", file: "kite.png" },
 ];
 
-// Word style colors - diverse vibrant colors different from each other and from game's orange theme
+// Word style colors - diverse vibrant colors different from each other and from game's pink theme
 const wordStyles = [
   { bg: "bg-[#FF4444]", text: "text-white", border: "border-[#DC2626]" },      // Red
   { bg: "bg-[#4444FF]", text: "text-white", border: "border-[#2626DC]" },      // Blue
@@ -81,7 +81,7 @@ interface FallingPrize {
   caught: boolean;
 }
 
-export default function CatchThatGame() {
+export default function CatchThatGame3_5() {
   const [, setLocation] = useLocation();
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(10);
@@ -215,7 +215,7 @@ export default function CatchThatGame() {
         particleCount: 200,
         spread: 100,
         origin: { y: 0.6 },
-        colors: ["#FF8844", "#FF9955", "#FFAA66", "#FF7733", "#FFBB77"]
+        colors: ["#FF66AA", "#FF77BB", "#FF88CC", "#FF5599", "#FF99DD"]
       });
       return;
     }
@@ -288,7 +288,7 @@ export default function CatchThatGame() {
         particleCount: 30,
         spread: 50,
         origin: { x: word.x / 100, y: 0.9 },
-        colors: ["#FF8844", "#FF9955", "#FFAA66"]
+        colors: ["#FF66AA", "#FF77BB", "#FF88CC"]
       });
 
       // Show picture card with timer instead of immediately moving to next word
@@ -343,7 +343,7 @@ export default function CatchThatGame() {
           particleCount: 20,
           spread: 40,
           origin: { x: prize.x / 100, y: 0.9 },
-          colors: ["#FF8844", "#FF9955", "#FFAA66"]
+          colors: ["#FF66AA", "#FF77BB", "#FF88CC"]
         });
         break;
       case 'bomb':
@@ -681,9 +681,9 @@ export default function CatchThatGame() {
   }, []);
 
   const shareGame = () => {
-    const text = `I scored ${score} points in Catch That! Can you beat my score? 🎯`;
+    const text = `I scored ${score} points in Catch That Unit 3! Can you beat my score? 🎯`;
     if (navigator.share) {
-      navigator.share({ title: "Catch That - English Learning Game", text, url: window.location.href });
+      navigator.share({ title: "Catch That - Unit 3 English Learning Game", text, url: window.location.href });
     } else {
       navigator.clipboard.writeText(text + " " + window.location.href);
     }
@@ -697,9 +697,9 @@ export default function CatchThatGame() {
         id="catch-that-game"
         data-testid="catch-that-game"
       >
-        {/* Background - Orange theme for primary school */}
-        <div className="absolute inset-0 bg-[#FF8844] z-0">
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[#FF9955] opacity-50" />
+        {/* Background - Pink theme for primary school */}
+        <div className="absolute inset-0 bg-[#FF66AA] z-0">
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[#FF77BB] opacity-50" />
           <div className="absolute top-10 left-10 w-20 h-10 bg-white rounded-full opacity-80 cloud-float" />
           <div className="absolute top-20 right-20 w-32 h-16 bg-white rounded-full opacity-70 cloud-float-delayed" />
           <div className="absolute top-5 left-1/3 w-24 h-12 bg-white rounded-full opacity-75 cloud-float" />
@@ -723,9 +723,9 @@ export default function CatchThatGame() {
               ))}
             </div>
 
-            <div className="bg-orange-100 px-2 sm:px-3 py-1 rounded-lg flex items-center gap-1 sm:gap-2">
+            <div className="bg-pink-100 px-2 sm:px-3 py-1 rounded-lg flex items-center gap-1 sm:gap-2">
               <Star className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 fill-yellow-500" />
-              <span className="font-bold text-orange-700 text-sm sm:text-base">{score}</span>
+              <span className="font-bold text-pink-700 text-sm sm:text-base">{score}</span>
             </div>
 
             <div className="flex items-center gap-2 bg-green-100 px-2 sm:px-3 py-1 rounded-lg">
@@ -743,7 +743,7 @@ export default function CatchThatGame() {
                 exit={{ scale: 0, opacity: 0 }}
                 className="absolute top-1/4 left-1/2 -translate-x-1/2 z-50"
               >
-                <div className="bg-[#FF8844] text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg">
+                <div className="bg-[#FF66AA] text-white px-6 py-3 rounded-full font-bold text-2xl shadow-lg">
                   🔥 {combo}x Combo!
                 </div>
               </motion.div>
@@ -759,7 +759,7 @@ export default function CatchThatGame() {
                 exit={{ scale: 0.8, opacity: 0 }}
                 className="absolute top-20 left-1/2 -translate-x-1/2 z-50"
               >
-                <div className="bg-[#FF8844] text-white px-6 py-4 rounded-2xl font-bold text-xl sm:text-2xl shadow-2xl flex items-center gap-3">
+                <div className="bg-[#FF66AA] text-white px-6 py-4 rounded-2xl font-bold text-xl sm:text-2xl shadow-2xl flex items-center gap-3">
                   <span className="text-3xl">⏱️</span>
                   <span>Next word in: {pictureCardTimer}s</span>
                 </div>
@@ -768,15 +768,15 @@ export default function CatchThatGame() {
           </AnimatePresence>
 
           {/* Main Game Area */}
-          <div className={'flex-1 flex flex-col lg:flex-row items-stretch gap-4 lg:gap-8 bg-[#FFEEDD] rounded-xl p-3 sm:p-6 ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]')}>
+          <div className={'flex-1 flex flex-col lg:flex-row items-stretch gap-4 lg:gap-8 bg-[#FFEEEE] rounded-xl p-3 sm:p-6 ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]')}>
             {/* Target Word Card */}
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className={'bg-white rounded-3xl shadow-xl p-3 sm:p-4 ' + (isFullscreen ? 'p-6 ' : '') + 'border-4 border-[#FF8844] flex-shrink-0 self-center w-full lg:w-auto ' + (showPictureCard ? 'ring-4 ring-[#FF8844] ring-opacity-75' : '')}
+              className={'bg-white rounded-3xl shadow-xl p-3 sm:p-4 ' + (isFullscreen ? 'p-6 ' : '') + 'border-4 border-[#FF66AA] flex-shrink-0 self-center w-full lg:w-auto ' + (showPictureCard ? 'ring-4 ring-[#FF66AA] ring-opacity-75' : '')}
             >
-              <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-64 h-64 ' : '') + 'rounded-2xl bg-orange-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
+              <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-64 h-64 ' : '') + 'rounded-2xl bg-pink-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
                 <img 
                   src={'/images/primary/3.3/' + currentWord.file} 
                   alt={currentWord.word}
@@ -785,7 +785,7 @@ export default function CatchThatGame() {
               </div>
               {showPictureCard && (
                 <div className="text-center mb-2">
-                  <p className="text-sm sm:text-base font-bold text-[#FF8844] animate-pulse">
+                  <p className="text-sm sm:text-base font-bold text-[#FF66AA] animate-pulse">
                     Catch the correct word!
                   </p>
                 </div>
@@ -798,7 +798,7 @@ export default function CatchThatGame() {
                     variant="outline"
                     size="sm"
                     onClick={revealTurkish}
-                    className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
+                    className="h-8 px-3 text-pink-500 border-pink-300 hover:bg-pink-50"
                     title="Show Turkish meaning (-5 points)"
                     disabled={showPictureCard}
                   >
@@ -819,13 +819,13 @@ export default function CatchThatGame() {
             </motion.div>
 
             {/* Game Play Area */}
-            <div className={'flex-1 relative overflow-hidden ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]') + ' rounded-xl bg-[#FFEEDD] border-4 border-[#FF8844]'}>
+            <div className={'flex-1 relative overflow-hidden ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]') + ' rounded-xl bg-[#FFEEEE] border-4 border-[#FF66AA]'}>
               {!gameStarted && !gameOver && !gameWon && (
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   <Button
                     onClick={startGame}
                     size="lg"
-                    className="bg-[#FF8844] hover:bg-[#FF7733] text-white text-xl px-8 py-6 rounded-2xl shadow-xl"
+                    className="bg-[#FF66AA] hover:bg-[#FF5599] text-white text-xl px-8 py-6 rounded-2xl shadow-xl"
                   >
                     🎯 Start Game!
                   </Button>
@@ -932,8 +932,8 @@ export default function CatchThatGame() {
                   className={'absolute ' + (isFullscreen ? 'bottom-8' : 'bottom-4') + ' z-10 transition-all duration-100 ease-linear'}
                   style={{ left: basketPosition + '%', transform: 'translateX(-50%)' }}
                 >
-                  {/* Simple horizontal rectangle - orange theme - thinner for better playability */}
-                  <div className={(isFullscreen ? 'w-64 h-10' : 'w-48 h-8') + ' bg-[#FF8844] rounded-lg border-4 border-[#FF7733] shadow-xl'}></div>
+                  {/* Simple horizontal rectangle - pink theme - thinner for better playability */}
+                  <div className={(isFullscreen ? 'w-64 h-10' : 'w-48 h-8') + ' bg-[#FF66AA] rounded-lg border-4 border-[#FF5599] shadow-xl'}></div>
                 </div>
               )}
             </div>
@@ -988,19 +988,19 @@ export default function CatchThatGame() {
                     : "Don't give up! Try again!"}
                 </p>
 
-                <div className="bg-orange-50 rounded-xl p-4 mb-6">
+                <div className="bg-pink-50 rounded-xl p-4 mb-6">
                   <div className="flex items-center justify-center gap-2 mb-3">
                     <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
-                    <span className="text-2xl font-bold text-orange-700">{score} points</span>
+                    <span className="text-2xl font-bold text-pink-700">{score} points</span>
                   </div>
                   <div className="text-sm space-y-1 border-t border-gray-200 pt-3">
                     <div className="flex justify-between">
                       <span className="text-gray-600">✓ Correct catches:</span>
-                      <span className="font-semibold text-green-600">{wordsCompleted} × {correctPoints} = +{wordsCompleted * correctPoints}</span>
+                      <span className="font-semibold text-pink-600">{wordsCompleted} × {correctPoints} = +{wordsCompleted * correctPoints}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">🎯 No hint bonus:</span>
-                      <span className="font-semibold text-orange-600">{wordsCompleted - hintsUsed} × {noHintBonus} = +{Math.max(0, (wordsCompleted - hintsUsed)) * noHintBonus}</span>
+                      <span className="font-semibold text-pink-600">{wordsCompleted - hintsUsed} × {noHintBonus} = +{Math.max(0, (wordsCompleted - hintsUsed)) * noHintBonus}</span>
                     </div>
                     {hintsUsed > 0 && (
                       <div className="flex justify-between">
@@ -1015,7 +1015,7 @@ export default function CatchThatGame() {
                   <Button
                     onClick={resetGame}
                     size="lg"
-                    className="w-full bg-[#FF8844] hover:bg-[#FF7733] text-white rounded-xl"
+                    className="w-full bg-[#FF66AA] hover:bg-[#FF5599] text-white rounded-xl"
                   >
                     Play Again
                   </Button>

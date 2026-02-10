@@ -9,6 +9,7 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const allVocabulary = [
+  { word: "you", file: "you.png", turkish: "sen/siz" },
   { word: "good", file: "good.png", turkish: "iyi" },
   { word: "bad", file: "bad.png", turkish: "kötü" },
   { word: "happy", file: "happy.png", turkish: "mutlu" },

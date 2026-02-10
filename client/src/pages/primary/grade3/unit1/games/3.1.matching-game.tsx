@@ -25,6 +25,8 @@ const getRandomHatchling = () => {
 export default function MatchingGame() {
   const [, setLocation] = useLocation();
   const allVocabulary = [
+    { word: "I", file: "I.png", turkish: "ben" },
+    { word: "you", file: "you.png", turkish: "sen/siz" },
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "hi", file: "hi.png", turkish: "selam" },
     { word: "good morning", file: "good morning.png", turkish: "günaydın" },

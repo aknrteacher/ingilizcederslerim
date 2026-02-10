@@ -18,6 +18,9 @@ interface VocabWord {
 
 // Unit 2 vocabulary - uppercase single words for spelling
 const vocabulary: VocabWord[] = [
+  { word: "HE", turkish: "O (erkek)", file: "he.png" },
+  { word: "SHE", turkish: "O (kadın)", file: "she.png" },
+  { word: "WE", turkish: "Biz", file: "we.png" },
   { word: "FAMILY", turkish: "Aile", file: "family.png" },
   { word: "MEMBER", turkish: "Üye", file: "member.png" },
   { word: "FATHER", turkish: "Baba", file: "father.png" },

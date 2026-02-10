@@ -1,0 +1,75 @@
+/* PRIMARY SCHOOL - LIME THEME */
+.catch-that-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.catch-that-container.fullscreen-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+/* Fullscreen mode enhancements */
+.catch-that-container.fullscreen-mode .falling-word {
+  font-size: 1.5rem;
+  padding: 0.75rem 1.5rem;
+}
+
+.catch-that-container.fullscreen-mode .game-play-area {
+  min-height: 500px;
+}
+
+@keyframes cloud-float {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+.cloud-float {
+  animation: cloud-float 6s ease-in-out infinite;
+}
+
+.cloud-float-delayed {
+  animation: cloud-float 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.falling-word {
+  transition: transform 0.1s ease-out;
+  z-index: 5;
+}
+
+.falling-prize {
+  transition: transform 0.1s ease-out;
+  z-index: 5;
+}
+
+@media (max-width: 640px) {
+  .catch-that-container {
+    min-height: calc(100vh - 80px);
+  }
+  
+  .falling-word {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .falling-prize {
+    font-size: 1.25rem;
+    padding: 0.5rem;
+  }
+}

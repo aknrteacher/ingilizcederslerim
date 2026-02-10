@@ -45,6 +45,8 @@ export default function VocabularyCards3_1() {
 
   // Vocabulary data for Grade 3 Unit 1
   const imageFiles = [
+    { word: "I", file: "I.png", turkish: "ben" },
+    { word: "you", file: "you.png", turkish: "sen/siz" },
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "hi", file: "hi.png", turkish: "selam" },
     { word: "good morning", file: "good morning.png", turkish: "günaydın" },

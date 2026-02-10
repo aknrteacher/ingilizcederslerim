@@ -10,8 +10,10 @@ import "@/styles/3.1.catch-that.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Unit 4 vocabulary - uppercase single words for catch-that
+// Unit 1 vocabulary - uppercase single words for catch-that
 const vocabulary = [
+  { word: "I", turkish: "Ben", file: "I.png" },
+  { word: "YOU", turkish: "Sen/siz", file: "you.png" },
   { word: "GOOD", turkish: "İyi", file: "good.png" },
   { word: "BAD", turkish: "Kötü", file: "bad.png" },
   { word: "HAPPY", turkish: "Mutlu", file: "happy.png" },

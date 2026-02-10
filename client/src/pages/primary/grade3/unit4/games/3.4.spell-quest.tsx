@@ -17,6 +17,7 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
+  { word: "YOU", turkish: "Sen/siz", file: "you.png" },
   { word: "GOOD", turkish: "İyi", file: "good.png" },
   { word: "BAD", turkish: "Kötü", file: "bad.png" },
   { word: "HAPPY", turkish: "Mutlu", file: "happy.png" },
