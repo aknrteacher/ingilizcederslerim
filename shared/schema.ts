@@ -21,8 +21,9 @@ export type User = typeof users.$inferSelect;
 export const classes = pgTable("classes", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   name: text("name").notNull(), // e.g., "2-A", "3-B"
-  grade: integer("grade").notNull(),
-  section: text("section").notNull(), // e.g., "A", "B"
+  grade: integer("grade").default(0).notNull(),
+  section: text("section").default("").notNull(), // e.g., "A", "B"
+  monitorCode: text("monitor_code"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -48,7 +49,8 @@ export const insertClassSchema = createInsertSchema(classes).pick({
   name: true,
   grade: true,
   section: true,
-});
+  monitorCode: true,
+}).partial({ grade: true, section: true, monitorCode: true });
 
 export const insertStudentSchema = createInsertSchema(students).pick({
   classId: true,

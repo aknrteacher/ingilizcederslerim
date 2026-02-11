@@ -4,7 +4,7 @@ import "../styles/oyunlar.css";
 import "@/styles/3.1.voc.css";
 
 // Import topic button half (300x100px)
-import topic3_6 from "@/assets/3.1game.png"; // Placeholder - replace with 3.6game.png when available
+import topic3_6 from "@/assets/3.6game.png";
 
 // Import game type button halves (300x300px)
 import gameTypeMatchlings from "@/assets/matchlings.png";

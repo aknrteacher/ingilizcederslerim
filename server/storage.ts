@@ -76,11 +76,15 @@ export class MemStorage implements IStorage {
 
   async createClass(insertClass: InsertClass): Promise<Class> {
     const id = randomUUID();
+    const monitorCode = (insertClass as any).monitorCode ?? insertClass.name.toLowerCase().replace(/[^a-z0-9]/g, '');
     const cls: Class = {
       ...insertClass,
       id,
+      monitorCode,
+      grade: insertClass.grade ?? 0,
+      section: insertClass.section ?? '',
       createdAt: new Date(),
-    };
+    } as Class;
     this.classes.set(id, cls);
     return cls;
   }
