@@ -171,7 +171,86 @@ export async function registerRoutes(
     }
   });
 
-  // Initialize permanent classes: edincik2A, edincik3A, edincik4A, edincik4B (each with one "test" student)
+  // Monitor route (public class view at /edincik2a, etc.)
+  app.get("/api/classroom/monitor/:code", async (req, res) => {
+    try {
+      const code = (req.params.code || "").toLowerCase().trim();
+      if (!code) return res.status(400).json({ message: "Invalid monitor code" });
+      const codeNorm = code.replace(/[^a-z0-9]/g, "");
+
+      let classes = await storage.getAllClasses();
+      // Auto-initialize permanent classes if none exist (e.g. after server restart)
+      if (classes.length === 0) {
+        for (const { name, grade, section } of [
+          { name: "edincik2A", grade: 2, section: "A" },
+          { name: "edincik3A", grade: 3, section: "A" },
+          { name: "edincik4A", grade: 4, section: "A" },
+          { name: "edincik4B", grade: 4, section: "B" },
+        ]) {
+          const cls = await storage.createClass({ name, grade, section });
+          await storage.createStudent({ classId: cls.id, name: "test" });
+        }
+        classes = await storage.getAllClasses();
+      }
+
+      const classObj = classes.find(
+        (c) =>
+          ((c as any).monitorCode ?? c.name.toLowerCase().replace(/[^a-z0-9]/g, "")) === codeNorm
+      );
+
+      if (!classObj) {
+        return res.status(404).json({
+          message: "Class not found",
+          searchedFor: code,
+          availableClasses: classes.map((c) => ({
+            name: c.name,
+            monitorCode: (c as any).monitorCode ?? c.name.toLowerCase().replace(/[^a-z0-9]/g, ""),
+          })),
+        });
+      }
+
+      const students = await storage.getStudentsByClass(classObj.id);
+      const scoresEntry = (global as any).__classScoresStorage?.get(classObj.id);
+      const scores = scoresEntry?.scores || {};
+      const monitorCode = (classObj as any).monitorCode ?? classObj.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+      res.json({
+        class: { id: classObj.id, name: classObj.name, monitorCode },
+        students: students.map((s) => ({ id: s.id, name: s.name })),
+        scores,
+        updatedAt: scoresEntry?.updatedAt || null,
+      });
+    } catch (error: any) {
+      console.error("[monitor] Error:", error);
+      res.status(500).json({ message: error.message || "Internal server error" });
+    }
+  });
+
+  // Published snapshot (teacher publishes table for parents to see)
+  const publishedSnapshots = new Map<string, { class: any; students: any[]; scores: Record<string, Record<string, number[]>>; updatedAt: Date }>();
+  app.post("/api/classroom/publish-snapshot", async (req, res) => {
+    try {
+      const { classId, class: classObj, students, scores } = req.body;
+      if (!classId || !classObj || !students) return res.status(400).json({ message: "Missing required fields" });
+      const mc = (classObj.monitorCode || classObj.name?.toLowerCase().replace(/[^a-z0-9]/g, "") || "").toLowerCase();
+      if (!mc) return res.status(400).json({ message: "Invalid class" });
+      publishedSnapshots.set(mc, { class: classObj, students, scores: scores || {}, updatedAt: new Date() });
+      res.json({ success: true, monitorCode: mc });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Internal server error" });
+    }
+  });
+  app.get("/api/classroom/published-snapshot/:code", async (req, res) => {
+    try {
+      const code = (req.params.code || "").toLowerCase().trim();
+      const snapshot = publishedSnapshots.get(code.replace(/[^a-z0-9]/g, ""));
+      if (!snapshot) return res.status(404).json({ message: "No published snapshot" });
+      res.json(snapshot);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message || "Internal server error" });
+    }
+  });
+
   // Scores routes (GET/POST for inclass category scores)
   app.get("/api/classroom/scores", async (req, res) => {
     try {

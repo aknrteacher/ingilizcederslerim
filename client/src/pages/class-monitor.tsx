@@ -84,25 +84,20 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
     );
   }
 
+  // Fetch published snapshot (teacher publishes from admin; parents see that)
   const { data, isLoading, error } = useQuery({
-    queryKey: [`/api/classroom/monitor/${code}`],
+    queryKey: [`/api/classroom/published-snapshot/${code}`],
     queryFn: async () => {
-      console.log('[ClassMonitor] Fetching data for code:', code);
-      const url = `/api/classroom/monitor/${code}`;
-      console.log('[ClassMonitor] Fetch URL:', url);
-      const res = await fetch(url);
-      console.log('[ClassMonitor] Response status:', res.status);
+      const codeNorm = code.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const res = await fetch(`/api/classroom/published-snapshot/${codeNorm}`);
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error('[ClassMonitor] Error response:', errorText);
-        throw new Error(`Class not found: ${res.status} - ${errorText}`);
+        if (res.status === 404) throw new Error('NOT_PUBLISHED');
+        throw new Error(`Failed to load: ${res.status}`);
       }
-      const json = await res.json();
-      console.log('[ClassMonitor] Data received:', json);
-      return json;
+      return res.json();
     },
     enabled: queryEnabled,
-    refetchInterval: 30000,
+    refetchInterval: 60000,
   });
 
   console.log('[ClassMonitor] Query state:', { isLoading, error: error?.message, hasData: !!data });
@@ -131,52 +126,29 @@ export default function ClassMonitor({ code: codeProp }: ClassMonitorProps = {})
 
   if (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    const isNotFound = errorMessage.includes('404') || errorMessage.includes('not found');
-    
-    // Try to extract available classes from error response
-    let availableClasses: any[] = [];
-    try {
-      const errorData = error instanceof Error && error.message.includes('{') 
-        ? JSON.parse(errorMessage.split('{')[1].split('}')[0] + '}') 
-        : null;
-      if (errorData?.availableClasses) {
-        availableClasses = errorData.availableClasses;
-      }
-    } catch (e) {
-      // Ignore
-    }
+    const isNotPublished = errorMessage === 'NOT_PUBLISHED';
     
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-7xl mx-auto">
-          <Card className="shadow-2xl border-2 border-red-200">
-            <CardHeader className="bg-red-500 text-white">
+          <Card className={`shadow-2xl border-2 ${isNotPublished ? 'border-amber-200' : 'border-red-200'}`}>
+            <CardHeader className={isNotPublished ? 'bg-amber-500 text-white' : 'bg-red-500 text-white'}>
               <CardTitle className="text-2xl font-bold">
-                {isNotFound ? 'Class Not Found' : 'Error Loading Data'}
+                {isNotPublished ? 'Not Published Yet' : 'Error Loading Data'}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 text-center">
               <p className="text-gray-600 mb-4">
-                {isNotFound 
-                  ? `No class found with name: ${code}`
+                {isNotPublished
+                  ? 'The teacher has not published the class data yet. Please check back later.'
                   : `The class ${code} could not be loaded.`
                 }
               </p>
-              {availableClasses.length > 0 && (
-                <div className="mt-4 p-4 bg-gray-100 rounded">
-                  <p className="text-sm font-semibold mb-2">Available classes:</p>
-                  <div className="space-y-1">
-                    {availableClasses.map((cls: any, idx: number) => (
-                      <div key={idx} className="text-xs text-gray-700">
-                        Name: "{cls.name}" → URL: /{cls.monitorCode}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {!isNotPublished && (
+                <p className="text-sm text-gray-500 mt-4">
+                  Use the class name in lowercase (e.g., /edincik2a, /edincik3a).
+                </p>
               )}
-              <p className="text-sm text-gray-500 mt-4">
-                Please check the class name and try again. Use the class name in lowercase (e.g., /2a, /3a, /4a, /4b).
-              </p>
             </CardContent>
           </Card>
         </div>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeft, ChevronRight, Download, Plus, Users, Upload, Trash2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Download, Plus, Users, Upload, Trash2, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 // @ts-ignore
 import jsPDF from 'jspdf';
@@ -59,6 +59,7 @@ export default function InClass() {
   const [newStudentName, setNewStudentName] = useState('');
   const [bulkStudentText, setBulkStudentText] = useState('');
   const [isImporting, setIsImporting] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -542,6 +543,44 @@ export default function InClass() {
     }
   };
 
+  const handlePublishSnapshot = async () => {
+    if (!selectedClass || !studentsData?.students.length) {
+      toast.error('No data to publish');
+      return;
+    }
+    setIsPublishing(true);
+    try {
+      const scoresData: Record<string, Record<string, number[]>> = {};
+      studentsData.students.forEach(student => {
+        scoresData[student.id] = {};
+        const studentAllScores = allCategoryScores.get(student.id);
+        CATEGORIES.forEach(cat => {
+          if (studentAllScores?.has(cat.value)) {
+            scoresData[student.id][cat.value] = studentAllScores.get(cat.value)!;
+          } else {
+            scoresData[student.id][cat.value] = new Array(cat.maxSquares).fill(0);
+          }
+        });
+      });
+      const monitorCode = (selectedClass as any).monitorCode ?? selectedClass.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const res = await fetch('/api/classroom/publish-snapshot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          classId: selectedClass.id,
+          class: { id: selectedClass.id, name: selectedClass.name, monitorCode },
+          students: studentsData.students.map(s => ({ id: s.id, name: s.name })),
+          scores: scoresData,
+        }),
+      });
+      if (!res.ok) throw new Error((await res.json()).message || 'Publish failed');
+      toast.success(`Published! Parents can view at /${monitorCode}`);
+    } catch (error: any) {
+      toast.error(error?.message || 'Failed to publish');
+    } finally {
+      setIsPublishing(false);
+    }
+  };
 
   const exportFullTableToPDF = () => {
     if (!selectedClass || !studentsData?.students.length) return;
@@ -861,6 +900,17 @@ export default function InClass() {
                 <CardTitle>Export Full Table</CardTitle>
               </CardHeader>
               <CardContent>
+                <Button
+                  onClick={handlePublishSnapshot}
+                  disabled={isPublishing || !studentsData?.students?.length}
+                  className="w-full justify-start mb-2 bg-green-600 hover:bg-green-700 text-white"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  {isPublishing ? 'Publishing...' : 'Publish to Class Page'}
+                </Button>
+                <p className="text-xs text-gray-500 mb-3">
+                  Parents see this snapshot at /{((selectedClass as any)?.monitorCode ?? selectedClass?.name?.toLowerCase().replace(/[^a-z0-9]/g, '') || '...')}
+                </p>
                 <Button
                   onClick={() => exportFullTableToPDF()}
                   variant="outline"
