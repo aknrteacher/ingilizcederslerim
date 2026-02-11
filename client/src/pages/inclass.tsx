@@ -909,7 +909,7 @@ export default function InClass() {
                   {isPublishing ? 'Publishing...' : 'Publish to Class Page'}
                 </Button>
                 <p className="text-xs text-gray-500 mb-3">
-                  Parents see this snapshot at /{((selectedClass as any)?.monitorCode ?? selectedClass?.name?.toLowerCase().replace(/[^a-z0-9]/g, '') || '...')}
+                  Parents see this snapshot at /{((selectedClass as any)?.monitorCode ?? selectedClass?.name?.toLowerCase().replace(/[^a-z0-9]/g, '')) || '...'}
                 </p>
                 <Button
                   onClick={() => exportFullTableToPDF()}
