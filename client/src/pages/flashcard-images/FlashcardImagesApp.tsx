@@ -5,7 +5,7 @@ import SavedGallery from './components/SavedGallery';
 import MultiImageSelector from './components/MultiImageSelector';
 import type { SavedImage, WordImageData } from './types';
 import { AppState, ArtStyle } from './types';
-import { generateImageOptions, isGeminiApiKeySet } from './services/geminiService';
+import { generateImageOptions, isGeminiApiKeySet, getApiKeyPrefix } from './services/geminiService';
 
 const getSafeFilename = (word: string, dataUrl: string): string => {
   const mimeTypeMatch = dataUrl.match(/data:([^;]+);/);
@@ -198,8 +198,13 @@ function FlashcardImagesApp() {
     <div className="bg-slate-950 min-h-screen text-slate-100 font-sans flex flex-col items-center p-4 sm:p-6 md:p-8">
       {!apiKeySet && (
         <div className="w-full max-w-4xl mb-4 p-4 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-200 text-sm">
-          <strong>API key missing.</strong> Add <code className="bg-slate-800 px-1 rounded">VITE_GEMINI_API_KEY</code> to a <code className="bg-slate-800 px-1 rounded">.env</code> file in the project root (same folder as <code className="bg-slate-800 px-1 rounded">package.json</code>), then restart the dev server.
+          <strong>API key missing.</strong> Add <code className="bg-slate-800 px-1 rounded">VITE_GEMINI_API_KEY</code> to a <code className="bg-slate-800 px-1 rounded">.env</code> file in the <strong>project root</strong> (same folder as <code className="bg-slate-800 px-1 rounded">package.json</code>, not inside a venv folder), then restart the dev server.
         </div>
+      )}
+      {apiKeySet && (
+        <p className="w-full max-w-4xl mb-2 text-slate-500 text-xs">
+          API key loaded (starts with <code className="bg-slate-800 px-1 rounded">{getApiKeyPrefix()}…</code>). If you changed .env, restart the dev server.
+        </p>
       )}
       <header className="w-full max-w-4xl text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-3 flex items-center justify-center gap-3">

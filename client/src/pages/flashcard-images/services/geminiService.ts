@@ -5,6 +5,29 @@ import { ArtStyle } from "../types";
 export const isGeminiApiKeySet = (): boolean =>
   !!import.meta.env.VITE_GEMINI_API_KEY?.trim?.();
 
+/** For debugging: prefix of the key so you can confirm the right .env is loaded (e.g. "AIzaSyD1"). Empty if not set. */
+export const getApiKeyPrefix = (): string => {
+  const k = import.meta.env.VITE_GEMINI_API_KEY?.trim?.();
+  return k ? k.slice(0, 8) : "";
+};
+
+/** Turn API errors (expired/invalid key, etc.) into a short message for the UI. */
+function getFriendlyApiErrorMessage(error: unknown): string {
+  const msg = error instanceof Error ? error.message : String(error);
+  try {
+    const parsed = typeof msg === "string" && msg.startsWith("{") ? JSON.parse(msg) : null;
+    const apiMsg = parsed?.error?.message ?? parsed?.message;
+    if (typeof apiMsg === "string") {
+      if (/expired|renew|API key invalid|API_KEY_INVALID|not valid/i.test(apiMsg))
+        return "Gemini API key was rejected: " + apiMsg + " — If the key is new: wait 5–15 min for propagation; ensure .env is in the project root (same folder as package.json, not inside venv); restart the dev server. Some regions require billing in AI Studio.";
+      return apiMsg;
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return msg;
+}
+
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
@@ -100,7 +123,7 @@ export const generateImageOptions = async (
     return allImages.slice(0, targetCount);
   } catch (error) {
     console.error(`Gemini generation error for "${word}":`, error);
-    throw error;
+    throw new Error(getFriendlyApiErrorMessage(error));
   }
 };
 
@@ -126,6 +149,6 @@ Requirements: Subject must FILL the frame (large, 70–80% of canvas), tight cro
     throw new Error("Style preview failed.");
   } catch (error) {
     console.error("Preview generation error:", error);
-    throw error;
+    throw new Error(getFriendlyApiErrorMessage(error));
   }
 };
