@@ -28,20 +28,27 @@ function getFriendlyApiErrorMessage(error: unknown): string {
   return msg;
 }
 
+/** Global base prompt used for ALL styles. */
+const FLASHCARD_BASE_PROMPT =
+  "Educational flashcard image. Single centered subject. Clear recognizable silhouette. Realistic proportions. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
+
+/** Style-only prompts (combined with FLASHCARD_BASE_PROMPT). */
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
-      return "Clean, professional 2D clipart style. Bold outlines and vibrant colors. Solid white background, isolated subject.";
-    case ArtStyle.Vector:
-      return "Modern flat vector illustration. Geometric shapes, clean lines, minimalist aesthetic. Solid white background.";
+      return "Simple 2D clipart style. Thick bold outlines. Flat vibrant colors. Minimal detail.";
     case ArtStyle.Cartoon:
-      return "Whimsical 3D-style character design. Soft textures, friendly expressions, vibrant saturated colors. Solid white background.";
-    case ArtStyle.Comic:
-      return "Dynamic comic book art. Strong ink lines, halftone shading, action-oriented composition. Solid white background.";
+      return "Clean 2D cartoon style. Rounded shapes. Smooth outlines. Bright saturated colors. Very simple shading only.";
+    case ArtStyle.Animation:
+      return "Stylized 3D animation style. Slightly realistic proportions. Soft cinematic lighting. Subtle depth and shadows. Not childish.";
+    case ArtStyle.Vector:
+      return "Modern flat vector style. Natural shapes. Smooth precise edges. Limited balanced color palette. Minimal flat shading. No artistic distortion.";
+    case ArtStyle.Comics:
+      return "Mature comic drawing style. Refined linework. Subtle controlled shading. Natural relaxed pose. Slightly muted colors. No dramatic angles.";
     case ArtStyle.Realistic:
-      return "Photorealistic high-detail shot. Professional studio lighting, sharp focus, 8k resolution, cinematic quality. Solid white background.";
+      return "Professional realistic photography. Natural lighting. True-to-life colors. Neutral tone. No artistic filters.";
     default:
-      return "High-quality professional illustration. Solid white background.";
+      return "High-quality professional illustration.";
   }
 };
 
@@ -52,18 +59,15 @@ const getStylePrompt = (style: ArtStyle, customPrompts?: Partial<Record<ArtStyle
 };
 
 const getPrompt = (word: string, style: ArtStyle, count: number, clarification?: string, customPrompts?: Partial<Record<ArtStyle, string>>): string => {
+  const stylePart = getStylePrompt(style, customPrompts);
   return `Generate exactly ${count} SEPARATE images. Each image must be a single standalone image—do NOT combine multiple subjects into one image, do NOT create a grid, collage, or multi-in-one layout.
 
 Subject: "${word}"
-Style: ${getStylePrompt(style, customPrompts)}
 
-Composition rules:
-- Subject must FILL the frame—large, prominent, occupying 70–80% of the canvas.
-- Tight crop, minimal empty space, close-up composition.
-- Centered on solid white background.
-- NO text, logos, watermarks, or letters.
-- Professional quality for educational flashcards.
-${clarification ? `Additional detail: ${clarification}` : ''}`;
+${FLASHCARD_BASE_PROMPT}
+
+Style: ${stylePart}
+${clarification ? `\nAdditional detail: ${clarification}` : ""}`;
 };
 
 const extractImagesFromResponse = (response: { candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { mimeType?: string; data?: string }; text?: string }> } }> }): string[] => {
@@ -104,7 +108,13 @@ export const generateImageOptions = async (
     while (allImages.length < targetCount && retries < 2) {
       retries++;
       const needed = targetCount - allImages.length;
-      const retryPrompt = `Generate exactly ${needed} more SEPARATE image(s) of "${word}". ${getStylePrompt(style, customStylePrompts)}. Subject must fill the frame (70–80% of canvas), tight crop, close-up, solid white background, no text. Each image must be standalone—no grid or collage.`;
+      const retryPrompt = `Generate exactly ${needed} more SEPARATE image(s) of "${word}".
+
+${FLASHCARD_BASE_PROMPT}
+
+Style: ${getStylePrompt(style, customStylePrompts)}
+
+Each image must be standalone—no grid or collage.`;
       const retryResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: { parts: [{ text: retryPrompt }] },
@@ -131,9 +141,13 @@ export const generateStylePreview = async (style: ArtStyle, word?: string, custo
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey?.trim()) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to .env in the project root and restart the dev server.");
   const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
-  const subject = word?.trim() || "Magnificent Snowy Owl";
-  const prompt = `Generate ONE high-quality image of "${subject}" in the "${style}" style: ${getStylePrompt(style, customStylePrompts)}. 
-Requirements: Subject must FILL the frame (large, 70–80% of canvas), tight crop, minimal empty space. Solid white background, centered, no text.`;
+  const subject = word?.trim() || "apple";
+  const stylePart = getStylePrompt(style, customStylePrompts);
+  const prompt = `Generate ONE image of "${subject}".
+
+${FLASHCARD_BASE_PROMPT}
+
+Style: ${stylePart}`;
 
   try {
     const response = await ai.models.generateContent({

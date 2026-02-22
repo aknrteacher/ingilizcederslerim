@@ -1,8 +1,9 @@
 export enum ArtStyle {
   Clipart = 'Clipart',
-  Vector = 'Vector',
   Cartoon = 'Cartoon',
-  Comic = 'Comic',
+  Animation = 'Animation',
+  Vector = 'Vector',
+  Comics = 'Comics',
   Realistic = 'Realistic',
 }
 

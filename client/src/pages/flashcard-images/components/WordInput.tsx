@@ -9,21 +9,24 @@ interface WordInputProps {
   onSubmit: (words: string[], style: ArtStyle, imagesPerWord: number, customStylePrompts?: CustomStylePrompts) => void;
 }
 
-const styles = [
-  { id: ArtStyle.Clipart, icon: '🎨', label: 'Clipart' },
-  { id: ArtStyle.Cartoon, icon: '🐹', label: 'Cartoon' },
-  { id: ArtStyle.Comic, icon: '💥', label: 'Comic' },
-  { id: ArtStyle.Realistic, icon: '📸', label: 'Realistic' },
-  { id: ArtStyle.Vector, icon: '📐', label: 'Vector' },
+const STYLE_IMAGE_BASE = '/images/flashcard-styles';
+const styles: { id: ArtStyle; label: string; imageSrc: string }[] = [
+  { id: ArtStyle.Clipart, label: 'Clipart', imageSrc: `${STYLE_IMAGE_BASE}/clipart.png` },
+  { id: ArtStyle.Cartoon, label: 'Cartoon', imageSrc: `${STYLE_IMAGE_BASE}/cartoon.png` },
+  { id: ArtStyle.Animation, label: 'Animation', imageSrc: `${STYLE_IMAGE_BASE}/animation.png` },
+  { id: ArtStyle.Vector, label: 'Vector', imageSrc: `${STYLE_IMAGE_BASE}/vector.png` },
+  { id: ArtStyle.Comics, label: 'Comics', imageSrc: `${STYLE_IMAGE_BASE}/comics.png` },
+  { id: ArtStyle.Realistic, label: 'Realistic', imageSrc: `${STYLE_IMAGE_BASE}/realistic.png` },
 ];
 
 const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   const [previewWords, setPreviewWords] = useState('');
   const [stylePreviews, setStylePreviews] = useState<Record<ArtStyle, string | null>>({
     [ArtStyle.Clipart]: null,
-    [ArtStyle.Vector]: null,
     [ArtStyle.Cartoon]: null,
-    [ArtStyle.Comic]: null,
+    [ArtStyle.Animation]: null,
+    [ArtStyle.Vector]: null,
+    [ArtStyle.Comics]: null,
     [ArtStyle.Realistic]: null,
   });
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
@@ -35,6 +38,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   const [editingPromptFor, setEditingPromptFor] = useState<ArtStyle | null>(null);
   const [editingPromptDraft, setEditingPromptDraft] = useState('');
   const [previewError, setPreviewError] = useState<string | null>(null);
+  const [styleImageFailed, setStyleImageFailed] = useState<Set<ArtStyle>>(new Set());
 
   const handleGeneratePreviews = async () => {
     const wordsList = previewWords.split(/,|\n/).map(w => w.trim()).filter(Boolean);
@@ -45,9 +49,10 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
     setIsPreviewLoading(true);
     setStylePreviews({
       [ArtStyle.Clipart]: null,
-      [ArtStyle.Vector]: null,
       [ArtStyle.Cartoon]: null,
-      [ArtStyle.Comic]: null,
+      [ArtStyle.Animation]: null,
+      [ArtStyle.Vector]: null,
+      [ArtStyle.Comics]: null,
       [ArtStyle.Realistic]: null,
     });
 
@@ -103,9 +108,9 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
 
   return (
     <div className="w-full max-w-6xl space-y-10 animate-fade-in">
-      <div className="bg-slate-800 p-8 rounded-2xl border border-slate-600/50">
-        <h2 className="text-2xl font-bold text-slate-100 mb-2">Preview Styles</h2>
-        <p className="text-slate-400 text-sm mb-6">Enter one or more words to see a preview of each style.</p>
+      <div className="bg-neutral-900 p-8 rounded-2xl border border-neutral-700">
+        <h2 className="text-2xl font-bold text-white mb-2">Preview Styles</h2>
+        <p className="text-neutral-400 text-sm mb-6">Enter one or more words to see a preview of each style.</p>
         {previewError && (
           <div className="mb-4 p-3 rounded-xl bg-red-900/30 border border-red-700 text-red-300 text-sm">
             {previewError}
@@ -117,13 +122,13 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
             value={previewWords}
             onChange={(e) => setPreviewWords(e.target.value)}
             placeholder="e.g. apple, mountain, dog..."
-            className="flex-1 px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-accent focus:border-accent"
+            className="flex-1 px-4 py-3 bg-neutral-800 border border-neutral-600 rounded-xl text-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
           />
           <button
             type="button"
             onClick={handleGeneratePreviews}
             disabled={!previewWords.trim() || isPreviewLoading || !isGeminiApiKeySet()}
-            className="px-6 py-3 bg-accent hover:bg-secondary text-slate-900 font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="px-6 py-3 bg-neutral-600 hover:bg-neutral-500 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isPreviewLoading ? (
               <>
@@ -135,37 +140,44 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
             )}
           </button>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {styles.map(({ id, icon, label }) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {styles.map(({ id, label, imageSrc }) => (
             <div key={id} className="flex flex-col items-center gap-2">
-              <div className="w-full aspect-square bg-slate-800 rounded-xl border border-slate-600 overflow-hidden flex items-center justify-center">
+              <div className="w-full aspect-square bg-neutral-800 rounded-xl border border-neutral-600 overflow-hidden flex items-center justify-center">
                 {isPreviewLoading && !stylePreviews[id] ? (
-                  <SpinnerIcon className="w-10 h-10 text-accent animate-spin" />
+                  <SpinnerIcon className="w-10 h-10 text-neutral-400 animate-spin" />
                 ) : stylePreviews[id] ? (
                   <img src={stylePreviews[id]!} alt={label} className="w-full h-full object-contain p-2" />
+                ) : styleImageFailed.has(id) ? (
+                  <span className="text-neutral-500 text-sm text-center p-2">{label}</span>
                 ) : (
-                  <span className="text-4xl text-slate-500">{icon}</span>
+                  <img
+                    src={imageSrc}
+                    alt={label}
+                    className="w-full h-full object-contain p-2"
+                    onError={() => setStyleImageFailed((prev) => new Set(prev).add(id))}
+                  />
                 )}
               </div>
-              <span className="text-xs font-medium text-slate-400">{label}</span>
+              <span className="text-xs font-medium text-neutral-400">{label}</span>
               <button
                 type="button"
                 onClick={() => openPromptEditor(id)}
-                className="text-[10px] font-medium text-accent hover:text-primary px-2 py-1 rounded transition-colors flex items-center gap-1"
+                className="text-[10px] font-medium text-neutral-400 hover:text-white px-2 py-1 rounded transition-colors flex items-center gap-1"
               >
                 {customStylePrompts[id] ? 'Edit prompt •' : 'Edit prompt'}
               </button>
               {editingPromptFor === id && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/95" onClick={cancelPromptEdit}>
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95" onClick={cancelPromptEdit}>
                   <div
-                    className="w-full max-w-lg bg-slate-800 p-6 rounded-2xl border border-slate-600 shadow-xl space-y-4"
+                    className="w-full max-w-lg bg-neutral-900 p-6 rounded-2xl border border-neutral-700 shadow-xl space-y-4"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <h3 className="text-lg font-bold text-slate-100">{label} — Edit style prompt</h3>
+                    <h3 className="text-lg font-bold text-white">{label} — Edit style prompt</h3>
                     <textarea
                       value={editingPromptDraft}
                       onChange={(e) => setEditingPromptDraft(e.target.value)}
-                      className="w-full p-4 bg-slate-700 border border-slate-600 rounded-xl text-slate-100 text-sm min-h-[120px] focus:ring-2 focus:ring-accent placeholder:text-slate-500"
+                      className="w-full p-4 bg-neutral-800 border border-neutral-600 rounded-xl text-white text-sm min-h-[120px] focus:ring-2 focus:ring-neutral-500 placeholder:text-neutral-500"
                       placeholder="Describe the visual style (e.g. bold outlines, flat colors, white background...)"
                       autoFocus
                     />
@@ -173,7 +185,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
                       <button
                         type="button"
                         onClick={savePromptEdit}
-                        className="px-4 py-2 bg-accent text-slate-900 font-bold rounded-xl hover:bg-secondary"
+                        className="px-4 py-2 bg-neutral-600 text-white font-bold rounded-xl hover:bg-neutral-500"
                       >
                         Save
                       </button>
@@ -182,14 +194,14 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
                         onClick={() => {
                           setEditingPromptDraft(getDefaultStylePrompt(editingPromptFor!));
                         }}
-                        className="px-4 py-2 bg-slate-700 text-slate-200 font-bold rounded-xl hover:bg-slate-600"
+                        className="px-4 py-2 bg-neutral-700 text-white font-bold rounded-xl hover:bg-neutral-600"
                       >
                         Reset to default
                       </button>
                       <button
                         type="button"
                         onClick={cancelPromptEdit}
-                        className="px-4 py-2 bg-slate-600 text-slate-200 font-bold rounded-xl hover:bg-slate-500"
+                        className="px-4 py-2 bg-neutral-600 text-neutral-200 font-bold rounded-xl hover:bg-neutral-500"
                       >
                         Cancel
                       </button>
@@ -202,13 +214,13 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
         </div>
       </div>
 
-      <div className="bg-slate-800 p-8 rounded-2xl border border-slate-600/50">
-        <h2 className="text-2xl font-bold text-slate-100 mb-2">Input Words</h2>
-        <p className="text-slate-400 text-sm mb-6">Choose a style and enter your vocabulary. Generate 2, 3, or 4 images per word to pick from.</p>
+      <div className="bg-neutral-900 p-8 rounded-2xl border border-neutral-700">
+        <h2 className="text-2xl font-bold text-white mb-2">Input Words</h2>
+        <p className="text-neutral-400 text-sm mb-6">Choose a style and enter your vocabulary. Generate 2, 3, or 4 images per word to pick from.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-3">Images per word</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-3">Images per word</label>
             <div className="flex gap-3 mb-6">
               {[2, 3, 4].map((n) => (
                 <button
@@ -217,31 +229,33 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
                   onClick={() => setImagesPerWord(n)}
                   className={`px-4 py-2 rounded-xl border-2 font-bold transition-all ${
                     imagesPerWord === n
-                      ? 'border-accent bg-accent/20 text-accent'
-                      : 'border-slate-600 text-slate-400 hover:border-slate-500'
+                      ? 'border-neutral-400 bg-neutral-700 text-white'
+                      : 'border-neutral-600 text-neutral-400 hover:border-neutral-500'
                   }`}
                 >
                   {n} images
                 </button>
               ))}
             </div>
-            <p className="text-xs text-slate-500 -mt-4 mb-4">2 = 50% fewer calls (simple words). 3 = balanced. 4 = max variety.</p>
+            <p className="text-xs text-neutral-500 -mt-4 mb-4">2 = 50% fewer calls (simple words). 3 = balanced. 4 = max variety.</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-3">Choose style</label>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+            <label className="block text-sm font-medium text-neutral-400 mb-3">Choose style</label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {styles.map((style) => (
                 <button
                   key={style.id}
                   type="button"
                   onClick={() => setSelectedStyle(style.id)}
-                  className={`flex flex-col items-center p-4 rounded-xl border-2 transition-all ${
+                  className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all overflow-hidden ${
                     selectedStyle === style.id
-                      ? 'border-accent bg-accent/20 text-accent'
-                      : 'border-slate-600 text-slate-400 hover:border-slate-500 hover:bg-slate-700/50'
+                      ? 'border-neutral-400 bg-neutral-700 text-white'
+                      : 'border-neutral-600 text-neutral-400 hover:border-neutral-500 hover:bg-neutral-800/50'
                   }`}
                 >
-                  <span className="text-2xl mb-1">{style.icon}</span>
+                  <div className="w-full aspect-square rounded-lg overflow-hidden bg-neutral-800 mb-2 flex items-center justify-center min-h-[48px]">
+                    <img src={style.imageSrc} alt="" className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                  </div>
                   <span className="text-xs font-bold">{style.label}</span>
                 </button>
               ))}
@@ -249,20 +263,20 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-400 mb-3">Vocabulary list</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-3">Vocabulary list</label>
             <textarea
               value={words}
               onChange={(e) => setWords(e.target.value)}
               placeholder="Enter words (e.g. fire truck, mountain, curious monkey)..."
-              className="w-full p-4 bg-slate-800 border border-slate-600 rounded-xl text-slate-100 placeholder:text-slate-500 min-h-[160px] focus:ring-2 focus:ring-accent focus:border-accent"
+              className="w-full p-4 bg-neutral-800 border border-neutral-600 rounded-xl text-white placeholder:text-neutral-500 min-h-[160px] focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500"
             />
-            <p className="mt-2 text-xs text-slate-500">Separate with commas or new lines.</p>
+            <p className="mt-2 text-xs text-neutral-500">Separate with commas or new lines.</p>
           </div>
 
           <button
             type="submit"
             disabled={!words.trim() || !isGeminiApiKeySet()}
-            className="w-full py-4 bg-accent hover:bg-secondary text-slate-900 font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+            className="w-full py-4 bg-neutral-600 hover:bg-neutral-500 text-white font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
           >
             Generate
           </button>

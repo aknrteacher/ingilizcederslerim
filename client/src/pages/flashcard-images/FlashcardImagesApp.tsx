@@ -195,22 +195,21 @@ function FlashcardImagesApp() {
   const apiKeySet = isGeminiApiKeySet();
 
   return (
-    <div className="bg-slate-950 min-h-screen text-slate-100 font-sans flex flex-col items-center p-4 sm:p-6 md:p-8">
+    <div className="bg-black min-h-screen text-white font-sans flex flex-col items-center p-4 sm:p-6 md:p-8">
       {!apiKeySet && (
-        <div className="w-full max-w-4xl mb-4 p-4 rounded-xl bg-amber-500/20 border border-amber-500/50 text-amber-200 text-sm">
-          <strong>API key missing.</strong> Add <code className="bg-slate-800 px-1 rounded">VITE_GEMINI_API_KEY</code> to a <code className="bg-slate-800 px-1 rounded">.env</code> file in the <strong>project root</strong> (same folder as <code className="bg-slate-800 px-1 rounded">package.json</code>, not inside a venv folder), then restart the dev server.
+        <div className="w-full max-w-4xl mb-4 p-4 rounded-xl bg-neutral-800 border border-neutral-600 text-amber-200 text-sm">
+          <strong>API key missing.</strong> Add <code className="bg-neutral-900 px-1 rounded">VITE_GEMINI_API_KEY</code> to a <code className="bg-neutral-900 px-1 rounded">.env</code> file in the <strong>project root</strong> (same folder as <code className="bg-neutral-900 px-1 rounded">package.json</code>, not inside a venv folder), then restart the dev server.
         </div>
       )}
       {apiKeySet && (
-        <p className="w-full max-w-4xl mb-2 text-slate-500 text-xs">
-          API key loaded (starts with <code className="bg-slate-800 px-1 rounded">{getApiKeyPrefix()}…</code>). If you changed .env, restart the dev server.
+        <p className="w-full max-w-4xl mb-2 text-neutral-500 text-xs">
+          API key loaded (starts with <code className="bg-neutral-900 px-1 rounded">{getApiKeyPrefix()}…</code>). If you changed .env, restart the dev server.
         </p>
       )}
       <header className="w-full max-w-4xl text-center mb-10">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-3 flex items-center justify-center gap-3">
-          <span role="img" aria-label="Artist Palette">🎨</span> Flashcard Images
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-400 uppercase tracking-wide">
+          Flashcard İmages
         </h1>
-        <p className="text-xl text-slate-400">Generate visuals for your learning materials.</p>
       </header>
       <main className="w-full max-w-5xl flex-grow flex flex-col items-center">
         {appState === AppState.Input && <WordInput onSubmit={handleWordsSubmit} />}
@@ -227,8 +226,8 @@ function FlashcardImagesApp() {
         )}
         {appState === AppState.Done && <SavedGallery images={savedImages} onRestart={handleRestart} />}
       </main>
-      <footer className="w-full max-w-4xl text-center mt-12 py-6 border-t border-slate-700 text-sm text-slate-500">
-        <p>Powered by Gemini 2.5 Flash Image &bull; Create amazing educational content</p>
+      <footer className="w-full max-w-4xl text-center mt-12 py-6 border-t border-neutral-800 text-sm text-neutral-500">
+        <p>Powered by Gemini 2.5 Flash Image</p>
       </footer>
     </div>
   );

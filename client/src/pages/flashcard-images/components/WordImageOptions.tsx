@@ -13,9 +13,9 @@ interface WordImageOptionsProps {
 }
 
 const ImagePlaceholder: React.FC = () => (
-  <div className="aspect-square bg-slate-800 rounded-2xl flex items-center justify-center relative overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-700 animate-pulse"></div>
-    <SpinnerIcon className="w-10 h-10 text-slate-500 animate-spin relative z-10" />
+  <div className="aspect-square bg-neutral-800 rounded-2xl flex items-center justify-center relative overflow-hidden">
+    <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-700 animate-pulse"></div>
+    <SpinnerIcon className="w-10 h-10 text-neutral-500 animate-spin relative z-10" />
   </div>
 );
 
@@ -23,17 +23,17 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
   const { images, loading, error, selectedImageUrl, clarification, style, imagesPerWord = 3 } = data;
 
   return (
-    <div className="bg-slate-800 p-8 rounded-3xl shadow-xl border border-slate-600/50 w-full animate-fade-in mb-8">
+    <div className="bg-neutral-900 p-8 rounded-3xl shadow-xl border border-neutral-700 w-full animate-fade-in mb-8">
       <div className="flex flex-wrap justify-between items-center gap-6 mb-8">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-primary text-slate-900 rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">
+          <div className="w-12 h-12 bg-neutral-600 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">
             {word.charAt(0).toUpperCase()}
           </div>
           <div>
-            <h2 className="text-2xl font-black text-slate-100 capitalize tracking-tight">{word}</h2>
+            <h2 className="text-2xl font-black text-white capitalize tracking-tight">{word}</h2>
             <div className="flex items-center gap-2 mt-0.5">
-               <span className="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-               <span className="text-[10px] font-black text-accent uppercase tracking-widest">{style} Style</span>
+               <span className="w-2 h-2 rounded-full bg-neutral-400 animate-pulse"></span>
+               <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">{style} Style</span>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
         <div className="flex items-center gap-3">
           <button
             onClick={() => onRegenerate(word)}
-            className="flex items-center gap-2 bg-slate-700 text-slate-200 font-bold py-3 px-6 rounded-xl hover:bg-slate-600 transition-all border border-slate-600 disabled:opacity-50 active:scale-95"
+            className="flex items-center gap-2 bg-neutral-700 text-white font-bold py-3 px-6 rounded-xl hover:bg-neutral-600 transition-all border border-neutral-600 disabled:opacity-50 active:scale-95"
             disabled={loading}
           >
             {loading ? <SpinnerIcon className="w-5 h-5 animate-spin" /> : <RefreshIcon className="w-5 h-5" />}
@@ -52,8 +52,8 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
         <div className="md:col-span-4 lg:col-span-3 space-y-4">
-          <div className="p-5 bg-slate-800 rounded-2xl border border-slate-600">
-            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+          <div className="p-5 bg-neutral-800 rounded-2xl border border-neutral-600">
+            <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-3">
               Refine Description
             </label>
             <input
@@ -61,9 +61,9 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
               value={clarification}
               onChange={(e) => onClarificationChange(word, e.target.value)}
               placeholder="e.g. 'holding a ball'..."
-              className="w-full p-3 bg-slate-700 border border-slate-600 rounded-xl focus:ring-2 focus:ring-accent focus:border-accent text-sm text-slate-100 placeholder:text-slate-500"
+              className="w-full p-3 bg-neutral-800 border border-neutral-600 rounded-xl focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 text-sm text-white placeholder:text-neutral-500"
             />
-            <p className="text-[10px] text-slate-500 mt-3 leading-relaxed">
+            <p className="text-[10px] text-neutral-500 mt-3 leading-relaxed">
               Updates here will apply when you click "Refresh Variations".
             </p>
           </div>
@@ -89,10 +89,10 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
                     <div
                       key={index}
                       onClick={() => onImageSelect(word, src)}
-                      className={`group relative aspect-square bg-slate-800 p-3 rounded-2xl border-4 transition-all duration-300 cursor-pointer ${
+                      className={`group relative aspect-square bg-neutral-800 p-3 rounded-2xl border-4 transition-all duration-300 cursor-pointer ${
                         isSelected
-                        ? 'border-accent shadow-2xl scale-[1.03] z-10'
-                        : 'border-transparent hover:border-slate-600 hover:shadow-lg'
+                        ? 'border-neutral-400 shadow-2xl scale-[1.03] z-10'
+                        : 'border-transparent hover:border-neutral-600 hover:shadow-lg'
                       }`}
                     >
                       <img
@@ -101,13 +101,13 @@ const WordImageOptions: React.FC<WordImageOptionsProps> = ({ word, data, onImage
                         className="w-full h-full object-contain rounded-xl"
                       />
                       {isSelected && (
-                        <div className="absolute -top-3 -right-3 bg-accent text-slate-900 rounded-full p-2 shadow-xl z-20 animate-bounce">
+                        <div className="absolute -top-3 -right-3 bg-neutral-500 text-black rounded-full p-2 shadow-xl z-20 animate-bounce">
                           <CheckIcon className="w-4 h-4" />
                         </div>
                       )}
                       {!isSelected && (
-                         <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
-                            <span className="bg-slate-800 text-accent font-black text-[10px] px-3 py-1.5 rounded-full shadow-lg uppercase tracking-widest scale-75 group-hover:scale-100 transition-transform">Select</span>
+                         <div className="absolute inset-0 bg-neutral-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+                            <span className="bg-neutral-800 text-white font-black text-[10px] px-3 py-1.5 rounded-full shadow-lg uppercase tracking-widest scale-75 group-hover:scale-100 transition-transform">Select</span>
                          </div>
                       )}
                     </div>

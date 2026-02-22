@@ -42,7 +42,7 @@ const MultiImageSelector: React.FC<MultiImageSelectorProps> = ({
           <button
             onClick={onSave}
             disabled={!hasSelection}
-            className="bg-accent text-slate-900 font-bold py-3 px-12 rounded-xl hover:bg-secondary transition-colors duration-300 disabled:bg-slate-600 disabled:cursor-not-allowed text-xl shadow-lg"
+            className="bg-neutral-600 text-white font-bold py-3 px-12 rounded-xl hover:bg-neutral-500 transition-colors duration-300 disabled:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50 text-xl shadow-lg"
           >
             Download Selected Images
           </button>
