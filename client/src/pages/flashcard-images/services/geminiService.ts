@@ -30,7 +30,7 @@ function getFriendlyApiErrorMessage(error: unknown): string {
 
 /** Global base prompt used for ALL styles. Can be overridden by the user. */
 export const getDefaultBasePrompt = (): string =>
-  "Educational flashcard image. Clear recognizable silhouette. Realistic proportions. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
+  "Educational flashcard image. Clear recognizable images. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
 
 const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 
@@ -40,7 +40,7 @@ export const getDefaultStylePrompt = (style: ArtStyle): string => {
     case ArtStyle.Clipart:
       return "Soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture.";
     case ArtStyle.Cartoon:
-      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Colorful painting. Gentle shading. Warm soft lighting. Bright, vibrant but balanced colors. Rounded shapes only. Friendly cheerful mood.";
+      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Colorful painting. Gentle shading. Warm soft lighting. Bright, vibrant colors. Friendly shapes. Cheerful mood.";
     case ArtStyle.Animation:
       return "Stylized 3D Pixar, Disney animation styles. Slightly realistic proportions. Soft cinematic lighting. Sharp images with subtle depth and shadows.";
     case ArtStyle.Vector:
