@@ -8,39 +8,39 @@ import confetti from "canvas-confetti";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
+// Unit 1 vocabulary - Greeting
 const allVocabulary = [
   { word: "I", file: "I.png", turkish: "ben" },
   { word: "you", file: "you.png", turkish: "sen/siz" },
-  { word: "good", file: "good.png", turkish: "iyi" },
-  { word: "bad", file: "bad.png", turkish: "kötü" },
-  { word: "happy", file: "happy.png", turkish: "mutlu" },
-  { word: "unhappy (sad)", file: "unhappy (sad).png", turkish: "mutsuz (üzgün)" },
-  { word: "angry", file: "angry.png", turkish: "kızgın" },
-  { word: "surprised", file: "surprised.png", turkish: "şaşkın" },
-  { word: "energetic", file: "energetic.png", turkish: "enerjik" },
-  { word: "tired", file: "tired.png", turkish: "yorgun" },
-  { word: "hungry", file: "hungry.png", turkish: "aç" },
-  { word: "thirsty", file: "thirrsty.png", turkish: "susamış" },
-  { word: "full", file: "full.png", turkish: "tok" },
-  { word: "bored", file: "bored.png", turkish: "sıkılmış" },
-  { word: "feel", file: "feel.png", turkish: "hissetmek" },
-  { word: "eat", file: "eat.png", turkish: "yemek" },
-  { word: "drink", file: "drink.png", turkish: "içmek" },
-  { word: "walk", file: "walk.png", turkish: "yürümek" },
-  { word: "study", file: "study.png", turkish: "çalışmak" },
-  { word: "cook", file: "cook.png", turkish: "pişirmek" },
-  { word: "watch", file: "watch.png", turkish: "izlemek" },
-  { word: "swim", file: "swim.png", turkish: "yüzmek" },
-  { word: "read", file: "read.png", turkish: "okumak" },
-  { word: "sleep", file: "sleep.png", turkish: "uyumak" },
-  { word: "run", file: "run.png", turkish: "koşmak" },
-  { word: "sing a song", file: "sing a song.png", turkish: "şarkı söylemek" },
-  { word: "listen", file: "listen.png", turkish: "dinlemek" },
-  { word: "look", file: "look.png", turkish: "bakmak" },
-  { word: "Let's go", file: "Let's go.png", turkish: "hadi gidelim" },
-  { word: "how are you?", file: "how are you.png", turkish: "nasılsın?" },
-  { word: "cake", file: "cake.png", turkish: "pasta" },
-  { word: "water", file: "water.png", turkish: "su" },
+  { word: "hello", file: "hello.png", turkish: "merhaba" },
+  { word: "hi", file: "hi.png", turkish: "selam" },
+  { word: "good morning", file: "good morning.png", turkish: "günaydın" },
+  { word: "good afternoon", file: "good afternoon.png", turkish: "iyi öğleden sonraları" },
+  { word: "good evening", file: "good evening.png", turkish: "iyi akşamlar" },
+  { word: "good night", file: "good night.png", turkish: "iyi geceler" },
+  { word: "goodbye", file: "goodbye.png", turkish: "hoşça kal" },
+  { word: "take care", file: "take care.png", turkish: "kendine iyi bak" },
+  { word: "nice to meet you", file: "nice to meet you.png", turkish: "tanıştığımıza memnun oldum" },
+  { word: "see you soon", file: "see you soon.png", turkish: "yakında görüşürüz" },
+  { word: "alphabet", file: "alphabet.png", turkish: "alfabe" },
+  { word: "letters", file: "letters.png", turkish: "harfler" },
+  { word: "spell", file: "spell.png", turkish: "hecelemek" },
+  { word: "student", file: "student.png", turkish: "öğrenci" },
+  { word: "numbers", file: "numbers.png", turkish: "sayılar" },
+  { word: "eleven", file: "eleven.png", turkish: "on bir" },
+  { word: "twelve", file: "twelve.png", turkish: "on iki" },
+  { word: "twenty", file: "twenty.png", turkish: "yirmi" },
+  { word: "count", file: "count.png", turkish: "saymak" },
+  { word: "plus", file: "plus.png", turkish: "artı" },
+  { word: "minus", file: "minus.png", turkish: "eksi" },
+  { word: "birthday", file: "birthday.png", turkish: "doğum günü" },
+  { word: "how old are you?", file: "how old are you.png", turkish: "kaç yaşındasın?" },
+  { word: "years old", file: "years old.png", turkish: "yaşında" },
+  { word: "age", file: "age.png", turkish: "yaş" },
+  { word: "say", file: "say.png", turkish: "söylemek" },
+  { word: "write", file: "write.png", turkish: "yazmak" },
+  { word: "draw", file: "draw.png", turkish: "çizmek" },
+  { word: "picture", file: "picture.png", turkish: "resim" },
 ];
 
 interface FallingWord {
@@ -318,7 +318,7 @@ export default function WordRaceGame() {
                   <Button variant="outline" onClick={shareGame}>
                     <Share2 className="h-4 w-4 mr-2" /> Share
                   </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-4/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
                   Back to Games
                 </Button>
                 </div>
@@ -338,7 +338,7 @@ export default function WordRaceGame() {
                 <Button onClick={startGame} variant="outline" className="footer-button">
                   <RefreshCw className="h-4 w-4" /> Reset
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-4/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
                   ← Back
                 </Button>
               </div>

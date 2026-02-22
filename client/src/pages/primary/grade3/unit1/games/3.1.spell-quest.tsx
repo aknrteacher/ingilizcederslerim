@@ -16,39 +16,39 @@ interface VocabWord {
   file: string;
 }
 
+// Unit 1 vocabulary - Greeting (uppercase / compressed for spelling)
 const vocabulary: VocabWord[] = [
   { word: "I", turkish: "Ben", file: "I.png" },
   { word: "YOU", turkish: "Sen/siz", file: "you.png" },
-  { word: "GOOD", turkish: "İyi", file: "good.png" },
-  { word: "BAD", turkish: "Kötü", file: "bad.png" },
-  { word: "HAPPY", turkish: "Mutlu", file: "happy.png" },
-  { word: "SAD", turkish: "Üzgün", file: "unhappy (sad).png" },
-  { word: "ANGRY", turkish: "Kızgın", file: "angry.png" },
-  { word: "SURPRISED", turkish: "Şaşkın", file: "surprised.png" },
-  { word: "ENERGETIC", turkish: "Enerjik", file: "energetic.png" },
-  { word: "TIRED", turkish: "Yorgun", file: "tired.png" },
-  { word: "HUNGRY", turkish: "Aç", file: "hungry.png" },
-  { word: "THIRSTY", turkish: "Susamış", file: "thirrsty.png" },
-  { word: "FULL", turkish: "Tok", file: "full.png" },
-  { word: "BORED", turkish: "Sıkılmış", file: "bored.png" },
-  { word: "FEEL", turkish: "Hissetmek", file: "feel.png" },
-  { word: "EAT", turkish: "Yemek", file: "eat.png" },
-  { word: "DRINK", turkish: "İçmek", file: "drink.png" },
-  { word: "WALK", turkish: "Yürümek", file: "walk.png" },
-  { word: "STUDY", turkish: "Çalışmak", file: "study.png" },
-  { word: "COOK", turkish: "Pişirmek", file: "cook.png" },
-  { word: "WATCH", turkish: "İzlemek", file: "watch.png" },
-  { word: "SWIM", turkish: "Yüzmek", file: "swim.png" },
-  { word: "READ", turkish: "Okumak", file: "read.png" },
-  { word: "SLEEP", turkish: "Uyumak", file: "sleep.png" },
-  { word: "RUN", turkish: "Koşmak", file: "run.png" },
-  { word: "SING A SONG", turkish: "Şarkı söylemek", file: "sing a song.png" },
-  { word: "LISTEN", turkish: "Dinlemek", file: "listen.png" },
-  { word: "LOOK", turkish: "Bakmak", file: "look.png" },
-  { word: "LET'S GO", turkish: "Hadi gidelim", file: "Let's go.png" },
-  { word: "HOW ARE YOU?", turkish: "Nasılsın?", file: "how are you.png" },
-  { word: "CAKE", turkish: "Pasta", file: "cake.png" },
-  { word: "WATER", turkish: "Su", file: "water.png" },
+  { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
+  { word: "HI", turkish: "Selam", file: "hi.png" },
+  { word: "GOODMORNING", turkish: "Günaydın", file: "good morning.png" },
+  { word: "GOODAFTERNOON", turkish: "İyi öğleden sonra", file: "good afternoon.png" },
+  { word: "GOODEVENING", turkish: "İyi akşamlar", file: "good evening.png" },
+  { word: "GOODNIGHT", turkish: "İyi geceler", file: "good night.png" },
+  { word: "GOODBYE", turkish: "Hoşça kal", file: "goodbye.png" },
+  { word: "TAKECARE", turkish: "Kendine iyi bak", file: "take care.png" },
+  { word: "NICETOMEETYOU", turkish: "Tanıştığımıza memnun oldum", file: "nice to meet you.png" },
+  { word: "SEEYOUSOON", turkish: "Yakında görüşürüz", file: "see you soon.png" },
+  { word: "ALPHABET", turkish: "Alfabe", file: "alphabet.png" },
+  { word: "LETTERS", turkish: "Harfler", file: "letters.png" },
+  { word: "SPELL", turkish: "Hecelemek", file: "spell.png" },
+  { word: "STUDENT", turkish: "Öğrenci", file: "student.png" },
+  { word: "NUMBERS", turkish: "Sayılar", file: "numbers.png" },
+  { word: "ELEVEN", turkish: "On bir", file: "eleven.png" },
+  { word: "TWELVE", turkish: "On iki", file: "twelve.png" },
+  { word: "TWENTY", turkish: "Yirmi", file: "twenty.png" },
+  { word: "COUNT", turkish: "Saymak", file: "count.png" },
+  { word: "PLUS", turkish: "Artı", file: "plus.png" },
+  { word: "MINUS", turkish: "Eksi", file: "minus.png" },
+  { word: "BIRTHDAY", turkish: "Doğum günü", file: "birthday.png" },
+  { word: "HOWOLDAREYOU", turkish: "Kaç yaşındasın?", file: "how old are you.png" },
+  { word: "YEARSOLD", turkish: "Yaşında", file: "years old.png" },
+  { word: "AGE", turkish: "Yaş", file: "age.png" },
+  { word: "SAY", turkish: "Söylemek", file: "say.png" },
+  { word: "WRITE", turkish: "Yazmak", file: "write.png" },
+  { word: "DRAW", turkish: "Çizmek", file: "draw.png" },
+  { word: "PICTURE", turkish: "Resim", file: "picture.png" },
 ];
 
 const letterColors = [
@@ -455,7 +455,7 @@ export default function SpellQuestGame() {
                   <Button onClick={startNewGame} className="play-again-btn" data-testid="button-play-again">
                     Play Again
                   </Button>
-                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-4/games")}>
+                <Button variant="outline" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
                   Back to Games
                 </Button>
                 </div>
@@ -478,7 +478,7 @@ export default function SpellQuestGame() {
                 <Button onClick={startNewGame} variant="outline" className="footer-button" data-testid="button-new-game">
                   New Game
                 </Button>
-                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-4/games")}>
+                <Button variant="outline" className="footer-button" onClick={() => setLocation("/primary-school/grade-3/unit-1/games")}>
                   ← Back
                 </Button>
               </div>

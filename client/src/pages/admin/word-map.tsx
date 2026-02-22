@@ -360,8 +360,8 @@ export default function WordMapPage() {
               <span className="flex items-center gap-1">
                 <span className="inline-block w-2.5 h-2.5 bg-blue-500 rounded-sm" /> diff level
               </span>
-              <span className="flex items-center gap-1">
-                <span className="inline-block w-2.5 h-2.5 bg-yellow-500 rounded-sm" /> same level
+              <span className="flex items-center gap-1" title="Word was already in an earlier grade (e.g. 3rd grade when viewing 4th)">
+                <span className="inline-block w-2.5 h-2.5 bg-yellow-500 rounded-sm" /> earlier grade
               </span>
               <span className="flex items-center gap-1">
                 <span className="inline-flex items-center justify-center w-2.5 h-2.5 bg-green-500 rounded-sm text-[6px] font-bold text-white">+</span> same grade
