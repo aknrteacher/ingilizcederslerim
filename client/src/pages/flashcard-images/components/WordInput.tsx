@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArtStyle } from '../types';
-import { generateStylePreview, getDefaultStylePrompt } from '../services/geminiService';
+import { generateStylePreview, getDefaultStylePrompt, isGeminiApiKeySet } from '../services/geminiService';
 import SpinnerIcon from './icons/SpinnerIcon';
 
 export type CustomStylePrompts = Partial<Record<ArtStyle, string>>;
@@ -34,12 +34,14 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   const [customStylePrompts, setCustomStylePrompts] = useState<CustomStylePrompts>({});
   const [editingPromptFor, setEditingPromptFor] = useState<ArtStyle | null>(null);
   const [editingPromptDraft, setEditingPromptDraft] = useState('');
+  const [previewError, setPreviewError] = useState<string | null>(null);
 
   const handleGeneratePreviews = async () => {
     const wordsList = previewWords.split(/,|\n/).map(w => w.trim()).filter(Boolean);
     if (wordsList.length === 0) return;
 
     const sampleWord = wordsList[0];
+    setPreviewError(null);
     setIsPreviewLoading(true);
     setStylePreviews({
       [ArtStyle.Clipart]: null,
@@ -62,6 +64,8 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
       });
       setStylePreviews(next);
     } catch (err) {
+      const message = err instanceof Error ? err.message : 'Preview failed.';
+      setPreviewError(message);
       console.error(err);
     } finally {
       setIsPreviewLoading(false);
@@ -102,6 +106,11 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
       <div className="bg-slate-800 p-8 rounded-2xl border border-slate-600/50">
         <h2 className="text-2xl font-bold text-slate-100 mb-2">Preview Styles</h2>
         <p className="text-slate-400 text-sm mb-6">Enter one or more words to see a preview of each style.</p>
+        {previewError && (
+          <div className="mb-4 p-3 rounded-xl bg-red-900/30 border border-red-700 text-red-300 text-sm">
+            {previewError}
+          </div>
+        )}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
           <input
             type="text"
@@ -113,7 +122,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
           <button
             type="button"
             onClick={handleGeneratePreviews}
-            disabled={!previewWords.trim() || isPreviewLoading}
+            disabled={!previewWords.trim() || isPreviewLoading || !isGeminiApiKeySet()}
             className="px-6 py-3 bg-accent hover:bg-secondary text-slate-900 font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isPreviewLoading ? (
@@ -252,7 +261,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
 
           <button
             type="submit"
-            disabled={!words.trim()}
+            disabled={!words.trim() || !isGeminiApiKeySet()}
             className="w-full py-4 bg-accent hover:bg-secondary text-slate-900 font-bold rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg"
           >
             Generate

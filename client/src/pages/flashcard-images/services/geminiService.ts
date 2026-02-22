@@ -1,6 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 import { ArtStyle } from "../types";
 
+/** Use this in the UI to show a message when the key is missing. Vite only loads .env at startup. */
+export const isGeminiApiKeySet = (): boolean =>
+  !!import.meta.env.VITE_GEMINI_API_KEY?.trim?.();
+
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
@@ -59,8 +63,8 @@ export const generateImageOptions = async (
   customStylePrompts?: Partial<Record<ArtStyle, string>>
 ): Promise<string[]> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (!apiKey) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to your .env file.");
-  const ai = new GoogleGenAI({ apiKey });
+  if (!apiKey?.trim()) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to .env in the project root and restart the dev server.");
+  const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
   const targetCount = Math.min(4, Math.max(2, imagesPerWord));
   const prompt = getPrompt(word, style, targetCount, clarification, customStylePrompts);
   const allImages: string[] = [];
@@ -102,8 +106,8 @@ export const generateImageOptions = async (
 
 export const generateStylePreview = async (style: ArtStyle, word?: string, customStylePrompts?: Partial<Record<ArtStyle, string>>): Promise<string> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-  if (!apiKey) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to your .env file.");
-  const ai = new GoogleGenAI({ apiKey });
+  if (!apiKey?.trim()) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to .env in the project root and restart the dev server.");
+  const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
   const subject = word?.trim() || "Magnificent Snowy Owl";
   const prompt = `Generate ONE high-quality image of "${subject}" in the "${style}" style: ${getStylePrompt(style, customStylePrompts)}. 
 Requirements: Subject must FILL the frame (large, 70–80% of canvas), tight crop, minimal empty space. Solid white background, centered, no text.`;
