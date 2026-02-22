@@ -30,7 +30,7 @@ function getFriendlyApiErrorMessage(error: unknown): string {
 
 /** Global base prompt used for ALL styles. Can be overridden by the user. */
 export const getDefaultBasePrompt = (): string =>
-  "Educational flashcard image. Single centered subject. Clear recognizable silhouette. Realistic proportions. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
+  "Educational flashcard image. Clear recognizable silhouette. Realistic proportions. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
 
 const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 
@@ -40,13 +40,13 @@ export const getDefaultStylePrompt = (style: ArtStyle): string => {
     case ArtStyle.Clipart:
       return "Simple 2D clipart style. Thick bold outlines. Flat vibrant colors. Minimal detail.";
     case ArtStyle.Cartoon:
-      return "Clean 2D cartoon style. Rounded shapes. Smooth outlines. Bright saturated colors. Very simple shading only.";
+      return "Clean 2D children's cartoon style. Rounded shapes. Smooth outlines. Bright colors. Simple shading.";
     case ArtStyle.Animation:
-      return "Stylized 3D animation style. Slightly realistic proportions. Soft cinematic lighting. Subtle depth and shadows. Not childish.";
+      return "Stylized 3D Pİxar animation style. Slightly realistic proportions. Soft cinematic lighting. Subtle depth and shadows.";
     case ArtStyle.Vector:
       return "Modern flat vector style. Natural shapes. Smooth precise edges. Limited balanced color palette. Minimal flat shading. No artistic distortion.";
     case ArtStyle.Comics:
-      return "Mature comic drawing style. Refined linework. Subtle controlled shading. Natural relaxed pose. Slightly muted colors. No dramatic angles.";
+      return "Comic drawing style. Refined linework. Subtle controlled shading. Natural relaxed pose. Comic books elements.";
     case ArtStyle.Realistic:
       return "Professional realistic photography. Natural lighting. True-to-life colors. Neutral tone. No artistic filters.";
     default:
