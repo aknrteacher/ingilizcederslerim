@@ -24,18 +24,18 @@ export interface LandingItem {
 
 /** What we are currently working on — update when you start a new focus. */
 export const nowWorkingOn: LandingItem = {
-  title: "4. Sınıf Ünite 6 Kelime Oyunları",
-  href: "/primary-school/grade-4/unit-6/games",
-  description: "4. sınıf 6. ünite kelime oyunları ve etkileşimli aktiviteler.",
+  title: "3. Sınıf Ünite 7: In My City",
+  href: "/primary-school/grade-3/unit-7/games",
+  description: "3. sınıf 7. ünite kelime kartları ve kelime oyunları (In My City).",
   addedAt: "2025-02-22",
   level: "primary-school",
 };
 
 /** The most recently added page — update when you publish new content. */
 export const lastAdded: LandingItem = {
-  title: "4. Sınıf Ünite 6 Kelime Kartları",
-  href: "/primary-school/grade-4/unit-6/4.6-vocab",
-  description: "4. sınıf 6. ünite kelime kartları.",
+  title: "3. Sınıf Ünite 7 Kelime Oyunları",
+  href: "/primary-school/grade-3/unit-7/games",
+  description: "3. sınıf 7. ünite kelime oyunları (In My City) — 9 oyun.",
   addedAt: "2025-02-22",
   level: "primary-school",
 };

@@ -1,0 +1,41 @@
+---
+description: When adding new content, update admin workflow and landing page sections
+alwaysApply: true
+---
+
+# Update Workflow, Last Added & Now Working On
+
+**Whenever you add new content to the site** (new units, themes, vocab pages, games, grades, or other publishable material), you **must** update these three places in the same change set:
+
+## 1. Admin workflow — `client/src/data/workflowData.ts`
+
+- **Add or update the theme/unit** in `workflowData` for the level and grade you changed.
+- Set each content type’s `count` to match what actually exists (e.g. `vocab: 1`, `matching: 1`, …, `word-snake: 1` for a full unit).
+- For **Primary Grade 3**, themes live under `id: 'primary'` → `grades` → `id: 'grade3'` → `themes`. Use ids like `g3-theme7` and names like `Unit 7: In My City`.
+- For **Primary Grade 2**, use `grade2` and theme ids like `theme1`…`theme6`.
+- For **Primary Grade 4**, use `grade4` and theme ids like `g4-theme1`.
+- For **Pre-school**, topics are under `id: 'preschool'` → `grades` → `themes` (e.g. `alphabet`, `numbers`, `colours`).
+- If you add a **new content type** used site-wide, add it to `primaryContentTypes` or the level’s content array and to existing themes as needed.
+
+## 2. Landing page — “Last added” — `client/src/data/landing-updates.ts`
+
+- Update **`lastAdded`** to the **most recently published** page:
+  - `title`: short Turkish title (e.g. `"3. Sınıf Ünite 7 Kelime Oyunları"`).
+  - `href`: exact route (e.g. `"/primary-school/grade-3/unit-7/games"` or `"/primary-school/grade-3/unit-7/3.7-vocab"`).
+  - `description`: one short sentence.
+  - `addedAt`: ISO date (e.g. `"2025-02-22"`).
+  - `level`: one of `"pre-school" | "primary-school" | "secondary-school" | "high-school" | "university" | "business-english"`.
+
+## 3. Landing page — “Now working on” — `client/src/data/landing-updates.ts`
+
+- Update **`nowWorkingOn`** to whatever you are **currently focusing on** (e.g. the next unit or feature you’re building).
+- Use the same `LandingItem` shape as `lastAdded`.
+- If the “new stuff” you added is the current focus, you can set `nowWorkingOn` to that same item or to the next planned item.
+
+## Checklist (run when adding new content)
+
+- [ ] **Workflow:** `workflowData.ts` — new/updated theme or unit with correct content counts.
+- [ ] **Landing:** `landing-updates.ts` — `lastAdded` = most recently published page.
+- [ ] **Landing:** `landing-updates.ts` — `nowWorkingOn` = current focus (or next).
+
+Do not skip these updates when adding new units, games, vocab, or other publishable content.
