@@ -258,6 +258,7 @@ import WorkflowPage from "@/pages/admin/workflow";
 import ClassroomMonitoring from "@/pages/classroom-monitoring";
 import InClass from "@/pages/inclass";
 import ClassMonitor from "@/pages/class-monitor";
+import AdminFlashcardImagesPage from "@/pages/admin/flashcard-images";
 
 function Router() {
   return (
@@ -519,6 +520,13 @@ function Router() {
         {() => (
           <AdminGate>
             <AdminDashboard />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/flashcard-images">
+        {() => (
+          <AdminGate>
+            <AdminFlashcardImagesPage />
           </AdminGate>
         )}
       </Route>
