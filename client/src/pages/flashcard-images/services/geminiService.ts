@@ -38,13 +38,13 @@ const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
-      return "Educational flashcard illustration in soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture. No background elements. Single centered subject. Object fully visible. No text. No watermark.";
+      return "Soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture.";
     case ArtStyle.Cartoon:
-      return "Educational flashcard illustration in soft children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Smooth digital painting. Gentle gradient shading. Warm soft lighting. Bright but slightly pastel-balanced colors. Rounded shapes only. Friendly cheerful mood. Clean white background. Single clear subject focus. No harsh outlines. No realistic textures. No text. No watermark.";
+      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Colorful painting. Gentle shading. Warm soft lighting. Bright, vibrant but balanced colors. Rounded shapes only. Friendly cheerful mood.";
     case ArtStyle.Animation:
-      return "Stylized 3D Pİxar animation style. Slightly realistic proportions. Soft cinematic lighting. Subtle depth and shadows.";
+      return "Stylized 3D Pixar, Disney animation styles. Slightly realistic proportions. Soft cinematic lighting. Sharp images with subtle depth and shadows.";
     case ArtStyle.Vector:
-      return "Modern flat vector style. Natural shapes. Smooth precise edges. Limited balanced color palette. Minimal flat shading. No artistic distortion.";
+      return "Modern flat vector style. Natural shapes. Precise edges. Balanced color palette. Minimal shading. No artistic distortion.";
     case ArtStyle.Comics:
       return "Comic drawing style. Refined linework. Subtle controlled shading. Natural relaxed pose. Comic books elements.";
     case ArtStyle.Realistic:
