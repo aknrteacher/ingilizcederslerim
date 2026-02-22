@@ -17,7 +17,7 @@ export function Header({ mobileMenuTrigger }: HeaderProps) {
           </div>
         )}
         <h2 className="text-sm sm:text-lg font-semibold text-foreground/80 hidden sm:block">
-          Tekrar hoş geldiniz, John
+          Tekrar hoş geldiniz, Misafir Kullanıcı
         </h2>
       </div>
 

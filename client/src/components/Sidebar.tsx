@@ -758,8 +758,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
             JS
           </div>
           <div className="flex flex-col overflow-hidden min-w-0 flex-1 text-left">
-            <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-sidebar-primary transition-colors">John Student</span>
-            <span className="text-[10px] text-sidebar-foreground/50 truncate group-hover:text-sidebar-foreground/70 transition-colors">Premium Plan</span>
+            <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-sidebar-primary transition-colors">Misafir Kullanıcı</span>
           </div>
         </button>
       </div>
