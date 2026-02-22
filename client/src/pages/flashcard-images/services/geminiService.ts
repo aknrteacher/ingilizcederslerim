@@ -38,9 +38,9 @@ const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
-      return "Simple 2D clipart style. Thick bold outlines. Flat vibrant colors. Minimal detail.";
+      return "Educational flashcard illustration in soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture. No background elements. Single centered subject. Object fully visible. No text. No watermark.";
     case ArtStyle.Cartoon:
-      return "Clean 2D children's cartoon style. Rounded shapes. Smooth outlines. Bright colors. Simple shading.";
+      return "Educational flashcard illustration in soft children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Smooth digital painting. Gentle gradient shading. Warm soft lighting. Bright but slightly pastel-balanced colors. Rounded shapes only. Friendly cheerful mood. Clean white background. Single clear subject focus. No harsh outlines. No realistic textures. No text. No watermark.";
     case ArtStyle.Animation:
       return "Stylized 3D Pİxar animation style. Slightly realistic proportions. Soft cinematic lighting. Subtle depth and shadows.";
     case ArtStyle.Vector:
