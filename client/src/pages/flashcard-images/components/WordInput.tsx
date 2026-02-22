@@ -16,8 +16,8 @@ const styles: { id: ArtStyle; label: string; imageSrc: string }[] = [
   { id: ArtStyle.Clipart, label: 'Clipart', imageSrc: `${STYLE_IMAGE_BASE}/clipart.png` },
   { id: ArtStyle.Cartoon, label: 'Cartoon', imageSrc: `${STYLE_IMAGE_BASE}/cartoon.png` },
   { id: ArtStyle.Animation, label: 'Animation', imageSrc: `${STYLE_IMAGE_BASE}/animation.png` },
-  { id: ArtStyle.Vector, label: 'Vector', imageSrc: `${STYLE_IMAGE_BASE}/vector.png` },
   { id: ArtStyle.Comics, label: 'Comics', imageSrc: `${STYLE_IMAGE_BASE}/comics.png` },
+  { id: ArtStyle.Vector, label: 'Vector', imageSrc: `${STYLE_IMAGE_BASE}/vector.png` },
   { id: ArtStyle.Realistic, label: 'Realistic', imageSrc: `${STYLE_IMAGE_BASE}/realistic.png` },
 ];
 

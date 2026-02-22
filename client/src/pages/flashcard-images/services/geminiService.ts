@@ -30,7 +30,7 @@ function getFriendlyApiErrorMessage(error: unknown): string {
 
 /** Global base prompt used for ALL styles. Can be overridden by the user. */
 export const getDefaultBasePrompt = (): string =>
-  "Educational flashcard image. Clear recognizable images. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
+  "High-quality educational flashcard image. Clearly defined, recognizable subject on solid pure white background. No background elements. Not cropped. No text, no label, no watermark. No decorative elements. Isolated composition optimized for vocabulary learning.";
 
 const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 
@@ -38,17 +38,17 @@ const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
-      return "Soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture.";
+      return "Soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside iconic shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture.";
     case ArtStyle.Cartoon:
-      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Soft blush on cheeks. Colorful painting. Gentle shading. Warm soft lighting. Bright, vibrant colors. Friendly shapes. Cheerful mood.";
+      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Whimsical charm. Bright, vibrant colors. Gentle shading. Warm soft lighting. Friendly shapes. Engaging aesthetic for children. Cheerful mood.";
     case ArtStyle.Animation:
-      return "Stylized 3D Pixar, Disney animation styles. Slightly realistic proportions. Soft cinematic lighting. Sharp images with subtle depth and shadows.";
+      return "Modern 3D Pixar, Disney animation styles. Slightly realistic proportions. Soft studio lighting. Sharp images with subtle depth of field, giving it a polished and contemporary look.";
     case ArtStyle.Vector:
       return "Modern flat vector style. Natural shapes. Precise edges. Balanced color palette. Minimal shading. No artistic distortion.";
     case ArtStyle.Comics:
-      return "Comic drawing style. Refined linework. Subtle controlled shading. Natural relaxed pose. Comic books elements.";
+      return "Graphic novel comic book art. Refined linework with bold ink lines. Subtle controlled cel-shading. Natural relaxed pose. Modern comic book illustration elements.";
     case ArtStyle.Realistic:
-      return "Professional realistic photography. Natural lighting. True-to-life colors. Neutral tone. No artistic filters.";
+      return "Professional realistic crisp photography. Natural lighting. Sharp focus. True-to-life colors. No artistic filters. High-definition, sharp focus, professional lighting.";
     default:
       return "High-quality professional illustration.";
   }
