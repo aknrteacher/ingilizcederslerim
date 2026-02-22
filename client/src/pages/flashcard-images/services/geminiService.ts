@@ -28,11 +28,13 @@ function getFriendlyApiErrorMessage(error: unknown): string {
   return msg;
 }
 
-/** Global base prompt used for ALL styles. */
-const FLASHCARD_BASE_PROMPT =
+/** Global base prompt used for ALL styles. Can be overridden by the user. */
+export const getDefaultBasePrompt = (): string =>
   "Educational flashcard image. Single centered subject. Clear recognizable silhouette. Realistic proportions. Pure white background. No background elements. Object fully visible, not cropped. No text. No watermark. No decorative elements.";
 
-/** Style-only prompts (combined with FLASHCARD_BASE_PROMPT). */
+const FLASHCARD_BASE_PROMPT = getDefaultBasePrompt();
+
+/** Style-only prompts (combined with base prompt). */
 export const getDefaultStylePrompt = (style: ArtStyle): string => {
   switch (style) {
     case ArtStyle.Clipart:
@@ -58,13 +60,21 @@ const getStylePrompt = (style: ArtStyle, customPrompts?: Partial<Record<ArtStyle
   return getDefaultStylePrompt(style);
 };
 
-const getPrompt = (word: string, style: ArtStyle, count: number, clarification?: string, customPrompts?: Partial<Record<ArtStyle, string>>): string => {
+const getPrompt = (
+  word: string,
+  style: ArtStyle,
+  count: number,
+  clarification?: string,
+  customPrompts?: Partial<Record<ArtStyle, string>>,
+  customBasePrompt?: string
+): string => {
+  const base = (customBasePrompt?.trim() || FLASHCARD_BASE_PROMPT).trim();
   const stylePart = getStylePrompt(style, customPrompts);
   return `Generate exactly ${count} SEPARATE images. Each image must be a single standalone image—do NOT combine multiple subjects into one image, do NOT create a grid, collage, or multi-in-one layout.
 
 Subject: "${word}"
 
-${FLASHCARD_BASE_PROMPT}
+${base}
 
 Style: ${stylePart}
 ${clarification ? `\nAdditional detail: ${clarification}` : ""}`;
@@ -87,13 +97,15 @@ export const generateImageOptions = async (
   style: ArtStyle,
   clarification?: string,
   imagesPerWord: number = 3,
-  customStylePrompts?: Partial<Record<ArtStyle, string>>
+  customStylePrompts?: Partial<Record<ArtStyle, string>>,
+  customBasePrompt?: string
 ): Promise<string[]> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey?.trim()) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to .env in the project root and restart the dev server.");
   const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
   const targetCount = Math.min(4, Math.max(2, imagesPerWord));
-  const prompt = getPrompt(word, style, targetCount, clarification, customStylePrompts);
+  const base = (customBasePrompt?.trim() || FLASHCARD_BASE_PROMPT).trim();
+  const prompt = getPrompt(word, style, targetCount, clarification, customStylePrompts, customBasePrompt);
   const allImages: string[] = [];
 
   try {
@@ -110,7 +122,7 @@ export const generateImageOptions = async (
       const needed = targetCount - allImages.length;
       const retryPrompt = `Generate exactly ${needed} more SEPARATE image(s) of "${word}".
 
-${FLASHCARD_BASE_PROMPT}
+${base}
 
 Style: ${getStylePrompt(style, customStylePrompts)}
 
@@ -137,15 +149,21 @@ Each image must be standalone—no grid or collage.`;
   }
 };
 
-export const generateStylePreview = async (style: ArtStyle, word?: string, customStylePrompts?: Partial<Record<ArtStyle, string>>): Promise<string> => {
+export const generateStylePreview = async (
+  style: ArtStyle,
+  word?: string,
+  customStylePrompts?: Partial<Record<ArtStyle, string>>,
+  customBasePrompt?: string
+): Promise<string> => {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey?.trim()) throw new Error("VITE_GEMINI_API_KEY is not set. Add it to .env in the project root and restart the dev server.");
   const ai = new GoogleGenAI({ apiKey: apiKey.trim() });
   const subject = word?.trim() || "apple";
+  const base = (customBasePrompt?.trim() || FLASHCARD_BASE_PROMPT).trim();
   const stylePart = getStylePrompt(style, customStylePrompts);
   const prompt = `Generate ONE image of "${subject}".
 
-${FLASHCARD_BASE_PROMPT}
+${base}
 
 Style: ${stylePart}`;
 

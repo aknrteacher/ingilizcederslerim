@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArtStyle } from '../types';
-import { generateStylePreview, getDefaultStylePrompt, isGeminiApiKeySet } from '../services/geminiService';
+import { generateStylePreview, getDefaultStylePrompt, getDefaultBasePrompt, isGeminiApiKeySet } from '../services/geminiService';
 import SpinnerIcon from './icons/SpinnerIcon';
+
+const GLOBAL_PROMPT_STORAGE_KEY = 'flashcard-global-base-prompt';
 
 export type CustomStylePrompts = Partial<Record<ArtStyle, string>>;
 
 interface WordInputProps {
-  onSubmit: (words: string[], style: ArtStyle, imagesPerWord: number, customStylePrompts?: CustomStylePrompts) => void;
+  onSubmit: (words: string[], style: ArtStyle, imagesPerWord: number, customStylePrompts?: CustomStylePrompts, customBasePrompt?: string) => void;
 }
 
 const STYLE_IMAGE_BASE = '/images/flashcard-styles';
@@ -39,6 +41,18 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   const [editingPromptDraft, setEditingPromptDraft] = useState('');
   const [previewError, setPreviewError] = useState<string | null>(null);
   const [styleImageFailed, setStyleImageFailed] = useState<Set<ArtStyle>>(new Set());
+  const [customBasePrompt, setCustomBasePrompt] = useState('');
+  const [editingGlobalPrompt, setEditingGlobalPrompt] = useState(false);
+  const [globalPromptDraft, setGlobalPromptDraft] = useState('');
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(GLOBAL_PROMPT_STORAGE_KEY);
+      if (saved != null) setCustomBasePrompt(saved);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   const handleGeneratePreviews = async () => {
     const wordsList = previewWords.split(/,|\n/).map(w => w.trim()).filter(Boolean);
@@ -57,9 +71,10 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
     });
 
     try {
+      const baseForPreview = customBasePrompt.trim() || undefined;
       const results = await Promise.all(
         styles.map(async ({ id }) => {
-          const url = await generateStylePreview(id, sampleWord, customStylePrompts);
+          const url = await generateStylePreview(id, sampleWord, customStylePrompts, baseForPreview);
           return { style: id, url };
         })
       );
@@ -81,8 +96,31 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
     e.preventDefault();
     const wordsList = words.split(/,|\n/).map(w => w.trim()).filter(Boolean);
     if (wordsList.length > 0) {
-      onSubmit(wordsList, selectedStyle, imagesPerWord, customStylePrompts);
+      onSubmit(wordsList, selectedStyle, imagesPerWord, customStylePrompts, customBasePrompt.trim() || undefined);
     }
+  };
+
+  const openGlobalPromptEditor = () => {
+    setGlobalPromptDraft(customBasePrompt || getDefaultBasePrompt());
+    setEditingGlobalPrompt(true);
+  };
+
+  const saveGlobalPromptEdit = () => {
+    const trimmed = globalPromptDraft.trim();
+    setCustomBasePrompt(trimmed);
+    try {
+      if (trimmed) localStorage.setItem(GLOBAL_PROMPT_STORAGE_KEY, trimmed);
+      else localStorage.removeItem(GLOBAL_PROMPT_STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    setEditingGlobalPrompt(false);
+    setGlobalPromptDraft('');
+  };
+
+  const cancelGlobalPromptEdit = () => {
+    setEditingGlobalPrompt(false);
+    setGlobalPromptDraft('');
   };
 
   const openPromptEditor = (style: ArtStyle) => {
@@ -107,10 +145,63 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="w-full max-w-6xl space-y-10 animate-fade-in">
+    <>
+      {editingGlobalPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95" onClick={cancelGlobalPromptEdit}>
+          <div
+            className="w-full max-w-2xl bg-neutral-900 p-6 rounded-2xl border border-neutral-700 shadow-xl space-y-4 max-h-[85vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg font-bold text-white">Edit global base prompt</h3>
+            <p className="text-neutral-400 text-sm">This prompt is used for all styles. Style-specific text is added after it.</p>
+            <textarea
+              value={globalPromptDraft}
+              onChange={(e) => setGlobalPromptDraft(e.target.value)}
+              className="w-full p-4 bg-neutral-800 border border-neutral-600 rounded-xl text-white text-sm min-h-[140px] focus:ring-2 focus:ring-neutral-500 placeholder:text-neutral-500 flex-1 resize-y"
+              placeholder={getDefaultBasePrompt()}
+              autoFocus
+            />
+            <div className="flex gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={saveGlobalPromptEdit}
+                className="px-4 py-2 bg-neutral-600 text-white font-bold rounded-xl hover:bg-neutral-500"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                onClick={() => setGlobalPromptDraft(getDefaultBasePrompt())}
+                className="px-4 py-2 bg-neutral-700 text-white font-bold rounded-xl hover:bg-neutral-600"
+              >
+                Reset to default
+              </button>
+              <button
+                type="button"
+                onClick={cancelGlobalPromptEdit}
+                className="px-4 py-2 bg-neutral-700 text-neutral-300 font-bold rounded-xl hover:bg-neutral-600"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="w-full max-w-6xl space-y-10 animate-fade-in">
       <div className="bg-neutral-900 p-8 rounded-2xl border border-neutral-700">
-        <h2 className="text-2xl font-bold text-white mb-2">Preview Styles</h2>
-        <p className="text-neutral-400 text-sm mb-6">Enter one or more words to see a preview of each style.</p>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">Preview Styles</h2>
+            <p className="text-neutral-400 text-sm">Enter one or more words to see a preview of each style.</p>
+          </div>
+          <button
+            type="button"
+            onClick={openGlobalPromptEditor}
+            className="text-sm font-medium text-neutral-400 hover:text-white px-3 py-2 rounded-lg border border-neutral-600 hover:border-neutral-500 transition-colors"
+          >
+            {customBasePrompt ? 'Edit global prompt •' : 'Edit global prompt'}
+          </button>
+        </div>
         {previewError && (
           <div className="mb-4 p-3 rounded-xl bg-red-900/30 border border-red-700 text-red-300 text-sm">
             {previewError}
@@ -282,7 +373,8 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
           </button>
         </form>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

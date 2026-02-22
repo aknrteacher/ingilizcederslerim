@@ -19,18 +19,21 @@ function FlashcardImagesApp() {
   const [words, setWords] = useState<string[]>([]);
   const [savedImages, setSavedImages] = useState<SavedImage[]>([]);
   const [imageData, setImageData] = useState<Map<string, WordImageData>>(new Map<string, WordImageData>());
+  const [currentBasePrompt, setCurrentBasePrompt] = useState<string | undefined>(undefined);
 
   const handleWordsSubmit = useCallback(async (
     submittedWords: string[],
     style: ArtStyle,
     imagesPerWord: number = 3,
-    customStylePrompts?: Partial<Record<ArtStyle, string>>
+    customStylePrompts?: Partial<Record<ArtStyle, string>>,
+    customBasePrompt?: string
   ) => {
     const filteredWords = submittedWords.filter(word => word.trim() !== '');
     if (filteredWords.length === 0) return;
 
     setWords(filteredWords);
     setSavedImages([]);
+    setCurrentBasePrompt(customBasePrompt);
     setAppState(AppState.Selecting);
 
     const initialData = new Map<string, WordImageData>();
@@ -50,7 +53,7 @@ function FlashcardImagesApp() {
 
     for (const word of filteredWords) {
         try {
-            const images = await generateImageOptions(word, style, undefined, imagesPerWord, customStylePrompts);
+            const images = await generateImageOptions(word, style, undefined, imagesPerWord, customStylePrompts, customBasePrompt);
             setImageData(prev => {
                 const newData = new Map<string, WordImageData>(prev);
                 const current = newData.get(word);
@@ -108,7 +111,7 @@ function FlashcardImagesApp() {
     });
 
     try {
-      const newImages = await generateImageOptions(word, data.style, data.clarification, data.imagesPerWord, data.customStylePrompts);
+      const newImages = await generateImageOptions(word, data.style, data.clarification, data.imagesPerWord, data.customStylePrompts, currentBasePrompt);
       setImageData(prev => {
         const newData = new Map<string, WordImageData>(prev);
         const currentData = newData.get(word);
@@ -128,7 +131,7 @@ function FlashcardImagesApp() {
         return newData;
       });
     }
-  }, [imageData]);
+  }, [imageData, currentBasePrompt]);
 
   const handleImageSelect = useCallback((word: string, imageUrl: string) => {
     setImageData(prev => {
