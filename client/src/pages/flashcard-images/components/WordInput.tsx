@@ -8,7 +8,7 @@ const GLOBAL_PROMPT_STORAGE_KEY = 'flashcard-global-base-prompt';
 export type CustomStylePrompts = Partial<Record<ArtStyle, string>>;
 
 interface WordInputProps {
-  onSubmit: (words: string[], style: ArtStyle, imagesPerWord: number, customStylePrompts?: CustomStylePrompts, customBasePrompt?: string) => void;
+  onSubmit: (words: string[], style: ArtStyle, imagesPerWord: number, customStylePrompts?: CustomStylePrompts, customBasePrompt?: string, gradeUnit?: string) => void;
 }
 
 const STYLE_IMAGE_BASE = '/images/flashcard-styles';
@@ -44,6 +44,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
   const [customBasePrompt, setCustomBasePrompt] = useState('');
   const [editingGlobalPrompt, setEditingGlobalPrompt] = useState(false);
   const [globalPromptDraft, setGlobalPromptDraft] = useState('');
+  const [gradeUnit, setGradeUnit] = useState('');
 
   useEffect(() => {
     try {
@@ -96,7 +97,7 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
     e.preventDefault();
     const wordsList = words.split(/,|\n/).map(w => w.trim()).filter(Boolean);
     if (wordsList.length > 0) {
-      onSubmit(wordsList, selectedStyle, imagesPerWord, customStylePrompts, customBasePrompt.trim() || undefined);
+      onSubmit(wordsList, selectedStyle, imagesPerWord, customStylePrompts, customBasePrompt.trim() || undefined, gradeUnit.trim() || undefined);
     }
   };
 
@@ -310,6 +311,17 @@ const WordInput: React.FC<WordInputProps> = ({ onSubmit }) => {
         <p className="text-neutral-400 text-sm mb-6">Choose a style and enter your vocabulary. Generate 2, 3, or 4 images per word to pick from.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-3">Grade, Unit</label>
+            <input
+              type="text"
+              value={gradeUnit}
+              onChange={(e) => setGradeUnit(e.target.value)}
+              placeholder="e.g. 2.6"
+              className="w-full max-w-[8rem] px-4 py-2 bg-neutral-800 border border-neutral-600 rounded-xl text-white placeholder:text-neutral-500 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 text-sm"
+            />
+            <p className="text-xs text-neutral-500 mt-1">Zip file will be named: <code className="bg-neutral-800 px-1 rounded">{gradeUnit.trim() || '2.6'}_voc_raw.zip</code></p>
+          </div>
           <div>
             <label className="block text-sm font-medium text-neutral-400 mb-3">Images per word</label>
             <div className="flex gap-3 mb-6">

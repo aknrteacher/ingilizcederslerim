@@ -20,13 +20,15 @@ function FlashcardImagesApp() {
   const [savedImages, setSavedImages] = useState<SavedImage[]>([]);
   const [imageData, setImageData] = useState<Map<string, WordImageData>>(new Map<string, WordImageData>());
   const [currentBasePrompt, setCurrentBasePrompt] = useState<string | undefined>(undefined);
+  const [currentGradeUnit, setCurrentGradeUnit] = useState<string | undefined>(undefined);
 
   const handleWordsSubmit = useCallback(async (
     submittedWords: string[],
     style: ArtStyle,
     imagesPerWord: number = 3,
     customStylePrompts?: Partial<Record<ArtStyle, string>>,
-    customBasePrompt?: string
+    customBasePrompt?: string,
+    gradeUnit?: string
   ) => {
     const filteredWords = submittedWords.filter(word => word.trim() !== '');
     if (filteredWords.length === 0) return;
@@ -34,6 +36,7 @@ function FlashcardImagesApp() {
     setWords(filteredWords);
     setSavedImages([]);
     setCurrentBasePrompt(customBasePrompt);
+    setCurrentGradeUnit(gradeUnit);
     setAppState(AppState.Selecting);
 
     const initialData = new Map<string, WordImageData>();
@@ -51,38 +54,38 @@ function FlashcardImagesApp() {
     });
     setImageData(initialData);
 
-    for (const word of filteredWords) {
-        try {
-            const images = await generateImageOptions(word, style, undefined, imagesPerWord, customStylePrompts, customBasePrompt);
-            setImageData(prev => {
-                const newData = new Map<string, WordImageData>(prev);
-                const current = newData.get(word);
-                if (current) {
-                  newData.set(word, {
-                    ...current,
-                    images: images,
-                    loading: false,
-                    error: null,
-                  });
-                }
-                return newData;
+    const BATCH_SIZE = 4;
+    const batches: string[][] = [];
+    for (let i = 0; i < filteredWords.length; i += BATCH_SIZE) {
+      batches.push(filteredWords.slice(i, i + BATCH_SIZE));
+    }
+
+    for (const batch of batches) {
+      const results = await Promise.allSettled(
+        batch.map((word) =>
+          generateImageOptions(word, style, undefined, imagesPerWord, customStylePrompts, customBasePrompt)
+        )
+      );
+      setImageData((prev) => {
+        const newData = new Map<string, WordImageData>(prev);
+        batch.forEach((word, i) => {
+          const current = newData.get(word);
+          if (!current) return;
+          const result = results[i];
+          if (result.status === "fulfilled") {
+            newData.set(word, { ...current, images: result.value, loading: false, error: null });
+          } else {
+            console.error(`Failed to generate images for ${word}:`, result.reason);
+            newData.set(word, {
+              ...current,
+              images: [],
+              loading: false,
+              error: result.reason instanceof Error ? result.reason.message : "Failed to generate images.",
             });
-        } catch (error) {
-            console.error(`Failed to generate images for ${word}:`, error);
-            setImageData(prev => {
-                const newData = new Map<string, WordImageData>(prev);
-                const current = newData.get(word);
-                if (current) {
-                   newData.set(word, {
-                      ...current,
-                      images: [],
-                      loading: false,
-                      error: error instanceof Error ? error.message : 'Failed to generate images.',
-                   });
-                }
-                return newData;
-            });
-        }
+          }
+        });
+        return newData;
+      });
     }
   }, []);
 
@@ -167,7 +170,8 @@ function FlashcardImagesApp() {
         const zipBlob = await zip.generateAsync({ type: 'blob' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(zipBlob);
-        link.download = 'flashcard_images.zip';
+        const safeGradeUnit = (currentGradeUnit ?? '').trim().replace(/[^a-zA-Z0-9._-]/g, '_') || undefined;
+        link.download = safeGradeUnit ? `${safeGradeUnit}_voc_raw.zip` : 'flashcard_images.zip';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -179,7 +183,7 @@ function FlashcardImagesApp() {
       setSavedImages(selected);
       setAppState(AppState.Done);
     }
-  }, [imageData]);
+  }, [imageData, currentGradeUnit]);
 
   const handleRestart = () => {
     setAppState(AppState.Input);

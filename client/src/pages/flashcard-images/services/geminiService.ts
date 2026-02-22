@@ -40,7 +40,7 @@ export const getDefaultStylePrompt = (style: ArtStyle): string => {
     case ArtStyle.Clipart:
       return "Soft bold cartoon clipart style. Very thick clean black outlines. Simple rounded shapes. Bright cheerful colors. Gentle soft gradient shading inside iconic shapes. Minimal detail. Friendly expression. Strong clear silhouette. No realistic texture.";
     case ArtStyle.Cartoon:
-      return "Children's book cartoon style. Cute child characters with slightly large heads and rounded proportions. Big expressive eyes. Whimsical charm. Bright, vibrant colors. Gentle shading. Warm soft lighting. Friendly shapes. Engaging aesthetic for children. Cheerful mood.";
+      return "Children's book cartoon style. Cute characters or objects with rounded proportions. Whimsical charm. Bright, vibrant colors. Gentle shading. Warm soft lighting. Friendly shapes. Engaging aesthetic for children. Cheerful mood.";
     case ArtStyle.Animation:
       return "Modern 3D Pixar, Disney animation styles. Slightly realistic proportions. Soft studio lighting. Sharp images with subtle depth of field, giving it a polished and contemporary look.";
     case ArtStyle.Vector:
