@@ -28,6 +28,12 @@ const vocabulary = [
   { word: "WEEK", turkish: "Hafta", file: "week.png" },
 ];
 
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+
 const balloonStyles = [
   { shape: "round", color: "from-orange-400 to-orange-600", pattern: "stripes" },
   { shape: "round", color: "from-red-400 to-red-600", pattern: "hearts" },
@@ -499,10 +505,10 @@ export default function WordPopGame() {
                     data-testid={`balloon-${balloon.word}`}
                   >
                     <div className="relative balloon-wiggle" style={{ animationDelay: `${index * 0.2}s` }}>
-                      <BalloonShape style={balloonStyles[balloon.styleIndex]} word={balloon.word} />
+                      <BalloonShape style={balloonStyles[balloon.styleIndex]} word={getDisplayWord(balloon.word)} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {balloon.word}
+                        {getDisplayWord(balloon.word)}
                       </div>
                     </div>
                   </button>

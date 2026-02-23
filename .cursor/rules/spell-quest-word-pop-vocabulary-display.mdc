@@ -1,0 +1,30 @@
+---
+description: Spell-quest and word-pop games must display multi-word vocabulary with spaces
+globs: ["**/*spell-quest*.tsx", "**/*word-pop*.tsx"]
+alwaysApply: false
+---
+
+# Spell-quest and word-pop: spaces between words for multi-word vocabulary
+
+In **all spell-quest and word-pop games**, vocabulary items that consist of more than one word must be **displayed with spaces** so they are readable (e.g. "GOOD MORNING" not "GOODMORNING", "HOW OLD ARE YOU?" not "HOWOLDAREYOU").
+
+## Implementation
+
+1. **Keep the vocabulary array** with compressed `word` keys (e.g. `GOODMORNING`, `HOWOLDAREYOU`) for game logic and comparison.
+2. **Add a display helper** after the vocabulary array (and before `letterColors` / `balloonStyles`) in each file:
+
+```ts
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+```
+
+3. **Use it for all user-facing word text:**
+   - **Spell-quest:** Use `getDisplayWord(currentWord.word)` in the success overlay (e.g. `<p className="success-word">{getDisplayWord(currentWord.word)}</p>`).
+   - **Word-pop:** Use `getDisplayWord(balloon.word)` for the balloon label and when passing the display string to `BalloonShape` (e.g. `word={getDisplayWord(balloon.word)}` and `{getDisplayWord(balloon.word)}` in the banner).
+
+4. **File names** for multi-word items must use spaces (e.g. `"good morning.png"`, `"how old are you.png"`) so the helper produces the correct display text.
+
+When adding or editing a spell-quest or word-pop game, always follow this pattern so multi-word items are shown with spaces.
