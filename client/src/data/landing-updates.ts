@@ -24,18 +24,18 @@ export interface LandingItem {
 
 /** What we are currently working on — update when you start a new focus. */
 export const nowWorkingOn: LandingItem = {
-  title: "3. Sınıf Ünite 7: In My City",
-  href: "/primary-school/grade-3/unit-7/games",
-  description: "3. sınıf 7. ünite kelime kartları ve kelime oyunları (In My City).",
-  addedAt: "2025-02-22",
+  title: "3. Sınıf 8, 9 ve 10. Üniteler",
+  href: "/primary-school/grade-3",
+  description: "3. sınıf 8, 9 ve 10. üniteler kelime kartları ve oyunlar.",
+  addedAt: "2025-02-23",
   level: "primary-school",
 };
 
 /** The most recently added page — update when you publish new content. */
 export const lastAdded: LandingItem = {
-  title: "3. Sınıf Ünite 7 Kelime Oyunları",
-  href: "/primary-school/grade-3/unit-7/games",
-  description: "3. sınıf 7. ünite kelime oyunları (In My City) — 9 oyun.",
-  addedAt: "2025-02-22",
+  title: "4. Sınıf Ünite 7: Jobs",
+  href: "/primary-school/grade-4/unit-7/games",
+  description: "4. sınıf 7. ünite kelime kartları ve 9 kelime oyunu (Jobs).",
+  addedAt: "2025-02-23",
   level: "primary-school",
 };
