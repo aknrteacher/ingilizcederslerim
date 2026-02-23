@@ -59,6 +59,12 @@ const wordStyles = [
   { bg: "bg-[#FFAA00]", text: "text-white", border: "border-[#DD8800]" },      // Amber
 ];
 
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+
 interface FallingWord {
   id: string;
   word: string;
@@ -778,7 +784,7 @@ export default function CatchThatGame3_1() {
             >
               <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-64 h-64 ' : '') + 'rounded-2xl bg-orange-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
                 <img 
-                  src={'/images/primary/3.4/' + currentWord.file} 
+                  src={'/images/primary/3.1/' + currentWord.file} 
                   alt={currentWord.word}
                   className={'w-28 h-28 sm:w-40 sm:h-40 ' + (isFullscreen ? 'w-56 h-56 ' : '') + 'object-contain'}
                 />
@@ -861,7 +867,7 @@ export default function CatchThatGame3_1() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
                   >
-                    {word.word}
+                    {getDisplayWord(word.word)}
                   </motion.div>
                 );
               })}

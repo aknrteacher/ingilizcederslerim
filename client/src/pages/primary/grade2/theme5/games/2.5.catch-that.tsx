@@ -58,6 +58,12 @@ const wordStyles = [
   { bg: "bg-amber-500", text: "text-white", border: "border-amber-600" },
 ];
 
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+
 interface FallingWord {
   id: string;
   word: string;
@@ -869,7 +875,7 @@ export default function CatchThatGame2_5() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0 }}
                   >
-                    {word.word}
+                    {getDisplayWord(word.word)}
                   </motion.div>
                 );
               })}

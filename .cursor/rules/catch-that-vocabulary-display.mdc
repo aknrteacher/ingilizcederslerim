@@ -1,0 +1,28 @@
+---
+description: Catch-that games must display multi-word vocabulary with spaces
+globs: **/*catch-that*.tsx
+alwaysApply: false
+---
+
+# Catch-that games: spaces between words for multi-word vocabulary
+
+In **all catch-that games**, vocabulary items that consist of more than one word must be **displayed with spaces** so they are readable (e.g. "GOOD MORNING" not "GOODMORNING", "HOW OLD ARE YOU?" not "HOWOLDAREYOU").
+
+## Implementation
+
+1. **Keep the vocabulary array** with compressed `word` keys (e.g. `GOODMORNING`, `HOWOLDAREYOU`) for game logic and comparison.
+2. **Add a display helper** after the `wordStyles` array in each catch-that file:
+
+```ts
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+```
+
+3. **Use it when rendering falling words**: render `{getDisplayWord(word.word)}` instead of `{word.word}` so the on-screen text shows the spaced form (derived from the `file` name, e.g. `"good morning.png"` → `"GOOD MORNING"`).
+
+4. **File names** for multi-word items must use spaces (e.g. `"good morning.png"`, `"how old are you.png"`) so the helper can produce the correct display text.
+
+When adding or editing a catch-that game, always follow this pattern so multi-word items are shown with spaces.

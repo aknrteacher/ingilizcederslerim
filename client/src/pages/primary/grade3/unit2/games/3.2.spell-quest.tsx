@@ -53,6 +53,12 @@ const vocabulary: VocabWord[] = [
   { word: "TREE", turkish: "Ağaç", file: "tree.png" },
 ];
 
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+
 // Solid vibrant purple colors for letter tiles
 const letterColors = [
   "bg-[#AA44FF]",
@@ -410,7 +416,7 @@ export default function SpellQuestGame() {
                     >
                       <div className="success-stars">⭐ ⭐ ⭐</div>
                       <h2 className="success-title">Perfect!</h2>
-                      <p className="success-word">{currentWord.word}</p>
+                      <p className="success-word">{getDisplayWord(currentWord.word)}</p>
                       <Button
                         className="next-btn"
                         onClick={nextWord}
