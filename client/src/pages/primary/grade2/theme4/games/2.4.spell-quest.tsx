@@ -50,6 +50,12 @@ const vocabulary: VocabWord[] = [
   { word: "FRIEND", displayWord: "friend", turkish: "arkadaş", file: "friend.png" },
 ];
 
+// Display multi-word vocabulary with spaces (from file name)
+const getDisplayWord = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+};
+
 const letterColors = [
   "bg-gradient-to-br from-pink-400 to-pink-600",
   "bg-gradient-to-br from-purple-400 to-purple-600",
@@ -439,7 +445,7 @@ export default function SpellQuestGame2_4() {
                     >
                       <div className="success-stars">⭐ ⭐ ⭐</div>
                       <h2 className="success-title">Perfect!</h2>
-                      <p className="success-word">{currentWord.displayWord}</p>
+                      <p className="success-word">{getDisplayWord(currentWord.word)}</p>
                       <Button
                         className="next-btn"
                         onClick={nextWord}
