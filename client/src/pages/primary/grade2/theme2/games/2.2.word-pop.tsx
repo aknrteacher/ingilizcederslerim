@@ -11,36 +11,49 @@ import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
 const vocabulary = [
-  { word: "FAMILY", turkish: "aile", file: "family.png" },
-  { word: "MEMBER", turkish: "üye", file: "member.png" },
-  { word: "FATHER", turkish: "baba", file: "father.png" },
-  { word: "MOTHER", turkish: "anne", file: "mother.png" },
-  { word: "BROTHER", turkish: "erkek kardeş", file: "brother.png" },
-  { word: "SISTER", turkish: "kız kardeş", file: "sister.png" },
-  { word: "SON", turkish: "oğul", file: "son.png" },
-  { word: "DAUGHTER", turkish: "kız", file: "daughter.png" },
-  { word: "GRANDFATHER", turkish: "büyükbaba", file: "grandfather.png" },
-  { word: "GRANDMOTHER", turkish: "büyükanne", file: "grandmother.png" },
-  { word: "GRANDCHILD", turkish: "torun", file: "grandchild.png" },
-  { word: "CHILD", turkish: "çocuk", file: "child.png" },
-  { word: "BABY", turkish: "bebek", file: "baby.png" },
-  { word: "MAN", turkish: "erkek", file: "man.png" },
-  { word: "WOMAN", turkish: "kadın", file: "woman.png" },
-  { word: "OLD", turkish: "yaşlı", file: "old.png" },
-  { word: "YOUNG", turkish: "genç", file: "young.png" },
-  { word: "LONG", turkish: "uzun", file: "long.png" },
-  { word: "SHORT", turkish: "kısa", file: "short.png" },
-  { word: "TALL", turkish: "uzun boylu", file: "tall.png" },
-  { word: "HANDSOME", turkish: "yakışıklı", file: "handsome.png" },
-  { word: "BEAUTIFUL", turkish: "güzel", file: "beautiful.png" },
-  { word: "BIG", turkish: "büyük", file: "big.png" },
-  { word: "SMALL", turkish: "küçük", file: "small.png" },
-  { word: "HAIR", turkish: "saç", file: "hair.png" },
-  { word: "EYES", turkish: "gözler", file: "eyes.png" },
-  { word: "WHO", turkish: "kim", file: "who.png" },
-  { word: "THIS", turkish: "bu", file: "this.png" },
-  { word: "LOVE", turkish: "sevmek", file: "love.png" },
-  { word: "FRIEND", turkish: "arkadaş", file: "friend.png" },
+  { word: "COLOUR", turkish: "renk", file: "colour.png" },
+  { word: "YELLOW", turkish: "sarı", file: "yellow.png" },
+  { word: "BLUE", turkish: "mavi", file: "blue.png" },
+  { word: "RED", turkish: "kırmızı", file: "red.png" },
+  { word: "GREEN", turkish: "yeşil", file: "green.png" },
+  { word: "PURPLE", turkish: "mor", file: "purple.png" },
+  { word: "PINK", turkish: "pembe", file: "pink.png" },
+  { word: "BROWN", turkish: "kahverengi", file: "brown.png" },
+  { word: "ORANGE", turkish: "turuncu", file: "orange.png" },
+  { word: "BLACK", turkish: "siyah", file: "black.png" },
+  { word: "WHITE", turkish: "beyaz", file: "white.png" },
+  { word: "WATCH", turkish: "izle", file: "watch.png" },
+  { word: "LISTEN", turkish: "dinle", file: "listen.png" },
+  { word: "WRITE", turkish: "yaz", file: "write.png" },
+  { word: "RAISE", turkish: "kaldır", file: "raise.png" },
+  { word: "HAND", turkish: "el", file: "hand.png" },
+  { word: "OPEN", turkish: "aç", file: "open.png" },
+  { word: "CLOSE", turkish: "kapat", file: "close.png" },
+  { word: "REPEAT", turkish: "tekrarla", file: "repeat.png" },
+  { word: "STAND UP", turkish: "ayağa kalk", file: "stand_up.png" },
+  { word: "SIT DOWN", turkish: "otur", file: "sit_down.png" },
+  { word: "HURRY UP", turkish: "acele et", file: "hurry_up.png" },
+  { word: "BE QUIET", turkish: "sessiz ol", file: "be_quiet.png" },
+  { word: "LOOK", turkish: "bak", file: "look.png" },
+  { word: "COME", turkish: "gel", file: "come.png" },
+  { word: "GO", turkish: "git", file: "go.png" },
+  { word: "POINT", turkish: "göster", file: "point.png" },
+  { word: "MATCH", turkish: "eşleştir", file: "match.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
+  { word: "PENCIL", turkish: "kalem", file: "pencil.png" },
+  { word: "PENCIL CASE", turkish: "kalem kutusu", file: "pencil_case.png" },
+  { word: "BOOK", turkish: "kitap", file: "book.png" },
+  { word: "BOOKSHELF", turkish: "kitaplık", file: "bookshelf.png" },
+  { word: "BAG", turkish: "çanta", file: "bag.png" },
+  { word: "NOTEBOOK", turkish: "defter", file: "notebook.png" },
+  { word: "ERASER", turkish: "silgi", file: "eraser.png" },
+  { word: "SHARPENER", turkish: "açacak", file: "sharpener.png" },
+  { word: "CRAYON", turkish: "pastel boya", file: "crayon.png" },
+  { word: "BOARD", turkish: "tahta", file: "board.png" },
+  { word: "WINDOW", turkish: "pencere", file: "window.png" },
+  { word: "DESK", turkish: "sıra", file: "desk.png" },
+  { word: "DOOR", turkish: "kapı", file: "door.png" },
+  { word: "CHAIR", turkish: "sandalye", file: "chair.png" },
 ];
 
 // Display multi-word vocabulary with spaces (from file name)
@@ -377,7 +390,7 @@ export default function WordPopGame2_4() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Word Pop"
-            description="2nd Grade - Theme 4: Family Life"
+            description="2nd Grade - Theme 2: My Classroom"
             containerId="word-pop-game"
             icon="🎈"
           />
@@ -430,7 +443,7 @@ export default function WordPopGame2_4() {
             >
               <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3 mx-auto">
                 <img 
-                  src={`/images/primary/2.4/${currentWord.file}`} 
+                  src={`/images/primary/2.2/${currentWord.file}`} 
                   alt={currentWord.word}
                   className="w-28 h-28 sm:w-40 sm:h-40 object-contain"
                 />

@@ -568,6 +568,57 @@ FUNCTIONS:
               { word: "happy", turkish: "mutlu" },
             ],
           },
+          {
+            id: "2.6",
+            name: "Theme 6: Life in the City & the World",
+            nameTr: "Tema 6: Şehirde ve Dünyada Yaşam",
+            notes: `GRAMMAR:
+• Food and drinks vocabulary
+• Fruits and vegetables
+• Meals: breakfast, lunch, dinner
+• Like/Dislike
+• Basic food-related expressions
+
+FUNCTIONS:
+• Naming fruits and vegetables
+• Talking about food and drinks
+• Expressing likes and dislikes
+• Describing meals`,
+            words: [
+              { word: "fruit", turkish: "meyve" },
+              { word: "apple", turkish: "elma" },
+              { word: "orange", turkish: "portakal" },
+              { word: "banana", turkish: "muz" },
+              { word: "cherry", turkish: "kiraz" },
+              { word: "grapes", turkish: "üzüm" },
+              { word: "pear", turkish: "armut" },
+              { word: "strawberry", turkish: "çilek" },
+              { word: "vegetable", turkish: "sebze" },
+              { word: "tomatoes", turkish: "domatesler" },
+              { word: "potatoes", turkish: "patatesler" },
+              { word: "cucumber", turkish: "salatalık" },
+              { word: "pepper", turkish: "biber" },
+              { word: "broccoli", turkish: "brokoli" },
+              { word: "carrot", turkish: "havuç" },
+              { word: "water", turkish: "su" },
+              { word: "milk", turkish: "süt" },
+              { word: "tea", turkish: "çay" },
+              { word: "coffee", turkish: "kahve" },
+              { word: "like", turkish: "sevmek" },
+              { word: "fridge", turkish: "buzdolabı" },
+              { word: "breakfast", turkish: "kahvaltı" },
+              { word: "lunch", turkish: "öğle yemeği" },
+              { word: "dinner", turkish: "akşam yemeği" },
+              { word: "bread", turkish: "ekmek" },
+              { word: "fish", turkish: "balık" },
+              { word: "chicken", turkish: "tavuk" },
+              { word: "meat", turkish: "et" },
+              { word: "egg", turkish: "yumurta" },
+              { word: "hungry", turkish: "aç" },
+              { word: "thirsty", turkish: "susamış" },
+              { word: "yummy", turkish: "lezzetli" },
+            ],
+          },
         ],
       },
       {
