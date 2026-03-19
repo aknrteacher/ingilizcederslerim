@@ -562,8 +562,8 @@ export default function InClass() {
           }
         });
       });
-      const monitorCode = (selectedClass as any).monitorCode ?? selectedClass.name.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const res = await fetch('/api/classroom/publish-snapshot', {
+      const monitorCode = ((selectedClass as any).monitorCode ?? selectedClass.name.toLowerCase().replace(/[^a-z0-9]/g, '')).toLowerCase().replace(/[^a-z0-9]/g, '');
+      const res = await fetch(`/api/classroom/published-snapshot/${monitorCode}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
