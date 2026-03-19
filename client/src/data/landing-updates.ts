@@ -31,11 +31,30 @@ export const nowWorkingOn: LandingItem = {
   level: "primary-school",
 };
 
-/** The most recently added page — update when you publish new content. */
-export const lastAdded: LandingItem = {
-  title: "4. Sınıf Ünite 7: Jobs",
-  href: "/primary-school/grade-4/unit-7/games",
-  description: "4. sınıf 7. ünite kelime kartları ve 9 kelime oyunu (Jobs).",
-  addedAt: "2025-02-23",
-  level: "primary-school",
-};
+/**
+ * Last added pages — most recent first. Show in "Son Eklenen" as a scrollable list.
+ * Add new items at the top when you publish new content.
+ */
+export const lastAddedList: LandingItem[] = [
+  {
+    title: "2. Sınıf Ünite 1 Şarkı: Hello School",
+    href: "/primary-school/grade-2/theme-1/songs/hello-school",
+    description: "2. sınıf 1. ünite için Hello School şarkısı: dinleme, karaoke ve sözler.",
+    addedAt: "2026-03-19",
+    level: "primary-school",
+  },
+  {
+    title: "4. Sınıf Ünite 7: Jobs",
+    href: "/primary-school/grade-4/unit-7/games",
+    description: "4. sınıf 7. ünite kelime kartları ve 9 kelime oyunu (Jobs).",
+    addedAt: "2025-02-23",
+    level: "primary-school",
+  },
+  {
+    title: "4. Sınıf Ünite 6",
+    href: "/primary-school/grade-4/unit-6/games",
+    description: "4. sınıf 6. ünite kelime kartları ve kelime oyunları.",
+    addedAt: "2025-02-23",
+    level: "primary-school",
+  },
+];

@@ -2,7 +2,7 @@ import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowRight, Sparkles, Clock, BookOpen } from "lucide-react";
-import { nowWorkingOn, lastAdded, type LandingLevel } from "@/data/landing-updates";
+import { nowWorkingOn, lastAddedList, type LandingLevel } from "@/data/landing-updates";
 
 const LEVELS = [
   { title: "Okul Öncesi & 1. Sınıf", href: "/pre-school", color: "bg-amber-200 dark:bg-amber-500/30 text-amber-900 dark:text-amber-100 border-amber-400/50 hover:bg-amber-300 dark:hover:bg-amber-500/40" },
@@ -168,7 +168,19 @@ export default function MainLandingPage() {
               <BookOpen className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
               Son Eklenen
             </h2>
-            <UpdateCard item={lastAdded} icon={BookOpen} label="Son eklenen sayfa" />
+            <div className="overflow-y-auto rounded-xl border border-border bg-muted/20 max-h-[280px] sm:max-h-[320px] pr-1">
+              <ul className="flex flex-col gap-2 p-2 sm:p-3">
+                {lastAddedList.map((item, index) => (
+                  <li key={item.href}>
+                    <UpdateCard
+                      item={item}
+                      icon={BookOpen}
+                      label={index === 0 ? "Son eklenen" : `Eklenen ${index + 1}`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 

@@ -14,6 +14,11 @@ export default function PrimarySchoolLandingPage() {
       description: "Games"
     },
     {
+      title: "Şarkılar",
+      href: "/primary-school/grade-2/theme-1/songs",
+      description: "Songs (Grade 2 Unit 1)"
+    },
+    {
       title: "Kelime Kartları",
       href: "/primary-school/grade-2/theme-1/2.1-vocab",
       description: "Vocabulary Cards"

@@ -45,6 +45,8 @@ import FoodVocabulary from "@/pages/preschool/vocab/0.11-food/0.11-food.voc";
 import PreSchoolVocabMenu from "@/pages/preschool/vocab/0.2-colours/pre-school-vocab-menu";
 import PreSchoolGamesMenu from "@/pages/pre-school-games-menu";
 import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-theme1-games-menu";
+import SongsLandingGrade2Theme1 from "@/pages/primary/grade2/theme1/songs/SongsLandingGrade2Theme1";
+import HelloSchoolSong from "@/pages/primary/grade2/theme1/songs/HelloSchoolSong";
 import PrimarySchoolGrade2Theme2GamesMenu from "@/pages/primary-school-grade2-theme2-games-menu";
 import PrimarySchoolGrade2Theme3GamesMenu from "@/pages/primary-school-grade2-theme3-games-menu";
 import PrimarySchoolGrade2Theme4GamesMenu from "@/pages/primary-school-grade2-theme4-games-menu";
@@ -300,6 +302,8 @@ function Router() {
       <Route path="/oyunlar/okul-oncesi" component={PreSchoolGamesMenu} />
       <Route path="/pre-school/games" component={PreSchoolGamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/games" component={PrimarySchoolGrade2Theme1GamesMenu} />
+      <Route path="/primary-school/grade-2/theme-1/songs" component={SongsLandingGrade2Theme1} />
+      <Route path="/primary-school/grade-2/theme-1/songs/hello-school" component={HelloSchoolSong} />
       <Route path="/primary-school/grade-2/theme-2/games" component={PrimarySchoolGrade2Theme2GamesMenu} />
       <Route path="/primary-school/grade-2/theme-3/games" component={PrimarySchoolGrade2Theme3GamesMenu} />
       <Route path="/primary-school/grade-2/theme-4/games" component={PrimarySchoolGrade2Theme4GamesMenu} />
