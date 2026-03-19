@@ -29,6 +29,22 @@ const LEGEND = [
   { c: 'c23', label: 'Apologies & Social Language' },
 ];
 
+// Pre-School & Grade 1 topics (from word map structure)
+const PRESCHOOL_GRADE1 = [
+  { unit: 'Alphabet', tags: [{ c: 'c21', text: 'Alphabet & Spelling' }] },
+  { unit: 'Numbers', tags: [{ c: 'c2', text: 'Numbers 1-10' }] },
+  { unit: 'Colours', tags: [{ c: 'c4', text: 'Colors' }] },
+  { unit: 'Greetings', tags: [{ c: 'c1', text: 'Greetings & Introductions' }, { c: 'c23', text: 'Apologies & Social Language' }] },
+  { unit: 'Actions', tags: [{ c: 'c8', text: 'Abilities (can/can\'t)' }] },
+  { unit: 'Our Body', tags: [{ c: 'c7', text: 'Body & Physical Description' }] },
+  { unit: 'Our Classroom', tags: [{ c: 'c3', text: 'Classroom & Instructions' }] },
+  { unit: 'Things', tags: [{ c: 'c15', text: 'Likes & Objects' }] },
+  { unit: 'People', tags: [{ c: 'c6', text: 'Family' }] },
+  { unit: 'Animals', tags: [{ c: 'c15', text: 'Animals & Nature' }] },
+  { unit: 'Around Us', tags: [{ c: 'c9', text: 'House & Nature' }, { c: 'c13', text: 'Weather' }, { c: 'c15', text: 'Nature' }] },
+  { unit: 'Food', tags: [{ c: 'c19', text: 'Food & Offers' }] },
+];
+
 const GRADE2 = [
   { unit: 'Theme 1: School Life', tags: [{ c: 'c1', text: 'Greetings & Introductions' }, { c: 'c21', text: 'Alphabet & Spelling' }, { c: 'c22', text: 'Days of the Week' }, { c: 'c10', text: 'Prepositions (in)' }, { c: 'c3', text: 'Classroom Instructions' }] },
   { unit: 'Theme 2: Classroom Life', tags: [{ c: 'c2', text: 'Numbers 1-20' }, { c: 'c4', text: 'Colors' }, { c: 'c12', text: 'Quantity (How many)' }, { c: 'c5', text: 'Possession (my, his, her...)' }, { c: 'c3', text: 'Permission (Can I...?)' }] },
@@ -112,13 +128,13 @@ function LegendSwatch({ c, isSelected }: { c: string; isSelected?: boolean }) {
 }
 
 function UnitRow({
-  gradeNum,
+  noteKey,
   row,
   TagComponent,
   selectedTopic,
   onTopicClick,
 }: {
-  gradeNum: number;
+  noteKey: string;
   row: { unit: string; tags: { c: string; text: string; rec?: boolean }[] };
   TagComponent: React.ComponentType<{ c: string; text: string; rec?: boolean; selectedTopic?: string | null; onTopicClick?: (c: string) => void }>;
   selectedTopic?: string | null;
@@ -126,7 +142,6 @@ function UnitRow({
 }) {
   const [notesExpanded, setNotesExpanded] = useState(false);
   const [savedFeedback, setSavedFeedback] = useState(false);
-  const noteKey = `la-grade${gradeNum}-${row.unit}`;
   const [note, setNote] = useThemeNotes(noteKey);
 
   const handleNoteBlur = () => {
@@ -176,12 +191,50 @@ function UnitRow({
   );
 }
 
+const LEVELS = [
+  { id: 'preschool', name: 'Pre-School & Grade 1', grades: [{ id: 'preschool-topics', name: 'Topics', rows: PRESCHOOL_GRADE1 }] },
+  { id: 'primary', name: 'Primary School', grades: [{ id: 'grade-2', name: 'Grade 2', rows: GRADE2 }, { id: 'grade-3', name: 'Grade 3', rows: GRADE3 }, { id: 'grade-4', name: 'Grade 4', rows: GRADE4 }] },
+];
+
 export default function LearningAreasMapPage() {
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [expandedLevels, setExpandedLevels] = useState<Set<string>>(new Set());
+  const [expandedGrades, setExpandedGrades] = useState<Set<string>>(new Set());
 
   const handleTopicClick = (c: string) => {
     setSelectedTopic((prev) => (prev === c ? null : c));
   };
+
+  const toggleLevel = (levelId: string) => {
+    setExpandedLevels((prev) => {
+      const next = new Set(prev);
+      next.has(levelId) ? next.delete(levelId) : next.add(levelId);
+      return next;
+    });
+  };
+
+  const toggleGrade = (gradeId: string) => {
+    setExpandedGrades((prev) => {
+      const next = new Set(prev);
+      next.has(gradeId) ? next.delete(gradeId) : next.add(gradeId);
+      return next;
+    });
+  };
+
+  const expandAll = () => {
+    const levels = new Set(LEVELS.map((l) => l.id));
+    const grades = new Set<string>();
+    LEVELS.forEach((l) => l.grades.forEach((g) => grades.add(g.id)));
+    setExpandedLevels(levels);
+    setExpandedGrades(grades);
+  };
+
+  const collapseAll = () => {
+    setExpandedLevels(new Set());
+    setExpandedGrades(new Set());
+  };
+
+  const isAllExpanded = expandedLevels.size === LEVELS.length && expandedGrades.size === LEVELS.reduce((acc, l) => acc + l.grades.length, 0);
 
   const handleLogout = () => {
     sessionStorage.removeItem('admin_unlocked');
@@ -208,9 +261,17 @@ export default function LearningAreasMapPage() {
         </header>
 
         <main className="relative max-w-5xl mx-auto px-4 sm:px-6 py-4">
-          <p className="text-neutral-500 text-[11px] uppercase tracking-wide mb-4">
-            Grammar, functions & skills across Grades 2, 3 & 4 — Similar topics share the same color. <strong>↻</strong> = Recurring (builds on earlier grade)
-          </p>
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <p className="text-neutral-500 text-[11px] uppercase tracking-wide">
+              Grammar, functions & skills from Pre-School through Grade 4 — Similar topics share the same color. <strong>↻</strong> = Recurring (builds on earlier grade)
+            </p>
+            <button
+              onClick={isAllExpanded ? collapseAll : expandAll}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-300 text-[10px] uppercase tracking-wide rounded-lg transition-colors"
+            >
+              {isAllExpanded ? 'COLLAPSE ALL' : 'EXPAND ALL'}
+            </button>
+          </div>
 
           {/* Legend */}
           <div className="bg-neutral-900/50 border border-neutral-800/50 rounded-lg p-4 mb-6">
@@ -230,67 +291,65 @@ export default function LearningAreasMapPage() {
             </div>
           </div>
 
-          {/* Grade 2 */}
-          <div className="mb-6">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 pl-3 border-l-4 border-blue-500">Grade 2</h2>
-            <div className="bg-neutral-900/30 border border-neutral-800/50 rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-neutral-800/50">
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {GRADE2.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={2} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          {/* Levels & Grades - Collapsible */}
+          <div className="space-y-1.5">
+            {LEVELS.map((level) => (
+              <div key={level.id} className="bg-neutral-900/30 border border-neutral-800/50 rounded-lg overflow-hidden">
+                {/* Level Header */}
+                <button
+                  onClick={() => toggleLevel(level.id)}
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-neutral-800/30 transition-colors text-left"
+                >
+                  <span className={`text-neutral-500 transition-transform ${expandedLevels.has(level.id) ? 'rotate-90' : ''}`}>›</span>
+                  <span className="text-white text-xs font-medium uppercase tracking-wide">{level.name}</span>
+                  <span className="text-neutral-600 text-[10px] ml-auto">{level.grades.length} grade{level.grades.length > 1 ? 's' : ''}</span>
+                </button>
 
-          {/* Grade 3 */}
-          <div className="mb-6">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 pl-3 border-l-4 border-blue-500">Grade 3</h2>
-            <div className="bg-neutral-900/30 border border-neutral-800/50 rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-neutral-800/50">
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {GRADE3.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={3} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                {/* Grades */}
+                {expandedLevels.has(level.id) && (
+                  <div className="border-t border-neutral-800/50">
+                    {level.grades.map((grade) => (
+                      <div key={grade.id} className="border-b border-neutral-800/30 last:border-b-0">
+                        <button
+                          onClick={() => toggleGrade(grade.id)}
+                          className="w-full flex items-center gap-2 px-3 py-1.5 pl-8 hover:bg-neutral-800/20 transition-colors text-left"
+                        >
+                          <span className={`text-neutral-600 transition-transform ${expandedGrades.has(grade.id) ? 'rotate-90' : ''}`}>›</span>
+                          <span className="text-neutral-300 text-xs uppercase tracking-wide">{grade.name}</span>
+                          <span className="text-neutral-600 text-[10px] ml-auto">{grade.rows.length} unit{grade.rows.length !== 1 ? 's' : ''}</span>
+                        </button>
 
-          {/* Grade 4 */}
-          <div className="mb-6">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 pl-3 border-l-4 border-blue-500">Grade 4</h2>
-            <div className="bg-neutral-900/30 border border-neutral-800/50 rounded-lg overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-neutral-800/50">
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
-                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {GRADE4.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={4} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        {expandedGrades.has(grade.id) && (
+                          <div className="bg-neutral-950/30">
+                            <table className="w-full">
+                              <thead>
+                                <tr className="bg-neutral-800/50">
+                                  <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
+                                  <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
+                                  <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {grade.rows.map((row) => (
+                                  <UnitRow
+                                    key={row.unit}
+                                    noteKey={grade.id === 'preschool-topics' ? `la-preschool-${row.unit}` : `la-${grade.id.replace('grade-', 'grade')}-${row.unit}`}
+                                    row={row}
+                                    TagComponent={Tag}
+                                    selectedTopic={selectedTopic}
+                                    onTopicClick={handleTopicClick}
+                                  />
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
           <p className="text-neutral-500 text-[11px] mt-4 p-3 bg-neutral-900/50 rounded-lg border border-neutral-800/50">
