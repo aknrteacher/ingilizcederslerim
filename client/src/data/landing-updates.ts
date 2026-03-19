@@ -22,14 +22,33 @@ export interface LandingItem {
   level: LandingLevel;
 }
 
-/** What we are currently working on — update when you start a new focus. */
-export const nowWorkingOn: LandingItem = {
-  title: "3. Sınıf 8, 9 ve 10. Üniteler",
-  href: "/primary-school/grade-3",
-  description: "3. sınıf 8, 9 ve 10. üniteler kelime kartları ve oyunlar.",
-  addedAt: "2025-02-23",
-  level: "primary-school",
-};
+/**
+ * Sections we are currently working on — 3 items, cycle with arrows on landing.
+ * Update when you change focus.
+ */
+export const nowWorkingOnList: LandingItem[] = [
+  {
+    title: "3. Sınıf 8, 9 ve 10. Üniteler",
+    href: "/primary-school/grade-3",
+    description: "3. sınıf 8, 9 ve 10. üniteler kelime kartları ve oyunlar.",
+    addedAt: "2025-02-23",
+    level: "primary-school",
+  },
+  {
+    title: "4. Sınıf Eksik Üniteler Kelime Kartları",
+    href: "/primary-school/grade-4",
+    description: "4. sınıf eksik üniteler için kelime kartları.",
+    addedAt: "2025-02-23",
+    level: "primary-school",
+  },
+  {
+    title: "2. Sınıf Şarkıları",
+    href: "/primary-school/grade-2/theme-1/songs",
+    description: "2. sınıf ünite şarkıları: dinleme ve karaoke.",
+    addedAt: "2026-03-19",
+    level: "primary-school",
+  },
+];
 
 /**
  * Last added pages — most recent first. Show in "Son Eklenen" as a scrollable list.

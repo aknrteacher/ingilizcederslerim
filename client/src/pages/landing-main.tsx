@@ -1,8 +1,9 @@
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight, Sparkles, Clock, BookOpen } from "lucide-react";
-import { nowWorkingOn, lastAddedList, type LandingLevel } from "@/data/landing-updates";
+import { useState } from "react";
+import { ArrowRight, Sparkles, Clock, BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import { nowWorkingOnList, lastAddedList, type LandingLevel } from "@/data/landing-updates";
 
 const LEVELS = [
   { title: "Okul Öncesi & 1. Sınıf", href: "/pre-school", color: "bg-amber-200 dark:bg-amber-500/30 text-amber-900 dark:text-amber-100 border-amber-400/50 hover:bg-amber-300 dark:hover:bg-amber-500/40" },
@@ -115,7 +116,7 @@ function UpdateCard({
 }: {
   item: { title: string; href: string; description?: string; addedAt?: string; level: LandingLevel };
   icon: React.ElementType;
-  label: string;
+  label?: string;
 }) {
   const accent = LEVEL_ACCENTS[item.level];
   return (
@@ -131,8 +132,10 @@ function UpdateCard({
           <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs ${accent.label}`}>{label}</p>
-          <h3 className="mt-0.5 line-clamp-2 text-sm font-semibold text-foreground sm:text-base">{item.title}</h3>
+          {label ? (
+            <p className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs ${accent.label}`}>{label}</p>
+          ) : null}
+          <h3 className={label ? "mt-0.5 line-clamp-2 text-sm font-semibold text-foreground sm:text-base" : "line-clamp-2 text-sm font-semibold text-foreground sm:text-base"}>{item.title}</h3>
           {item.description && (
             <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{item.description}</p>
           )}
@@ -151,35 +154,73 @@ function UpdateCard({
 }
 
 export default function MainLandingPage() {
+  const [workingOnIndex, setWorkingOnIndex] = useState(0);
+  const [lastAddedIndex, setLastAddedIndex] = useState(0);
+  const workingOnItem = nowWorkingOnList[workingOnIndex];
+  const lastAddedItem = lastAddedList[lastAddedIndex];
+
+  const prevWorkingOn = () => setWorkingOnIndex((i) => (i - 1 + nowWorkingOnList.length) % nowWorkingOnList.length);
+  const nextWorkingOn = () => setWorkingOnIndex((i) => (i + 1) % nowWorkingOnList.length);
+  const prevLastAdded = () => setLastAddedIndex((i) => (i - 1 + lastAddedList.length) % lastAddedList.length);
+  const nextLastAdded = () => setLastAddedIndex((i) => (i + 1) % lastAddedList.length);
+
   return (
     <Layout>
       <div className="flex min-h-[calc(100vh-5rem)] flex-col gap-3 py-3 sm:gap-4 sm:py-4">
-        {/* Now Working On + Last Added — single row */}
-        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
-          <div className="flex flex-col gap-1.5 sm:gap-2">
-            <h2 className="flex items-center gap-1.5 text-base font-bold text-foreground sm:text-lg">
+        {/* Now Working On + Last Added — same-size carousels, overlay arrows */}
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 sm:items-start">
+          <div className="flex flex-col gap-1.5 sm:gap-2 min-h-[260px] sm:min-h-[280px]">
+            <h2 className="flex items-center gap-1.5 text-base font-bold text-foreground sm:text-lg shrink-0">
               <Sparkles className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
-              Şu An Üzerinde Çalışıyoruz
+              Üzerinde Çalışılan Bölümler
             </h2>
-            <UpdateCard item={nowWorkingOn} icon={Clock} label="Şu an üzerinde çalışılan" />
+            <div className="relative flex-1 min-h-[220px] sm:min-h-[240px] rounded-xl border border-border bg-muted/20 overflow-hidden">
+              <div className="absolute inset-0 p-2 sm:p-3 flex items-center">
+                <UpdateCard item={workingOnItem} icon={Clock} />
+              </div>
+              <button
+                type="button"
+                onClick={prevWorkingOn}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/80 dark:bg-black/40 text-foreground/90 hover:bg-white dark:hover:bg-black/60 hover:text-primary shadow-md border border-border/50 backdrop-blur-sm transition-all hover:scale-105"
+                aria-label="Önceki"
+              >
+                <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={nextWorkingOn}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/80 dark:bg-black/40 text-foreground/90 hover:bg-white dark:hover:bg-black/60 hover:text-primary shadow-md border border-border/50 backdrop-blur-sm transition-all hover:scale-105"
+                aria-label="Sonraki"
+              >
+                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+            </div>
           </div>
-          <div className="flex flex-col gap-1.5 sm:gap-2">
-            <h2 className="flex items-center gap-1.5 text-base font-bold text-foreground sm:text-lg">
+          <div className="flex flex-col gap-1.5 sm:gap-2 min-h-[260px] sm:min-h-[280px]">
+            <h2 className="flex items-center gap-1.5 text-base font-bold text-foreground sm:text-lg shrink-0">
               <BookOpen className="h-4 w-4 text-primary sm:h-5 sm:w-5" />
               Son Eklenen
             </h2>
-            <div className="overflow-y-auto rounded-xl border border-border bg-muted/20 max-h-[280px] sm:max-h-[320px] pr-1">
-              <ul className="flex flex-col gap-2 p-2 sm:p-3">
-                {lastAddedList.map((item, index) => (
-                  <li key={item.href}>
-                    <UpdateCard
-                      item={item}
-                      icon={BookOpen}
-                      label={index === 0 ? "Son eklenen" : `Eklenen ${index + 1}`}
-                    />
-                  </li>
-                ))}
-              </ul>
+            <div className="relative flex-1 min-h-[220px] sm:min-h-[240px] rounded-xl border border-border bg-muted/20 overflow-hidden">
+              <div className="absolute inset-0 p-2 sm:p-3 flex items-center">
+                <UpdateCard item={lastAddedItem} icon={BookOpen} />
+              </div>
+              <button
+                type="button"
+                onClick={prevLastAdded}
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/80 dark:bg-black/40 text-foreground/90 hover:bg-white dark:hover:bg-black/60 hover:text-primary shadow-md border border-border/50 backdrop-blur-sm transition-all hover:scale-105"
+                aria-label="Önceki"
+              >
+                <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={nextLastAdded}
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-white/80 dark:bg-black/40 text-foreground/90 hover:bg-white dark:hover:bg-black/60 hover:text-primary shadow-md border border-border/50 backdrop-blur-sm transition-all hover:scale-105"
+                aria-label="Sonraki"
+              >
+                <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+              </button>
             </div>
           </div>
         </section>
