@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react';
 import { NoIndex } from '@/components/NoIndex';
 import { Link } from 'wouter';
 import { wordMapData, getTotalWordCount, getUniqueWords } from '@/data/wordMap';
+import type { Theme, Grade, Level } from '@/data/wordMap';
+import { useThemeNotes } from '@/hooks/useThemeNotes';
 
 type WordStatus = 'unique' | 'same-grade' | 'same-level' | 'different-level';
 
@@ -21,6 +23,175 @@ interface ThemeStats {
   sameGrade: number;
   sameLevel: number;
   differentLevel: number;
+}
+
+function ThemeRow({
+  theme,
+  level,
+  grade,
+  stats,
+  showBoxes,
+  showExtras,
+  expandedThemes,
+  expandedStats,
+  expandedNotes,
+  toggleTheme,
+  toggleStats,
+  toggleNotes,
+  getWordInfo,
+  StatusBox,
+}: {
+  theme: Theme;
+  level: Level;
+  grade: Grade;
+  stats: ThemeStats | undefined;
+  showBoxes: boolean;
+  showExtras: boolean;
+  expandedThemes: Set<string>;
+  expandedStats: Set<string>;
+  expandedNotes: Set<string>;
+  toggleTheme: (id: string) => void;
+  toggleStats: (id: string) => void;
+  toggleNotes: (id: string) => void;
+  getWordInfo: (word: string, levelId: string, gradeId: string, themeId: string) => { status: WordStatus; previousOccurrences: WordOccurrence[] };
+  StatusBox: React.ComponentType<{ status: WordStatus; word: string; occurrences: WordOccurrence[] }>;
+}) {
+  const [note, setNote] = useThemeNotes(theme.id);
+  const [savedFeedback, setSavedFeedback] = useState(false);
+  const isStatsExpanded = expandedStats.has(theme.id);
+  const isNotesExpanded = expandedNotes.has(theme.id);
+
+  const handleNoteBlur = () => {
+    setSavedFeedback(true);
+    setTimeout(() => setSavedFeedback(false), 1500);
+  };
+
+  return (
+    <div className="border-t border-neutral-800/20">
+      {/* Theme Header */}
+      <div className="flex items-center">
+        <button
+          onClick={() => toggleTheme(theme.id)}
+          className="flex-1 flex items-center gap-2 px-3 py-1.5 pl-14 hover:bg-neutral-800/20 transition-colors text-left"
+        >
+          <span className={`text-neutral-600 transition-transform ${expandedThemes.has(theme.id) ? 'rotate-90' : ''}`}>
+            ›
+          </span>
+          <span className="text-neutral-400 text-[11px] uppercase tracking-wide">{theme.name}</span>
+          <span className="text-neutral-600 text-[10px] ml-auto">{theme.words.length}</span>
+        </button>
+        {showExtras && (
+          <div className="flex items-center gap-1 mr-2 text-[10px] uppercase">
+            <button
+              onClick={(e) => { e.stopPropagation(); toggleNotes(theme.id); }}
+              className={`px-2 py-1 rounded transition-colors ${
+                isNotesExpanded
+                  ? 'text-white bg-neutral-700'
+                  : 'text-blue-400 hover:text-white hover:bg-neutral-800'
+              }`}
+            >
+              Notes
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); toggleStats(theme.id); }}
+              className={`px-2 py-1 rounded transition-colors ${isStatsExpanded ? 'text-white bg-neutral-700' : 'text-neutral-600 hover:text-white hover:bg-neutral-800'}`}
+            >
+              Stats
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Notes Panel */}
+      {showExtras && isNotesExpanded && (
+        <div className="bg-neutral-900/50 border-y border-neutral-800/30 px-3 py-3 pl-20">
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            onBlur={handleNoteBlur}
+            placeholder="Add notes for this unit..."
+            className="w-full min-h-[80px] bg-neutral-800/50 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-300 text-[11px] font-sans leading-relaxed resize-y focus:outline-none focus:ring-1 focus:ring-neutral-600 placeholder-neutral-500"
+          />
+          {savedFeedback && (
+            <span className="text-[10px] text-green-400 mt-1.5 block">Saved</span>
+          )}
+        </div>
+      )}
+
+      {/* Stats Panel */}
+      {showExtras && isStatsExpanded && stats && (
+        <div className="bg-neutral-900/50 border-y border-neutral-800/30 px-3 py-2 pl-20">
+          <div className="grid grid-cols-4 gap-3 text-[10px]">
+            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
+              <div className="text-neutral-500 uppercase tracking-wide">New</div>
+              <div className="text-white font-bold text-sm">{stats.unique}</div>
+            </div>
+            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
+              <div className="flex items-center gap-1 text-blue-400 uppercase">
+                <span className="w-2 h-2 bg-blue-500 rounded-sm" />
+                Diff Level
+              </div>
+              <div className="text-white font-bold text-sm">{stats.differentLevel}</div>
+            </div>
+            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
+              <div className="flex items-center gap-1 text-yellow-400 uppercase">
+                <span className="w-2 h-2 bg-yellow-500 rounded-sm" />
+                Same Level
+              </div>
+              <div className="text-white font-bold text-sm">{stats.sameLevel}</div>
+            </div>
+            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
+              <div className="flex items-center gap-1 text-green-400 uppercase">
+                <span className="w-2 h-2 bg-green-500 rounded-sm" />
+                Same Grade
+              </div>
+              <div className="text-white font-bold text-sm">{stats.sameGrade}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Words Table */}
+      {expandedThemes.has(theme.id) && (
+        <div className="bg-neutral-950/50 px-3 py-2 pl-20">
+          <table className="w-full">
+            <tbody>
+              {Array.from({ length: Math.ceil(theme.words.length / 5) }, (_, rowIndex) => (
+                <tr key={rowIndex}>
+                  {theme.words.slice(rowIndex * 5, (rowIndex + 1) * 5).map((word, colIndex) => {
+                    const { status, previousOccurrences } = getWordInfo(
+                      word.word, level.id, grade.id, theme.id
+                    );
+                    return (
+                      <td
+                        key={`${theme.id}-${rowIndex}-${colIndex}`}
+                        className="text-[11px] text-neutral-300 py-0.5 pr-3"
+                      >
+                        <span className="flex items-center">
+                          {showBoxes && (
+                            <StatusBox
+                              status={status}
+                              word={word.word}
+                              occurrences={previousOccurrences}
+                            />
+                          )}
+                          {word.word}
+                        </span>
+                      </td>
+                    );
+                  })}
+                  {rowIndex === Math.ceil(theme.words.length / 5) - 1 &&
+                    Array.from({ length: 5 - (theme.words.length % 5 || 5) }, (_, i) => (
+                      <td key={`empty-${i}`} className="py-0.5 pr-3"></td>
+                    ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function WordMapPage() {
@@ -429,136 +600,25 @@ export default function WordMapPage() {
                             {/* Themes */}
                             {expandedGrades.has(grade.id) && (
                               <div className="bg-neutral-950/30">
-                                {grade.themes.map((theme) => {
-                                  const stats = themeStats.get(theme.id);
-                                  const isStatsExpanded = expandedStats.has(theme.id);
-                                  const isNotesExpanded = expandedNotes.has(theme.id);
-                                  const hasNotes = !!theme.notes;
-                                  
-                                  return (
-                                    <div key={theme.id} className="border-t border-neutral-800/20">
-                                      {/* Theme Header */}
-                                      <div className="flex items-center">
-                                        <button
-                                          onClick={() => toggleTheme(theme.id)}
-                                          className="flex-1 flex items-center gap-2 px-3 py-1.5 pl-14 hover:bg-neutral-800/20 transition-colors text-left"
-                                        >
-                                          <span className={`text-neutral-600 transition-transform ${expandedThemes.has(theme.id) ? 'rotate-90' : ''}`}>
-                                            ›
-                                          </span>
-                                          <span className="text-neutral-400 text-[11px] uppercase tracking-wide">{theme.name}</span>
-                                          <span className="text-neutral-600 text-[10px] ml-auto">{theme.words.length}</span>
-                                        </button>
-                                        {showExtras && (
-                                          <div className="flex items-center gap-1 mr-2 text-[10px] uppercase">
-                                            {hasNotes && (
-                                              <button
-                                                onClick={(e) => { e.stopPropagation(); toggleNotes(theme.id); }}
-                                                className={`px-2 py-1 rounded transition-colors ${
-                                                  isNotesExpanded 
-                                                    ? 'text-white bg-neutral-700' 
-                                                    : 'text-blue-400 hover:text-white hover:bg-neutral-800'
-                                                }`}
-                                              >
-                                                Notes
-                                              </button>
-                                            )}
-                                            <button
-                                              onClick={(e) => { e.stopPropagation(); toggleStats(theme.id); }}
-                                              className={`px-2 py-1 rounded transition-colors ${isStatsExpanded ? 'text-white bg-neutral-700' : 'text-neutral-600 hover:text-white hover:bg-neutral-800'}`}
-                                            >
-                                              Stats
-                                            </button>
-                                          </div>
-                                        )}
-                                      </div>
-
-                                      {/* Notes Panel */}
-                                      {showExtras && isNotesExpanded && hasNotes && (
-                                        <div className="bg-neutral-900/50 border-y border-neutral-800/30 px-3 py-3 pl-20">
-                                          <pre className="text-neutral-300 text-[11px] whitespace-pre-wrap font-sans leading-relaxed">
-                                            {theme.notes}
-                                          </pre>
-                                        </div>
-                                      )}
-
-                                      {/* Stats Panel */}
-                                      {showExtras && isStatsExpanded && stats && (
-                                        <div className="bg-neutral-900/50 border-y border-neutral-800/30 px-3 py-2 pl-20">
-                                          <div className="grid grid-cols-4 gap-3 text-[10px]">
-                                            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
-                                              <div className="text-neutral-500 uppercase tracking-wide">New</div>
-                                              <div className="text-white font-bold text-sm">{stats.unique}</div>
-                                            </div>
-                                            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
-                                              <div className="flex items-center gap-1 text-blue-400 uppercase">
-                                                <span className="w-2 h-2 bg-blue-500 rounded-sm" />
-                                                Diff Level
-                                              </div>
-                                              <div className="text-white font-bold text-sm">{stats.differentLevel}</div>
-                                            </div>
-                                            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
-                                              <div className="flex items-center gap-1 text-yellow-400 uppercase">
-                                                <span className="w-2 h-2 bg-yellow-500 rounded-sm" />
-                                                Same Level
-                                              </div>
-                                              <div className="text-white font-bold text-sm">{stats.sameLevel}</div>
-                                            </div>
-                                            <div className="bg-neutral-800/50 rounded px-2 py-1.5">
-                                              <div className="flex items-center gap-1 text-green-400 uppercase">
-                                                <span className="w-2 h-2 bg-green-500 rounded-sm" />
-                                                Same Grade
-                                              </div>
-                                              <div className="text-white font-bold text-sm">{stats.sameGrade}</div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {/* Words Table */}
-                                      {expandedThemes.has(theme.id) && (
-                                        <div className="bg-neutral-950/50 px-3 py-2 pl-20">
-                                          <table className="w-full">
-                                            <tbody>
-                                              {Array.from({ length: Math.ceil(theme.words.length / 5) }, (_, rowIndex) => (
-                                                <tr key={rowIndex}>
-                                                  {theme.words.slice(rowIndex * 5, (rowIndex + 1) * 5).map((word, colIndex) => {
-                                                    const { status, previousOccurrences } = getWordInfo(
-                                                      word.word, level.id, grade.id, theme.id
-                                                    );
-                                                    
-                                                    return (
-                                                      <td 
-                                                        key={`${theme.id}-${rowIndex}-${colIndex}`}
-                                                        className="text-[11px] text-neutral-300 py-0.5 pr-3"
-                                                      >
-                                                        <span className="flex items-center">
-                                                          {showBoxes && (
-                                                            <StatusBox 
-                                                              status={status} 
-                                                              word={word.word}
-                                                              occurrences={previousOccurrences}
-                                                            />
-                                                          )}
-                                                          {word.word}
-                                                        </span>
-                                                      </td>
-                                                    );
-                                                  })}
-                                                  {rowIndex === Math.ceil(theme.words.length / 5) - 1 && 
-                                                    Array.from({ length: 5 - (theme.words.length % 5 || 5) }, (_, i) => (
-                                                      <td key={`empty-${i}`} className="py-0.5 pr-3"></td>
-                                                    ))
-                                                  }
-                                                </tr>
-                                              ))}
-                                            </tbody>
-                                          </table>
-                                        </div>
-                                      )}
-                                    </div>
-                                  );
-                                })}
+                                {grade.themes.map((theme) => (
+                                    <ThemeRow
+                                      key={theme.id}
+                                      theme={theme}
+                                      level={level}
+                                      grade={grade}
+                                      stats={themeStats.get(theme.id)}
+                                      showBoxes={showBoxes}
+                                      showExtras={showExtras}
+                                      expandedThemes={expandedThemes}
+                                      expandedStats={expandedStats}
+                                      expandedNotes={expandedNotes}
+                                      toggleTheme={toggleTheme}
+                                      toggleStats={toggleStats}
+                                      toggleNotes={toggleNotes}
+                                      getWordInfo={getWordInfo}
+                                      StatusBox={StatusBox}
+                                    />
+                                  ))}
                               </div>
                             )}
                           </div>

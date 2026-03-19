@@ -10,7 +10,6 @@ export interface Theme {
   id: string;
   name: string;
   nameTr: string;
-  notes: string; // Grammar topics, themes, etc.
   words: Word[];
 }
 
@@ -45,7 +44,6 @@ export const wordMapData: Level[] = [
             id: "0.0-alphabet",
             name: "Alphabet",
             nameTr: "Alfabe",
-            notes: "",
             words: [
               { word: "A", turkish: "A" },
               { word: "B", turkish: "B" },
@@ -79,7 +77,6 @@ export const wordMapData: Level[] = [
             id: "0.1-numbers",
             name: "Numbers",
             nameTr: "Sayılar",
-            notes: "",
             words: [
               { word: "one", turkish: "bir" },
               { word: "two", turkish: "iki" },
@@ -97,7 +94,6 @@ export const wordMapData: Level[] = [
             id: "0.2-colours",
             name: "Colours",
             nameTr: "Renkler",
-            notes: "",
             words: [
               { word: "red", turkish: "kırmızı" },
               { word: "blue", turkish: "mavi" },
@@ -116,7 +112,6 @@ export const wordMapData: Level[] = [
             id: "0.3-greetings",
             name: "Greetings",
             nameTr: "Selamlaşma",
-            notes: "",
             words: [
               { word: "hello", turkish: "merhaba" },
               { word: "hi", turkish: "selam" },
@@ -140,7 +135,6 @@ export const wordMapData: Level[] = [
             id: "0.4-actions",
             name: "Actions",
             nameTr: "Eylemler",
-            notes: "",
             words: [
               { word: "run", turkish: "koşmak" },
               { word: "walk", turkish: "yürümek" },
@@ -163,7 +157,6 @@ export const wordMapData: Level[] = [
             id: "0.5-ourbody",
             name: "Our Body",
             nameTr: "Vücudumuz",
-            notes: "",
             words: [
               { word: "head", turkish: "baş" },
               { word: "hair", turkish: "saç" },
@@ -186,7 +179,6 @@ export const wordMapData: Level[] = [
             id: "0.6-ourclassroom",
             name: "Our Classroom",
             nameTr: "Sınıfımız",
-            notes: "",
             words: [
               { word: "classroom", turkish: "sınıf" },
               { word: "teacher", turkish: "öğretmen" },
@@ -209,7 +201,6 @@ export const wordMapData: Level[] = [
             id: "0.7-things",
             name: "Things",
             nameTr: "Eşyalar",
-            notes: "",
             words: [
               { word: "ball", turkish: "top" },
               { word: "doll", turkish: "oyuncak bebek" },
@@ -227,7 +218,6 @@ export const wordMapData: Level[] = [
             id: "0.8-people",
             name: "People",
             nameTr: "İnsanlar",
-            notes: "",
             words: [
               { word: "mother", turkish: "anne" },
               { word: "father", turkish: "baba" },
@@ -245,7 +235,6 @@ export const wordMapData: Level[] = [
             id: "0.9-animals",
             name: "Animals",
             nameTr: "Hayvanlar",
-            notes: "",
             words: [
               { word: "cat", turkish: "kedi" },
               { word: "dog", turkish: "köpek" },
@@ -268,7 +257,6 @@ export const wordMapData: Level[] = [
             id: "0.10-aroundus",
             name: "Around Us",
             nameTr: "Çevremizdekiler",
-            notes: "",
             words: [
               { word: "house", turkish: "ev" },
               { word: "tree", turkish: "ağaç" },
@@ -288,7 +276,6 @@ export const wordMapData: Level[] = [
             id: "0.11-food",
             name: "Food",
             nameTr: "Yiyecekler",
-            notes: "",
             words: [
               { word: "apple", turkish: "elma" },
               { word: "banana", turkish: "muz" },
@@ -323,18 +310,6 @@ export const wordMapData: Level[] = [
             id: "2.1",
             name: "Theme 1: School Life",
             nameTr: "Tema 1: Okul Hayatı",
-            notes: `GRAMMAR:
-• Greetings: Hello, Hi, Goodbye
-• Introducing oneself: I'm..., My name is...
-• Asking about well-being: How are you? I'm fine, thank you.
-• Days of the week
-• Question words: What, Where, Who
-
-FUNCTIONS:
-• Greeting people
-• Introducing yourself
-• Talking about school places
-• Asking and answering about days`,
             words: [
               { word: "hello", turkish: "merhaba" },
               { word: "goodbye", turkish: "hoşça kalın" },
@@ -370,17 +345,6 @@ FUNCTIONS:
             id: "2.2",
             name: "Theme 2: My Classroom",
             nameTr: "Tema 2: Sınıfım",
-            notes: `GRAMMAR:
-• Imperatives: Stand up, Sit down, Open your book
-• Colors as adjectives
-• Singular/Plural nouns
-• This is a/an...
-
-FUNCTIONS:
-• Following classroom instructions
-• Identifying classroom objects
-• Describing colors
-• Giving simple commands`,
             words: [
               { word: "colour", turkish: "renk" },
               { word: "yellow", turkish: "sarı" },
@@ -428,17 +392,6 @@ FUNCTIONS:
             id: "2.3",
             name: "Theme 3: My Body",
             nameTr: "Tema 3: Vücudum",
-            notes: `GRAMMAR:
-• Parts of the body (singular/plural)
-• Describing physical appearance
-• Has/Have for descriptions
-• Adjectives: long, short, curly, straight
-
-FUNCTIONS:
-• Naming body parts
-• Describing people's appearance
-• Identifying shapes
-• Simple descriptions`,
             words: [
               { word: "body", turkish: "vücut" },
               { word: "head", turkish: "baş" },
@@ -476,17 +429,6 @@ FUNCTIONS:
             id: "2.4",
             name: "Theme 4: My Family",
             nameTr: "Tema 4: Ailem",
-            notes: `GRAMMAR:
-• Family members vocabulary
-• Possessive adjectives: my, your, his, her
-• This is my... / Who is this?
-• Adjectives for describing people
-
-FUNCTIONS:
-• Introducing family members
-• Describing family relationships
-• Talking about physical characteristics
-• Expressing love and feelings`,
             words: [
               { word: "family", turkish: "aile" },
               { word: "member", turkish: "üye" },
@@ -524,17 +466,6 @@ FUNCTIONS:
             id: "2.5",
             name: "Theme 5: My Home",
             nameTr: "Tema 5: Evim",
-            notes: `GRAMMAR:
-• Rooms of the house
-• Prepositions of place: in, on, under
-• There is/There are
-• Pet vocabulary
-
-FUNCTIONS:
-• Describing rooms in a house
-• Talking about furniture
-• Describing pets
-• Saying where things are`,
             words: [
               { word: "house", turkish: "ev" },
               { word: "garden", turkish: "bahçe" },
@@ -572,18 +503,6 @@ FUNCTIONS:
             id: "2.6",
             name: "Theme 6: Life in the City & the World",
             nameTr: "Tema 6: Şehirde ve Dünyada Yaşam",
-            notes: `GRAMMAR:
-• Food and drinks vocabulary
-• Fruits and vegetables
-• Meals: breakfast, lunch, dinner
-• Like/Dislike
-• Basic food-related expressions
-
-FUNCTIONS:
-• Naming fruits and vegetables
-• Talking about food and drinks
-• Expressing likes and dislikes
-• Describing meals`,
             words: [
               { word: "fruit", turkish: "meyve" },
               { word: "apple", turkish: "elma" },
@@ -630,17 +549,6 @@ FUNCTIONS:
             id: "3.1",
             name: "Unit 1: Greeting",
             nameTr: "Ünite 1: Selamlaşma",
-            notes: `GRAMMAR:
-• Greetings
-• The alphabet
-• Numbers 1 to 20
-• Introducing oneself
-
-FUNCTIONS:
-• Greeting people
-• Using the alphabet
-• Counting from 1 to 20
-• Introducing yourself`,
             words: [
               { word: "I", turkish: "ben" },
               { word: "you", turkish: "sen/siz" },
@@ -679,13 +587,6 @@ FUNCTIONS:
             id: "3.2",
             name: "Unit 2: My Family",
             nameTr: "Ünite 2: Ailem",
-            notes: `GRAMMAR:
-• Family members
-• Introducing someone
-
-FUNCTIONS:
-• Talking about family members
-• Introducing family members to others`,
             words: [
               { word: "he", turkish: "o (erkek)" },
               { word: "she", turkish: "o (kadın)" },
@@ -726,13 +627,6 @@ FUNCTIONS:
             id: "3.3",
             name: "Unit 3: People I Love",
             nameTr: "Ünite 3: Sevdiğim İnsanlar",
-            notes: `GRAMMAR:
-• Describing someone
-• Abilities
-
-FUNCTIONS:
-• Describing people
-• Talking about what people can do`,
             words: [
               { word: "small", turkish: "küçük" },
               { word: "big", turkish: "büyük" },
@@ -771,13 +665,6 @@ FUNCTIONS:
             id: "3.4",
             name: "Unit 4: Feelings",
             nameTr: "Ünite 4: Duygular",
-            notes: `GRAMMAR:
-• Feelings
-• Suggestions
-
-FUNCTIONS:
-• Expressing feelings and emotions
-• Making suggestions`,
             words: [
               { word: "you", turkish: "sen/siz" },
               { word: "good", turkish: "iyi" },
@@ -816,22 +703,6 @@ FUNCTIONS:
             id: "3.5",
             name: "Unit 5: Toys and Games",
             nameTr: "Ünite 5: Oyuncaklar ve Oyunlar",
-            notes: `GRAMMAR:
-• Toys and possessions vocabulary
-• Quantity of things: how many
-• Have got / Has got
-• There is / There are
-• Colors vocabulary
-• Possessive pronouns: my, your
-• Action verbs: play, look
-
-FUNCTIONS:
-• Talking about toys and games
-• Describing possessions
-• Asking about quantity
-• Expressing ownership
-• Describing colors
-• Talking about what exists`,
             words: [
               { word: "toy", turkish: "oyuncak" },
               { word: "game", turkish: "oyun" },
@@ -872,17 +743,6 @@ FUNCTIONS:
             id: "3.6",
             name: "Unit 6: My House",
             nameTr: "Ünite 6: Evim",
-            notes: `GRAMMAR:
-• Shapes
-• Parts of a house
-• House objects
-• Prepositions
-
-FUNCTIONS:
-• Describing shapes
-• Talking about parts of a house
-• Identifying house objects
-• Using prepositions to describe location`,
             words: [
               { word: "house", turkish: "ev" },
               { word: "living room", turkish: "oturma odası" },
@@ -921,7 +781,6 @@ FUNCTIONS:
             id: "3.7",
             name: "Unit 7: In My City",
             nameTr: "Ünite 7: Şehrimde",
-            notes: "Buildings, Places",
             words: [
               { word: "building", turkish: "bina" },
               { word: "place", turkish: "yer" },
@@ -960,7 +819,6 @@ FUNCTIONS:
             id: "3.8",
             name: "Unit 8: Transportation",
             nameTr: "Ünite 8: Ulaşım",
-            notes: "Vehicles and Transportation",
             words: [
               { word: "vehicle", turkish: "araç" },
               { word: "car", turkish: "araba" },
@@ -998,7 +856,6 @@ FUNCTIONS:
             id: "3.9",
             name: "Unit 9: Weather",
             nameTr: "Ünite 9: Hava Durumu",
-            notes: "Talking about the weather",
             words: [
               { word: "weather", turkish: "hava durumu" },
               { word: "sunny", turkish: "güneşli" },
@@ -1036,7 +893,6 @@ FUNCTIONS:
             id: "3.10",
             name: "Unit 10: Nature",
             nameTr: "Ünite 10: Doğa",
-            notes: "Animals, Nature, Like and Dislike",
             words: [
               { word: "animal", turkish: "hayvan" },
               { word: "bear", turkish: "ayı" },
@@ -1078,7 +934,6 @@ FUNCTIONS:
             id: "4.1",
             name: "Unit 1: Classroom Rules",
             nameTr: "Ünite 1: Sınıf Kuralları",
-            notes: "Simple Requests, Instructions, Numbers 1-50",
             words: [
               { word: "classroom", turkish: "sınıf" },
               { word: "rule", turkish: "kural" },
@@ -1120,7 +975,6 @@ FUNCTIONS:
             id: "4.2",
             name: "Unit 2: Nationality",
             nameTr: "Ünite 2: Milliyet",
-            notes: "Countries and Nationalities, Locations of Cities",
             words: [
               { word: "country", turkish: "ülke" },
               { word: "nationality", turkish: "milliyet" },
@@ -1160,7 +1014,6 @@ FUNCTIONS:
             id: "4.3",
             name: "Unit 3: Cartoon Characters",
             nameTr: "Ünite 3: Çizgi Film Karakterleri",
-            notes: "Ability, Possessions",
             words: [
               { word: "cartoon", turkish: "çizgi film" },
               { word: "character", turkish: "karakter" },
@@ -1200,7 +1053,6 @@ FUNCTIONS:
             id: "4.4",
             name: "Unit 4: Free Time",
             nameTr: "Ünite 4: Boş Zaman",
-            notes: "Likes and Dislikes, Asking for Clarification",
             words: [
               { word: "free time", turkish: "boş zaman" },
               { word: "like", turkish: "sevmek" },
@@ -1242,7 +1094,6 @@ FUNCTIONS:
             id: "4.5",
             name: "Unit 5: My Day",
             nameTr: "Ünite 5: Günüm",
-            notes: "Daily Routines, Telling the Time, Days of the week",
             words: [
               { word: "day", turkish: "gün" },
               { word: "week", turkish: "hafta" },
@@ -1283,7 +1134,6 @@ FUNCTIONS:
             id: "4.6",
             name: "Unit 6: Fun with Science",
             nameTr: "Ünite 6: Bilimle Eğlence",
-            notes: "Simple Instructions, prepositions",
             words: [
               { word: "fun", turkish: "eğlence" },
               { word: "science", turkish: "bilim" },
@@ -1326,7 +1176,6 @@ FUNCTIONS:
             id: "4.7",
             name: "Unit 7: Jobs",
             nameTr: "Ünite 7: Meslekler",
-            notes: "Occupations, Likes",
             words: [
               { word: "job", turkish: "iş, meslek" },
               { word: "teacher", turkish: "öğretmen" },
@@ -1369,7 +1218,6 @@ FUNCTIONS:
             id: "4.8",
             name: "Unit 8: My Clothes",
             nameTr: "Ünite 8: Kıyafetlerim",
-            notes: "Weather, Seasons, Clothes",
             words: [
               { word: "seasons", turkish: "mevsimler" },
               { word: "spring", turkish: "ilkbahar" },
@@ -1412,7 +1260,6 @@ FUNCTIONS:
             id: "4.9",
             name: "Unit 9: My Friends",
             nameTr: "Ünite 9: Arkadaşlarım",
-            notes: "Describing People, Have got/has got",
             words: [
               { word: "hair", turkish: "saç" },
               { word: "straight", turkish: "düz" },
@@ -1452,7 +1299,6 @@ FUNCTIONS:
             id: "4.10",
             name: "Unit 10: Food and Drinks",
             nameTr: "Ünite 10: Yiyecek ve İçecekler",
-            notes: "Making Offers, Food and Drinks",
             words: [
               { word: "food", turkish: "yiyecek" },
               { word: "bread", turkish: "ekmek" },

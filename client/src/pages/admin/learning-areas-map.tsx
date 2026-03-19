@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { NoIndex } from '@/components/NoIndex';
 import { Link } from 'wouter';
+import { useThemeNotes } from '@/hooks/useThemeNotes';
 
 const LEGEND = [
   { c: 'c1', label: 'Greetings & Introductions' },
@@ -102,6 +104,67 @@ function LegendSwatch({ c }: { c: string }) {
   return <span className={`inline-block w-4 h-4 rounded flex-shrink-0 ${cls}`} />;
 }
 
+function UnitRow({
+  gradeNum,
+  row,
+  TagComponent,
+}: {
+  gradeNum: number;
+  row: { unit: string; tags: { c: string; text: string; rec?: boolean }[] };
+  TagComponent: React.ComponentType<{ c: string; text: string; rec?: boolean }>;
+}) {
+  const [notesExpanded, setNotesExpanded] = useState(false);
+  const [savedFeedback, setSavedFeedback] = useState(false);
+  const noteKey = `la-grade${gradeNum}-${row.unit}`;
+  const [note, setNote] = useThemeNotes(noteKey);
+
+  const handleNoteBlur = () => {
+    setSavedFeedback(true);
+    setTimeout(() => setSavedFeedback(false), 1500);
+  };
+
+  return (
+    <>
+      <tr className="border-t border-neutral-800/30 hover:bg-neutral-800/20">
+        <td className="py-2.5 px-3 text-white text-xs font-medium">{row.unit}</td>
+        <td className="py-2.5 px-3">
+          {row.tags.map((t) => (
+            <TagComponent key={`${row.unit}-${t.text}`} c={t.c} text={t.text} rec={t.rec} />
+          ))}
+        </td>
+        <td className="py-2.5 px-3 w-24">
+          <button
+            onClick={() => setNotesExpanded((v) => !v)}
+            className={`px-2 py-1 text-[10px] uppercase rounded transition-colors ${
+              notesExpanded ? 'text-white bg-neutral-700' : 'text-blue-400 hover:text-white hover:bg-neutral-800'
+            }`}
+          >
+            Notes
+          </button>
+        </td>
+      </tr>
+      {notesExpanded && (
+        <tr>
+          <td colSpan={3} className="bg-neutral-900/50 border-t-0 px-3 py-3">
+            <div className="pl-3">
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                onBlur={handleNoteBlur}
+                placeholder="Add notes for this unit..."
+                className="w-full min-h-[80px] bg-neutral-800/50 border border-neutral-700 rounded-lg px-3 py-2 text-neutral-300 text-[11px] font-sans leading-relaxed resize-y focus:outline-none focus:ring-1 focus:ring-neutral-600 placeholder-neutral-500"
+              />
+              {savedFeedback && (
+                <span className="text-[10px] text-green-400 mt-1.5 block">Saved</span>
+              )}
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
 export default function LearningAreasMapPage() {
   const handleLogout = () => {
     sessionStorage.removeItem('admin_unlocked');
@@ -154,18 +217,12 @@ export default function LearningAreasMapPage() {
                   <tr className="bg-neutral-800/50">
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
+                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {GRADE2.map((row) => (
-                    <tr key={row.unit} className="border-t border-neutral-800/30 hover:bg-neutral-800/20">
-                      <td className="py-2.5 px-3 text-white text-xs font-medium">{row.unit}</td>
-                      <td className="py-2.5 px-3">
-                        {row.tags.map((t) => (
-                          <Tag key={`${row.unit}-${t.text}`} c={t.c} text={t.text} />
-                        ))}
-                      </td>
-                    </tr>
+                    <UnitRow key={row.unit} gradeNum={2} row={row} TagComponent={Tag} />
                   ))}
                 </tbody>
               </table>
@@ -181,18 +238,12 @@ export default function LearningAreasMapPage() {
                   <tr className="bg-neutral-800/50">
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
+                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {GRADE3.map((row) => (
-                    <tr key={row.unit} className="border-t border-neutral-800/30 hover:bg-neutral-800/20">
-                      <td className="py-2.5 px-3 text-white text-xs font-medium">{row.unit}</td>
-                      <td className="py-2.5 px-3">
-                        {row.tags.map((t) => (
-                          <Tag key={`${row.unit}-${t.text}`} c={t.c} text={t.text} rec={t.rec} />
-                        ))}
-                      </td>
-                    </tr>
+                    <UnitRow key={row.unit} gradeNum={3} row={row} TagComponent={Tag} />
                   ))}
                 </tbody>
               </table>
@@ -208,18 +259,12 @@ export default function LearningAreasMapPage() {
                   <tr className="bg-neutral-800/50">
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-[22%]">Unit / Theme</th>
                     <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider">Learning Areas</th>
+                    <th className="text-left py-2.5 px-3 text-[10px] text-neutral-400 uppercase tracking-wider w-24">Notes</th>
                   </tr>
                 </thead>
                 <tbody>
                   {GRADE4.map((row) => (
-                    <tr key={row.unit} className="border-t border-neutral-800/30 hover:bg-neutral-800/20">
-                      <td className="py-2.5 px-3 text-white text-xs font-medium">{row.unit}</td>
-                      <td className="py-2.5 px-3">
-                        {row.tags.map((t) => (
-                          <Tag key={`${row.unit}-${t.text}`} c={t.c} text={t.text} rec={t.rec} />
-                        ))}
-                      </td>
-                    </tr>
+                    <UnitRow key={row.unit} gradeNum={4} row={row} TagComponent={Tag} />
                   ))}
                 </tbody>
               </table>
