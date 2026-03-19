@@ -227,14 +227,39 @@ export async function registerRoutes(
   });
 
   // Published snapshot (teacher publishes table for parents to see)
-  const publishedSnapshots = new Map<string, { class: any; students: any[]; scores: Record<string, Record<string, number[]>>; updatedAt: Date }>();
+  // IMPORTANT: we always normalize the key the SAME way the parent page does:
+  // lowercase and remove all non-alphanumeric characters.
+  const publishedSnapshots = new Map<
+    string,
+    {
+      class: any;
+      students: any[];
+      scores: Record<string, Record<string, number[]>>;
+      updatedAt: Date;
+    }
+  >();
   app.post("/api/classroom/publish-snapshot", async (req, res) => {
     try {
       const { classId, class: classObj, students, scores } = req.body;
       if (!classId || !classObj || !students) return res.status(400).json({ message: "Missing required fields" });
-      const mc = (classObj.monitorCode || classObj.name?.toLowerCase().replace(/[^a-z0-9]/g, "") || "").toLowerCase();
+      // Normalize monitor code exactly like the parent page URL:
+      // 1) take monitorCode if present, otherwise generate from name
+      // 2) lowercase
+      // 3) strip everything except a–z and 0–9
+      const rawMonitorCode =
+        (classObj.monitorCode ||
+          classObj.name?.toLowerCase().replace(/[^a-z0-9]/g, "") ||
+          "") as string;
+      const mc = rawMonitorCode.toLowerCase().replace(/[^a-z0-9]/g, "");
       if (!mc) return res.status(400).json({ message: "Invalid class" });
-      publishedSnapshots.set(mc, { class: classObj, students, scores: scores || {}, updatedAt: new Date() });
+
+      publishedSnapshots.set(mc, {
+        class: { ...classObj, monitorCode: mc },
+        students,
+        scores: scores || {},
+        updatedAt: new Date(),
+      });
+
       res.json({ success: true, monitorCode: mc });
     } catch (error: any) {
       res.status(500).json({ message: error.message || "Internal server error" });

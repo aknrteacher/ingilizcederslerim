@@ -1,0 +1,100 @@
+---
+description: How to update Word Map and Learning Areas Map when adding new units for upper grades
+globs: client/src/data/wordMap.ts, client/src/pages/admin/word-map.tsx, client/src/pages/admin/learning-areas-map.tsx
+alwaysApply: false
+---
+
+# Word Map & Learning Areas Map Update Workflow
+
+When the user provides **vocabulary list** and **learning areas** for new units (e.g. Grade 5, 6, etc.), update **both** pages separately.
+
+---
+
+## 1. Word Map Update
+
+**File:** `client/src/data/wordMap.ts`
+
+- Add new grade under the appropriate level (e.g. `primary` for Grade 5).
+- Structure: `Level > Grade > Theme > Words`
+- Each theme needs: `id`, `name`, `nameTr`, `words` (array of `{ word, turkish }`).
+
+```typescript
+{
+  id: "grade-5",
+  name: "Grade 5",
+  nameTr: "5. Sınıf",
+  themes: [
+    {
+      id: "5.1",
+      name: "Unit 1: ...",
+      nameTr: "Ünite 1: ...",
+      words: [
+        { word: "hello", turkish: "merhaba" },
+        // ...
+      ],
+    },
+  ],
+},
+```
+
+---
+
+## 2. Learning Areas Map Update
+
+**File:** `client/src/pages/admin/learning-areas-map.tsx`
+
+### Color Coding Logic
+
+- **LEGEND** (lines 6–30): 23 learning area categories `c1`–`c23` (e.g. c1 = Greetings, c2 = Numbers, c3 = Classroom, etc.).
+- **colorClasses** (lines 80–103): Maps `c1`–`c23` to Tailwind classes. Use existing codes; add new `c24`, `c25` etc. only if a genuinely new learning area is introduced.
+- **Tags**: Each unit has `tags: [{ c: 'c1', text: 'Greetings & Introductions', rec?: true }]`.
+  - `rec: true` = recurring (builds on earlier grade) → shows dashed border and ↻.
+
+### Add New Grade
+
+1. Create a new array (e.g. `GRADE5`) with unit objects:
+
+```typescript
+const GRADE5 = [
+  { unit: 'Unit 1: ...', tags: [{ c: 'c1', text: 'Greetings & Introductions', rec: true }, { c: 'c3', text: 'Classroom Instructions' }] },
+  // ...
+];
+```
+
+2. Add to `LEVELS` under the correct level:
+
+```typescript
+{ id: 'grade-5', name: 'Grade 5', rows: GRADE5 },
+```
+
+3. Map learning areas to existing `c` codes from LEGEND. Use `rec: true` when the area was introduced in an earlier grade.
+
+---
+
+## Quick Reference: LEGEND (c codes)
+
+| Code | Learning Area |
+|------|---------------|
+| c1 | Greetings & Introductions |
+| c2 | Numbers |
+| c3 | Classroom, Instructions & Permission |
+| c4 | Colors |
+| c5 | Possession (have/has got) |
+| c6 | Family |
+| c7 | Body, Physical Description & Shapes |
+| c8 | Abilities (can/can't) |
+| c9 | House & Rooms |
+| c10 | Prepositions & Location |
+| c11 | Feelings & Suggestions (Let's) |
+| c12 | Quantity (How many / there is/are) |
+| c13 | Weather |
+| c14 | City, Places & Transportation |
+| c15 | Likes, Dislikes, Animals & Nature |
+| c16 | Daily Routines & Time |
+| c17 | Countries & Nationality |
+| c18 | Clothes & Seasons |
+| c19 | Food & Offers |
+| c20 | Jobs |
+| c21 | Alphabet & Spelling |
+| c22 | Days of the Week |
+| c23 | Apologies & Social Language |
