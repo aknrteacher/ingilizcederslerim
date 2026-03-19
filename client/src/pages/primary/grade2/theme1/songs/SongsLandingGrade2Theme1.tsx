@@ -7,6 +7,11 @@ const SONGS = [
     title: "Hello School",
     href: "/primary-school/grade-2/theme-1/songs/hello-school",
   },
+  {
+    id: "hello-how-are-you",
+    title: "Hello! How Are You?",
+    href: "/primary-school/grade-2/theme-1/songs/hello-how-are-you",
+  },
 ];
 
 export default function SongsLandingGrade2Theme1() {

@@ -4,33 +4,39 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
-// Lyrics as separate lines for karaoke (14 lines)
+// Lyrics as separate lines for karaoke
 const LYRICS = [
-  "Hello, hello, how are you?",
-  "Hello, hello, I'm fine!",
-  "Hello, hello, how are you?",
-  "Hello, hello, I'm fine!",
-  "Hello, Mrs Sunny, hello!",
-  "Hello, my friend, hello!",
-  "Girl and boy, student too,",
-  "Hello, hello, me and you!",
-  "Today is Monday, yes it's true,",
-  "We are at school, me and you.",
-  "Classroom, library, come and see,",
-  "Playground, garden, happy we!",
-  "Goodbye, goodbye, see you soon,",
-  "Goodbye, goodbye, see you!",
+  "Hello, teacher. Hello, student.",
+  "Hello, girl. Hello, boy.",
+  "How are you? How are you?",
+  "Hello, teacher.",
+  "Hello, student.",
+  "Hello, girl.",
+  "Hello, boy.",
+  "How are you?",
+  "How are you?",
+  "I am fine. I am fine.",
+  "I am fine, thank you.",
+  "I am fine. I am fine.",
+  "I am fine, thank you.",
+  "Hello, friend! Hello, friend!",
+  "How are you? How are you?",
+  "I am fine. I am fine.",
+  "Hello, friend! Hello, friend!",
+  "How are you? How are you?",
+  "I am fine. I am fine.",
+  "Goodbye, teacher. Goodbye, student.",
+  "Goodbye, girl. Goodbye, boy.",
+  "Goodbye, my friend. Goodbye!",
+  "Goodbye, teacher. Goodbye, student.",
+  "Goodbye, girl. Goodbye, boy.",
+  "Goodbye, my friend. Goodbye!",
 ];
 
-/**
- * Optional: start time in seconds for each line.
- * If provided (same length as LYRICS), karaoke uses these for precise sync.
- * How to build: play the MP3, pause at each line start, and note the time (e.g. 0, 3.2, 6.5, 9.1 ...).
- * Leave null to use equal split of duration across lines.
- */
 const LINE_TIMINGS: number[] | null = [
-  0.720567, 4.476749, 8.212513, 12.185576, 16.18236, 20.171374, 24.155659,
-  28.154405, 32.14499, 36.129934, 40.396074, 44.382722, 48.107285, 55.882923,
+  1.541259, 3.931532, 6.361592, 7.682239, 9.298513, 11.15602, 12.216112, 13.021172,
+  13.811607, 15.943406, 17.825782, 22.093032, 24.222383, 29.264374, 31.135985, 33.009184,
+  36.467339, 38.062524, 39.919567, 43.944097, 47.4274, 49.302789, 51.44292, 54.407338, 56.275985,
 ];
 
 const LINES_VISIBLE = 5;
@@ -50,7 +56,7 @@ function getCurrentLineIndexFromTimings(currentTime: number, timings: number[]):
   return idx;
 }
 
-export default function HelloSchoolSong() {
+export default function HelloHowAreYouSong() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -58,18 +64,16 @@ export default function HelloSchoolSong() {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const mp3FileName = "Hello School.mp3";
+  const totalLines = LYRICS.length;
+
+  const mp3FileName = "Hello! How Are You.mp3";
   const editorTimings = LINE_TIMINGS;
 
-  const totalLines = LYRICS.length;
   const currentLineIndex =
     editorTimings && duration > 0
       ? getCurrentLineIndexFromTimings(currentTime, editorTimings)
       : getCurrentLineIndex(currentTime, duration);
-  const windowStart = Math.max(
-    0,
-    Math.min(currentLineIndex - 1, totalLines - LINES_VISIBLE)
-  );
+  const windowStart = Math.max(0, Math.min(currentLineIndex - 1, totalLines - LINES_VISIBLE));
   const visibleLines = LYRICS.slice(windowStart, windowStart + LINES_VISIBLE);
 
   useEffect(() => {
@@ -81,12 +85,15 @@ export default function HelloSchoolSong() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
     const onLoadedMetadata = () => setDuration(audio.duration);
     const onEnded = () => setPlaying(false);
+
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("loadedmetadata", onLoadedMetadata);
     audio.addEventListener("ended", onEnded);
+
     return () => {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
@@ -130,7 +137,7 @@ export default function HelloSchoolSong() {
           <Link href="/primary-school/grade-2/theme-1/songs">
             <a className="text-sm text-muted-foreground hover:underline">← Songs</a>
           </Link>
-          <h1 className="text-2xl font-bold text-foreground mt-2">Hello School</h1>
+          <h1 className="text-2xl font-bold text-foreground mt-2">Hello! How Are You?</h1>
         </div>
 
         {/* Controls */}
@@ -142,11 +149,7 @@ export default function HelloSchoolSong() {
             onClick={togglePlay}
             aria-label={playing ? "Pause" : "Play"}
           >
-            {playing ? (
-              <Pause className="h-6 w-6" />
-            ) : (
-              <Play className="h-6 w-6 ml-0.5" />
-            )}
+            {playing ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
           </Button>
 
           <div className="flex items-center gap-2">
@@ -157,11 +160,7 @@ export default function HelloSchoolSong() {
               onClick={toggleMute}
               aria-label={muted ? "Unmute" : "Mute"}
             >
-              {muted || volume === 0 ? (
-                <VolumeX className="h-5 w-5" />
-              ) : (
-                <Volume2 className="h-5 w-5" />
-              )}
+              {muted || volume === 0 ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
             </Button>
             <input
               type="range"
@@ -176,7 +175,7 @@ export default function HelloSchoolSong() {
           </div>
         </div>
 
-        {/* Karaoke: 4 lines, current line bigger and highlighted */}
+        {/* Karaoke */}
         <div className="rounded-xl bg-card/80 border border-border p-6 min-h-[200px] flex flex-col justify-center">
           <div className="space-y-2 text-center">
             {visibleLines.map((line, i) => {
@@ -208,3 +207,4 @@ export default function HelloSchoolSong() {
     </Layout>
   );
 }
+

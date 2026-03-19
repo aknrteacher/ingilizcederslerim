@@ -56,6 +56,13 @@ export const nowWorkingOnList: LandingItem[] = [
  */
 export const lastAddedList: LandingItem[] = [
   {
+    title: "2. Sınıf Ünite 1 Şarkı: Hello! How Are You?",
+    href: "/primary-school/grade-2/theme-1/songs/hello-how-are-you",
+    description: "2. sınıf 1. ünite için Hello! How Are You? şarkısı: dinleme, karaoke ve sözler.",
+    addedAt: "2026-03-19",
+    level: "primary-school",
+  },
+  {
     title: "2. Sınıf Ünite 1 Şarkı: Hello School",
     href: "/primary-school/grade-2/theme-1/songs/hello-school",
     description: "2. sınıf 1. ünite için Hello School şarkısı: dinleme, karaoke ve sözler.",
