@@ -90,28 +90,39 @@ const colorClasses: Record<string, string> = {
   c23: 'bg-neutral-200 text-neutral-800 dark:bg-neutral-700/50 dark:text-neutral-200',
 };
 
-function Tag({ c, text, rec }: { c: string; text: string; rec?: boolean }) {
+function Tag({ c, text, rec, selectedTopic, onTopicClick }: { c: string; text: string; rec?: boolean; selectedTopic?: string | null; onTopicClick?: (c: string) => void }) {
   const cls = colorClasses[c] || 'bg-neutral-200 text-neutral-800';
+  const isSelected = selectedTopic === c;
   return (
-    <span className={`inline-block px-2.5 py-1 mr-2 mb-1.5 rounded text-[11px] font-medium ${cls} ${rec ? 'border border-dashed border-neutral-500/50' : ''}`}>
+    <span
+      role="button"
+      tabIndex={0}
+      onClick={() => onTopicClick?.(c)}
+      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onTopicClick?.(c)}
+      className={`inline-block px-2.5 py-1 mr-2 mb-1.5 rounded text-[11px] font-medium cursor-pointer select-none transition-opacity ${cls} ${rec ? 'border border-dashed border-neutral-500/50' : ''} ${isSelected ? 'animate-topic-blink ring-2 ring-white ring-offset-2 ring-offset-neutral-900' : ''}`}
+    >
       {text}{rec ? ' ↻' : ''}
     </span>
   );
 }
 
-function LegendSwatch({ c }: { c: string }) {
+function LegendSwatch({ c, isSelected }: { c: string; isSelected?: boolean }) {
   const cls = colorClasses[c] || 'bg-neutral-300';
-  return <span className={`inline-block w-4 h-4 rounded flex-shrink-0 ${cls}`} />;
+  return <span className={`inline-block w-4 h-4 rounded flex-shrink-0 ${cls} ${isSelected ? 'animate-topic-blink ring-2 ring-white ring-offset-1 ring-offset-neutral-900' : ''}`} />;
 }
 
 function UnitRow({
   gradeNum,
   row,
   TagComponent,
+  selectedTopic,
+  onTopicClick,
 }: {
   gradeNum: number;
   row: { unit: string; tags: { c: string; text: string; rec?: boolean }[] };
-  TagComponent: React.ComponentType<{ c: string; text: string; rec?: boolean }>;
+  TagComponent: React.ComponentType<{ c: string; text: string; rec?: boolean; selectedTopic?: string | null; onTopicClick?: (c: string) => void }>;
+  selectedTopic?: string | null;
+  onTopicClick?: (c: string) => void;
 }) {
   const [notesExpanded, setNotesExpanded] = useState(false);
   const [savedFeedback, setSavedFeedback] = useState(false);
@@ -129,7 +140,7 @@ function UnitRow({
         <td className="py-2.5 px-3 text-white text-xs font-medium">{row.unit}</td>
         <td className="py-2.5 px-3">
           {row.tags.map((t) => (
-            <TagComponent key={`${row.unit}-${t.text}`} c={t.c} text={t.text} rec={t.rec} />
+            <TagComponent key={`${row.unit}-${t.text}-${t.c}`} c={t.c} text={t.text} rec={t.rec} selectedTopic={selectedTopic} onTopicClick={onTopicClick} />
           ))}
         </td>
         <td className="py-2.5 px-3 w-24">
@@ -166,6 +177,12 @@ function UnitRow({
 }
 
 export default function LearningAreasMapPage() {
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+
+  const handleTopicClick = (c: string) => {
+    setSelectedTopic((prev) => (prev === c ? null : c));
+  };
+
   const handleLogout = () => {
     sessionStorage.removeItem('admin_unlocked');
     window.location.href = '/';
@@ -197,13 +214,18 @@ export default function LearningAreasMapPage() {
 
           {/* Legend */}
           <div className="bg-neutral-900/50 border border-neutral-800/50 rounded-lg p-4 mb-6">
-            <h2 className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider mb-3">COLOR LEGEND</h2>
+            <h2 className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider mb-3">COLOR LEGEND — Click a topic to highlight it across the page</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
               {LEGEND.map((item) => (
-                <div key={item.c} className="flex items-center gap-2 text-[11px] text-neutral-300">
-                  <LegendSwatch c={item.c} />
+                <button
+                  key={item.c}
+                  type="button"
+                  onClick={() => handleTopicClick(item.c)}
+                  className={`flex items-center gap-2 text-[11px] text-neutral-300 text-left rounded px-2 py-1.5 -mx-2 -my-1.5 transition-colors hover:bg-neutral-800/50 hover:text-white ${selectedTopic === item.c ? 'bg-neutral-800/70 text-white' : ''}`}
+                >
+                  <LegendSwatch c={item.c} isSelected={selectedTopic === item.c} />
                   <span>{item.label}</span>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -222,7 +244,7 @@ export default function LearningAreasMapPage() {
                 </thead>
                 <tbody>
                   {GRADE2.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={2} row={row} TagComponent={Tag} />
+                    <UnitRow key={row.unit} gradeNum={2} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
                   ))}
                 </tbody>
               </table>
@@ -243,7 +265,7 @@ export default function LearningAreasMapPage() {
                 </thead>
                 <tbody>
                   {GRADE3.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={3} row={row} TagComponent={Tag} />
+                    <UnitRow key={row.unit} gradeNum={3} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
                   ))}
                 </tbody>
               </table>
@@ -264,7 +286,7 @@ export default function LearningAreasMapPage() {
                 </thead>
                 <tbody>
                   {GRADE4.map((row) => (
-                    <UnitRow key={row.unit} gradeNum={4} row={row} TagComponent={Tag} />
+                    <UnitRow key={row.unit} gradeNum={4} row={row} TagComponent={Tag} selectedTopic={selectedTopic} onTopicClick={handleTopicClick} />
                   ))}
                 </tbody>
               </table>
