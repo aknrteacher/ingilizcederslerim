@@ -278,6 +278,7 @@ import StoryReaderPage from "@/pages/primary/stories/story-reader";
 import { AdminGate } from "@/components/AdminGate";
 import AdminDashboard from "@/pages/admin/dashboard";
 import WordMapPage from "@/pages/admin/word-map";
+import LearningAreasMapPage from "@/pages/admin/learning-areas-map";
 import WorkflowPage from "@/pages/admin/workflow";
 import ClassroomMonitoring from "@/pages/classroom-monitoring";
 import InClass from "@/pages/inclass";
@@ -581,6 +582,13 @@ function Router() {
         {() => (
           <AdminGate>
             <WordMapPage />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/learning-areas-map">
+        {() => (
+          <AdminGate>
+            <LearningAreasMapPage />
           </AdminGate>
         )}
       </Route>

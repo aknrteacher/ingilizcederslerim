@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const adminPages = [
     { name: 'Flashcard Images', path: '/admin/flashcard-images' },
     { name: 'Word Map', path: '/admin/word-map' },
+    { name: 'Learning Areas Map', path: '/admin/learning-areas-map' },
     { name: 'Workflow', path: '/admin/workflow' },
     { name: 'In Class', path: '/admin/inclass' },
   ];
