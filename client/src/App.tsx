@@ -48,6 +48,8 @@ import PrimarySchoolGrade2Theme1GamesMenu from "@/pages/primary-school-grade2-th
 import SongsLandingGrade2Theme1 from "@/pages/primary/grade2/theme1/songs/SongsLandingGrade2Theme1";
 import HelloSchoolSong from "@/pages/primary/grade2/theme1/songs/HelloSchoolSong";
 import HelloHowAreYouSong from "@/pages/primary/grade2/theme1/songs/HelloHowAreYouSong";
+import WorksheetsLandingGrade2Theme1 from "@/pages/primary/grade2/theme1/worksheets/WorksheetsLandingGrade2Theme1";
+import WorksheetsColouringGrade2Theme1 from "@/pages/primary/grade2/theme1/worksheets/WorksheetsColouringGrade2Theme1";
 import PrimarySchoolGrade2Theme2GamesMenu from "@/pages/primary-school-grade2-theme2-games-menu";
 import PrimarySchoolGrade2Theme3GamesMenu from "@/pages/primary-school-grade2-theme3-games-menu";
 import PrimarySchoolGrade2Theme4GamesMenu from "@/pages/primary-school-grade2-theme4-games-menu";
@@ -304,6 +306,8 @@ function Router() {
       <Route path="/pre-school/games" component={PreSchoolGamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/games" component={PrimarySchoolGrade2Theme1GamesMenu} />
       <Route path="/primary-school/grade-2/theme-1/songs" component={SongsLandingGrade2Theme1} />
+      <Route path="/primary-school/grade-2/theme-1/worksheets/colouring" component={WorksheetsColouringGrade2Theme1} />
+      <Route path="/primary-school/grade-2/theme-1/worksheets" component={WorksheetsLandingGrade2Theme1} />
       <Route path="/primary-school/grade-2/theme-1/songs/hello-school" component={HelloSchoolSong} />
       <Route path="/primary-school/grade-2/theme-1/songs/hello-how-are-you" component={HelloHowAreYouSong} />
       <Route path="/primary-school/grade-2/theme-2/games" component={PrimarySchoolGrade2Theme2GamesMenu} />

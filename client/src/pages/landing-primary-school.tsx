@@ -4,9 +4,14 @@ import { Link } from "wouter";
 export default function PrimarySchoolLandingPage() {
   const sections = [
     {
-      title: "Hikayeler",
-      href: "/primary-school/stories",
-      description: "Stories"
+      title: "Kelime Kartları",
+      href: "/primary-school/grade-2/theme-1/2.1-vocab",
+      description: "Vocabulary Cards"
+    },
+    {
+      title: "Şarkılar",
+      href: "/primary-school/grade-2/theme-1/songs",
+      description: "Songs (Grade 2 Theme 1)"
     },
     {
       title: "Oyunlar",
@@ -14,14 +19,19 @@ export default function PrimarySchoolLandingPage() {
       description: "Games"
     },
     {
-      title: "Şarkılar",
-      href: "/primary-school/grade-2/theme-1/songs",
-      description: "Songs (Grade 2 Unit 1)"
+      title: "Hikayeler",
+      href: "/primary-school/stories",
+      description: "Stories"
     },
     {
-      title: "Kelime Kartları",
-      href: "/primary-school/grade-2/theme-1/2.1-vocab",
-      description: "Vocabulary Cards"
+      title: "Alıştırmalar",
+      href: "/primary-school/grade-2/theme-1/exercises",
+      description: "Exercises"
+    },
+    {
+      title: "Çalışma Kağıtları",
+      href: "/primary-school/grade-2/theme-1/worksheets",
+      description: "Worksheets"
     }
   ];
 
@@ -35,8 +45,8 @@ export default function PrimarySchoolLandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {sections.map((section, index) => (
-              <Link key={index} href={section.href}>
+            {sections.map((section) => (
+              <Link key={section.title} href={section.href}>
                 <a className="block p-6 bg-card rounded-lg border-2 border-border hover:border-primary hover:shadow-lg transition-all duration-200 text-center">
                   <h2 className="text-2xl font-semibold text-foreground mb-2">{section.title}</h2>
                   <p className="text-muted-foreground">{section.description}</p>
