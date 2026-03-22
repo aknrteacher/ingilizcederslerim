@@ -23,29 +23,36 @@ export interface LandingItem {
 }
 
 /**
- * Sections we are currently working on — 3 items, cycle with arrows on landing.
+ * Sections we are currently working on — 4 items, cycle with arrows on landing.
  * Update when you change focus.
  */
 export const nowWorkingOnList: LandingItem[] = [
   {
-    title: "3. Sınıf 8, 9 ve 10. Üniteler",
-    href: "/primary-school/grade-3",
-    description: "3. sınıf 8, 9 ve 10. üniteler kelime kartları ve oyunlar.",
-    addedAt: "2025-02-23",
-    level: "primary-school",
-  },
-  {
-    title: "4. Sınıf Eksik Üniteler Kelime Kartları",
+    title: "4. Sınıf Tüm Kelime Listesi",
     href: "/primary-school/grade-4",
-    description: "4. sınıf eksik üniteler için kelime kartları.",
-    addedAt: "2025-02-23",
+    description: "4. sınıf tüm kelime listesi — ilk 5 ünite eksik.",
+    addedAt: "2026-03-22",
     level: "primary-school",
   },
   {
-    title: "2. Sınıf Şarkıları",
-    href: "/primary-school/grade-2/theme-1/songs",
-    description: "2. sınıf ünite şarkıları: dinleme ve karaoke.",
-    addedAt: "2026-03-19",
+    title: "3. ve 4. Sınıf 9–10. Üniteler",
+    href: "/primary-school",
+    description: "3. ve 4. sınıflar 9. ve 10. üniteler kelime kartları ve oyunları.",
+    addedAt: "2026-03-22",
+    level: "primary-school",
+  },
+  {
+    title: "2. Sınıf ve Diğer Sınıflar İçin Şarkılar",
+    href: "/primary-school/grade-2",
+    description: "2. sınıf ve diğer sınıflar için şarkılar.",
+    addedAt: "2026-03-22",
+    level: "primary-school",
+  },
+  {
+    title: "Colouring ve QR Bağlantısı",
+    href: "/primary-school/grade-2/theme-1/worksheets/colouring",
+    description: "Colouring oyun ve doğru QR link.",
+    addedAt: "2026-03-22",
     level: "primary-school",
   },
 ];
@@ -55,6 +62,27 @@ export const nowWorkingOnList: LandingItem[] = [
  * Add new items at the top when you publish new content.
  */
 export const lastAddedList: LandingItem[] = [
+  {
+    title: "4. Sınıf Ünite 8: My Clothes",
+    href: "/primary-school/grade-4/unit-8/games",
+    description: "4. sınıf 8. ünite kelime kartları ve kelime oyunları (Kıyafetlerim).",
+    addedAt: "2026-03-22",
+    level: "primary-school",
+  },
+  {
+    title: "3. Sınıf Ünite 8: Transportation",
+    href: "/primary-school/grade-3/unit-8/games",
+    description: "3. sınıf 8. ünite kelime kartları ve kelime oyunları (Ulaşım).",
+    addedAt: "2026-03-22",
+    level: "primary-school",
+  },
+  {
+    title: "2. Sınıf Theme 1: Colouring",
+    href: "/primary-school/grade-2/theme-1/worksheets/colouring",
+    description: "2. sınıf 1. tema boyama çalışma sayfası.",
+    addedAt: "2026-03-19",
+    level: "primary-school",
+  },
   {
     title: "2. Sınıf Ünite 1 Şarkı: Hello! How Are You?",
     href: "/primary-school/grade-2/theme-1/songs/hello-how-are-you",

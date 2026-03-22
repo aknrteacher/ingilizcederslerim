@@ -829,7 +829,7 @@ export const wordMapData: Level[] = [
               { word: "subway", turkish: "metro" },
               { word: "ship", turkish: "gemi" },
               { word: "boat", turkish: "tekne" },
-              { word: "bicycle / bike", turkish: "bisiklet" },
+              { word: "bicycle (bike)", turkish: "bisiklet" },
               { word: "motorbike", turkish: "motosiklet" },
               { word: "helicopter", turkish: "helikopter" },
               { word: "drive", turkish: "araba kullanmak" },
@@ -855,7 +855,7 @@ export const wordMapData: Level[] = [
           {
             id: "3.9",
             name: "Unit 9: Weather",
-            nameTr: "Ünite 9: Hava Durumu",
+            nameTr: "Ünite 9: Hava Durumu (kart ve oyunlar hazırlanıyor)",
             words: [
               { word: "weather", turkish: "hava durumu" },
               { word: "sunny", turkish: "güneşli" },
@@ -892,7 +892,7 @@ export const wordMapData: Level[] = [
           {
             id: "3.10",
             name: "Unit 10: Nature",
-            nameTr: "Ünite 10: Doğa",
+            nameTr: "Ünite 10: Doğa (kart ve oyunlar hazırlanıyor)",
             words: [
               { word: "animal", turkish: "hayvan" },
               { word: "bear", turkish: "ayı" },
@@ -933,7 +933,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.1",
             name: "Unit 1: Classroom Rules",
-            nameTr: "Ünite 1: Sınıf Kuralları",
+            nameTr: "Ünite 1: Sınıf Kuralları (taslak liste — 1–5. üniteler)",
             words: [
               { word: "classroom", turkish: "sınıf" },
               { word: "rule", turkish: "kural" },
@@ -974,7 +974,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.2",
             name: "Unit 2: Nationality",
-            nameTr: "Ünite 2: Milliyet",
+            nameTr: "Ünite 2: Milliyet (taslak liste — 1–5. üniteler)",
             words: [
               { word: "country", turkish: "ülke" },
               { word: "nationality", turkish: "milliyet" },
@@ -1013,7 +1013,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.3",
             name: "Unit 3: Cartoon Characters",
-            nameTr: "Ünite 3: Çizgi Film Karakterleri",
+            nameTr: "Ünite 3: Çizgi Film Karakterleri (taslak liste — 1–5. üniteler)",
             words: [
               { word: "cartoon", turkish: "çizgi film" },
               { word: "character", turkish: "karakter" },
@@ -1052,7 +1052,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.4",
             name: "Unit 4: Free Time",
-            nameTr: "Ünite 4: Boş Zaman",
+            nameTr: "Ünite 4: Boş Zaman (taslak liste — 1–5. üniteler)",
             words: [
               { word: "free time", turkish: "boş zaman" },
               { word: "like", turkish: "sevmek" },
@@ -1093,7 +1093,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.5",
             name: "Unit 5: My Day",
-            nameTr: "Ünite 5: Günüm",
+            nameTr: "Ünite 5: Günüm (taslak liste — 1–5. üniteler)",
             words: [
               { word: "day", turkish: "gün" },
               { word: "week", turkish: "hafta" },
@@ -1259,7 +1259,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.9",
             name: "Unit 9: My Friends",
-            nameTr: "Ünite 9: Arkadaşlarım",
+            nameTr: "Ünite 9: Arkadaşlarım (kart ve oyunlar hazırlanıyor)",
             words: [
               { word: "hair", turkish: "saç" },
               { word: "straight", turkish: "düz" },
@@ -1298,7 +1298,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.10",
             name: "Unit 10: Food and Drinks",
-            nameTr: "Ünite 10: Yiyecek ve İçecekler",
+            nameTr: "Ünite 10: Yiyecek ve İçecekler (kart ve oyunlar hazırlanıyor)",
             words: [
               { word: "food", turkish: "yiyecek" },
               { word: "bread", turkish: "ekmek" },
