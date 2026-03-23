@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/0.1.voc.css";
@@ -48,13 +48,13 @@ export default function OurClassroomVocabulary() {
     { word: "book", file: "book.png", turkish: "kitap" },
     { word: "notebook", file: "notebook.png", turkish: "defter" },
     { word: "pencil", file: "pencil.png", turkish: "kalem" },
-    { word: "bag", file: "bag.png", turkish: "çanta" },
+    { word: "bag", file: "bag.png", turkish: "Ã§anta" },
     { word: "chair", file: "chair.png", turkish: "sandalye" },
     { word: "table", file: "table.png", turkish: "masa" },
-    { word: "desk", file: "desk.png", turkish: "sıra" },
+    { word: "desk", file: "desk.png", turkish: "sÄ±ra" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -336,8 +336,8 @@ export default function OurClassroomVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Our Classroom',
-          text: `Check out this classroom vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Our Classroom',
+          text: `Check out this classroom vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -496,14 +496,14 @@ export default function OurClassroomVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -681,15 +681,15 @@ export default function OurClassroomVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            📋 Copy Link
+            ðŸ“‹ Copy Link
           </button>
-          {navigator.share && (
+          {'share' in navigator && (
             <button 
               className="share-drawer-option"
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              🔗 Share
+              ðŸ”— Share
             </button>
           )}
         </div>
@@ -703,7 +703,7 @@ export default function OurClassroomVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -895,9 +895,9 @@ export default function OurClassroomVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -923,4 +923,5 @@ export default function OurClassroomVocabulary() {
     </Layout>
   );
 }
+
 

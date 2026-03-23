@@ -142,24 +142,25 @@ export default function ClassroomMonitoring() {
   }, [participationData]);
 
   const handleVoiceCommand = async (command: { type: string; value?: string }, rawText: string) => {
-    if (command.type === 'class' && command.value) {
+    const commandValue = command.value;
+    if (command.type === 'class' && commandValue) {
       // Find class by name
       const cls = classesData?.classes.find(
-        (c) => c.name.toLowerCase() === command.value.toLowerCase()
+        (c) => c.name.toLowerCase() === commandValue.toLowerCase()
       );
       if (cls) {
         setSelectedClass(cls);
         toast.success(`Opened class ${cls.name}`);
       } else {
-        toast.error(`Class ${command.value} not found`);
+        toast.error(`Class ${commandValue} not found`);
       }
-    } else if (command.type === 'tab' && command.value) {
-      setActiveTab(command.value);
-      toast.success(`Switched to ${command.value} tab`);
-    } else if (command.type === 'student' && command.value && selectedClass) {
+    } else if (command.type === 'tab' && commandValue) {
+      setActiveTab(commandValue);
+      toast.success(`Switched to ${commandValue} tab`);
+    } else if (command.type === 'student' && commandValue && selectedClass) {
       // Find student by name
       const student = studentsData?.students.find(
-        (s) => s.name.toLowerCase().includes(command.value!.toLowerCase())
+        (s) => s.name.toLowerCase().includes(commandValue.toLowerCase())
       );
       if (student) {
         setSelectedStudent(student);

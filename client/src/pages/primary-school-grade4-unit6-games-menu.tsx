@@ -1,4 +1,4 @@
-import { Layout } from "@/components/Layout";
+﻿import { Layout } from "@/components/Layout";
 import { CombinedGameButton } from "@/components/CombinedGameButton";
 import "../styles/oyunlar.css";
 import "@/styles/4.6.voc.css";
@@ -22,7 +22,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "matching",
       name: "Matchlings",
-      icon: "🎮",
+      icon: "ðŸŽ®",
       gradient: "yellow-orange" as const,
       pathSuffix: "4.6-matching-game",
       image: gameTypeMatchlings,
@@ -30,7 +30,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "crossword",
       name: "Word Cross",
-      icon: "🧩",
+      icon: "ðŸ§©",
       gradient: "blue-purple" as const,
       pathSuffix: "crossword",
       image: gameTypeWordCross,
@@ -38,7 +38,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "spell-quest",
       name: "Spell Quest",
-      icon: "✨",
+      icon: "âœ¨",
       gradient: "pink-red" as const,
       pathSuffix: "spell-quest",
       image: gameTypeSpellQuest,
@@ -46,7 +46,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "word-pop",
       name: "Word Pop",
-      icon: "🎈",
+      icon: "ðŸŽˆ",
       gradient: "green-teal" as const,
       pathSuffix: "word-pop",
       image: gameTypeWordPop,
@@ -54,7 +54,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "catch-that",
       name: "Catch That",
-      icon: "🎯",
+      icon: "ðŸŽ¯",
       gradient: "purple-pink" as const,
       pathSuffix: "catch-that",
       image: gameTypeCatchThat,
@@ -62,7 +62,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "say-what",
       name: "Say What?",
-      icon: "🔊",
+      icon: "ðŸ”Š",
       gradient: "blue-purple" as const,
       pathSuffix: "say-what",
       image: gameTypeSayWhat,
@@ -70,7 +70,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "memory-flip",
       name: "Memory Flip",
-      icon: "🧠",
+      icon: "ðŸ§ ",
       gradient: "green-teal" as const,
       pathSuffix: "memory-flip",
       image: gameTypeMemoryFlip,
@@ -78,7 +78,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "word-race",
       name: "Word Race",
-      icon: "🏎️",
+      icon: "ðŸŽï¸",
       gradient: "yellow-orange" as const,
       pathSuffix: "word-race",
       image: gameTypeWordRace,
@@ -86,7 +86,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     {
       id: "word-snake",
       name: "Word Snake",
-      icon: "🐍",
+      icon: "ðŸ",
       gradient: "green-teal" as const,
       pathSuffix: "word-snake",
       image: gameTypeWordSnake,
@@ -127,7 +127,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
                 gameType={game.gameType}
                 gameIcon={game.gameIcon}
                 href={game.path}
-                gameGradient={game.gradient}
+                gameGradient={game.gameGradient}
                 dataTestId={`card-game-${game.id}`}
                 topicImage={game.topicImage}
                 gameTypeImage={game.gameTypeImage}
@@ -178,3 +178,4 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     </Layout>
   );
 }
+

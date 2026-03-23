@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/0.1.voc.css";
@@ -74,7 +74,7 @@ export default function AlphabetVocabulary() {
     { word: "Z", file: "z.png", turkish: "Z" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -359,8 +359,8 @@ export default function AlphabetVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Alphabet',
-          text: `Check out this alphabet vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Alphabet',
+          text: `Check out this alphabet vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -519,14 +519,14 @@ export default function AlphabetVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -704,15 +704,15 @@ export default function AlphabetVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            📋 Copy Link
+            ðŸ“‹ Copy Link
           </button>
-          {navigator.share && (
+          {'share' in navigator && (
             <button 
               className="share-drawer-option"
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              🔗 Share
+              ðŸ”— Share
             </button>
           )}
         </div>
@@ -726,7 +726,7 @@ export default function AlphabetVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -918,9 +918,9 @@ export default function AlphabetVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -941,7 +941,7 @@ export default function AlphabetVocabulary() {
             className="help-button" 
             onClick={handleShowIntro}
             data-testid="button-help"
-            title="Yardım"
+            title="YardÄ±m"
           >
             ?
           </button>
@@ -960,5 +960,6 @@ export default function AlphabetVocabulary() {
     </Layout>
   );
 }
+
 
 

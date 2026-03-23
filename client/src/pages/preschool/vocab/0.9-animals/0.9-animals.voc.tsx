@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/0.1.voc.css";
@@ -47,13 +47,13 @@ export default function AnimalsVocabulary() {
   const imageFiles = [
     { word: "animals", file: "animals.png", turkish: "hayvanlar" },
     { word: "cat", file: "cat.png", turkish: "kedi" },
-    { word: "dog", file: "dog.png", turkish: "köpek" },
-    { word: "bear", file: "bear.png", turkish: "ayı" },
-    { word: "frog", file: "frog.png", turkish: "kurbağa" },
+    { word: "dog", file: "dog.png", turkish: "kÃ¶pek" },
+    { word: "bear", file: "bear.png", turkish: "ayÄ±" },
+    { word: "frog", file: "frog.png", turkish: "kurbaÄŸa" },
     { word: "elephant", file: "elephant.png", turkish: "fil" },
     { word: "whale", file: "whale.png", turkish: "balina" },
     { word: "flamingo", file: "flamingo.png", turkish: "flamingo" },
-    { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
+    { word: "rabbit", file: "rabbit.png", turkish: "tavÅŸan" },
     { word: "monkey", file: "monkey.png", turkish: "maymun" },
     { word: "sheep", file: "sheep.png", turkish: "koyun" },
     { word: "horse", file: "horse.png", turkish: "at" },
@@ -63,7 +63,7 @@ export default function AnimalsVocabulary() {
     { word: "chicken", file: "chicken.png", turkish: "tavuk" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -346,8 +346,8 @@ export default function AnimalsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Animals',
-          text: `Check out this animals vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Animals',
+          text: `Check out this animals vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -506,14 +506,14 @@ export default function AnimalsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -691,15 +691,15 @@ export default function AnimalsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            📋 Copy Link
+            ðŸ“‹ Copy Link
           </button>
-          {navigator.share && (
+          {'share' in navigator && (
             <button 
               className="share-drawer-option"
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              🔗 Share
+              ðŸ”— Share
             </button>
           )}
         </div>
@@ -713,7 +713,7 @@ export default function AnimalsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -905,9 +905,9 @@ export default function AnimalsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -933,4 +933,5 @@ export default function AnimalsVocabulary() {
     </Layout>
   );
 }
+
 

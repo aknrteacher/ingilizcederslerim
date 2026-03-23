@@ -722,7 +722,7 @@ export default function VocabularyCards4_7() {
                     <span>Copy Link</span>
                   </button>
                   {typeof navigator !== "undefined" &&
-                    navigator.share && (
+                    "share" in navigator && (
                       <button
                         className="share-option"
                         onClick={() => handleShareOption("native")}

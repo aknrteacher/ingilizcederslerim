@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/3.1.voc.css";
@@ -46,38 +46,38 @@ export default function VocabularyCards3_9() {
   // Vocabulary data for Grade 3 Unit 9: Weather
   const imageFiles = [
     { word: "weather", file: "weather.png", turkish: "hava durumu" },
-    { word: "sunny", file: "sunny.png", turkish: "güneşli" },
-    { word: "rainy", file: "rainy.png", turkish: "yağmurlu" },
+    { word: "sunny", file: "sunny.png", turkish: "gÃ¼neÅŸli" },
+    { word: "rainy", file: "rainy.png", turkish: "yaÄŸmurlu" },
     { word: "cloudy", file: "cloudy.png", turkish: "bulutlu" },
-    { word: "windy", file: "windy.png", turkish: "rüzgarlı" },
-    { word: "snowy", file: "snowy.png", turkish: "karlı" },
-    { word: "hot", file: "hot.png", turkish: "sıcak" },
-    { word: "cold", file: "cold.png", turkish: "soğuk" },
-    { word: "warm", file: "warm.png", turkish: "ılık" },
-    { word: "nice", file: "nice.png", turkish: "güzel" },
+    { word: "windy", file: "windy.png", turkish: "rÃ¼zgarlÄ±" },
+    { word: "snowy", file: "snowy.png", turkish: "karlÄ±" },
+    { word: "hot", file: "hot.png", turkish: "sÄ±cak" },
+    { word: "cold", file: "cold.png", turkish: "soÄŸuk" },
+    { word: "warm", file: "warm.png", turkish: "Ä±lÄ±k" },
+    { word: "nice", file: "nice.png", turkish: "gÃ¼zel" },
     { word: "dry", file: "dry.png", turkish: "kuru" },
-    { word: "wet", file: "wet.png", turkish: "ıslak" },
+    { word: "wet", file: "wet.png", turkish: "Ä±slak" },
     { word: "spring", file: "spring.png", turkish: "ilkbahar" },
     { word: "summer", file: "summer.png", turkish: "yaz" },
     { word: "autumn", file: "autumn.png", turkish: "sonbahar" },
-    { word: "winter", file: "winter.png", turkish: "kış" },
-    { word: "today", file: "today.png", turkish: "bugün" },
-    { word: "tomorrow", file: "tomorrow.png", turkish: "yarın" },
-    { word: "now", file: "now.png", turkish: "şimdi" },
-    { word: "sun", file: "sun.png", turkish: "güneş" },
-    { word: "rain", file: "rain.png", turkish: "yağmur" },
+    { word: "winter", file: "winter.png", turkish: "kÄ±ÅŸ" },
+    { word: "today", file: "today.png", turkish: "bugÃ¼n" },
+    { word: "tomorrow", file: "tomorrow.png", turkish: "yarÄ±n" },
+    { word: "now", file: "now.png", turkish: "ÅŸimdi" },
+    { word: "sun", file: "sun.png", turkish: "gÃ¼neÅŸ" },
+    { word: "rain", file: "rain.png", turkish: "yaÄŸmur" },
     { word: "snow", file: "snow.png", turkish: "kar" },
     { word: "cloud", file: "cloud.png", turkish: "bulut" },
-    { word: "desert", file: "desert.png", turkish: "çöl" },
+    { word: "desert", file: "desert.png", turkish: "Ã§Ã¶l" },
     { word: "pole", file: "pole.png", turkish: "kutup" },
     { word: "jungle", file: "jungle.png", turkish: "orman" },
-    { word: "how", file: "how.png", turkish: "nasıl" },
+    { word: "how", file: "how.png", turkish: "nasÄ±l" },
     { word: "go home", file: "go home.png", turkish: "eve gitmek" },
-    { word: "go out", file: "go out.png", turkish: "dışarı çıkmak" },
-    { word: "very", file: "very.png", turkish: "çok" },
+    { word: "go out", file: "go out.png", turkish: "dÄ±ÅŸarÄ± Ã§Ä±kmak" },
+    { word: "very", file: "very.png", turkish: "Ã§ok" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -361,8 +361,8 @@ export default function VocabularyCards3_9() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -521,14 +521,14 @@ export default function VocabularyCards3_9() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -711,7 +711,7 @@ export default function VocabularyCards3_9() {
                   </svg>
                   <span>Copy Link</span>
                 </button>
-                {typeof navigator !== 'undefined' && navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <button
                     className="share-option"
                     onClick={() => handleShareOption('native')}
@@ -738,7 +738,7 @@ export default function VocabularyCards3_9() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -930,9 +930,9 @@ export default function VocabularyCards3_9() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -958,3 +958,4 @@ export default function VocabularyCards3_9() {
     </Layout>
   );
 }
+

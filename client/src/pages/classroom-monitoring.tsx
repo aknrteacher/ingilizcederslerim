@@ -170,28 +170,29 @@ export default function ClassroomMonitoring() {
 
   const handleVoiceCommand = async (command: { type: string; value?: string }, rawText: string) => {
     console.log('[Voice] Processing command:', command, 'rawText:', rawText);
+    const commandValue = command.value;
     
-    if (command.type === 'class' && command.value) {
+    if (command.type === 'class' && commandValue) {
       const cls = classesData?.classes.find(
-        (c) => c.name.toLowerCase() === command.value.toLowerCase()
+        (c) => c.name.toLowerCase() === commandValue.toLowerCase()
       );
       if (cls) {
         setSelectedClass(cls);
         toast.success(`Opened class ${cls.name}`);
       } else {
-        toast.error(`Class ${command.value} not found`);
+        toast.error(`Class ${commandValue} not found`);
       }
-    } else if (command.type === 'tab' && command.value) {
-      setActiveTab(command.value);
-      toast.success(`Switched to ${command.value} tab`);
-    } else if (command.type === 'student' && command.value && selectedClass) {
+    } else if (command.type === 'tab' && commandValue) {
+      setActiveTab(commandValue);
+      toast.success(`Switched to ${commandValue} tab`);
+    } else if (command.type === 'student' && commandValue && selectedClass) {
       // Try exact match first, then partial match
       const exactMatch = studentsData?.students.find(
-        (s) => s.name.toLowerCase() === command.value!.toLowerCase()
+        (s) => s.name.toLowerCase() === commandValue.toLowerCase()
       );
       const partialMatch = studentsData?.students.find(
-        (s) => s.name.toLowerCase().includes(command.value!.toLowerCase()) ||
-               command.value!.toLowerCase().includes(s.name.toLowerCase())
+        (s) => s.name.toLowerCase().includes(commandValue.toLowerCase()) ||
+               commandValue.toLowerCase().includes(s.name.toLowerCase())
       );
       const student = exactMatch || partialMatch;
       

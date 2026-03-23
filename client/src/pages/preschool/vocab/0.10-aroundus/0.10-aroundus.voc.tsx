@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/0.1.voc.css";
@@ -49,19 +49,19 @@ export default function AroundUsVocabulary() {
 
   // Around Us vocabulary data
   const imageFiles = [
-    { word: "world", file: "world.png", turkish: "dünya" },
-    { word: "sun", file: "sun.png", turkish: "güneş" },
+    { word: "world", file: "world.png", turkish: "dÃ¼nya" },
+    { word: "sun", file: "sun.png", turkish: "gÃ¼neÅŸ" },
     { word: "moon", file: "moon.png", turkish: "ay" },
-    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
+    { word: "sky", file: "sky.png", turkish: "gÃ¶kyÃ¼zÃ¼" },
     { word: "clouds", file: "clouds.png", turkish: "bulutlar" },
     { word: "water", file: "water.png", turkish: "su" },
-    { word: "tree", file: "tree.png", turkish: "ağaç" },
+    { word: "tree", file: "tree.png", turkish: "aÄŸaÃ§" },
     { word: "animals", file: "animals.png", turkish: "hayvanlar" },
     { word: "people", file: "people.png", turkish: "insanlar" },
-    { word: "city", file: "city.png", turkish: "şehir" },
+    { word: "city", file: "city.png", turkish: "ÅŸehir" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -341,8 +341,8 @@ export default function AroundUsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Around Us',
-          text: `Check out this around us vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Around Us',
+          text: `Check out this around us vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -501,14 +501,14 @@ export default function AroundUsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Anladım!
+                      AnladÄ±m!
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -686,15 +686,15 @@ export default function AroundUsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            📋 Copy Link
+            ðŸ“‹ Copy Link
           </button>
-          {navigator.share && (
+          {'share' in navigator && (
             <button 
               className="share-drawer-option"
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              🔗 Share
+              ðŸ”— Share
             </button>
           )}
         </div>
@@ -708,7 +708,7 @@ export default function AroundUsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -900,9 +900,9 @@ export default function AroundUsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -928,4 +928,5 @@ export default function AroundUsVocabulary() {
     </Layout>
   );
 }
+
 

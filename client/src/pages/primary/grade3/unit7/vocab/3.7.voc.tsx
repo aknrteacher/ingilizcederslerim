@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/3.1.voc.css";
@@ -48,37 +48,37 @@ export default function VocabularyCards3_7() {
     { word: "building", file: "building.png", turkish: "bina" },
     { word: "place", file: "place.png", turkish: "yer" },
     { word: "school", file: "school.png", turkish: "okul" },
-    { word: "library", file: "library.png", turkish: "kütüphane" },
-    { word: "shopping centre", file: "shopping centre.png", turkish: "alışveriş merkezi" },
-    { word: "museum", file: "museum.png", turkish: "müze" },
-    { word: "zoo", file: "zoo.png", turkish: "hayvanat bahçesi" },
+    { word: "library", file: "library.png", turkish: "kÃ¼tÃ¼phane" },
+    { word: "shopping centre", file: "shopping centre.png", turkish: "alÄ±ÅŸveriÅŸ merkezi" },
+    { word: "museum", file: "museum.png", turkish: "mÃ¼ze" },
+    { word: "zoo", file: "zoo.png", turkish: "hayvanat bahÃ§esi" },
     { word: "hospital", file: "hospital.png", turkish: "hastane" },
     { word: "bank", file: "bank.png", turkish: "banka" },
     { word: "park", file: "park.png", turkish: "park" },
     { word: "mosque", file: "mosque.png", turkish: "cami" },
     { word: "cafe", file: "cafe.png", turkish: "kafe" },
     { word: "police station", file: "police station.png", turkish: "polis merkezi" },
-    { word: "bus stop", file: "bus stop.png", turkish: "otobüs durağı" },
+    { word: "bus stop", file: "bus stop.png", turkish: "otobÃ¼s duraÄŸÄ±" },
     { word: "home", file: "home.png", turkish: "ev" },
     { word: "road", file: "road.png", turkish: "yol" },
     { word: "map", file: "map.png", turkish: "harita" },
-    { word: "city", file: "city.png", turkish: "şehir" },
+    { word: "city", file: "city.png", turkish: "ÅŸehir" },
     { word: "town", file: "town.png", turkish: "kasaba" },
-    { word: "village", file: "village.png", turkish: "köy" },
+    { word: "village", file: "village.png", turkish: "kÃ¶y" },
     { word: "at", file: "at.png", turkish: "-de / -da" },
     { word: "over there", file: "over there.png", turkish: "orada" },
     { word: "here", file: "here.png", turkish: "burada" },
     { word: "know", file: "know.png", turkish: "bilmek" },
-    { word: "now", file: "now.png", turkish: "şimdi" },
+    { word: "now", file: "now.png", turkish: "ÅŸimdi" },
     { word: "I don't know", file: "I don't know.png", turkish: "bilmiyorum" },
-    { word: "sorry", file: "sorry.png", turkish: "özür dilerim" },
+    { word: "sorry", file: "sorry.png", turkish: "Ã¶zÃ¼r dilerim" },
     { word: "excuse me", file: "excuse me.png", turkish: "affedersiniz" },
     { word: "where", file: "where.png", turkish: "nerede" },
     { word: "go", file: "go.png", turkish: "gitmek" },
     { word: "it", file: "it.png", turkish: "o" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -362,8 +362,8 @@ export default function VocabularyCards3_7() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -522,14 +522,14 @@ export default function VocabularyCards3_7() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -712,7 +712,7 @@ export default function VocabularyCards3_7() {
                   </svg>
                   <span>Copy Link</span>
                 </button>
-                {typeof navigator !== 'undefined' && navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <button
                     className="share-option"
                     onClick={() => handleShareOption('native')}
@@ -739,7 +739,7 @@ export default function VocabularyCards3_7() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -931,9 +931,9 @@ export default function VocabularyCards3_7() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -959,3 +959,4 @@ export default function VocabularyCards3_7() {
     </Layout>
   );
 }
+

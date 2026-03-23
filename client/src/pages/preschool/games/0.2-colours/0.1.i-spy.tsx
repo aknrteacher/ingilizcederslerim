@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -20,10 +20,10 @@ interface SpyObject {
 
 // Colors vocabulary
 const colors = [
-  { word: "red", turkish: "kırmızı" },
+  { word: "red", turkish: "kÄ±rmÄ±zÄ±" },
   { word: "blue", turkish: "mavi" },
-  { word: "yellow", turkish: "sarı" },
-  { word: "green", turkish: "yeşil" },
+  { word: "yellow", turkish: "sarÄ±" },
+  { word: "green", turkish: "yeÅŸil" },
   { word: "orange", turkish: "turuncu" },
   { word: "purple", turkish: "mor" },
   { word: "pink", turkish: "pembe" },
@@ -134,7 +134,7 @@ export default function ISpyGame() {
     }
 
     // Get unique colors from available objects
-    const availableColors = [...new Set(availableObjects.map(obj => obj.color))];
+    const availableColors = Array.from(new Set(availableObjects.map(obj => obj.color)));
     
     // Pick a random color
     const randomColor = availableColors[Math.floor(Math.random() * availableColors.length)];
@@ -219,7 +219,7 @@ export default function ISpyGame() {
   };
 
   const shareGame = () => {
-    const text = `I just found all ${objects.length} objects in ${formatTime(elapsedTime)} on I Spy Colours! Can you beat my time? 👁️`;
+    const text = `I just found all ${objects.length} objects in ${formatTime(elapsedTime)} on I Spy Colours! Can you beat my time? ðŸ‘ï¸`;
     if (navigator.share) {
       navigator.share({
         title: "I Spy",
@@ -232,7 +232,7 @@ export default function ISpyGame() {
   };
 
   const challengeFriend = () => {
-    const text = `Challenge me on I Spy Colours! Can you find all objects faster than my ${formatTime(elapsedTime)}? 🏆`;
+    const text = `Challenge me on I Spy Colours! Can you find all objects faster than my ${formatTime(elapsedTime)}? ðŸ†`;
     if (navigator.share) {
       navigator.share({
         title: "Challenge on I Spy",
@@ -344,7 +344,7 @@ export default function ISpyGame() {
                           <div className="object-hint-indicator"></div>
                         )}
                         {isFound && (
-                          <div className="found-checkmark">✓</div>
+                          <div className="found-checkmark">âœ“</div>
                         )}
                       </div>
                     );
@@ -386,7 +386,7 @@ export default function ISpyGame() {
                       className="footer-button"
                       onClick={() => setLocation("/pre-school/games")}
                     >
-                      ← Back
+                      â† Back
                     </Button>
                   </div>
                 </div>
@@ -397,7 +397,7 @@ export default function ISpyGame() {
           {gameComplete && (
             <div className="win-modal">
               <div className="win-content">
-                <h2>🎉 Perfect! 🎉</h2>
+                <h2>ðŸŽ‰ Perfect! ðŸŽ‰</h2>
                 <p>You found all the objects!</p>
                 <div className="win-stats">
                   <p>
@@ -407,7 +407,7 @@ export default function ISpyGame() {
                     <strong>Score:</strong> {score} points
                   </p>
                   <p className="score-note">
-                    {elapsedTime < 60 ? "⭐ Amazing speed!" : "✨ Great job!"}
+                    {elapsedTime < 60 ? "â­ Amazing speed!" : "âœ¨ Great job!"}
                   </p>
                 </div>
                 <div className="win-buttons">
@@ -426,4 +426,5 @@ export default function ISpyGame() {
     </Layout>
   );
 }
+
 

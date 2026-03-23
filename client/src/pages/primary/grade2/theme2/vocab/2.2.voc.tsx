@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/2.2.voc.css";
@@ -46,10 +46,10 @@ export default function VocabularyCards2_2() {
   // Vocabulary data for Theme 2: Classroom Life
   const imageFiles = [
     { word: "colour", file: "colour.png", turkish: "renk" },
-    { word: "yellow", file: "yellow.png", turkish: "sarı" },
+    { word: "yellow", file: "yellow.png", turkish: "sarÄ±" },
     { word: "blue", file: "blue.png", turkish: "mavi" },
-    { word: "red", file: "red.png", turkish: "kırmızı" },
-    { word: "green", file: "green.png", turkish: "yeşil" },
+    { word: "red", file: "red.png", turkish: "kÄ±rmÄ±zÄ±" },
+    { word: "green", file: "green.png", turkish: "yeÅŸil" },
     { word: "purple", file: "purple.png", turkish: "mor" },
     { word: "pink", file: "pink.png", turkish: "pembe" },
     { word: "brown", file: "brown.png", turkish: "kahverengi" },
@@ -59,38 +59,38 @@ export default function VocabularyCards2_2() {
     { word: "watch", file: "watch.png", turkish: "izle" },
     { word: "listen", file: "listen.png", turkish: "dinle" },
     { word: "write", file: "write.png", turkish: "yaz" },
-    { word: "raise", file: "raise.png", turkish: "kaldır" },
+    { word: "raise", file: "raise.png", turkish: "kaldÄ±r" },
     { word: "hand", file: "hand.png", turkish: "el" },
-    { word: "open", file: "open.png", turkish: "aç" },
+    { word: "open", file: "open.png", turkish: "aÃ§" },
     { word: "close", file: "close.png", turkish: "kapat" },
     { word: "repeat", file: "repeat.png", turkish: "tekrarla" },
-    { word: "stand up", file: "stand_up.png", turkish: "ayağa kalk" },
+    { word: "stand up", file: "stand_up.png", turkish: "ayaÄŸa kalk" },
     { word: "sit down", file: "sit_down.png", turkish: "otur" },
     { word: "hurry up", file: "hurry_up.png", turkish: "acele et" },
     { word: "be quiet", file: "be_quiet.png", turkish: "sessiz ol" },
     { word: "look", file: "look.png", turkish: "bak" },
     { word: "come", file: "come.png", turkish: "gel" },
     { word: "go", file: "go.png", turkish: "git" },
-    { word: "point", file: "point.png", turkish: "göster" },
-    { word: "match", file: "match.png", turkish: "eşleştir" },
+    { word: "point", file: "point.png", turkish: "gÃ¶ster" },
+    { word: "match", file: "match.png", turkish: "eÅŸleÅŸtir" },
     { word: "table", file: "table.png", turkish: "masa" },
     { word: "pencil", file: "pencil.png", turkish: "kalem" },
     { word: "pencil case", file: "pencil_case.png", turkish: "kalem kutusu" },
     { word: "book", file: "book.png", turkish: "kitap" },
-    { word: "bookshelf", file: "bookshelf.png", turkish: "kitaplık" },
-    { word: "bag", file: "bag.png", turkish: "çanta" },
+    { word: "bookshelf", file: "bookshelf.png", turkish: "kitaplÄ±k" },
+    { word: "bag", file: "bag.png", turkish: "Ã§anta" },
     { word: "notebook", file: "notebook.png", turkish: "defter" },
     { word: "eraser", file: "eraser.png", turkish: "silgi" },
-    { word: "sharpener", file: "sharpener.png", turkish: "açacak" },
+    { word: "sharpener", file: "sharpener.png", turkish: "aÃ§acak" },
     { word: "crayon", file: "crayon.png", turkish: "pastel boya" },
     { word: "board", file: "board.png", turkish: "tahta" },
     { word: "window", file: "window.png", turkish: "pencere" },
-    { word: "desk", file: "desk.png", turkish: "sıra" },
-    { word: "door", file: "door.png", turkish: "kapı" },
+    { word: "desk", file: "desk.png", turkish: "sÄ±ra" },
+    { word: "door", file: "door.png", turkish: "kapÄ±" },
     { word: "chair", file: "chair.png", turkish: "sandalye" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -372,8 +372,8 @@ export default function VocabularyCards2_2() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -532,14 +532,14 @@ export default function VocabularyCards2_2() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -722,7 +722,7 @@ export default function VocabularyCards2_2() {
                   </svg>
                   <span>Copy Link</span>
                 </button>
-                {typeof navigator !== 'undefined' && navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <button
                     className="share-option"
                     onClick={() => handleShareOption('native')}
@@ -749,7 +749,7 @@ export default function VocabularyCards2_2() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -941,9 +941,9 @@ export default function VocabularyCards2_2() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -969,3 +969,4 @@ export default function VocabularyCards2_2() {
     </Layout>
   );
 }
+

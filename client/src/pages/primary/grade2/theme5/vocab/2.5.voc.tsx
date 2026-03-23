@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/2.2.voc.css";
@@ -46,30 +46,30 @@ export default function VocabularyCards2_5() {
   // Vocabulary data for Theme 5: Homes, Houses, Neighbourhoods
   const imageFiles = [
     { word: "house", file: "house.png", turkish: "ev" },
-    { word: "garden", file: "garden.png", turkish: "bahçe" },
-    { word: "living room", file: "living room.png", turkish: "oturma odası" },
-    { word: "dining room", file: "dining room.png", turkish: "yemek odası" },
-    { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
+    { word: "garden", file: "garden.png", turkish: "bahÃ§e" },
+    { word: "living room", file: "living room.png", turkish: "oturma odasÄ±" },
+    { word: "dining room", file: "dining room.png", turkish: "yemek odasÄ±" },
+    { word: "bedroom", file: "bedroom.png", turkish: "yatak odasÄ±" },
     { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
     { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
-    { word: "door", file: "door.png", turkish: "kapı" },
+    { word: "door", file: "door.png", turkish: "kapÄ±" },
     { word: "window", file: "window.png", turkish: "pencere" },
     { word: "sofa", file: "sofa.png", turkish: "kanepe" },
     { word: "bed", file: "bed.png", turkish: "yatak" },
     { word: "chair", file: "chair.png", turkish: "sandalye" },
     { word: "coffee table", file: "coffee table.png", turkish: "sehpa" },
-    { word: "dog", file: "dog.png", turkish: "köpek" },
+    { word: "dog", file: "dog.png", turkish: "kÃ¶pek" },
     { word: "cat", file: "cat.png", turkish: "kedi" },
-    { word: "goldfish", file: "goldfish.png", turkish: "japon balığı" },
-    { word: "bird", file: "bird.png", turkish: "kuş" },
-    { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
-    { word: "turtle", file: "turtle.png", turkish: "kaplumbağa" },
+    { word: "goldfish", file: "goldfish.png", turkish: "japon balÄ±ÄŸÄ±" },
+    { word: "bird", file: "bird.png", turkish: "kuÅŸ" },
+    { word: "rabbit", file: "rabbit.png", turkish: "tavÅŸan" },
+    { word: "turtle", file: "turtle.png", turkish: "kaplumbaÄŸa" },
     { word: "paw", file: "paw.png", turkish: "pati" },
-    { word: "claw", file: "claw.png", turkish: "pençe" },
+    { word: "claw", file: "claw.png", turkish: "penÃ§e" },
     { word: "tail", file: "tail.png", turkish: "kuyruk" },
-    { word: "whiskers", file: "whiskers.png", turkish: "bıyık" },
+    { word: "whiskers", file: "whiskers.png", turkish: "bÄ±yÄ±k" },
     { word: "beak", file: "beak.png", turkish: "gaga" },
-    { word: "fur", file: "fur.png", turkish: "kürk" },
+    { word: "fur", file: "fur.png", turkish: "kÃ¼rk" },
     { word: "wings", file: "wings.png", turkish: "kanatlar" },
     { word: "where", file: "where.png", turkish: "nerede" },
     { word: "find", file: "find.png", turkish: "bul" },
@@ -77,7 +77,7 @@ export default function VocabularyCards2_5() {
     { word: "happy", file: "happy.png", turkish: "mutlu" },
   ];
 
-  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
+  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -359,8 +359,8 @@ export default function VocabularyCards2_5() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'İngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
+          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -519,14 +519,14 @@ export default function VocabularyCards2_5() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Çalışmaya Başla
+                      Ã‡alÄ±ÅŸmaya BaÅŸla
                     </button>
                   </div>
                 </div>
               ) : isBonusCard ? (
                 <div className="flashcard bonus-card" data-testid="card-bonus">
                   <div className="bonus-content">
-                    <div className="bonus-emoji">🎮</div>
+                    <div className="bonus-emoji">ðŸŽ®</div>
                     <div className="bonus-title">Review & Practice</div>
                     <div className="bonus-subtitle">Videos & Games coming soon!</div>
                   </div>
@@ -709,7 +709,7 @@ export default function VocabularyCards2_5() {
                   </svg>
                   <span>Copy Link</span>
                 </button>
-                {typeof navigator !== 'undefined' && navigator.share && (
+                {typeof navigator !== 'undefined' && 'share' in navigator && (
                   <button
                     className="share-option"
                     onClick={() => handleShareOption('native')}
@@ -736,7 +736,7 @@ export default function VocabularyCards2_5() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            ✕
+            âœ•
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -928,9 +928,9 @@ export default function VocabularyCards2_5() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                −
+                âˆ’
               </button>
-              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}×</span>
+              <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
                 className="fullscreen-speed-btn"
                 onClick={() => setAutoplaySpeed(Math.min(2, autoplaySpeed + 0.25))}
@@ -956,4 +956,5 @@ export default function VocabularyCards2_5() {
     </Layout>
   );
 }
+
 

@@ -35,7 +35,7 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     recognition.continuous = continuous;
     recognition.interimResults = true; // Enable interim results to see what's being recognized
     recognition.lang = lang;
-    recognition.maxAlternatives = 1; // Only get one alternative
+    (recognition as any).maxAlternatives = 1; // Only get one alternative
     
     console.log('[Speech] Recognition configured:', {
       continuous,
@@ -93,27 +93,27 @@ export function useSpeechRecognition(options: UseSpeechRecognitionOptions = {}) 
     };
 
     // Add audiostart event to verify microphone is working
-    recognition.onaudiostart = () => {
+    (recognition as any).onaudiostart = () => {
       console.log('[Speech] Audio capture started - microphone is active');
     };
 
-    recognition.onaudioend = () => {
+    (recognition as any).onaudioend = () => {
       console.log('[Speech] Audio capture ended');
     };
 
-    recognition.onsoundstart = () => {
+    (recognition as any).onsoundstart = () => {
       console.log('[Speech] Sound detected!');
     };
 
-    recognition.onsoundend = () => {
+    (recognition as any).onsoundend = () => {
       console.log('[Speech] Sound ended');
     };
 
-    recognition.onspeechstart = () => {
+    (recognition as any).onspeechstart = () => {
       console.log('[Speech] Speech detected!');
     };
 
-    recognition.onspeechend = () => {
+    (recognition as any).onspeechend = () => {
       console.log('[Speech] Speech ended');
     };
 

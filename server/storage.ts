@@ -180,6 +180,8 @@ export class MemStorage implements IStorage {
       const id = randomUUID();
       const participation: Participation = {
         ...data,
+        points: data.points ?? 0,
+        assignments: data.assignments ?? 0,
         id,
         createdAt: new Date(),
         updatedAt: new Date(),
