@@ -72,6 +72,8 @@ import PrimarySchoolGrade3Unit10GamesMenu from "@/pages/primary-school-grade3-un
 import PrimarySchoolGrade4Unit6GamesMenu from "@/pages/primary-school-grade4-unit6-games-menu";
 import PrimarySchoolGrade4Unit7GamesMenu from "@/pages/primary-school-grade4-unit7-games-menu";
 import PrimarySchoolGrade4Unit8GamesMenu from "@/pages/primary-school-grade4-unit8-games-menu";
+import SongsLandingGrade4Unit8 from "@/pages/primary/grade4/unit8/songs/SongsLandingGrade4Unit8";
+import WhatsTheWeatherLikeTodaySong from "@/pages/primary/grade4/unit8/songs/WhatsTheWeatherLikeTodaySong";
 import MatchingGame from "@/pages/primary/grade2/theme1/games/2.1.matching-game";
 import MatchingGame2_2 from "@/pages/primary/grade2/theme2/games/2.2.matching-game";
 import MatchingGame2_3 from "@/pages/primary/grade2/theme3/games/2.3.matching-game";
@@ -376,6 +378,11 @@ function Router() {
       <Route path="/primary-school/grade-4/unit-6/games" component={PrimarySchoolGrade4Unit6GamesMenu} />
       <Route path="/primary-school/grade-4/unit-7/games" component={PrimarySchoolGrade4Unit7GamesMenu} />
       <Route path="/primary-school/grade-4/unit-8/games" component={PrimarySchoolGrade4Unit8GamesMenu} />
+      <Route path="/primary-school/grade-4/unit-8/songs" component={SongsLandingGrade4Unit8} />
+      <Route
+        path="/primary-school/grade-4/unit-8/songs/whats-the-weather-like-today"
+        component={WhatsTheWeatherLikeTodaySong}
+      />
       <Route path="/primary-school/grade-2/theme-1/2.1-vocab" component={VocabularyCards} />
       <Route path="/primary-school/grade-2/theme-2/2.2-vocab" component={VocabularyCards2_2} />
       <Route path="/primary-school/grade-2/theme-3/2.3-vocab" component={VocabularyCards2_3} />
