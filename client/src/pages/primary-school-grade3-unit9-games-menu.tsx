@@ -1,11 +1,10 @@
 import { Layout } from "@/components/Layout";
 import { CombinedGameButton } from "@/components/CombinedGameButton";
 import "../styles/oyunlar.css";
-import "@/styles/4.6.voc.css";
+import "@/styles/3.1.voc.css";
 
-import topic4_6 from "@/assets/4.6game.png";
+import topic3_9 from "@/assets/3.9game.png";
 
-// Import game type button halves (300x300px)
 import gameTypeMatchlings from "@/assets/matchlings.png";
 import gameTypeWordCross from "@/assets/word cross.png";
 import gameTypeSpellQuest from "@/assets/spell quest.png";
@@ -16,15 +15,14 @@ import gameTypeMemoryFlip from "@/assets/memory flip.png";
 import gameTypeWordRace from "@/assets/word race.png";
 import gameTypeWordSnake from "@/assets/word snake.png";
 
-export default function PrimarySchoolGrade4Unit6GamesMenu() {
-  // Game type configurations
+export default function PrimarySchoolGrade3Unit9GamesMenu() {
   const gameTypes = [
     {
       id: "matching",
       name: "Matchlings",
       icon: "🎮",
       gradient: "yellow-orange" as const,
-      pathSuffix: "4.6-matching-game",
+      pathSuffix: "3.9-matching-game",
       image: gameTypeMatchlings,
     },
     {
@@ -93,21 +91,19 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
     },
   ];
 
-  // Topic configuration
   const topic = {
-    value: "4.6",
-    label: "Unit 6: Fun with Science",
-    image: topic4_6,
+    value: "3.9",
+    label: "Unit 9: Weather",
+    image: topic3_9,
   };
 
-  // Generate all game combinations
   const gameCombinations = gameTypes.map((gameType) => ({
     topicValue: topic.value,
     topicLabel: topic.label,
     gameType: gameType.name,
     gameIcon: gameType.icon,
     gameGradient: gameType.gradient,
-    path: `/primary-school/grade-4/unit-6/${gameType.pathSuffix}`,
+    path: `/primary-school/grade-3/unit-9/${gameType.pathSuffix}`,
     id: `${topic.value}.${gameType.id}`,
     topicImage: topic.image,
     gameTypeImage: gameType.image,
@@ -116,7 +112,6 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
   return (
     <Layout>
       <div className="oyunlar-container">
-        {/* Combined Game Buttons - Single Row Layout */}
         <section className="games-section">
           <div className="game-type-buttons-row">
             {gameCombinations.map((game) => (
@@ -127,7 +122,7 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
                 gameType={game.gameType}
                 gameIcon={game.gameIcon}
                 href={game.path}
-                gameGradient={game.gradient}
+                gameGradient={game.gameGradient}
                 dataTestId={`card-game-${game.id}`}
                 topicImage={game.topicImage}
                 gameTypeImage={game.gameTypeImage}
@@ -138,7 +133,6 @@ export default function PrimarySchoolGrade4Unit6GamesMenu() {
       </div>
 
       <style>{`
-        /* Game Type Buttons - 5 Per Row Layout */
         .game-type-buttons-row {
           display: grid;
           grid-template-columns: repeat(5, 1fr);

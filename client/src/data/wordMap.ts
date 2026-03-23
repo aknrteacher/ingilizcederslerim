@@ -855,7 +855,7 @@ export const wordMapData: Level[] = [
           {
             id: "3.9",
             name: "Unit 9: Weather",
-            nameTr: "Ünite 9: Hava Durumu (kart ve oyunlar hazırlanıyor)",
+            nameTr: "Ünite 9: Hava Durumu",
             words: [
               { word: "weather", turkish: "hava durumu" },
               { word: "sunny", turkish: "güneşli" },
