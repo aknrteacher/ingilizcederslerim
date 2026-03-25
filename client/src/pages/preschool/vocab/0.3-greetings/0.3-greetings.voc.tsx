@@ -47,20 +47,20 @@ export default function GreetingsVocabulary() {
   const imageFiles = [
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "hi", file: "hi.png", turkish: "selam" },
-    { word: "goodbye", file: "goodbye.png", turkish: "hoÅŸÃ§a kalÄ±n" },
-    { word: "good morning", file: "good morning.png", turkish: "gÃ¼naydÄ±n" },
-    { word: "good afternoon", file: "good afternoon.png", turkish: "iyi Ã¶ÄŸleden sonra" },
+    { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
+    { word: "good morning", file: "good morning.png", turkish: "günaydın" },
+    { word: "good afternoon", file: "good afternoon.png", turkish: "iyi öğleden sonra" },
     { word: "good night", file: "good night.png", turkish: "iyi geceler" },
-    { word: "thank you", file: "thank you.png", turkish: "teÅŸekkÃ¼r ederim" },
-    { word: "how are you?", file: "how are you.png", turkish: "nasÄ±lsÄ±n?" },
+    { word: "thank you", file: "thank you.png", turkish: "teşekkür ederim" },
+    { word: "how are you?", file: "how are you.png", turkish: "nasılsın?" },
     { word: "I am fine", file: "I am fine.png", turkish: "iyiyim" },
-    { word: "please", file: "please.png", turkish: "lÃ¼tfen" },
-    { word: "sorry", file: "sorry.png", turkish: "Ã¶zÃ¼r dilerim" },
+    { word: "please", file: "please.png", turkish: "lütfen" },
+    { word: "sorry", file: "sorry.png", turkish: "özür dilerim" },
     { word: "yes", file: "yes.png", turkish: "evet" },
-    { word: "no", file: "no.png", turkish: "hayÄ±r" },
+    { word: "no", file: "no.png", turkish: "hayır" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -342,8 +342,8 @@ export default function GreetingsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Greetings',
-          text: `Check out this greetings vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Greetings',
+          text: `Check out this greetings vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -502,7 +502,7 @@ export default function GreetingsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -687,7 +687,7 @@ export default function GreetingsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -695,7 +695,7 @@ export default function GreetingsVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -709,7 +709,7 @@ export default function GreetingsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -901,7 +901,7 @@ export default function GreetingsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

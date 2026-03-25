@@ -50,36 +50,36 @@ export default function VocabularyCards2_6() {
     { word: "orange", file: "orange.png", turkish: "portakal" },
     { word: "banana", file: "banana.png", turkish: "muz" },
     { word: "cherry", file: "cherry.png", turkish: "kiraz" },
-    { word: "grapes", file: "grapes.png", turkish: "Ã¼zÃ¼m" },
+    { word: "grapes", file: "grapes.png", turkish: "üzüm" },
     { word: "pear", file: "pear.png", turkish: "armut" },
-    { word: "strawberry", file: "strawberry.png", turkish: "Ã§ilek" },
+    { word: "strawberry", file: "strawberry.png", turkish: "çilek" },
     { word: "vegetable", file: "vegetable.png", turkish: "sebze" },
     { word: "tomatoes", file: "tomatoes.png", turkish: "domatesler" },
     { word: "potatoes", file: "potatoes.png", turkish: "patatesler" },
-    { word: "cucumber", file: "cucumber.png", turkish: "salatalÄ±k" },
+    { word: "cucumber", file: "cucumber.png", turkish: "salatalık" },
     { word: "pepper", file: "pepper.png", turkish: "biber" },
     { word: "broccoli", file: "broccoli.png", turkish: "brokoli" },
-    { word: "carrot", file: "carrot.png", turkish: "havuÃ§" },
+    { word: "carrot", file: "carrot.png", turkish: "havuç" },
     { word: "water", file: "water.png", turkish: "su" },
-    { word: "milk", file: "milk.png", turkish: "sÃ¼t" },
-    { word: "tea", file: "tea.png", turkish: "Ã§ay" },
+    { word: "milk", file: "milk.png", turkish: "süt" },
+    { word: "tea", file: "tea.png", turkish: "çay" },
     { word: "coffee", file: "coffee.png", turkish: "kahve" },
     { word: "like", file: "like.png", turkish: "sevmek" },
-    { word: "fridge", file: "fridge.png", turkish: "buzdolabÄ±" },
-    { word: "breakfast", file: "breakfast.png", turkish: "kahvaltÄ±" },
-    { word: "lunch", file: "lunch.png", turkish: "Ã¶ÄŸle yemeÄŸi" },
-    { word: "dinner", file: "dinner.png", turkish: "akÅŸam yemeÄŸi" },
+    { word: "fridge", file: "fridge.png", turkish: "buzdolabı" },
+    { word: "breakfast", file: "breakfast.png", turkish: "kahvaltı" },
+    { word: "lunch", file: "lunch.png", turkish: "öğle yemeği" },
+    { word: "dinner", file: "dinner.png", turkish: "akşam yemeği" },
     { word: "bread", file: "bread.png", turkish: "ekmek" },
-    { word: "fish", file: "fish.png", turkish: "balÄ±k" },
+    { word: "fish", file: "fish.png", turkish: "balık" },
     { word: "chicken", file: "chicken.png", turkish: "tavuk" },
     { word: "meat", file: "meat.png", turkish: "et" },
     { word: "egg", file: "egg.png", turkish: "yumurta" },
-    { word: "hungry", file: "hungry.png", turkish: "aÃ§" },
+    { word: "hungry", file: "hungry.png", turkish: "aç" },
     { word: "thirsty", file: "thirsty.png", turkish: "susuz" },
     { word: "yummy", file: "yummy.png", turkish: "lezzetli" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -361,8 +361,8 @@ export default function VocabularyCards2_6() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -521,7 +521,7 @@ export default function VocabularyCards2_6() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -738,7 +738,7 @@ export default function VocabularyCards2_6() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -930,7 +930,7 @@ export default function VocabularyCards2_6() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

@@ -45,26 +45,26 @@ export default function ActionsVocabulary() {
 
   // Actions vocabulary data
   const imageFiles = [
-    { word: "run", file: "run.png", turkish: "koÅŸmak" },
-    { word: "jump", file: "jump.png", turkish: "zÄ±plamak" },
+    { word: "run", file: "run.png", turkish: "koşmak" },
+    { word: "jump", file: "jump.png", turkish: "zıplamak" },
     { word: "eat", file: "eat.png", turkish: "yemek" },
-    { word: "drink", file: "drink.png", turkish: "iÃ§mek" },
+    { word: "drink", file: "drink.png", turkish: "içmek" },
     { word: "sleep", file: "sleep.png", turkish: "uyumak" },
     { word: "play", file: "play.png", turkish: "oynamak" },
     { word: "listen", file: "listen.png", turkish: "dinlemek" },
     { word: "look", file: "look.png", turkish: "bakmak" },
     { word: "sit down", file: "sit down.png", turkish: "oturmak" },
-    { word: "stand up", file: "stand up.png", turkish: "ayaÄŸa kalkmak" },
+    { word: "stand up", file: "stand up.png", turkish: "ayağa kalkmak" },
     { word: "come here", file: "come here.png", turkish: "buraya gel" },
     { word: "be quiet", file: "be quiet.png", turkish: "sessiz ol" },
-    { word: "open", file: "open.png", turkish: "aÃ§mak" },
+    { word: "open", file: "open.png", turkish: "açmak" },
     { word: "close", file: "close.png", turkish: "kapatmak" },
     { word: "repeat", file: "repeat.png", turkish: "tekrarlamak" },
     { word: "go", file: "go.png", turkish: "gitmek" },
     { word: "stop", file: "stop.png", turkish: "durmak" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -346,8 +346,8 @@ export default function ActionsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Actions',
-          text: `Check out this actions vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Actions',
+          text: `Check out this actions vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -506,7 +506,7 @@ export default function ActionsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -691,7 +691,7 @@ export default function ActionsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -699,7 +699,7 @@ export default function ActionsVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -713,7 +713,7 @@ export default function ActionsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -905,7 +905,7 @@ export default function ActionsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

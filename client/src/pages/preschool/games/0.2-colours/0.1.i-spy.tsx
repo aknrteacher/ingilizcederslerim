@@ -20,10 +20,10 @@ interface SpyObject {
 
 // Colors vocabulary
 const colors = [
-  { word: "red", turkish: "kÄ±rmÄ±zÄ±" },
+  { word: "red", turkish: "kırmızı" },
   { word: "blue", turkish: "mavi" },
-  { word: "yellow", turkish: "sarÄ±" },
-  { word: "green", turkish: "yeÅŸil" },
+  { word: "yellow", turkish: "sarı" },
+  { word: "green", turkish: "yeşil" },
   { word: "orange", turkish: "turuncu" },
   { word: "purple", turkish: "mor" },
   { word: "pink", turkish: "pembe" },
@@ -386,7 +386,7 @@ export default function ISpyGame() {
                       className="footer-button"
                       onClick={() => setLocation("/pre-school/games")}
                     >
-                      â† Back
+                      ← Back
                     </Button>
                   </div>
                 </div>
@@ -407,7 +407,7 @@ export default function ISpyGame() {
                     <strong>Score:</strong> {score} points
                   </p>
                   <p className="score-note">
-                    {elapsedTime < 60 ? "â­ Amazing speed!" : "âœ¨ Great job!"}
+                    {elapsedTime < 60 ? "⭐ Amazing speed!" : "✨ Great job!"}
                   </p>
                 </div>
                 <div className="win-buttons">

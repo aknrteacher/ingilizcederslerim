@@ -49,29 +49,29 @@ export default function VocabularyCards3_5() {
     { word: "game", file: "game.png", turkish: "oyun" },
     { word: "ball", file: "ball.png", turkish: "top" },
     { word: "doll", file: "doll.png", turkish: "oyuncak bebek" },
-    { word: "teddy bear", file: "teddy bear.png", turkish: "oyuncak ayÄ±" },
-    { word: "kite", file: "kite.png", turkish: "uÃ§urtma" },
+    { word: "teddy bear", file: "teddy bear.png", turkish: "oyuncak ayı" },
+    { word: "kite", file: "kite.png", turkish: "uçurtma" },
     { word: "blocks", file: "blocks.png", turkish: "bloklar" },
-    { word: "chess", file: "chess.png", turkish: "satranÃ§" },
+    { word: "chess", file: "chess.png", turkish: "satranç" },
     { word: "computer", file: "computer.png", turkish: "bilgisayar" },
     { word: "card", file: "card.png", turkish: "kart" },
     { word: "colour", file: "colour.png", turkish: "renk" },
-    { word: "red", file: "red.png", turkish: "kÄ±rmÄ±zÄ±" },
+    { word: "red", file: "red.png", turkish: "kırmızı" },
     { word: "blue", file: "blue.png", turkish: "mavi" },
     { word: "white", file: "white.png", turkish: "beyaz" },
     { word: "black", file: "black.png", turkish: "siyah" },
-    { word: "green", file: "green.png", turkish: "yeÅŸil" },
-    { word: "yellow", file: "yellow.png", turkish: "sarÄ±" },
+    { word: "green", file: "green.png", turkish: "yeşil" },
+    { word: "yellow", file: "yellow.png", turkish: "sarı" },
     { word: "orange", file: "orange.png", turkish: "turuncu" },
     { word: "pink", file: "pink.png", turkish: "pembe" },
     { word: "purple", file: "purple.png", turkish: "mor" },
     { word: "brown", file: "brown.png", turkish: "kahverengi" },
     { word: "grey", file: "grey.png", turkish: "gri" },
-    { word: "how many", file: "how many.png", turkish: "kaÃ§ tane" },
+    { word: "how many", file: "how many.png", turkish: "kaç tane" },
     { word: "have got", file: "have got.png", turkish: "sahip olmak" },
     { word: "has got", file: "has got.png", turkish: "sahip olmak" },
     { word: "there is", file: "there is.png", turkish: "var (tekil)" },
-    { word: "there are", file: "there are.png", turkish: "var (Ã§oÄŸul)" },
+    { word: "there are", file: "there are.png", turkish: "var (çoğul)" },
     { word: "play", file: "play.png", turkish: "oynamak" },
     { word: "look", file: "look.png", turkish: "bakmak" },
     { word: "box", file: "box.png", turkish: "kutu" },
@@ -80,7 +80,7 @@ export default function VocabularyCards3_5() {
     { word: "it", file: "it.png", turkish: "o" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -364,8 +364,8 @@ export default function VocabularyCards3_5() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -524,7 +524,7 @@ export default function VocabularyCards3_5() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -741,7 +741,7 @@ export default function VocabularyCards3_5() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -933,7 +933,7 @@ export default function VocabularyCards3_5() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

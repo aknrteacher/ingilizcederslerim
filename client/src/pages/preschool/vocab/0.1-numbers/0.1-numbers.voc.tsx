@@ -47,17 +47,17 @@ export default function NumbersVocabulary() {
   const imageFiles = [
     { word: "one", file: "one.png", turkish: "bir" },
     { word: "two", file: "two.png", turkish: "iki" },
-    { word: "three", file: "three.png", turkish: "Ã¼Ã§" },
-    { word: "four", file: "four.png", turkish: "dÃ¶rt" },
-    { word: "five", file: "five.png", turkish: "beÅŸ" },
-    { word: "six", file: "six.png", turkish: "altÄ±" },
+    { word: "three", file: "three.png", turkish: "üç" },
+    { word: "four", file: "four.png", turkish: "dört" },
+    { word: "five", file: "five.png", turkish: "beş" },
+    { word: "six", file: "six.png", turkish: "altı" },
     { word: "seven", file: "seven.png", turkish: "yedi" },
     { word: "eight", file: "eight.png", turkish: "sekiz" },
     { word: "nine", file: "nine.png", turkish: "dokuz" },
     { word: "ten", file: "ten.png", turkish: "on" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -339,8 +339,8 @@ export default function NumbersVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Numbers',
-          text: `Check out this numbers vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Numbers',
+          text: `Check out this numbers vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -499,7 +499,7 @@ export default function NumbersVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -684,7 +684,7 @@ export default function NumbersVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -692,7 +692,7 @@ export default function NumbersVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -706,7 +706,7 @@ export default function NumbersVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -898,7 +898,7 @@ export default function NumbersVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

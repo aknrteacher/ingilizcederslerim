@@ -46,35 +46,35 @@ export default function VocabularyCards3_10() {
   // Vocabulary data for Grade 3 Unit 10: Nature
   const imageFiles = [
     { word: "animal", file: "animal.png", turkish: "hayvan" },
-    { word: "bear", file: "bear.png", turkish: "ayÄ±" },
+    { word: "bear", file: "bear.png", turkish: "ayı" },
     { word: "whale", file: "whale.png", turkish: "balina" },
-    { word: "bee", file: "bee.png", turkish: "arÄ±" },
+    { word: "bee", file: "bee.png", turkish: "arı" },
     { word: "dolphin", file: "dolphin.png", turkish: "yunus" },
-    { word: "frog", file: "frog.png", turkish: "kurbaÄŸa" },
-    { word: "bird", file: "bird.png", turkish: "kuÅŸ" },
-    { word: "fish", file: "fish.png", turkish: "balÄ±k" },
-    { word: "shark", file: "shark.png", turkish: "kÃ¶pekbalÄ±ÄŸÄ±" },
-    { word: "insect", file: "insect.png", turkish: "bÃ¶cek" },
-    { word: "pigeon", file: "pigeon.png", turkish: "gÃ¼vercin" },
-    { word: "ladybug", file: "ladybug.png", turkish: "uÄŸur bÃ¶ceÄŸi" },
-    { word: "wild", file: "wild.png", turkish: "vahÅŸi" },
-    { word: "mountain", file: "mountain.png", turkish: "daÄŸ" },
+    { word: "frog", file: "frog.png", turkish: "kurbağa" },
+    { word: "bird", file: "bird.png", turkish: "kuş" },
+    { word: "fish", file: "fish.png", turkish: "balık" },
+    { word: "shark", file: "shark.png", turkish: "köpekbalığı" },
+    { word: "insect", file: "insect.png", turkish: "böcek" },
+    { word: "pigeon", file: "pigeon.png", turkish: "güvercin" },
+    { word: "ladybug", file: "ladybug.png", turkish: "uğur böceği" },
+    { word: "wild", file: "wild.png", turkish: "vahşi" },
+    { word: "mountain", file: "mountain.png", turkish: "dağ" },
     { word: "forest", file: "forest.png", turkish: "orman" },
     { word: "sea", file: "sea.png", turkish: "deniz" },
-    { word: "sky", file: "sky.png", turkish: "gÃ¶kyÃ¼zÃ¼" },
-    { word: "big", file: "big.png", turkish: "bÃ¼yÃ¼k" },
-    { word: "small", file: "small.png", turkish: "kÃ¼Ã§Ã¼k" },
-    { word: "fast", file: "fast.png", turkish: "hÄ±zlÄ±" },
-    { word: "slow", file: "slow.png", turkish: "yavaÅŸ" },
-    { word: "strong", file: "strong.png", turkish: "gÃ¼Ã§lÃ¼" },
+    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
+    { word: "big", file: "big.png", turkish: "büyük" },
+    { word: "small", file: "small.png", turkish: "küçük" },
+    { word: "fast", file: "fast.png", turkish: "hızlı" },
+    { word: "slow", file: "slow.png", turkish: "yavaş" },
+    { word: "strong", file: "strong.png", turkish: "güçlü" },
     { word: "like", file: "like.png", turkish: "sevmek" },
     { word: "dislike", file: "dislike.png", turkish: "sevmemek" },
-    { word: "live", file: "live.png", turkish: "yaÅŸamak" },
+    { word: "live", file: "live.png", turkish: "yaşamak" },
     { word: "it", file: "it.png", turkish: "o" },
     { word: "they", file: "they.png", turkish: "onlar" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -358,8 +358,8 @@ export default function VocabularyCards3_10() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -518,7 +518,7 @@ export default function VocabularyCards3_10() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -735,7 +735,7 @@ export default function VocabularyCards3_10() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -927,7 +927,7 @@ export default function VocabularyCards3_10() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

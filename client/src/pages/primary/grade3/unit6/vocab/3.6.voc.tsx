@@ -46,11 +46,11 @@ export default function VocabularyCards3_6() {
   // Vocabulary data for Grade 3 Unit 6: My House
   const imageFiles = [
     { word: "house", file: "house.png", turkish: "ev" },
-    { word: "living room", file: "living room.png", turkish: "oturma odasÄ±" },
-    { word: "bedroom", file: "bedroom.png", turkish: "yatak odasÄ±" },
+    { word: "living room", file: "living room.png", turkish: "oturma odası" },
+    { word: "bedroom", file: "bedroom.png", turkish: "yatak odası" },
     { word: "kitchen", file: "kitchen.png", turkish: "mutfak" },
     { word: "bathroom", file: "bathroom.png", turkish: "banyo" },
-    { word: "playroom", file: "playroom.png", turkish: "oyun odasÄ±" },
+    { word: "playroom", file: "playroom.png", turkish: "oyun odası" },
     { word: "garage", file: "garage.png", turkish: "garaj" },
     { word: "chair", file: "chair.png", turkish: "sandalye" },
     { word: "sofa", file: "sofa.png", turkish: "kanepe" },
@@ -60,25 +60,25 @@ export default function VocabularyCards3_6() {
     { word: "box", file: "box.png", turkish: "kutu" },
     { word: "cup", file: "cup.png", turkish: "fincan" },
     { word: "soap", file: "soap.png", turkish: "sabun" },
-    { word: "fridge", file: "fridge.png", turkish: "buzdolabÄ±" },
+    { word: "fridge", file: "fridge.png", turkish: "buzdolabı" },
     { word: "circle", file: "circle.png", turkish: "daire" },
     { word: "square", file: "square.png", turkish: "kare" },
-    { word: "triangle", file: "triangle.png", turkish: "Ã¼Ã§gen" },
-    { word: "rectangle", file: "rectangle.png", turkish: "dikdÃ¶rtgen" },
+    { word: "triangle", file: "triangle.png", turkish: "üçgen" },
+    { word: "rectangle", file: "rectangle.png", turkish: "dikdörtgen" },
     { word: "round", file: "round.png", turkish: "yuvarlak" },
     { word: "where", file: "where.png", turkish: "nerede" },
-    { word: "in", file: "in.png", turkish: "iÃ§inde" },
-    { word: "on", file: "on.png", turkish: "Ã¼zerinde" },
-    { word: "under", file: "under.png", turkish: "altÄ±nda" },
+    { word: "in", file: "in.png", turkish: "içinde" },
+    { word: "on", file: "on.png", turkish: "üzerinde" },
+    { word: "under", file: "under.png", turkish: "altında" },
     { word: "over there", file: "over there.png", turkish: "orada" },
     { word: "look", file: "look.png", turkish: "bak" },
     { word: "my", file: "my.png", turkish: "benim" },
     { word: "cat", file: "cat.png", turkish: "kedi" },
-    { word: "big", file: "big.png", turkish: "bÃ¼yÃ¼k" },
-    { word: "small", file: "small.png", turkish: "kÃ¼Ã§Ã¼k" },
+    { word: "big", file: "big.png", turkish: "büyük" },
+    { word: "small", file: "small.png", turkish: "küçük" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -362,8 +362,8 @@ export default function VocabularyCards3_6() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -522,7 +522,7 @@ export default function VocabularyCards3_6() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -739,7 +739,7 @@ export default function VocabularyCards3_6() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -931,7 +931,7 @@ export default function VocabularyCards3_6() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

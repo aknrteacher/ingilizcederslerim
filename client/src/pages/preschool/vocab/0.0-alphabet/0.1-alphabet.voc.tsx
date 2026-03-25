@@ -74,7 +74,7 @@ export default function AlphabetVocabulary() {
     { word: "Z", file: "z.png", turkish: "Z" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -359,8 +359,8 @@ export default function AlphabetVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Alphabet',
-          text: `Check out this alphabet vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Alphabet',
+          text: `Check out this alphabet vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -519,7 +519,7 @@ export default function AlphabetVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -704,7 +704,7 @@ export default function AlphabetVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -712,7 +712,7 @@ export default function AlphabetVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -726,7 +726,7 @@ export default function AlphabetVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -918,7 +918,7 @@ export default function AlphabetVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
@@ -941,7 +941,7 @@ export default function AlphabetVocabulary() {
             className="help-button" 
             onClick={handleShowIntro}
             data-testid="button-help"
-            title="YardÄ±m"
+            title="Yardım"
           >
             ?
           </button>

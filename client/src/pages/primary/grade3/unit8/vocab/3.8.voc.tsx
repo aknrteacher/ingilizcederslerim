@@ -45,12 +45,12 @@ export default function VocabularyCards3_8() {
 
   // Vocabulary data for Grade 3 Unit 8: Transportation
   const imageFiles = [
-    { word: "vehicle", file: "vehicle.png", turkish: "araÃ§" },
+    { word: "vehicle", file: "vehicle.png", turkish: "araç" },
     { word: "car", file: "car.png", turkish: "araba" },
-    { word: "bus", file: "bus.png", turkish: "otobÃ¼s" },
+    { word: "bus", file: "bus.png", turkish: "otobüs" },
     { word: "train", file: "train.png", turkish: "tren" },
     { word: "truck", file: "truck.png", turkish: "kamyon" },
-    { word: "plane", file: "plane.png", turkish: "uÃ§ak" },
+    { word: "plane", file: "plane.png", turkish: "uçak" },
     { word: "subway", file: "subway.png", turkish: "metro" },
     { word: "ship", file: "ship.png", turkish: "gemi" },
     { word: "boat", file: "boat.png", turkish: "tekne" },
@@ -59,25 +59,25 @@ export default function VocabularyCards3_8() {
     { word: "helicopter", file: "helicopter.png", turkish: "helikopter" },
     { word: "drive", file: "drive.png", turkish: "araba kullanmak" },
     { word: "ride", file: "ride.png", turkish: "binmek" },
-    { word: "fly", file: "fly.png", turkish: "uÃ§mak" },
+    { word: "fly", file: "fly.png", turkish: "uçmak" },
     { word: "go", file: "go.png", turkish: "gitmek" },
     { word: "stop", file: "stop.png", turkish: "durmak" },
     { word: "air", file: "air.png", turkish: "hava" },
-    { word: "sky", file: "sky.png", turkish: "gÃ¶kyÃ¼zÃ¼" },
+    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
     { word: "road", file: "road.png", turkish: "yol" },
     { word: "sea", file: "sea.png", turkish: "deniz" },
     { word: "map", file: "map.png", turkish: "harita" },
-    { word: "transportation", file: "transportation.png", turkish: "ulaÅŸÄ±m" },
-    { word: "by bus", file: "by bus.png", turkish: "otobÃ¼sle" },
+    { word: "transportation", file: "transportation.png", turkish: "ulaşım" },
+    { word: "by bus", file: "by bus.png", turkish: "otobüsle" },
     { word: "by car", file: "by car.png", turkish: "arabayla" },
     { word: "by train", file: "by train.png", turkish: "trenle" },
-    { word: "how", file: "how.png", turkish: "nasÄ±l" },
+    { word: "how", file: "how.png", turkish: "nasıl" },
     { word: "where", file: "where.png", turkish: "nerede" },
     { word: "here", file: "here.png", turkish: "burada" },
     { word: "excuse me", file: "excuse me.png", turkish: "affedersiniz" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -361,8 +361,8 @@ export default function VocabularyCards3_8() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -521,7 +521,7 @@ export default function VocabularyCards3_8() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -738,7 +738,7 @@ export default function VocabularyCards3_8() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -930,7 +930,7 @@ export default function VocabularyCards3_8() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

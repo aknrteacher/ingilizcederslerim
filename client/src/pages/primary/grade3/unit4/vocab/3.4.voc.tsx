@@ -47,38 +47,38 @@ export default function VocabularyCards3_4() {
   const imageFiles = [
     { word: "you", file: "you.png", turkish: "sen/siz" },
     { word: "good", file: "good.png", turkish: "iyi" },
-    { word: "bad", file: "bad.png", turkish: "kÃ¶tÃ¼" },
+    { word: "bad", file: "bad.png", turkish: "kötü" },
     { word: "happy", file: "happy.png", turkish: "mutlu" },
-    { word: "unhappy (sad)", file: "unhappy (sad).png", turkish: "mutsuz (Ã¼zgÃ¼n)" },
-    { word: "angry", file: "angry.png", turkish: "kÄ±zgÄ±n" },
-    { word: "surprised", file: "surprised.png", turkish: "ÅŸaÅŸkÄ±n" },
+    { word: "unhappy (sad)", file: "unhappy (sad).png", turkish: "mutsuz (üzgün)" },
+    { word: "angry", file: "angry.png", turkish: "kızgın" },
+    { word: "surprised", file: "surprised.png", turkish: "şaşkın" },
     { word: "energetic", file: "energetic.png", turkish: "enerjik" },
     { word: "tired", file: "tired.png", turkish: "yorgun" },
-    { word: "hungry", file: "hungry.png", turkish: "aÃ§" },
-    { word: "thirsty", file: "thirrsty.png", turkish: "susamÄ±ÅŸ" },
+    { word: "hungry", file: "hungry.png", turkish: "aç" },
+    { word: "thirsty", file: "thirrsty.png", turkish: "susamış" },
     { word: "full", file: "full.png", turkish: "tok" },
-    { word: "bored", file: "bored.png", turkish: "sÄ±kÄ±lmÄ±ÅŸ" },
+    { word: "bored", file: "bored.png", turkish: "sıkılmış" },
     { word: "feel", file: "feel.png", turkish: "hissetmek" },
     { word: "eat", file: "eat.png", turkish: "yemek" },
-    { word: "drink", file: "drink.png", turkish: "iÃ§mek" },
-    { word: "walk", file: "walk.png", turkish: "yÃ¼rÃ¼mek" },
-    { word: "study", file: "study.png", turkish: "Ã§alÄ±ÅŸmak" },
-    { word: "cook", file: "cook.png", turkish: "piÅŸirmek" },
+    { word: "drink", file: "drink.png", turkish: "içmek" },
+    { word: "walk", file: "walk.png", turkish: "yürümek" },
+    { word: "study", file: "study.png", turkish: "çalışmak" },
+    { word: "cook", file: "cook.png", turkish: "pişirmek" },
     { word: "watch", file: "watch.png", turkish: "izlemek" },
-    { word: "swim", file: "swim.png", turkish: "yÃ¼zmek" },
+    { word: "swim", file: "swim.png", turkish: "yüzmek" },
     { word: "read", file: "read.png", turkish: "okumak" },
     { word: "sleep", file: "sleep.png", turkish: "uyumak" },
-    { word: "run", file: "run.png", turkish: "koÅŸmak" },
-    { word: "sing a song", file: "sing a song.png", turkish: "ÅŸarkÄ± sÃ¶ylemek" },
+    { word: "run", file: "run.png", turkish: "koşmak" },
+    { word: "sing a song", file: "sing a song.png", turkish: "şarkı söylemek" },
     { word: "listen", file: "listen.png", turkish: "dinlemek" },
     { word: "look", file: "look.png", turkish: "bakmak" },
     { word: "Let's go", file: "Let's go.png", turkish: "hadi gidelim" },
-    { word: "How are you?", file: "how are you.png", turkish: "nasÄ±lsÄ±n?" },
+    { word: "How are you?", file: "how are you.png", turkish: "nasılsın?" },
     { word: "cake", file: "cake.png", turkish: "pasta" },
     { word: "water", file: "water.png", turkish: "su" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -362,8 +362,8 @@ export default function VocabularyCards3_4() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -522,7 +522,7 @@ export default function VocabularyCards3_4() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -739,7 +739,7 @@ export default function VocabularyCards3_4() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -931,7 +931,7 @@ export default function VocabularyCards3_4() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

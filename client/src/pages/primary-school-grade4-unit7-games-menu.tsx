@@ -19,15 +19,15 @@ import gameTypeWordSnake from "@/assets/word snake.png";
 
 export default function PrimarySchoolGrade4Unit7GamesMenu() {
   const gameTypes = [
-    { id: "matching", name: "Matchlings", icon: "ðŸŽ®", gradient: "yellow-orange" as const, pathSuffix: "4.7-matching-game", image: gameTypeMatchlings },
-    { id: "crossword", name: "Word Cross", icon: "ðŸ§©", gradient: "blue-purple" as const, pathSuffix: "crossword", image: gameTypeWordCross },
-    { id: "spell-quest", name: "Spell Quest", icon: "âœ¨", gradient: "pink-red" as const, pathSuffix: "spell-quest", image: gameTypeSpellQuest },
-    { id: "word-pop", name: "Word Pop", icon: "ðŸŽˆ", gradient: "green-teal" as const, pathSuffix: "word-pop", image: gameTypeWordPop },
-    { id: "catch-that", name: "Catch That", icon: "ðŸŽ¯", gradient: "purple-pink" as const, pathSuffix: "catch-that", image: gameTypeCatchThat },
-    { id: "say-what", name: "Say What?", icon: "ðŸ”Š", gradient: "blue-purple" as const, pathSuffix: "say-what", image: gameTypeSayWhat },
-    { id: "memory-flip", name: "Memory Flip", icon: "ðŸ§ ", gradient: "green-teal" as const, pathSuffix: "memory-flip", image: gameTypeMemoryFlip },
-    { id: "word-race", name: "Word Race", icon: "ðŸŽï¸", gradient: "yellow-orange" as const, pathSuffix: "word-race", image: gameTypeWordRace },
-    { id: "word-snake", name: "Word Snake", icon: "ðŸ", gradient: "green-teal" as const, pathSuffix: "word-snake", image: gameTypeWordSnake },
+    { id: "matching", name: "Matchlings", icon: "🎮", gradient: "yellow-orange" as const, pathSuffix: "4.7-matching-game", image: gameTypeMatchlings },
+    { id: "crossword", name: "Word Cross", icon: "🧩", gradient: "blue-purple" as const, pathSuffix: "crossword", image: gameTypeWordCross },
+    { id: "spell-quest", name: "Spell Quest", icon: "✨", gradient: "pink-red" as const, pathSuffix: "spell-quest", image: gameTypeSpellQuest },
+    { id: "word-pop", name: "Word Pop", icon: "🎈", gradient: "green-teal" as const, pathSuffix: "word-pop", image: gameTypeWordPop },
+    { id: "catch-that", name: "Catch That", icon: "🎯", gradient: "purple-pink" as const, pathSuffix: "catch-that", image: gameTypeCatchThat },
+    { id: "say-what", name: "Say What?", icon: "🔊", gradient: "blue-purple" as const, pathSuffix: "say-what", image: gameTypeSayWhat },
+    { id: "memory-flip", name: "Memory Flip", icon: "🧠", gradient: "green-teal" as const, pathSuffix: "memory-flip", image: gameTypeMemoryFlip },
+    { id: "word-race", name: "Word Race", icon: "🏎️", gradient: "yellow-orange" as const, pathSuffix: "word-race", image: gameTypeWordRace },
+    { id: "word-snake", name: "Word Snake", icon: "🐍", gradient: "green-teal" as const, pathSuffix: "word-snake", image: gameTypeWordSnake },
   ];
 
   const topic = {

@@ -45,19 +45,19 @@ export default function PeopleVocabulary() {
 
   // People vocabulary data
   const imageFiles = [
-    { word: "teacher", file: "teacher.png", turkish: "Ã¶ÄŸretmen" },
-    { word: "friend", file: "friend.png", turkish: "arkadaÅŸ" },
-    { word: "boy", file: "boy.png", turkish: "erkek Ã§ocuk" },
-    { word: "girl", file: "girl.png", turkish: "kÄ±z" },
+    { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
+    { word: "friend", file: "friend.png", turkish: "arkadaş" },
+    { word: "boy", file: "boy.png", turkish: "erkek çocuk" },
+    { word: "girl", file: "girl.png", turkish: "kız" },
     { word: "mom", file: "mom.png", turkish: "anne" },
     { word: "dad", file: "dad.png", turkish: "baba" },
-    { word: "sister", file: "sister.png", turkish: "kÄ±z kardeÅŸ" },
-    { word: "brother", file: "brother.png", turkish: "erkek kardeÅŸ" },
+    { word: "sister", file: "sister.png", turkish: "kız kardeş" },
+    { word: "brother", file: "brother.png", turkish: "erkek kardeş" },
     { word: "man", file: "man.png", turkish: "adam" },
-    { word: "woman", file: "woman.png", turkish: "kadÄ±n" },
+    { word: "woman", file: "woman.png", turkish: "kadın" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -339,8 +339,8 @@ export default function PeopleVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - People',
-          text: `Check out this people vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - People',
+          text: `Check out this people vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -499,7 +499,7 @@ export default function PeopleVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -684,7 +684,7 @@ export default function PeopleVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -692,7 +692,7 @@ export default function PeopleVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -706,7 +706,7 @@ export default function PeopleVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -898,7 +898,7 @@ export default function PeopleVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

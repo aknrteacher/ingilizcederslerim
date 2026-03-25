@@ -54,15 +54,15 @@ export default function ThingsVocabulary() {
     { word: "computer", file: "computer.png", turkish: "bilgisayar" },
     { word: "phone", file: "phone.png", turkish: "telefon" },
     { word: "bed", file: "bed.png", turkish: "yatak" },
-    { word: "bottle", file: "bottle.png", turkish: "ÅŸiÅŸe" },
-    { word: "door", file: "door.png", turkish: "kapÄ±" },
-    { word: "brush", file: "brush.png", turkish: "fÄ±rÃ§a" },
-    { word: "shirt", file: "shirt.png", turkish: "gÃ¶mlek" },
-    { word: "sticker", file: "sticker.png", turkish: "Ã§Ä±kartma" },
+    { word: "bottle", file: "bottle.png", turkish: "şişe" },
+    { word: "door", file: "door.png", turkish: "kapı" },
+    { word: "brush", file: "brush.png", turkish: "fırça" },
+    { word: "shirt", file: "shirt.png", turkish: "gömlek" },
+    { word: "sticker", file: "sticker.png", turkish: "çıkartma" },
     { word: "balloon", file: "balloon.png", turkish: "balon" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -345,8 +345,8 @@ export default function ThingsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Things',
-          text: `Check out this things vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Things',
+          text: `Check out this things vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -505,7 +505,7 @@ export default function ThingsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -690,7 +690,7 @@ export default function ThingsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -698,7 +698,7 @@ export default function ThingsVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -712,7 +712,7 @@ export default function ThingsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -904,7 +904,7 @@ export default function ThingsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

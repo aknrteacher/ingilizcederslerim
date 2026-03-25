@@ -53,8 +53,8 @@ export default function FoodVocabulary() {
     { word: "apple", file: "apple.png", turkish: "elma" },
     { word: "banana", file: "banana.png", turkish: "muz" },
     { word: "orange", file: "orange.png", turkish: "portakal" },
-    { word: "grapes", file: "grapes.png", turkish: "Ã¼zÃ¼m" },
-    { word: "milk", file: "milk.png", turkish: "sÃ¼t" },
+    { word: "grapes", file: "grapes.png", turkish: "üzüm" },
+    { word: "milk", file: "milk.png", turkish: "süt" },
     { word: "bread", file: "bread.png", turkish: "ekmek" },
     { word: "chicken", file: "chicken.png", turkish: "tavuk" },
     { word: "egg", file: "egg.png", turkish: "yumurta" },
@@ -62,7 +62,7 @@ export default function FoodVocabulary() {
     { word: "olive", file: "olive.png", turkish: "zeytin" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -343,8 +343,8 @@ export default function FoodVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Food',
-          text: `Check out this food vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Food',
+          text: `Check out this food vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -503,7 +503,7 @@ export default function FoodVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      AnladÄ±m!
+                      Anladım!
                     </button>
                   </div>
                 </div>
@@ -688,7 +688,7 @@ export default function FoodVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -696,7 +696,7 @@ export default function FoodVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -710,7 +710,7 @@ export default function FoodVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -902,7 +902,7 @@ export default function FoodVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

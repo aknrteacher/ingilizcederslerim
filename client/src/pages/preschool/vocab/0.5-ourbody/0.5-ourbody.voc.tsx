@@ -45,19 +45,19 @@ export default function OurBodyVocabulary() {
 
   // Our Body vocabulary data
   const imageFiles = [
-    { word: "body", file: "body.png", turkish: "vÃ¼cut" },
+    { word: "body", file: "body.png", turkish: "vücut" },
     { word: "head", file: "head.png", turkish: "kafa" },
-    { word: "eyes", file: "eyes.png", turkish: "gÃ¶zler" },
+    { word: "eyes", file: "eyes.png", turkish: "gözler" },
     { word: "ears", file: "ears.png", turkish: "kulaklar" },
     { word: "nose", file: "nose.png", turkish: "burun" },
-    { word: "mouth", file: "mouth.png", turkish: "aÄŸÄ±z" },
+    { word: "mouth", file: "mouth.png", turkish: "ağız" },
     { word: "hands", file: "hands.png", turkish: "eller" },
     { word: "feet", file: "feet.png", turkish: "ayaklar" },
     { word: "arms", file: "arms.png", turkish: "kollar" },
     { word: "legs", file: "legs.png", turkish: "bacaklar" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -339,8 +339,8 @@ export default function OurBodyVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Our Body',
-          text: `Check out this body parts vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Our Body',
+          text: `Check out this body parts vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -499,7 +499,7 @@ export default function OurBodyVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -684,7 +684,7 @@ export default function OurBodyVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -692,7 +692,7 @@ export default function OurBodyVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -706,7 +706,7 @@ export default function OurBodyVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -898,7 +898,7 @@ export default function OurBodyVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

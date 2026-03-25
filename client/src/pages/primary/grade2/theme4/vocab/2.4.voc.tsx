@@ -46,38 +46,38 @@ export default function VocabularyCards2_4() {
   // Vocabulary data for Theme 4: Family Life
   const imageFiles = [
     { word: "family", file: "family.png", turkish: "aile" },
-    { word: "member", file: "member.png", turkish: "Ã¼ye" },
+    { word: "member", file: "member.png", turkish: "üye" },
     { word: "father", file: "father.png", turkish: "baba" },
     { word: "mother", file: "mother.png", turkish: "anne" },
-    { word: "brother", file: "brother.png", turkish: "erkek kardeÅŸ" },
-    { word: "sister", file: "sister.png", turkish: "kÄ±z kardeÅŸ" },
-    { word: "son", file: "son.png", turkish: "oÄŸul" },
-    { word: "daughter", file: "daughter.png", turkish: "kÄ±z" },
-    { word: "grandfather", file: "grandfather.png", turkish: "bÃ¼yÃ¼kbaba" },
-    { word: "grandmother", file: "grandmother.png", turkish: "bÃ¼yÃ¼kanne" },
+    { word: "brother", file: "brother.png", turkish: "erkek kardeş" },
+    { word: "sister", file: "sister.png", turkish: "kız kardeş" },
+    { word: "son", file: "son.png", turkish: "oğul" },
+    { word: "daughter", file: "daughter.png", turkish: "kız" },
+    { word: "grandfather", file: "grandfather.png", turkish: "büyükbaba" },
+    { word: "grandmother", file: "grandmother.png", turkish: "büyükanne" },
     { word: "grandchild", file: "grandchild.png", turkish: "torun" },
-    { word: "child", file: "child.png", turkish: "Ã§ocuk" },
+    { word: "child", file: "child.png", turkish: "çocuk" },
     { word: "baby", file: "baby.png", turkish: "bebek" },
     { word: "man", file: "man.png", turkish: "erkek" },
-    { word: "woman", file: "woman.png", turkish: "kadÄ±n" },
-    { word: "old", file: "old.png", turkish: "yaÅŸlÄ±" },
-    { word: "young", file: "young.png", turkish: "genÃ§" },
+    { word: "woman", file: "woman.png", turkish: "kadın" },
+    { word: "old", file: "old.png", turkish: "yaşlı" },
+    { word: "young", file: "young.png", turkish: "genç" },
     { word: "long", file: "long.png", turkish: "uzun" },
-    { word: "short", file: "short.png", turkish: "kÄ±sa" },
+    { word: "short", file: "short.png", turkish: "kısa" },
     { word: "tall", file: "tall.png", turkish: "uzun boylu" },
-    { word: "handsome", file: "handsome.png", turkish: "yakÄ±ÅŸÄ±klÄ±" },
-    { word: "beautiful", file: "beautiful.png", turkish: "gÃ¼zel" },
-    { word: "big", file: "big.png", turkish: "bÃ¼yÃ¼k" },
-    { word: "small", file: "small.png", turkish: "kÃ¼Ã§Ã¼k" },
-    { word: "hair", file: "hair.png", turkish: "saÃ§" },
-    { word: "eyes", file: "eyes.png", turkish: "gÃ¶zler" },
+    { word: "handsome", file: "handsome.png", turkish: "yakışıklı" },
+    { word: "beautiful", file: "beautiful.png", turkish: "güzel" },
+    { word: "big", file: "big.png", turkish: "büyük" },
+    { word: "small", file: "small.png", turkish: "küçük" },
+    { word: "hair", file: "hair.png", turkish: "saç" },
+    { word: "eyes", file: "eyes.png", turkish: "gözler" },
     { word: "who", file: "who.png", turkish: "kim" },
     { word: "this", file: "this.png", turkish: "bu" },
     { word: "love", file: "love.png", turkish: "sevmek" },
-    { word: "friend", file: "friend.png", turkish: "arkadaÅŸ" },
+    { word: "friend", file: "friend.png", turkish: "arkadaş" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -359,8 +359,8 @@ export default function VocabularyCards2_4() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -519,7 +519,7 @@ export default function VocabularyCards2_4() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -736,7 +736,7 @@ export default function VocabularyCards2_4() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -928,7 +928,7 @@ export default function VocabularyCards2_4() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

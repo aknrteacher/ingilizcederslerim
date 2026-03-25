@@ -49,36 +49,36 @@ export default function VocabularyCards3_1() {
     { word: "you", file: "you.png", turkish: "sen/siz" },
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "hi", file: "hi.png", turkish: "selam" },
-    { word: "good morning", file: "good morning.png", turkish: "gÃ¼naydÄ±n" },
-    { word: "good afternoon", file: "good afternoon.png", turkish: "iyi Ã¶ÄŸleden sonralarÄ±" },
-    { word: "good evening", file: "good evening.png", turkish: "iyi akÅŸamlar" },
+    { word: "good morning", file: "good morning.png", turkish: "günaydın" },
+    { word: "good afternoon", file: "good afternoon.png", turkish: "iyi öğleden sonraları" },
+    { word: "good evening", file: "good evening.png", turkish: "iyi akşamlar" },
     { word: "good night", file: "good night.png", turkish: "iyi geceler" },
-    { word: "goodbye", file: "goodbye.png", turkish: "hoÅŸÃ§a kal" },
+    { word: "goodbye", file: "goodbye.png", turkish: "hoşça kal" },
     { word: "take care", file: "take care.png", turkish: "kendine iyi bak" },
-    { word: "nice to meet you", file: "nice to meet you.png", turkish: "tanÄ±ÅŸtÄ±ÄŸÄ±mÄ±za memnun oldum" },
-    { word: "see you soon", file: "see you soon.png", turkish: "yakÄ±nda gÃ¶rÃ¼ÅŸÃ¼rÃ¼z" },
+    { word: "nice to meet you", file: "nice to meet you.png", turkish: "tanıştığımıza memnun oldum" },
+    { word: "see you soon", file: "see you soon.png", turkish: "yakında görüşürüz" },
     { word: "alphabet", file: "alphabet.png", turkish: "alfabe" },
     { word: "letters", file: "letters.png", turkish: "harfler" },
     { word: "spell", file: "spell.png", turkish: "hecelemek" },
-    { word: "student", file: "student.png", turkish: "Ã¶ÄŸrenci" },
-    { word: "numbers", file: "numbers.png", turkish: "sayÄ±lar" },
+    { word: "student", file: "student.png", turkish: "öğrenci" },
+    { word: "numbers", file: "numbers.png", turkish: "sayılar" },
     { word: "eleven", file: "eleven.png", turkish: "on bir" },
     { word: "twelve", file: "twelve.png", turkish: "on iki" },
     { word: "twenty", file: "twenty.png", turkish: "yirmi" },
     { word: "count", file: "count.png", turkish: "saymak" },
-    { word: "plus", file: "plus.png", turkish: "artÄ±" },
+    { word: "plus", file: "plus.png", turkish: "artı" },
     { word: "minus", file: "minus.png", turkish: "eksi" },
-    { word: "birthday", file: "birthday.png", turkish: "doÄŸum gÃ¼nÃ¼" },
-    { word: "how old are you?", file: "how old are you.png", turkish: "kaÃ§ yaÅŸÄ±ndasÄ±n?" },
-    { word: "years old", file: "years old.png", turkish: "yaÅŸÄ±nda" },
-    { word: "age", file: "age.png", turkish: "yaÅŸ" },
-    { word: "say", file: "say.png", turkish: "sÃ¶ylemek" },
+    { word: "birthday", file: "birthday.png", turkish: "doğum günü" },
+    { word: "how old are you?", file: "how old are you.png", turkish: "kaç yaşındasın?" },
+    { word: "years old", file: "years old.png", turkish: "yaşında" },
+    { word: "age", file: "age.png", turkish: "yaş" },
+    { word: "say", file: "say.png", turkish: "söylemek" },
     { word: "write", file: "write.png", turkish: "yazmak" },
-    { word: "draw", file: "draw.png", turkish: "Ã§izmek" },
+    { word: "draw", file: "draw.png", turkish: "çizmek" },
     { word: "picture", file: "picture.png", turkish: "resim" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -362,8 +362,8 @@ export default function VocabularyCards3_1() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Vocabulary Cards',
-          text: `Check out this vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Vocabulary Cards',
+          text: `Check out this vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -522,7 +522,7 @@ export default function VocabularyCards3_1() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -739,7 +739,7 @@ export default function VocabularyCards3_1() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -931,7 +931,7 @@ export default function VocabularyCards3_1() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button

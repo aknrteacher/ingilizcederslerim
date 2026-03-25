@@ -45,10 +45,10 @@ export default function ColorsVocabulary() {
 
   // Colors vocabulary data
   const imageFiles = [
-    { word: "red", file: "red.png", turkish: "kÄ±rmÄ±zÄ±" },
+    { word: "red", file: "red.png", turkish: "kırmızı" },
     { word: "blue", file: "blue.png", turkish: "mavi" },
-    { word: "yellow", file: "yellow.png", turkish: "sarÄ±" },
-    { word: "green", file: "green.png", turkish: "yeÅŸil" },
+    { word: "yellow", file: "yellow.png", turkish: "sarı" },
+    { word: "green", file: "green.png", turkish: "yeşil" },
     { word: "orange", file: "orange.png", turkish: "turuncu" },
     { word: "purple", file: "purple.png", turkish: "mor" },
     { word: "pink", file: "pink.png", turkish: "pembe" },
@@ -58,7 +58,7 @@ export default function ColorsVocabulary() {
     { word: "black", file: "black.png", turkish: "siyah" },
   ];
 
-  const reactionEmojis = ["ðŸ‘", "ðŸ”¥", "ðŸ’¯", "âœ…", "ðŸ¤©", "ðŸš€", "âœ¨", "ðŸ§ ", "ðŸ’¡"];
+  const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
   const EMOJI_CHANCE = 0.5;
   const SOUND_CHANCE = 0.25;
 
@@ -340,8 +340,8 @@ export default function ColorsVocabulary() {
     } else if (option === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ä°ngilizce Derslerim - Colours',
-          text: `Check out this colours vocabulary lesson on Ä°ngilizce Derslerim!`,
+          title: 'İngilizce Derslerim - Colours',
+          text: `Check out this colours vocabulary lesson on İngilizce Derslerim!`,
           url: currentUrl,
         });
         setShowShareDrawer(false);
@@ -500,7 +500,7 @@ export default function ColorsVocabulary() {
                       preload="auto"
                     />
                     <button className="intro-start-btn" onClick={handleDismissIntro}>
-                      Ã‡alÄ±ÅŸmaya BaÅŸla
+                      Çalışmaya Başla
                     </button>
                   </div>
                 </div>
@@ -685,7 +685,7 @@ export default function ColorsVocabulary() {
             onClick={() => handleShareOption('copy')}
             data-testid="button-share-copy"
           >
-            ðŸ“‹ Copy Link
+            📋 Copy Link
           </button>
           {'share' in navigator && (
             <button 
@@ -693,7 +693,7 @@ export default function ColorsVocabulary() {
               onClick={() => handleShareOption('native')}
               data-testid="button-share-native"
             >
-              ðŸ”— Share
+              🔗 Share
             </button>
           )}
         </div>
@@ -707,7 +707,7 @@ export default function ColorsVocabulary() {
             onClick={() => setIsFullscreen(false)}
             data-testid="button-fullscreen-close"
           >
-            âœ•
+            ✕
           </button>
           <div className="fullscreen-modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Fullscreen Counter */}
@@ -899,7 +899,7 @@ export default function ColorsVocabulary() {
                 title="Decrease Speed"
                 data-testid="button-speed-decrease-fs"
               >
-                âˆ’
+                −
               </button>
               <span className="fullscreen-speed-display">{autoplaySpeed.toFixed(2)}Ã—</span>
               <button
