@@ -10,7 +10,7 @@ import "@/styles/2.1.crossword.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Vocabulary from 2.6 (Life in the City & the World)
+// Vocabulary from 2.6 (Life in the City and the World)
 const vocabulary = [
   { word: "FRUIT", clue: "Meyve", file: "fruit.png" },
   { word: "APPLE", clue: "Elma", file: "apple.png" },
@@ -215,10 +215,10 @@ export default function CrosswordGame2_6() {
 
 
   const shareGame = () => {
-    const text = `I just solved the Life in the City & the World Word Cross! Can you beat it? 🧩`;
+    const text = `I just solved the Life in the City and the World Word Cross! Can you beat it? 🧩`;
     if (navigator.share) {
       navigator.share({
-        title: "Word Cross - Life in the City & the World",
+        title: "Word Cross - Life in the City and the World",
         text: text,
         url: window.location.href,
       });
@@ -228,7 +228,7 @@ export default function CrosswordGame2_6() {
   };
 
   const challengeFriend = () => {
-    const text = `I challenge you to solve this Life in the City & the World Word Cross puzzle! 🏆`;
+    const text = `I challenge you to solve this Life in the City and the World Word Cross puzzle! 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Word Cross Challenge",
@@ -522,7 +522,7 @@ export default function CrosswordGame2_6() {
 
             <PrimarySchoolGameHeader 
               gameName="Word Cross"
-              description="2nd Grade - Theme 6: Life in the City & the World"
+              description="2nd Grade - Theme 6: Life in the City and the World"
               containerId="crossword-game-wrapper"
               icon="🧩"
             />

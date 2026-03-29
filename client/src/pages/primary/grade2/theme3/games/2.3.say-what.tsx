@@ -189,7 +189,7 @@ export default function SayWhatGame() {
         <div className="say-what-container">
           <PrimarySchoolGameHeader
             gameName="Say What?"
-            description="Grade 2 - Theme 3: Body, Clothes & Weather"
+            description="Grade 2 - Theme 3: Personal Life"
             containerId="say-what-game"
             icon={<Volume2 className="h-7 w-7 text-teal-500" />}
           />

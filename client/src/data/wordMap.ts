@@ -28,6 +28,15 @@ export interface Level {
   grades: Grade[];
 }
 
+/** Normalizes spelling/punctuation variants so Word Map repeat colors & stats match the same lemma. */
+export function normalizeWordKey(word: string): string {
+  let s = word.toLowerCase().trim().replace(/\s+/g, " ");
+  if (s === "gray") s = "grey";
+  if (s === "café") s = "cafe";
+  if (s === "how are you?") s = "how are you";
+  return s;
+}
+
 export const wordMapData: Level[] = [
   {
     id: "preschool",
@@ -343,8 +352,8 @@ export const wordMapData: Level[] = [
           },
           {
             id: "2.2",
-            name: "Theme 2: My Classroom",
-            nameTr: "Tema 2: Sınıfım",
+            name: "Theme 2: Classroom Life",
+            nameTr: "Tema 2: Sınıf Hayatı",
             words: [
               { word: "colour", turkish: "renk" },
               { word: "yellow", turkish: "sarı" },
@@ -382,16 +391,19 @@ export const wordMapData: Level[] = [
               { word: "bag", turkish: "çanta" },
               { word: "notebook", turkish: "defter" },
               { word: "eraser", turkish: "silgi" },
-              { word: "sharpener", turkish: "kalemtıraş" },
+              { word: "sharpener", turkish: "açacak" },
               { word: "crayon", turkish: "pastel boya" },
               { word: "board", turkish: "tahta" },
               { word: "window", turkish: "pencere" },
+              { word: "desk", turkish: "sıra" },
+              { word: "door", turkish: "kapı" },
+              { word: "chair", turkish: "sandalye" },
             ],
           },
           {
             id: "2.3",
-            name: "Theme 3: My Body",
-            nameTr: "Tema 3: Vücudum",
+            name: "Theme 3: Personal Life",
+            nameTr: "Tema 3: Kişisel Hayat",
             words: [
               { word: "body", turkish: "vücut" },
               { word: "head", turkish: "baş" },
@@ -404,31 +416,31 @@ export const wordMapData: Level[] = [
               { word: "hands", turkish: "eller" },
               { word: "legs", turkish: "bacaklar" },
               { word: "nose", turkish: "burun" },
-              { word: "blonde", turkish: "sarışın" },
-              { word: "brown", turkish: "kahverengi" },
-              { word: "black", turkish: "siyah" },
-              { word: "straight", turkish: "düz" },
-              { word: "curly", turkish: "kıvırcık" },
-              { word: "wavy", turkish: "dalgalı" },
-              { word: "blue", turkish: "mavi" },
-              { word: "green", turkish: "yeşil" },
-              { word: "circle", turkish: "daire" },
-              { word: "square", turkish: "kare" },
-              { word: "triangle", turkish: "üçgen" },
-              { word: "rectangle", turkish: "dikdörtgen" },
-              { word: "star", turkish: "yıldız" },
-              { word: "heart", turkish: "kalp" },
-              { word: "oval", turkish: "oval" },
-              { word: "diamond", turkish: "eşkenar dörtgen" },
-              { word: "robot", turkish: "robot" },
-              { word: "clown", turkish: "palyaço" },
-              { word: "monster", turkish: "canavar" },
+              { word: "blonde", turkish: "sarı" },
+              { word: "shirt", turkish: "gömlek" },
+              { word: "glasses", turkish: "gözlük" },
+              { word: "scarf", turkish: "atkı" },
+              { word: "gloves", turkish: "eldiven" },
+              { word: "umbrella", turkish: "şemsiye" },
+              { word: "coat", turkish: "palto" },
+              { word: "shoes", turkish: "ayakkabılar" },
+              { word: "dress", turkish: "elbise" },
+              { word: "hat", turkish: "şapka" },
+              { word: "weather", turkish: "hava" },
+              { word: "hot", turkish: "sıcak" },
+              { word: "cold", turkish: "soğuk" },
+              { word: "sunny", turkish: "güneşli" },
+              { word: "rainy", turkish: "yağmurlu" },
+              { word: "snowy", turkish: "karlı" },
+              { word: "break", turkish: "mola" },
+              { word: "puppet", turkish: "kukla" },
+              { word: "well done", turkish: "aferin" },
             ],
           },
           {
             id: "2.4",
-            name: "Theme 4: My Family",
-            nameTr: "Tema 4: Ailem",
+            name: "Theme 4: Family Life",
+            nameTr: "Tema 4: Aile Hayatı",
             words: [
               { word: "family", turkish: "aile" },
               { word: "member", turkish: "üye" },
@@ -464,8 +476,8 @@ export const wordMapData: Level[] = [
           },
           {
             id: "2.5",
-            name: "Theme 5: My Home",
-            nameTr: "Tema 5: Evim",
+            name: "Theme 5: Homes, Houses, Neighbourhoods",
+            nameTr: "Tema 5: Evler, Konutlar, Mahalleler",
             words: [
               { word: "house", turkish: "ev" },
               { word: "garden", turkish: "bahçe" },
@@ -501,7 +513,7 @@ export const wordMapData: Level[] = [
           },
           {
             id: "2.6",
-            name: "Theme 6: Life in the City & the World",
+            name: "Theme 6: Life in the City and the World",
             nameTr: "Tema 6: Şehirde ve Dünyada Yaşam",
             words: [
               { word: "fruit", turkish: "meyve" },
@@ -534,7 +546,7 @@ export const wordMapData: Level[] = [
               { word: "meat", turkish: "et" },
               { word: "egg", turkish: "yumurta" },
               { word: "hungry", turkish: "aç" },
-              { word: "thirsty", turkish: "susamış" },
+              { word: "thirsty", turkish: "susuz" },
               { word: "yummy", turkish: "lezzetli" },
             ],
           },
@@ -1363,8 +1375,9 @@ export function getUniqueWords(): Word[] {
     level.grades.forEach((grade) => {
       grade.themes.forEach((theme) => {
         theme.words.forEach((word) => {
-          if (!wordMap.has(word.word.toLowerCase())) {
-            wordMap.set(word.word.toLowerCase(), word);
+          const key = normalizeWordKey(word.word);
+          if (!wordMap.has(key)) {
+            wordMap.set(key, word);
           }
         });
       });

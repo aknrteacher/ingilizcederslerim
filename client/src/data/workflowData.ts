@@ -312,7 +312,7 @@ export const workflowData: Level[] = [
           },
           {
             id: 'theme2',
-            name: 'Theme 2: My Town',
+            name: 'Theme 2: Classroom Life',
             content: [
               { type: 'vocab', count: 1 },
               { type: 'matching', count: 1 },
@@ -332,7 +332,7 @@ export const workflowData: Level[] = [
           },
           {
             id: 'theme3',
-            name: 'Theme 3: Weather & Nature',
+            name: 'Theme 3: Personal Life',
             content: [
               { type: 'vocab', count: 1 },
               { type: 'matching', count: 1 },
@@ -352,7 +352,7 @@ export const workflowData: Level[] = [
           },
           {
             id: 'theme4',
-            name: 'Theme 4: Transportation',
+            name: 'Theme 4: Family Life',
             content: [
               { type: 'vocab', count: 1 },
               { type: 'matching', count: 1 },
@@ -372,7 +372,7 @@ export const workflowData: Level[] = [
           },
           {
             id: 'theme5',
-            name: 'Theme 5: Professions',
+            name: 'Theme 5: Homes, Houses, Neighbourhoods',
             content: [
               { type: 'vocab', count: 1 },
               { type: 'matching', count: 1 },
@@ -392,7 +392,7 @@ export const workflowData: Level[] = [
           },
           {
             id: 'theme6',
-            name: 'Theme 6: Life in the City & the World',
+            name: 'Theme 6: Life in the City and the World',
             content: [
               { type: 'vocab', count: 1 },
               { type: 'matching', count: 1 },

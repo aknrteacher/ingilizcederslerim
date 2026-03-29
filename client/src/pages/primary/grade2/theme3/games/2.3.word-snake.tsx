@@ -242,7 +242,7 @@ export default function WordSnakeGame() {
     <Layout>
       <div className="word-snake-wrapper primary-school-game" id="word-snake-game">
         <div className="word-snake-container" ref={gameContainerRef}>
-          <PrimarySchoolGameHeader gameName="Snake" description="Grade 2 - Theme 3: Body, Clothes & Weather" containerId="word-snake-game" icon={<span className="text-2xl">🐍</span>} />
+          <PrimarySchoolGameHeader gameName="Snake" description="Grade 2 - Theme 3: Personal Life" containerId="word-snake-game" icon={<span className="text-2xl">🐍</span>} />
           {!gameStarted && !gameOver && (
             <div className="start-screen">
               <div className="start-content">

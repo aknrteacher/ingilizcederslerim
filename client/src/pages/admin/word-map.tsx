@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { NoIndex } from '@/components/NoIndex';
 import { Link } from 'wouter';
-import { wordMapData, getTotalWordCount, getUniqueWords } from '@/data/wordMap';
+import { wordMapData, getTotalWordCount, getUniqueWords, normalizeWordKey } from '@/data/wordMap';
 import type { Theme, Grade, Level } from '@/data/wordMap';
 import { useThemeNotes } from '@/hooks/useThemeNotes';
 
@@ -225,7 +225,7 @@ export default function WordMapPage() {
           themeIndices.set(theme.id, themeIndex);
           
           theme.words.forEach((word) => {
-            const wordLower = word.word.toLowerCase();
+            const wordLower = normalizeWordKey(word.word);
             
             if (!allOccurrences.has(wordLower)) {
               allOccurrences.set(wordLower, []);
@@ -266,7 +266,7 @@ export default function WordMapPage() {
           };
 
           theme.words.forEach((word) => {
-            const wordLower = word.word.toLowerCase();
+            const wordLower = normalizeWordKey(word.word);
             const occurrences = allOccurrences.get(wordLower) || [];
             const previousOccurrences = occurrences.filter(occ => occ.themeIndex < currentThemeIndex);
 
@@ -311,7 +311,7 @@ export default function WordMapPage() {
     currentGradeId: string,
     currentThemeId: string
   ): { status: WordStatus; previousOccurrences: WordOccurrence[] } => {
-    const wordLower = wordText.toLowerCase();
+    const wordLower = normalizeWordKey(wordText);
     const allOccurrences = wordAllOccurrences.get(wordLower) || [];
     const currentThemeIndex = themeIndexMap.get(currentThemeId) ?? 0;
 

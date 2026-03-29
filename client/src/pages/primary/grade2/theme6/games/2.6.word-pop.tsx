@@ -379,7 +379,7 @@ export default function WordPopGame2_6() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Word Pop"
-            description="2nd Grade - Theme 6: Life in the City & the World"
+            description="2nd Grade - Theme 6: Life in the City and the World"
             containerId="word-pop-game"
             icon="🎈"
           />

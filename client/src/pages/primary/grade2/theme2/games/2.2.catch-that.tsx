@@ -734,7 +734,7 @@ export default function CatchThatGame2_4() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Catch That"
-            description="2nd Grade - Theme 2: My Classroom"
+            description="2nd Grade - Theme 2: Classroom Life"
             containerId="catch-that-game"
             icon="🎯"
           />

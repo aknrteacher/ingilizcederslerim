@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/2.2.voc.css";
@@ -43,7 +43,7 @@ export default function VocabularyCards2_6() {
     setShowIntroCard(true);
   };
 
-  // Vocabulary data for Theme 6: Life in the City & the World
+  // Vocabulary data for Theme 6: Life in the City and the World
   const imageFiles = [
     { word: "fruit", file: "fruit.png", turkish: "meyve" },
     { word: "apple", file: "apple.png", turkish: "elma" },
@@ -423,7 +423,7 @@ export default function VocabularyCards2_6() {
       <div className="vocabulary-container">
         <div className="title-container">
           <p>2nd Grades</p>
-          <p>Theme 6: Life in the City & the World</p>
+          <p>Theme 6: Life in the City and the World</p>
         </div>
 
         <div className="center-layout" data-testid="layout-center">

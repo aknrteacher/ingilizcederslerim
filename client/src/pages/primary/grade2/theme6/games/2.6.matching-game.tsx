@@ -309,7 +309,7 @@ export default function MatchingGame2_6() {
   };
 
   const shareGame = () => {
-    const text = `I just scored ${formatTime(elapsedTime)} on Matchlings Life in the City & the World! Can you beat my time? 🎮`;
+    const text = `I just scored ${formatTime(elapsedTime)} on Matchlings Life in the City and the World! Can you beat my time? 🎮`;
     if (navigator.share) {
       navigator.share({
         title: "Matchlings",
@@ -322,7 +322,7 @@ export default function MatchingGame2_6() {
   };
 
   const challengeFriend = () => {
-    const text = `Challenge me on Matchlings Life in the City & the World! Can you match all the words faster than my ${formatTime(elapsedTime)}? 🏆`;
+    const text = `Challenge me on Matchlings Life in the City and the World! Can you match all the words faster than my ${formatTime(elapsedTime)}? 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Challenge on Matchlings",
@@ -341,7 +341,7 @@ export default function MatchingGame2_6() {
           <>
             <PrimarySchoolGameHeader 
               gameName="Matchlings"
-              description="Grade 2 - Theme 6: Life in the City & the World"
+              description="Grade 2 - Theme 6: Life in the City and the World"
               containerId="matchlings-game"
               icon={<Puzzle className="h-7 w-7 text-blue-600" />}
             />

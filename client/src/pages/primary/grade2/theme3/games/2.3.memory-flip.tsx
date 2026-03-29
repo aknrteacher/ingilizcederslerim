@@ -208,7 +208,7 @@ export default function MemoryFlipGame() {
         <div className="memory-flip-container">
           <PrimarySchoolGameHeader
             gameName="Memory Flip"
-            description="Grade 2 - Theme 3: Body, Clothes & Weather"
+            description="Grade 2 - Theme 3: Personal Life"
             containerId="memory-flip-game"
             icon={<Grid3X3 className="h-7 w-7 text-teal-500" />}
           />

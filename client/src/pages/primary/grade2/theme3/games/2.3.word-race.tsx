@@ -193,7 +193,7 @@ export default function WordRaceGame() {
         <div className="word-race-container">
           <PrimarySchoolGameHeader
             gameName="Word Race"
-            description="Grade 2 - Theme 3: Body, Clothes & Weather"
+            description="Grade 2 - Theme 3: Personal Life"
             containerId="word-race-game"
             icon={<Keyboard className="h-7 w-7 text-teal-500" />}
           />

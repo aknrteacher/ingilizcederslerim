@@ -50,7 +50,7 @@ const GRADE2 = [
   { unit: 'Theme 2: Classroom Life', tags: [{ c: 'c2', text: 'Numbers 1-20' }, { c: 'c4', text: 'Colors' }, { c: 'c12', text: 'Quantity (How many)' }, { c: 'c5', text: 'Possession (my, his, her...)' }, { c: 'c3', text: 'Permission (Can I...?)' }] },
   { unit: 'Theme 3: Personal Life', tags: [{ c: 'c7', text: 'Body & Physical Description' }, { c: 'c5', text: 'Possession (have got)' }, { c: 'c13', text: 'Weather' }, { c: 'c22', text: 'Days of the Week' }, { c: 'c18', text: 'Clothes' }] },
   { unit: 'Theme 4: Family Life', tags: [{ c: 'c6', text: 'Family' }, { c: 'c7', text: 'Physical Description' }, { c: 'c5', text: 'Possession (has got)' }] },
-  { unit: 'Theme 5: Homes & Neighbourhoods', tags: [{ c: 'c9', text: 'House & Rooms' }, { c: 'c10', text: 'Prepositions (in, on, under)' }, { c: 'c5', text: 'Possession (have got)' }, { c: 'c15', text: 'Animals (pets)' }] },
+  { unit: 'Theme 5: Homes, Houses, Neighbourhoods', tags: [{ c: 'c9', text: 'House & Rooms' }, { c: 'c10', text: 'Prepositions (in, on, under)' }, { c: 'c5', text: 'Possession (have got)' }, { c: 'c15', text: 'Animals (pets)' }] },
   { unit: 'Theme 6: Life in the City', tags: [{ c: 'c15', text: 'Likes & Dislikes (food)' }, { c: 'c5', text: 'Possession' }, { c: 'c19', text: 'Food & Offers' }] },
 ];
 

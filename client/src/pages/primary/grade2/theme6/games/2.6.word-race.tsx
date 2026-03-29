@@ -189,7 +189,7 @@ export default function WordRaceGame() {
         <div className="word-race-container">
           <PrimarySchoolGameHeader
             gameName="Word Race"
-            description="Grade 2 - Theme 6: Food & City Life"
+            description="Grade 2 - Theme 6: Life in the City and the World"
             containerId="word-race-game"
             icon={<Keyboard className="h-7 w-7 text-amber-500" />}
           />

@@ -285,7 +285,7 @@ export default function SpellQuestGame2_4() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="2nd Grade - Theme 4: Family Life"
+            description="2nd Grade - Theme 2: Classroom Life"
             containerId="spell-quest-game"
             icon="✨"
           />

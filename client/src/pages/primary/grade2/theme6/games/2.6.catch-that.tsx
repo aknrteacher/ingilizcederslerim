@@ -10,7 +10,7 @@ import "@/styles/2.1.catch-that.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
 
-// Vocabulary from 2.6 (Life in the City & the World)
+// Vocabulary from 2.6 (Life in the City and the World)
 const vocabulary = [
   { word: "FRUIT", turkish: "meyve", file: "fruit.png" },
   { word: "APPLE", turkish: "elma", file: "apple.png" },
@@ -724,7 +724,7 @@ export default function CatchThatGame2_6() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PrimarySchoolGameHeader 
             gameName="Catch That"
-            description="2nd Grade - Theme 6: Life in the City & the World"
+            description="2nd Grade - Theme 6: Life in the City and the World"
             containerId="catch-that-game"
             icon="🎯"
           />

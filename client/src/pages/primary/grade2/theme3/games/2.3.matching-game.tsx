@@ -307,7 +307,7 @@ export default function MatchingGame2_3() {
   };
 
   const shareGame = () => {
-    const text = `I just scored ${formatTime(elapsedTime)} on Matchlings Body Parts, Clothes & Weather! Can you beat my time? 🎮`;
+    const text = `I just scored ${formatTime(elapsedTime)} on Matchlings Personal Life! Can you beat my time? 🎮`;
     if (navigator.share) {
       navigator.share({
         title: "Matchlings",
@@ -320,7 +320,7 @@ export default function MatchingGame2_3() {
   };
 
   const challengeFriend = () => {
-    const text = `Challenge me on Matchlings Body Parts, Clothes & Weather! Can you match all the words faster than my ${formatTime(elapsedTime)}? 🏆`;
+    const text = `Challenge me on Matchlings Personal Life! Can you match all the words faster than my ${formatTime(elapsedTime)}? 🏆`;
     if (navigator.share) {
       navigator.share({
         title: "Challenge on Matchlings",
@@ -339,7 +339,7 @@ export default function MatchingGame2_3() {
           <>
             <PrimarySchoolGameHeader 
               gameName="Matchlings"
-              description="2nd Grade - Theme 3: Body Parts, Clothes & Weather"
+              description="2nd Grade - Theme 3: Personal Life"
               containerId="matchlings-game"
               icon={<Puzzle className="h-7 w-7 text-blue-600" />}
             />

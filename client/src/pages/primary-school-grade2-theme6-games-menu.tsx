@@ -97,7 +97,7 @@ export default function PrimarySchoolGrade2Theme6GamesMenu() {
   // Topic configuration
   const topic = {
     value: "2.6",
-    label: "Şehirde ve Dünyada Hayat (Life in the City & the World)",
+    label: "Şehirde ve Dünyada Hayat (Life in the City and the World)",
     image: topic2_6,
   };
 

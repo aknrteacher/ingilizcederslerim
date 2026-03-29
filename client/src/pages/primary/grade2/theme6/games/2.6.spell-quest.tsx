@@ -17,7 +17,7 @@ interface VocabWord {
   file: string;
 }
 
-// Vocabulary from 2.6 (Life in the City & the World)
+// Vocabulary from 2.6 (Life in the City and the World)
 const vocabulary: VocabWord[] = [
   { word: "FRUIT", displayWord: "fruit", turkish: "meyve", file: "fruit.png" },
   { word: "APPLE", displayWord: "apple", turkish: "elma", file: "apple.png" },
@@ -288,7 +288,7 @@ export default function SpellQuestGame2_6() {
         <div className="spell-quest-container relative z-10">
           <PrimarySchoolGameHeader 
             gameName="Spell Quest"
-            description="2nd Grade - Theme 6: Life in the City & the World"
+            description="2nd Grade - Theme 6: Life in the City and the World"
             containerId="spell-quest-game"
             icon="✨"
           />

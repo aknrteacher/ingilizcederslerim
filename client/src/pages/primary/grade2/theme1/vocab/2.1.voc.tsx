@@ -43,7 +43,7 @@ export default function VocabularyCards() {
     setShowIntroCard(true);
   };
 
-  // Sample vocabulary data - replace with your own
+  // Vocabulary data for Theme 1: School Life
   const imageFiles = [
     { word: "hello", file: "hello.png", turkish: "merhaba" },
     { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },

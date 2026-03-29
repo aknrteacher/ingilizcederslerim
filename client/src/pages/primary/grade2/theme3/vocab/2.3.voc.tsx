@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { Layout } from "@/components/Layout";
 import "@/styles/2.1.voc.css";
@@ -43,7 +43,7 @@ export default function VocabularyCards2_3() {
     setShowIntroCard(true);
   };
 
-  // Vocabulary data for Theme 3: Body Parts, Clothes & Weather
+  // Vocabulary data for Theme 3: Personal Life
   const imageFiles = [
     { word: "body", file: "body.png", turkish: "vücut" },
     { word: "head", file: "head.png", turkish: "baş" },
@@ -421,7 +421,7 @@ export default function VocabularyCards2_3() {
       <div className="vocabulary-container">
         <div className="title-container">
           <p>2nd Grades</p>
-          <p>Theme 3: Body Parts, Clothes & Weather</p>
+          <p>Theme 3: Personal Life</p>
         </div>
 
         <div className="center-layout" data-testid="layout-center">
