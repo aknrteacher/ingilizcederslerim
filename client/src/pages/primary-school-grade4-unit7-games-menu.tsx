@@ -1,4 +1,4 @@
-﻿import { Layout } from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import { CombinedGameButton } from "@/components/CombinedGameButton";
 import "../styles/oyunlar.css";
 import "@/styles/4.7.voc.css";
@@ -16,6 +16,7 @@ import gameTypeSayWhat from "@/assets/say what.png";
 import gameTypeMemoryFlip from "@/assets/memory flip.png";
 import gameTypeWordRace from "@/assets/word race.png";
 import gameTypeWordSnake from "@/assets/word snake.png";
+import gameTypeColourThis from "@/assets/colour this.png";
 
 export default function PrimarySchoolGrade4Unit7GamesMenu() {
   const gameTypes = [
@@ -28,6 +29,7 @@ export default function PrimarySchoolGrade4Unit7GamesMenu() {
     { id: "memory-flip", name: "Memory Flip", icon: "🧠", gradient: "green-teal" as const, pathSuffix: "memory-flip", image: gameTypeMemoryFlip },
     { id: "word-race", name: "Word Race", icon: "🏎️", gradient: "yellow-orange" as const, pathSuffix: "word-race", image: gameTypeWordRace },
     { id: "word-snake", name: "Word Snake", icon: "🐍", gradient: "green-teal" as const, pathSuffix: "word-snake", image: gameTypeWordSnake },
+    { id: "color-sound", name: "Colour This", icon: "🖌️", gradient: "pink-red" as const, pathSuffix: "color-sound", image: gameTypeColourThis },
   ];
 
   const topic = {

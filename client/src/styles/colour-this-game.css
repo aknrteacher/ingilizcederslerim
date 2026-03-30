@@ -1,0 +1,267 @@
+/* ─── Colour Sound ─── */
+
+.cs-root {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f0f7ff 0%, #e8f4fc 45%, #fdf8f3 100%);
+}
+
+.cs-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 12px 32px;
+}
+
+.cs-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ── game row: picture + pencil sidebar ── */
+.cs-game-row {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+
+/* ── picture canvas ── */
+.cs-picture {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  height: auto;
+  max-height: min(54vh, 440px);
+  border-radius: 14px;
+  cursor: pointer;
+  touch-action: none;
+  box-shadow: 0 6px 24px rgba(15, 60, 90, 0.09);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+}
+
+/* ── pencil sidebar (right of image) ── */
+.cs-pencil-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 82px;
+  background: linear-gradient(180deg, #e8e8e8 0%, #d4d4d4 50%, #c0c0c0 100%);
+  border-radius: 0 12px 12px 0;
+  border: 2px solid #999;
+  border-left: none;
+  padding: 6px 4px;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  user-select: none;
+}
+
+.cs-pencil-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* pencil buttons — rotated 90° left, full original size */
+.cs-pencil-sidebar .cs-pencil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  transform: rotate(-90deg);
+  margin: -23px 0;
+  overflow: visible;
+  transition: filter 0.18s ease;
+}
+
+.cs-pencil-sidebar .cs-pencil:hover {
+  filter: brightness(1.12);
+}
+
+.cs-pencil-sidebar .cs-pencil.active {
+  animation: cs-pencil-pulse 0.7s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px var(--pencil-glow));
+  z-index: 5;
+}
+
+.cs-pencil-sidebar .cs-pencil.hint-flash {
+  animation: cs-pencil-hint 0.35s ease-in-out 3;
+  filter: drop-shadow(0 0 10px var(--pencil-glow)) brightness(1.2);
+  z-index: 6;
+}
+
+@keyframes cs-pencil-hint {
+  0%, 100% { transform: rotate(-90deg) translateY(0); }
+  50% { transform: rotate(-90deg) translateY(-16px) scale(1.12); }
+}
+
+@keyframes cs-pencil-pulse {
+  0%,
+  100% {
+    transform: rotate(-90deg) translateY(0px) scale(1);
+  }
+  50% {
+    transform: rotate(-90deg) translateY(-12px) scale(1.07);
+  }
+}
+
+/* pencil parts — original dimensions */
+.cs-pencil-tip {
+  width: 8px;
+  height: 10px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.cs-pencil-wood {
+  width: 16px;
+  height: 9px;
+  background: #c8a87a;
+  clip-path: polygon(28% 0%, 72% 0%, 100% 100%, 0% 100%);
+}
+
+.cs-pencil-body {
+  width: 18px;
+  height: 42px;
+  border-radius: 0 0 2px 2px;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cs-pencil-body::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 0 0 0 2px;
+}
+
+.cs-pencil-body--light {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cs-pencil-ferrule {
+  width: 20px;
+  height: 5px;
+  background: linear-gradient(180deg, #b0b0b0, #888);
+  border-radius: 0 0 2px 2px;
+}
+
+.cs-active-label {
+  margin-top: 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #555;
+  text-transform: capitalize;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* ── word instruction ── */
+.cs-word-instruction {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #475569;
+  margin: 0;
+  padding: 4px 0 0;
+  letter-spacing: 0.01em;
+}
+
+.cs-word-instruction-color {
+  font-weight: 900;
+  text-transform: capitalize;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+/* ── word canvas ── */
+.cs-word-wrap {
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  border: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+.cs-word-canvas {
+  display: block;
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: none;
+  background: #fff;
+}
+
+/* ── nav ── */
+.cs-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.cs-nav button {
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.cs-counter {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ── responsive: small screens → pencils smaller ── */
+@media (max-width: 640px) {
+  .cs-pencil-sidebar {
+    width: 60px;
+    padding: 4px 2px;
+  }
+
+  .cs-pencil-sidebar .cs-pencil {
+    margin: -26px 0;
+  }
+
+  .cs-pencil-body {
+    height: 34px;
+    width: 15px;
+  }
+
+  .cs-pencil-wood {
+    width: 13px;
+    height: 7px;
+  }
+
+  .cs-pencil-tip {
+    width: 7px;
+    height: 8px;
+  }
+
+  .cs-pencil-ferrule {
+    width: 17px;
+    height: 4px;
+  }
+
+  .cs-active-label {
+    font-size: 0.5rem;
+    padding: 1px 4px;
+  }
+}

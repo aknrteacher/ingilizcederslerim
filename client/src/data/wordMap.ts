@@ -1271,7 +1271,7 @@ export const wordMapData: Level[] = [
           {
             id: "4.9",
             name: "Unit 9: My Friends",
-            nameTr: "Ünite 9: Arkadaşlarım (kart ve oyunlar hazırlanıyor)",
+            nameTr: "Ünite 9: Arkadaşlarım",
             words: [
               { word: "hair", turkish: "saç" },
               { word: "straight", turkish: "düz" },
@@ -1304,7 +1304,7 @@ export const wordMapData: Level[] = [
               { word: "celebrity", turkish: "ünlü" },
               { word: "look like", turkish: "-e benzemek" },
               { word: "have got", turkish: "sahip olmak" },
-              { word: "has got", turkish: "sahip" },
+              { word: "has got", turkish: "sahip olmak (o)" },
             ],
           },
           {

@@ -24,6 +24,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                       element.querySelector(".word-pop-container") ||
                       element.querySelector(".color-catch-container") ||
                       element.querySelector(".catch-that-container") ||
+                      element.querySelector(".color-sound-container") ||
                       element.querySelector(".max-w-6xl") ||
                       element) as HTMLElement;
     
@@ -99,6 +100,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                       element.querySelector(".word-pop-container") ||
                       element.querySelector(".color-catch-container") ||
                       element.querySelector(".catch-that-container") ||
+                      element.querySelector(".color-sound-container") ||
                       element.querySelector(".max-w-6xl") ||
                       element) as HTMLElement;
     if (!container) return;
@@ -152,6 +154,7 @@ export function PrimarySchoolGameHeader({ gameName, description, containerId, ic
                         element.querySelector(".word-pop-container") ||
                         element.querySelector(".color-catch-container") ||
                         element.querySelector(".catch-that-container") ||
+                        element.querySelector(".color-sound-container") ||
                         element.querySelector(".max-w-6xl") ||
                         element) as HTMLElement;
       

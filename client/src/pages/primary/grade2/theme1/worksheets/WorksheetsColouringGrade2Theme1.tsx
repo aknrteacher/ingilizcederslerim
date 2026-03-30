@@ -1,6 +1,15 @@
 import type { ReactNode } from "react";
+import { useMemo, useState } from "react";
 import { Layout } from "@/components/Layout";
+import { CombinedGameButton } from "@/components/CombinedGameButton";
 import { Link } from "wouter";
+import gameTypeColourThis from "@/assets/colour this.png";
+import {
+  colourThisGameHref,
+  type GradeId,
+  getDefaultTopicId,
+  getTopicsForGrade,
+} from "./worksheetsColouringGamePickerData";
 
 function StarNumberBullet({ n }: { n: number }) {
   return (
@@ -54,6 +63,22 @@ const instructions: { n: number; text: ReactNode }[] = [
 ];
 
 export default function WorksheetsColouringGrade2Theme1() {
+  const [grade, setGrade] = useState<GradeId>("2");
+  const [topicId, setTopicId] = useState(1);
+
+  const topics = useMemo(() => getTopicsForGrade(grade), [grade]);
+  const topic = useMemo(() => {
+    const found = topics.find((t) => t.id === topicId);
+    return found ?? topics[0];
+  }, [topics, topicId]);
+
+  const onGradeChange = (next: GradeId) => {
+    setGrade(next);
+    setTopicId(getDefaultTopicId(next));
+  };
+
+  const gameHref = colourThisGameHref(topic);
+
   return (
     <Layout>
       <div className="min-h-[60vh] py-8 px-4">
@@ -89,6 +114,93 @@ export default function WorksheetsColouringGrade2Theme1() {
               </ul>
             </div>
           </div>
+
+          <section
+            className="mt-10 pt-8 border-t border-border"
+            aria-labelledby="worksheet-games-heading"
+          >
+            <h2
+              id="worksheet-games-heading"
+              className="text-base md:text-lg font-semibold text-foreground leading-snug mb-2"
+            >
+              Colour This Game:
+            </h2>
+            <p className="text-foreground leading-relaxed mb-6 max-w-2xl">
+              Çalışma kağıdının oyununa girmek için aşağıdan sınıf ve ünite seçin.
+            </p>
+
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+              <div className="w-full lg:w-[min(100%,280px)] shrink-0 space-y-5">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="worksheet-game-grade"
+                    className="block text-base font-semibold text-foreground leading-snug"
+                  >
+                    Sınıf seçin
+                  </label>
+                  <select
+                    id="worksheet-game-grade"
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground leading-relaxed shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    value={grade}
+                    onChange={(e) => onGradeChange(e.target.value as GradeId)}
+                  >
+                    <option value="2">2. sınıf</option>
+                    <option value="3">3. sınıf</option>
+                    <option value="4">4. sınıf</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="worksheet-game-topic"
+                    className="block text-base font-semibold text-foreground leading-snug"
+                  >
+                    {grade === "2" ? "Tema seçin" : "Ünite seçin"}
+                  </label>
+                  <select
+                    id="worksheet-game-topic"
+                    className="w-full rounded-md border border-border bg-background px-3 py-2 text-base text-foreground leading-relaxed shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    value={topic?.id ?? ""}
+                    onChange={(e) => setTopicId(Number(e.target.value))}
+                  >
+                    {topics.map((t) => (
+                      <option key={`${grade}-${t.id}`} value={t.id}>
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <Link href={gameHref}>
+                  <a
+                    className="flex w-full min-h-[3rem] items-center justify-center bg-green-600 px-6 py-3 pl-5 text-sm font-bold uppercase tracking-wide text-white shadow-md transition hover:bg-green-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 md:text-base"
+                    style={{
+                      clipPath:
+                        "polygon(0 0, calc(100% - 1.25rem) 0, 100% 50%, calc(100% - 1.25rem) 100%, 0 100%)",
+                    }}
+                  >
+                    Oyuna Git
+                  </a>
+                </Link>
+              </div>
+
+              <div className="flex-1 min-w-0 w-full flex justify-center lg:justify-start">
+                <div className="w-full max-w-[280px] shrink-0 [&_.combined-game-button-link]:max-w-full">
+                  <CombinedGameButton
+                    topicLabel={topic.label}
+                    topicValue={topic.topicValue}
+                    gameType="Colour This"
+                    gameIcon="🖌️"
+                    href={gameHref}
+                    gameGradient="pink-red"
+                    dataTestId={`worksheet-colour-this-${topic.topicValue}`}
+                    topicImage={topic.topicImage}
+                    gameTypeImage={gameTypeColourThis}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
 
           <p className="mt-10 text-sm text-muted-foreground">
             <Link href="/primary-school/grade-2/theme-1/worksheets">
