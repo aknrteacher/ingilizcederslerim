@@ -9,6 +9,7 @@ import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.crossword.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
+import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 0.3 (Greetings) - convert multi-word to single word for crossword
 const vocabulary = [
@@ -75,14 +76,6 @@ export default function GreetingsCrosswordGame() {
       const vocab = vocabulary.find(v => v.word === pw.word);
       return vocab?.file ? `/images/preschool/vocab/0.3-greetings/${vocab.file}` : null;
   }).filter(Boolean) as string[];
-
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.9;
-    window.speechSynthesis?.speak(utterance);
-  };
-
 
   const shareGame = () => {
     const text = `I just solved the Greetings Word Cross! Can you beat it? 👋`;
@@ -308,9 +301,9 @@ export default function GreetingsCrosswordGame() {
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play failed", e));
 
-        // Speak the word
-        const wordText = vocabulary.find(v => v.word === newlySolved[0])?.word;
-        if (wordText) speakWord(wordText);
+        // Speak the word (use natural phrase from image filename when multi-word)
+        const solvedEntry = vocabulary.find(v => v.word === newlySolved[0]);
+        if (solvedEntry) speakCrosswordAnswer(solvedEntry.word, solvedEntry.file);
     }
     
     let correctCount = 0;

@@ -9,6 +9,8 @@ import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import "@/styles/2.1.catch-that.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
+import { speakCatchThatTargetWord } from "@/lib/catch-that-speech";
+import { playCatchThatPositiveRewardSound, playCatchThatNegativeRewardSound } from "@/lib/catch-that-sounds";
 
 const vocabulary = [
   { word: "FAMILY", turkish: "aile", file: "family.png" },
@@ -103,16 +105,15 @@ export default function CatchThatGame2_4() {
   const [usedWords, setUsedWords] = useState<string[]>([]);
   const [hintsUsed, setHintsUsed] = useState(0);
   const [basketPosition, setBasketPosition] = useState(50); // percentage from left
-  const [showPictureCard, setShowPictureCard] = useState(false);
-  const [pictureCardTimer, setPictureCardTimer] = useState(0);
+  const basketPositionRef = useRef(50);
   const [speedMultiplier, setSpeedMultiplier] = useState(1); // Speed boost multiplier
   const isMiddleMouseDownRef = useRef(false);
   const gameAreaRef = useRef<HTMLDivElement>(null);
+  const playAreaRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
   const spawnTimerRef = useRef<NodeJS.Timeout | null>(null);
   const basketRef = useRef<HTMLDivElement>(null);
   const missedCorrectWordsRef = useRef<Set<string>>(new Set());
-  const pictureCardTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const totalWords = 10;
   const hintPenalty = 5;
@@ -133,6 +134,12 @@ export default function CatchThatGame2_4() {
     return 0.35 + (progress * 0.3);
   };
 
+  const setBasketPct = useCallback((pct: number) => {
+    const clamped = Math.max(10, Math.min(90, pct));
+    basketPositionRef.current = clamped;
+    setBasketPosition(clamped);
+  }, []);
+
   const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
@@ -146,6 +153,12 @@ export default function CatchThatGame2_4() {
       window.speechSynthesis.speak(utterance);
     }
   }, [gameStarted, gameOver, gameWon]);
+
+  useEffect(() => {
+    if (!gameStarted || gameOver || gameWon) return;
+    const phrase = getDisplayWord(currentWord.word).replace(/_/g, " ").toLowerCase();
+    speakCatchThatTargetWord(phrase);
+  }, [currentWord.word, gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {
     if (gameStarted && !gameOver && !gameWon) {
@@ -205,16 +218,10 @@ export default function CatchThatGame2_4() {
   }, [gameStarted, gameOver, gameWon, wordsCompleted, totalWords]);
 
   const nextWord = useCallback(() => {
-    // Clear picture card timer if it exists
-    if (pictureCardTimerRef.current) {
-      clearInterval(pictureCardTimerRef.current);
-      pictureCardTimerRef.current = null;
-    }
-    
     if (wordsCompleted + 1 >= totalWords) {
       setGameWon(true);
-      setShowPictureCard(false);
-      setPictureCardTimer(0);
+      setFallingWords([]);
+      setFallingPrizes([]);
       confetti({
         particleCount: 200,
         spread: 100,
@@ -236,34 +243,10 @@ export default function CatchThatGame2_4() {
     setUsedWords(prev => [...prev, next.word]);
     setShowTurkish(false);
     setWordsCompleted(prev => prev + 1);
-    setShowPictureCard(false);
-    setPictureCardTimer(0);
     // Clear the missed words tracking for the new word
     missedCorrectWordsRef.current.clear();
   }, [currentWord, wordsCompleted, usedWords]);
 
-  const startPictureCardDisplay = useCallback(() => {
-    // Random timer between 1-10 seconds
-    const randomSeconds = Math.floor(Math.random() * 10) + 1;
-    setShowPictureCard(true);
-    setPictureCardTimer(randomSeconds);
-
-    // Countdown timer
-    let remaining = randomSeconds;
-    const timerInterval = setInterval(() => {
-      remaining -= 1;
-      setPictureCardTimer(remaining);
-      
-      if (remaining <= 0) {
-        clearInterval(timerInterval);
-        pictureCardTimerRef.current = null;
-        // Move to next word after timer expires
-        nextWord();
-      }
-    }, 1000);
-
-    pictureCardTimerRef.current = timerInterval;
-  }, [nextWord]);
 
   const catchWord = useCallback((word: FallingWord) => {
     if (word.caught || gameOver || gameWon) return;
@@ -276,7 +259,7 @@ export default function CatchThatGame2_4() {
     const isActuallyCorrect = word.word === currentWord.word;
 
     if (isActuallyCorrect && word.isCorrect) {
-      const comboBonus = combo >= 2 ? combo : 1;
+      const comboBonus = Math.max(1, combo + 1);
       setScore(prev => prev + (correctPoints * comboBonus));
       setCombo(prev => prev + 1);
       setShowCombo(true);
@@ -295,12 +278,7 @@ export default function CatchThatGame2_4() {
         colors: ["#3b82f6", "#60a5fa", "#10b981"]
       });
 
-      // Show picture card with timer instead of immediately moving to next word
-      if (!showPictureCard) {
-        setTimeout(() => {
-          startPictureCardDisplay();
-        }, 800);
-      }
+      queueMicrotask(() => nextWord());
     } else {
       setLives(prev => {
         const newLives = prev - 1;
@@ -321,7 +299,7 @@ export default function CatchThatGame2_4() {
         fallbackAudio.play().catch(() => {});
       });
     }
-  }, [combo, gameOver, gameWon, speakWord, startPictureCardDisplay, showPictureCard, currentWord]);
+  }, [combo, gameOver, gameWon, speakWord, currentWord, nextWord]);
 
   const catchPrize = useCallback((prize: FallingPrize) => {
     if (prize.caught || gameOver || gameWon) return;
@@ -332,6 +310,7 @@ export default function CatchThatGame2_4() {
 
     switch (prize.type) {
       case 'extra-heart':
+        playCatchThatPositiveRewardSound();
         setLives(prev => Math.min(10, prev + 1)); // Max 10 lives
         confetti({
           particleCount: 20,
@@ -341,6 +320,7 @@ export default function CatchThatGame2_4() {
         });
         break;
       case 'extra-time':
+        playCatchThatPositiveRewardSound();
         // Add bonus points as "extra time" reward
         setScore(prev => prev + 20);
         confetti({
@@ -359,26 +339,12 @@ export default function CatchThatGame2_4() {
           return newLives;
         });
         setCombo(0);
-        const bombAudio = new Audio("/sounds/error.mp3");
-        bombAudio.volume = 0.7;
-        bombAudio.play().catch((err) => {
-          console.error("Error sound failed, trying wrong.mp3:", err);
-          const fallbackAudio = new Audio("/sounds/wrong.mp3");
-          fallbackAudio.volume = 0.7;
-          fallbackAudio.play().catch(() => {});
-        });
+        playCatchThatNegativeRewardSound();
         break;
       case 'minus-time':
         setScore(prev => Math.max(0, prev - 15));
         setCombo(0);
-        const minusAudio = new Audio("/sounds/error.mp3");
-        minusAudio.volume = 0.7;
-        minusAudio.play().catch((err) => {
-          console.error("Error sound failed, trying wrong.mp3:", err);
-          const fallbackAudio = new Audio("/sounds/wrong.mp3");
-          fallbackAudio.volume = 0.7;
-          fallbackAudio.play().catch(() => {});
-        });
+        playCatchThatNegativeRewardSound();
         break;
     }
   }, [gameOver, gameWon]);
@@ -395,26 +361,16 @@ export default function CatchThatGame2_4() {
     setShowTurkish(false);
     setFallingWords([]);
     setFallingPrizes([]);
-    setShowPictureCard(false);
-    setPictureCardTimer(0);
     setSpeedMultiplier(1); // Reset speed multiplier
     isMiddleMouseDownRef.current = false; // Reset middle mouse state
     missedCorrectWordsRef.current.clear();
-    if (pictureCardTimerRef.current) {
-      clearInterval(pictureCardTimerRef.current);
-      pictureCardTimerRef.current = null;
-    }
     const randomWord = vocabulary[Math.floor(Math.random() * vocabulary.length)];
     setCurrentWord(randomWord);
     setUsedWords([randomWord.word]);
-    setBasketPosition(50);
-  }, []);
+    setBasketPct(50);
+  }, [setBasketPct]);
 
   const resetGame = useCallback(() => {
-    if (pictureCardTimerRef.current) {
-      clearInterval(pictureCardTimerRef.current);
-      pictureCardTimerRef.current = null;
-    }
     startGame();
   }, [startGame]);
 
@@ -424,9 +380,9 @@ export default function CatchThatGame2_4() {
 
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        setBasketPosition(prev => Math.max(10, prev - 5));
+        setBasketPct(basketPositionRef.current - 5);
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        setBasketPosition(prev => Math.min(90, prev + 5));
+        setBasketPct(basketPositionRef.current + 5);
       } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
         // Speed boost with down arrow
         setSpeedMultiplier(prev => Math.min(3, prev + 0.5)); // Max 3x speed
@@ -439,22 +395,25 @@ export default function CatchThatGame2_4() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [gameStarted, gameOver, gameWon]);
+  }, [gameStarted, gameOver, gameWon, setBasketPct]);
 
   // Handle mouse/touch movement for basket and speed boost with middle mouse scroll
   useEffect(() => {
-    if (!gameStarted || gameOver || gameWon || !gameAreaRef.current) return;
+    if (!gameStarted || gameOver || gameWon || !playAreaRef.current) return;
 
     const handleMove = (clientX: number) => {
-      const rect = gameAreaRef.current?.getBoundingClientRect();
+      const rect = playAreaRef.current?.getBoundingClientRect();
       if (!rect) return;
       const percentage = ((clientX - rect.left) / rect.width) * 100;
-      setBasketPosition(Math.max(10, Math.min(90, percentage)));
+      setBasketPct(percentage);
     };
 
     const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX);
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
+      if (e.touches[0]) handleMove(e.touches[0].clientX);
+    };
+    const handleTouchStart = (e: TouchEvent) => {
       if (e.touches[0]) handleMove(e.touches[0].clientX);
     };
 
@@ -490,24 +449,25 @@ export default function CatchThatGame2_4() {
       }
     };
 
-    const gameArea = gameAreaRef.current;
-    gameArea.addEventListener('mousemove', handleMouseMove);
-    gameArea.addEventListener('touchmove', handleTouchMove, { passive: false });
-    gameArea.addEventListener('wheel', handleWheel, { passive: false });
-    gameArea.addEventListener('mousedown', handleMouseDown);
-    gameArea.addEventListener('mouseup', handleMouseUp);
+    const playArea = playAreaRef.current;
+    playArea.addEventListener('mousemove', handleMouseMove);
+    playArea.addEventListener('touchstart', handleTouchStart, { passive: true });
+    playArea.addEventListener('touchmove', handleTouchMove, { passive: false });
+    playArea.addEventListener('wheel', handleWheel, { passive: false });
+    playArea.addEventListener('mousedown', handleMouseDown);
+    playArea.addEventListener('mouseup', handleMouseUp);
     // Also listen on window for mouseup in case mouse is released outside game area
     window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      gameArea.removeEventListener('mousemove', handleMouseMove);
-      gameArea.removeEventListener('touchmove', handleTouchMove);
-      gameArea.removeEventListener('wheel', handleWheel);
-      gameArea.removeEventListener('mousedown', handleMouseDown);
-      gameArea.removeEventListener('mouseup', handleMouseUp);
+      playArea.removeEventListener('mousemove', handleMouseMove);
+      playArea.removeEventListener('touchmove', handleTouchMove);
+      playArea.removeEventListener('wheel', handleWheel);
+      playArea.removeEventListener('mousedown', handleMouseDown);
+      playArea.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [gameStarted, gameOver, gameWon]);
+  }, [gameStarted, gameOver, gameWon, setBasketPct]);
 
   // Spawn words periodically
   useEffect(() => {
@@ -612,9 +572,10 @@ export default function CatchThatGame2_4() {
           const newY = word.y + (word.speed * deltaMultiplier * speedMultiplier); // Apply speed boost
           
           if (newY >= 80) {
-            const basketCatchWidth = isFullscreen ? 8 : 12; // Smaller catch width in fullscreen
-            const basketLeft = basketPosition - basketCatchWidth;
-            const basketRight = basketPosition + basketCatchWidth;
+            const bx = basketPositionRef.current;
+            const basketCatchWidth = isFullscreen ? 10 : 16;
+            const basketLeft = bx - basketCatchWidth;
+            const basketRight = bx + basketCatchWidth;
             
             if (!word.caught && word.x >= basketLeft && word.x <= basketRight) {
               catchWord(word);
@@ -649,9 +610,10 @@ export default function CatchThatGame2_4() {
           const newY = prize.y + (prize.speed * deltaMultiplier * speedMultiplier); // Apply speed boost
           
           if (newY >= 80) {
-            const basketCatchWidth = isFullscreen ? 8 : 12; // Smaller catch width in fullscreen
-            const basketLeft = basketPosition - basketCatchWidth;
-            const basketRight = basketPosition + basketCatchWidth;
+            const bx = basketPositionRef.current;
+            const basketCatchWidth = isFullscreen ? 10 : 16;
+            const basketLeft = bx - basketCatchWidth;
+            const basketRight = bx + basketCatchWidth;
             
             if (prize.x >= basketLeft && prize.x <= basketRight) {
               catchPrize(prize);
@@ -683,7 +645,7 @@ export default function CatchThatGame2_4() {
         animationRef.current = null;
       }
     };
-  }, [gameStarted, gameOver, gameWon, basketPosition, catchWord, catchPrize, currentWord, isFullscreen, speedMultiplier]);
+  }, [gameStarted, gameOver, gameWon, catchWord, catchPrize, currentWord, isFullscreen, speedMultiplier]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -692,6 +654,18 @@ export default function CatchThatGame2_4() {
     document.addEventListener('fullscreenchange', handleFullscreenChange);
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
+
+  const challengeFriends = () => {
+    const text = `Catch That — I'm at ${score} points. Think you can beat me? 🎯`;
+    if (navigator.share) {
+      navigator.share({ title: "Catch That — Challenge", text, url: window.location.href }).catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        navigator.clipboard.writeText(text + " " + window.location.href);
+      });
+    } else {
+      navigator.clipboard.writeText(text + " " + window.location.href);
+    }
+  };
 
   const shareGame = () => {
     const text = `I scored ${score} points in Catch That! Can you beat my score? 🎯`;
@@ -763,31 +737,14 @@ export default function CatchThatGame2_4() {
             )}
           </AnimatePresence>
 
-          {/* Picture Card Timer Display */}
-          <AnimatePresence>
-            {showPictureCard && (
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                className="absolute top-20 left-1/2 -translate-x-1/2 z-50"
-              >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-4 rounded-2xl font-bold text-xl sm:text-2xl shadow-2xl flex items-center gap-3">
-                  <span className="text-3xl">⏱️</span>
-                  <span>Next word in: {pictureCardTimer}s</span>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Main Game Area */}
+                    {/* Main Game Area */}
           <div className={'flex-1 flex flex-col lg:flex-row items-stretch gap-4 lg:gap-8 bg-gradient-to-b from-sky-50 to-green-100/30 rounded-xl p-3 sm:p-6 ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]')}>
             {/* Target Word Card */}
             <motion.div 
               key={currentWord.word}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className={'bg-white rounded-3xl shadow-xl p-3 sm:p-4 ' + (isFullscreen ? 'p-6 ' : '') + 'border-4 border-blue-300 flex-shrink-0 self-center w-full lg:w-auto ' + (showPictureCard ? 'ring-4 ring-blue-400 ring-opacity-75' : '')}
+              className={'bg-white rounded-3xl shadow-xl p-3 sm:p-4 ' + (isFullscreen ? 'p-6 ' : '') + 'border-4 border-blue-300 flex-shrink-0 self-center w-full lg:w-auto '}
             >
               <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-64 h-64 ' : '') + 'rounded-2xl bg-blue-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
                 <img 
@@ -796,13 +753,6 @@ export default function CatchThatGame2_4() {
                   className={'w-28 h-28 sm:w-40 sm:h-40 ' + (isFullscreen ? 'w-56 h-56 ' : '') + 'object-contain'}
                 />
               </div>
-              {showPictureCard && (
-                <div className="text-center mb-2">
-                  <p className="text-sm sm:text-base font-bold text-blue-600 animate-pulse">
-                    Catch the correct word!
-                  </p>
-                </div>
-              )}
               <div className="flex items-center justify-center gap-2">
                 {showTurkish ? (
                   <p className={(isFullscreen ? 'text-xl' : 'text-base') + ' font-semibold text-slate-700'}>{currentWord.turkish}</p>
@@ -813,7 +763,6 @@ export default function CatchThatGame2_4() {
                     onClick={revealTurkish}
                     className="h-8 px-3 text-orange-500 border-orange-300 hover:bg-orange-50"
                     title="Show Turkish meaning (-5 points)"
-                    disabled={showPictureCard}
                   >
                     <span className="text-xs mr-1">?</span> Hint
                   </Button>
@@ -824,15 +773,16 @@ export default function CatchThatGame2_4() {
                   onClick={() => speakWord(currentWord.word, true)}
                   className="h-8 px-3"
                   title="Hear pronunciation (-5 points)"
-                  disabled={showPictureCard}
                 >
                   <Volume2 className="h-4 w-4" />
                 </Button>
               </div>
             </motion.div>
 
-            {/* Game Play Area */}
-            <div className={'flex-1 relative overflow-hidden ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]') + ' rounded-xl bg-gradient-to-b from-sky-200 to-blue-100 border-4 border-blue-200'}>
+            {/* Game Play Area — basket coords use this region only */}
+            <div
+              ref={playAreaRef}
+              className={'flex-1 relative overflow-hidden touch-none ' + (isFullscreen ? 'min-h-[600px]' : 'min-h-[500px]') + ' rounded-xl bg-gradient-to-b from-sky-200 to-blue-100 border-4 border-blue-200'}>
               {!gameStarted && !gameOver && !gameWon && (
                 <div className="absolute inset-0 flex items-center justify-center z-20">
                   <Button
@@ -847,13 +797,15 @@ export default function CatchThatGame2_4() {
 
               {/* Instructions */}
               {gameStarted && !gameOver && !gameWon && (
-                <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10 bg-white/90 px-4 py-2 rounded-lg text-xs text-center shadow-md">
-                  Use your mouse or ← → keys to move the catcher, ↓ key to speed up the words
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 z-10 bg-white/90 px-4 py-2 rounded-lg text-xs text-center shadow-md max-w-[95%]">
+                  Move inside this play area (mouse wheel / keys work here) to slide the catcher
                 </div>
               )}
 
               {/* Falling Words */}
-              {gameStarted && fallingWords.map((word) => {
+              {gameStarted && (
+                <AnimatePresence initial={false}>
+                  {fallingWords.map((word) => {
                 const style = wordStyles[word.styleIndex];
                 const sizeClasses = isFullscreen ? 'px-8 py-6 text-2xl' : 'px-4 py-3 text-lg';
                 const fullClassName = 'absolute falling-word ' + style.bg + ' ' + style.text + ' ' + style.border + ' border-2 rounded-lg ' + sizeClasses + ' font-bold shadow-lg cursor-pointer hover:scale-110 transition-transform';
@@ -862,6 +814,7 @@ export default function CatchThatGame2_4() {
                 return (
                   <motion.div
                     key={word.id}
+                    layout={false}
                     className={fullClassName}
                     style={{
                       left: leftPercent,
@@ -872,15 +825,19 @@ export default function CatchThatGame2_4() {
                     data-testid={'falling-word-' + word.word}
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0 }}
+                    exit={{ opacity: 0, scale: 0.2, filter: "blur(10px)", rotate: -8, transition: { duration: 0.28 } }}
                   >
                     {getDisplayWord(word.word)}
                   </motion.div>
                 );
               })}
+                </AnimatePresence>
+              )}
 
               {/* Falling Prizes */}
-              {gameStarted && fallingPrizes.map((prize) => {
+              {gameStarted && (
+                <AnimatePresence initial={false}>
+                  {fallingPrizes.map((prize) => {
                 const prizeConfig = {
                   'extra-heart': { 
                     symbol: '❤️', 
@@ -919,6 +876,7 @@ export default function CatchThatGame2_4() {
                 return (
                   <motion.div
                     key={prize.id}
+                    layout={false}
                     className={fullClassName}
                     style={{
                       left: leftPercent,
@@ -929,7 +887,7 @@ export default function CatchThatGame2_4() {
                     data-testid={'falling-prize-' + prize.type}
                     initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0, rotate: 180 }}
+                    exit={{ opacity: 0, scale: 0.15, filter: "blur(8px)", rotate: 220, transition: { duration: 0.26 } }}
                     transition={{ duration: 0.3 }}
                   >
                     <span className="text-2xl sm:text-3xl">{config.symbol}</span>
@@ -937,12 +895,14 @@ export default function CatchThatGame2_4() {
                   </motion.div>
                 );
               })}
+                </AnimatePresence>
+              )}
 
               {/* Catcher - Simple Horizontal Rectangle */}
               {gameStarted && (
                 <div
                   ref={basketRef}
-                  className={'absolute ' + (isFullscreen ? 'bottom-8' : 'bottom-4') + ' z-10 transition-all duration-100 ease-linear'}
+                  className={'absolute ' + (isFullscreen ? 'bottom-8' : 'bottom-4') + ' z-10 pointer-events-none'}
                   style={{ left: basketPosition + '%', transform: 'translateX(-50%)' }}
                 >
                   {/* Simple horizontal rectangle - blue theme - thinner for better playability */}
@@ -959,7 +919,7 @@ export default function CatchThatGame2_4() {
                 <Button onClick={shareGame} variant="outline" className="footer-button">
                   <Share2 className="h-4 w-4" /> Share
                 </Button>
-                <Button onClick={() => {}} variant="outline" className="footer-button">
+                <Button onClick={challengeFriends} variant="outline" className="footer-button">
                   <Zap className="h-4 w-4" /> Challenge
                 </Button>
               </div>
@@ -1006,19 +966,18 @@ export default function CatchThatGame2_4() {
                     <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
                     <span className="text-2xl font-bold text-blue-700">{score} points</span>
                   </div>
-                  <div className="text-sm space-y-1 border-t border-gray-200 pt-3">
+                  <div className="text-sm space-y-2 border-t border-gray-200 pt-3 text-left">
+                    <p className="text-gray-600">
+                      Total score counts streak bonuses on consecutive correct catches, plus falling bonuses or penalties you collected during play.
+                    </p>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">✓ Correct catches:</span>
-                      <span className="font-semibold text-green-600">{wordsCompleted} × {correctPoints} = +{wordsCompleted * correctPoints}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">🎯 No hint bonus:</span>
-                      <span className="font-semibold text-blue-600">{wordsCompleted - hintsUsed} × {noHintBonus} = +{Math.max(0, (wordsCompleted - hintsUsed)) * noHintBonus}</span>
+                      <span className="text-gray-600">Words cleared</span>
+                      <span className="font-semibold text-green-600">{(gameWon ? totalWords : wordsCompleted)} / {totalWords}</span>
                     </div>
                     {hintsUsed > 0 && (
                       <div className="flex justify-between">
-                        <span className="text-gray-600">💡 Hints used:</span>
-                        <span className="font-semibold text-orange-500">{hintsUsed} × {hintPenalty} = -{hintsUsed * hintPenalty}</span>
+                        <span className="text-gray-600">Hints used (during play)</span>
+                        <span className="font-semibold text-orange-500">{hintsUsed} × −{hintPenalty} pts</span>
                       </div>
                     )}
                   </div>

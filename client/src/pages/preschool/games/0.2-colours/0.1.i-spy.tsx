@@ -28,7 +28,7 @@ const colors = [
   { word: "purple", turkish: "mor" },
   { word: "pink", turkish: "pembe" },
   { word: "brown", turkish: "kahverengi" },
-  { word: "gray", turkish: "gri" },
+  { word: "grey", turkish: "gri" },
   { word: "white", turkish: "beyaz" },
   { word: "black", turkish: "siyah" },
 ];

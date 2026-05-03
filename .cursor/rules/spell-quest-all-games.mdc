@@ -1,0 +1,58 @@
+---
+description: Spell Quest (all games) — vocabulary keys, display, TTS, and multi-word answer-slot gaps via spellQuestSpeak
+globs:
+  - "client/src/**/*spell-quest*.tsx"
+  - "client/src/lib/spellQuestSpeak.ts"
+  - "client/src/styles/**/*spell-quest*.css"
+alwaysApply: true
+---
+
+# Spell Quest — project-wide standards
+
+These rules apply to **every** Spell Quest screen (`*.spell-quest.tsx`), **`spellQuestSpeak.ts`**, and **`*spell-quest*.css`**. Vocabulary that feeds Spell Quest should use the same **`word`** / **`file`** conventions so display, speech, and slot gaps stay consistent.
+
+## Data model
+
+- **`word`** (grid key): compressed for logic — no spaces, often uppercase (e.g. `THANKYOU`, `GOODMORNING`). Used for equality checks, scrambling, letter count, and indexing **`selectedLetters[letterIndex]`**.
+- **`file`** (image): drives learner-facing spelling label and speech. Multi-word items **must** use **spaces** in the basename before the extension (e.g. `"thank you.png"`, `"good morning.png"`).
+
+## Canonical library — `@/lib/spellQuestSpeak`
+
+Do **not** add per-game duplicates of display/TTS helpers for new work.
+
+| Helper | Use |
+|--------|-----|
+| **`getSpellQuestDisplayWord(gridWord, imageFile)`** | Prompt line above slots, success overlay — shows spaced uppercase phrase when basename has spaces (`good morning.png` → `GOOD MORNING`). If no `imageFile`, falls back to `gridWord`. |
+| **`speakSpellQuestAnswer(gridWord, imageFile)`** | Volume / correct-answer TTS — uses natural spaced wording via **`crosswordSpeak`** rules; never speak only the compressed grid token when the asset basename implies a phrase. |
+| **`buildSpellQuestAnswerSlots(gridWord, imageFile)`** | Builds ordered slots: **`{ kind: 'letter', letterIndex }`** and optional **`{ kind: 'gap' }`** between words for **visual** separation only (learners still tap letters in one sequence; no extra “space” tile). |
+
+## Answer slot row (multi-word visual gap)
+
+1. **Default implementation:** iterate **`buildSpellQuestAnswerSlots(currentWord.word, currentWord.file)`**, not **`currentWord.word.split("")`** alone.
+2. For each slot:
+   - **`kind === 'letter'`** — render the usual clickable slot; use **`slot.letterIndex`** (not the loop index) for **`selectedLetters[slot.letterIndex]`**, **`handleRemoveLetter(slot.letterIndex)`**, and **`key`** stability where appropriate.
+   - **`kind === 'gap'`** — render the visual spacer (e.g. **`answer-slot space-slot`** / **`space-indicator`**) so word boundaries align with the phrase (e.g. five boxes, gap, three boxes for “THANK YOU”).
+3. **When gaps appear:** image basename contains spaces **and** the letters-only tokens from each basename segment join to exactly match the letters-only **`gridWord`**, with the **same character count** as **`gridWord`**. Otherwise the helper returns letters only — **no gap** (single strip).
+4. **Non-letters** in filenames/grid can prevent alignment; prefer alphabetic basenames consistent with the grid token.
+
+## Wire-up checklist (every Spell Quest)
+
+- Prompt / heading English word: **`getSpellQuestDisplayWord(currentWord.word, currentWord.file)`** (or equivalent current-word reference).
+- Success overlay word: same helper — **not** raw **`currentWord.word`** when multi-word display matters.
+- Correct-answer audio: **`speakSpellQuestAnswer(currentWord.word, currentWord.file)`** — replace ad-hoc **`speakWord(currentWord.word)`** patterns.
+
+## Themed layouts — Grade 2 themes 2.2–2.6
+
+These games may keep a local **`getAnswerSlots()`** driven by **`displayWord.split(' ')`** for layout historical reasons. They must still use **`getSpellQuestDisplayWord`** and **`speakSpellQuestAnswer`** with **`currentWord.word`** / **`currentWord.file`** wherever learners see or hear the answer.
+
+**New** Spell Quest pages should standardise on **`buildSpellQuestAnswerSlots`** when vocabulary follows the usual **`word` + `file`** shape.
+
+## Styles
+
+Gap styling lives under Spell Quest CSS (e.g. **`.answer-slot.space-slot`**, **`.space-indicator`**). Preschool wrappers (**`.spell-quest-colors-wrapper`**) and primary (**`.spell-quest-wrapper`**) should both receive compatible rules when adding new themes.
+
+## Anti-patterns
+
+- Rendering the answer row with **`currentWord.word.split("")`** only (loses word-boundary gaps when **`buildSpellQuestAnswerSlots`** would insert them).
+- Using **`selectedLetters[displayIndex]`** when **`displayIndex`** includes gap slots — always index by **`letterIndex`** from letter slots.
+- Local **`getDisplayWord`** / **`speakWord`** copies that diverge from crossword/TTS basename rules.

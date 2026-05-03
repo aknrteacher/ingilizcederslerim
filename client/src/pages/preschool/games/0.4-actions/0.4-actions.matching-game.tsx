@@ -25,23 +25,20 @@ const getRandomHatchling = () => {
 export default function ActionsMatchingGame() {
   const [, setLocation] = useLocation();
   const allVocabulary = [
-    { word: "run", file: "run.png", turkish: "koşmak" },
-    { word: "jump", file: "jump.png", turkish: "zıplamak" },
-    { word: "eat", file: "eat.png", turkish: "yemek" },
-    { word: "drink", file: "drink.png", turkish: "içmek" },
-    { word: "sleep", file: "sleep.png", turkish: "uyumak" },
-    { word: "play", file: "play.png", turkish: "oynamak" },
-    { word: "listen", file: "listen.png", turkish: "dinlemek" },
-    { word: "look", file: "look.png", turkish: "bakmak" },
-    { word: "sit down", file: "sit down.png", turkish: "oturmak" },
-    { word: "stand up", file: "stand up.png", turkish: "ayağa kalkmak" },
-    { word: "come here", file: "come here.png", turkish: "buraya gel" },
-    { word: "be quiet", file: "be quiet.png", turkish: "sessiz ol" },
-    { word: "open", file: "open.png", turkish: "açmak" },
-    { word: "close", file: "close.png", turkish: "kapatmak" },
-    { word: "repeat", file: "repeat.png", turkish: "tekrarlamak" },
     { word: "go", file: "go.png", turkish: "gitmek" },
     { word: "stop", file: "stop.png", turkish: "durmak" },
+    { word: "drink", file: "drink.png", turkish: "içmek" },
+    { word: "eat", file: "eat.png", turkish: "yemek" },
+    { word: "listen", file: "listen.png", turkish: "dinlemek" },
+    { word: "look", file: "look.png", turkish: "bakmak" },
+    { word: "play", file: "play.png", turkish: "oynamak" },
+    { word: "sit", file: "sit.png", turkish: "oturmak" },
+    { word: "sleep", file: "sleep.png", turkish: "uyumak" },
+    { word: "read", file: "read.png", turkish: "okumak" },
+    { word: "draw", file: "draw.png", turkish: "çizmek" },
+    { word: "sing", file: "sing.png", turkish: "şarkı söylemek" },
+    { word: "open", file: "open.png", turkish: "açmak" },
+    { word: "close", file: "close.png", turkish: "kapatmak" },
   ];
 
   const selectRandomCards = (count: number) => {

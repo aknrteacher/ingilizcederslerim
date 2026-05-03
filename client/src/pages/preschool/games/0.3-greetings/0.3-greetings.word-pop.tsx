@@ -5,6 +5,7 @@ import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimi
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import { getWordPopDisplayWord, speakWordPopAnswer } from "@/lib/wordPopSpeak";
 import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.word-pop.css";
 import "@/styles/preschool-game-header.css";
@@ -44,17 +45,9 @@ const greetingBalloonMap: Record<string, { color: string, textColor: string }> =
 
 const balloonShapes = ["round", "oval", "heart", "star"];
 
-// Function to format words with spaces
-const formatWordWithSpaces = (word: string): string => {
-  const wordMap: Record<string, string> = {
-    "GOODMORNING": "GOOD MORNING",
-    "GOODAFTERNOON": "GOOD AFTERNOON",
-    "GOODNIGHT": "GOOD NIGHT",
-    "THANKYOU": "THANK YOU",
-    "HOWAREYOU": "HOW ARE YOU",
-    "IAMFINE": "I AM FINE",
-  };
-  return wordMap[word] || word;
+const wordPopBalloonLabel = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return getWordPopDisplayWord(wordKey, v?.file, v?.turkish);
 };
 
 interface Balloon {
@@ -74,7 +67,7 @@ function GreetingBalloonShape({ word, shape }: { word: string, shape: string }) 
   const shineEffect = <div className="absolute top-3 left-3 w-6 h-6 bg-white/50 rounded-full blur-sm" />;
   
   // Calculate minimum size based on word length (reduced for normal screens)
-  const formattedWord = formatWordWithSpaces(word);
+  const formattedWord = wordPopBalloonLabel(word);
   const displayLength = formattedWord.length;
   const minWidth = Math.max(96, displayLength * 10 + 30);
   const minHeight = Math.max(96, minWidth * 0.95);
@@ -147,18 +140,13 @@ export default function GreetingsWordPopGame() {
   const correctPoints = 10;
   const noHintBonus = 5;
 
-  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+  const speakWord = useCallback((gridWord: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
       setHintsUsed(prev => prev + 1);
     }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.7;
-      window.speechSynthesis.speak(utterance);
-    }
+    const entry = vocabulary.find((x) => x.word === gridWord);
+    speakWordPopAnswer(gridWord, entry?.file, entry?.turkish, { rate: 0.7 });
   }, [gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {
@@ -515,7 +503,7 @@ export default function GreetingsWordPopGame() {
                       <GreetingBalloonShape word={balloon.word} shape={balloon.shape} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {formatWordWithSpaces(balloon.word)}
+                        {wordPopBalloonLabel(balloon.word)}
                       </div>
                     </div>
                   </button>

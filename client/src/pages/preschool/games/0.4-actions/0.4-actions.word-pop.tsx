@@ -5,62 +5,51 @@ import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimi
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import { getWordPopDisplayWord, speakWordPopAnswer } from "@/lib/wordPopSpeak";
 import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.word-pop.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
 
 const vocabulary = [
-  { word: "RUN", turkish: "Koşmak", file: "run.png" },
-  { word: "JUMP", turkish: "Zıplamak", file: "jump.png" },
-  { word: "EAT", turkish: "Yemek", file: "eat.png" },
-  { word: "DRINK", turkish: "İçmek", file: "drink.png" },
-  { word: "SLEEP", turkish: "Uyumak", file: "sleep.png" },
-  { word: "PLAY", turkish: "Oynamak", file: "play.png" },
-  { word: "LISTEN", turkish: "Dinlemek", file: "listen.png" },
-  { word: "LOOK", turkish: "Bakmak", file: "look.png" },
-  { word: "SITDOWN", turkish: "Oturmak", file: "sit down.png" },
-  { word: "STANDUP", turkish: "Ayağa kalkmak", file: "stand up.png" },
-  { word: "COMEHERE", turkish: "Buraya gel", file: "come here.png" },
-  { word: "BEQUIET", turkish: "Sessiz ol", file: "be quiet.png" },
-  { word: "OPEN", turkish: "Açmak", file: "open.png" },
-  { word: "CLOSE", turkish: "Kapatmak", file: "close.png" },
-  { word: "REPEAT", turkish: "Tekrarlamak", file: "repeat.png" },
   { word: "GO", turkish: "Gitmek", file: "go.png" },
   { word: "STOP", turkish: "Durmak", file: "stop.png" },
+  { word: "DRINK", turkish: "İçmek", file: "drink.png" },
+  { word: "EAT", turkish: "Yemek", file: "eat.png" },
+  { word: "LISTEN", turkish: "Dinlemek", file: "listen.png" },
+  { word: "LOOK", turkish: "Bakmak", file: "look.png" },
+  { word: "PLAY", turkish: "Oynamak", file: "play.png" },
+  { word: "SIT", turkish: "Oturmak", file: "sit.png" },
+  { word: "SLEEP", turkish: "Uyumak", file: "sleep.png" },
+  { word: "READ", turkish: "Okumak", file: "read.png" },
+  { word: "DRAW", turkish: "Çizmek", file: "draw.png" },
+  { word: "SING", turkish: "Şarkı söylemek", file: "sing.png" },
+  { word: "OPEN", turkish: "Açmak", file: "open.png" },
+  { word: "CLOSE", turkish: "Kapatmak", file: "close.png" },
 ];
 
 const actionBalloonMap: Record<string, { color: string, textColor: string }> = {
-  "RUN": { color: "from-red-400 to-red-600", textColor: "text-white" },
-  "JUMP": { color: "from-green-400 to-green-600", textColor: "text-white" },
-  "EAT": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
-  "DRINK": { color: "from-blue-400 to-blue-600", textColor: "text-white" },
-  "SLEEP": { color: "from-indigo-400 to-indigo-600", textColor: "text-white" },
-  "PLAY": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
-  "LISTEN": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
-  "LOOK": { color: "from-cyan-400 to-cyan-600", textColor: "text-white" },
-  "SITDOWN": { color: "from-pink-400 to-pink-500", textColor: "text-white" },
-  "STANDUP": { color: "from-emerald-400 to-emerald-600", textColor: "text-white" },
-  "COMEHERE": { color: "from-rose-400 to-rose-600", textColor: "text-white" },
-  "BEQUIET": { color: "from-gray-400 to-gray-600", textColor: "text-white" },
-  "OPEN": { color: "from-lime-400 to-lime-600", textColor: "text-gray-800" },
-  "CLOSE": { color: "from-violet-400 to-violet-600", textColor: "text-white" },
-  "REPEAT": { color: "from-amber-400 to-amber-600", textColor: "text-white" },
   "GO": { color: "from-teal-400 to-teal-600", textColor: "text-white" },
   "STOP": { color: "from-red-500 to-red-700", textColor: "text-white" },
+  "DRINK": { color: "from-blue-400 to-blue-600", textColor: "text-white" },
+  "EAT": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
+  "LISTEN": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
+  "LOOK": { color: "from-cyan-400 to-cyan-600", textColor: "text-white" },
+  "PLAY": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
+  "SIT": { color: "from-pink-400 to-pink-500", textColor: "text-white" },
+  "SLEEP": { color: "from-indigo-400 to-indigo-600", textColor: "text-white" },
+  "READ": { color: "from-emerald-400 to-emerald-600", textColor: "text-white" },
+  "DRAW": { color: "from-amber-400 to-amber-600", textColor: "text-white" },
+  "SING": { color: "from-rose-400 to-rose-600", textColor: "text-white" },
+  "OPEN": { color: "from-lime-400 to-lime-600", textColor: "text-gray-800" },
+  "CLOSE": { color: "from-violet-400 to-violet-600", textColor: "text-white" },
 };
 
 const balloonShapes = ["round", "oval", "heart", "star"];
 
-// Function to format words with spaces
-const formatWordWithSpaces = (word: string): string => {
-  const wordMap: Record<string, string> = {
-    "SITDOWN": "SIT DOWN",
-    "STANDUP": "STAND UP",
-    "COMEHERE": "COME HERE",
-    "BEQUIET": "BE QUIET",
-  };
-  return wordMap[word] || word;
+const wordPopBalloonLabel = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return getWordPopDisplayWord(wordKey, v?.file, v?.turkish);
 };
 
 interface Balloon {
@@ -80,7 +69,7 @@ function ActionBalloonShape({ word, shape }: { word: string, shape: string }) {
   const shineEffect = <div className="absolute top-3 left-3 w-6 h-6 bg-white/50 rounded-full blur-sm" />;
   
   // Calculate minimum size based on word length (reduced for normal screens)
-  const formattedWord = formatWordWithSpaces(word);
+  const formattedWord = wordPopBalloonLabel(word);
   const displayLength = formattedWord.length;
   const minWidth = Math.max(96, displayLength * 10 + 30);
   const minHeight = Math.max(96, minWidth * 0.95);
@@ -153,18 +142,13 @@ export default function ActionsWordPopGame() {
   const correctPoints = 10;
   const noHintBonus = 5;
 
-  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+  const speakWord = useCallback((gridWord: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
       setHintsUsed(prev => prev + 1);
     }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.7;
-      window.speechSynthesis.speak(utterance);
-    }
+    const entry = vocabulary.find((x) => x.word === gridWord);
+    speakWordPopAnswer(gridWord, entry?.file, entry?.turkish, { rate: 0.7 });
   }, [gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {
@@ -475,23 +459,20 @@ export default function ActionsWordPopGame() {
 
               {gameStarted && balloons.map((balloon, index) => {
                 const balloonColorMap: Record<string, string> = {
-                  "RUN": "#dc2626",
-                  "JUMP": "#16a34a",
-                  "EAT": "#ea580c",
-                  "DRINK": "#2563eb",
-                  "SLEEP": "#4f46e5",
-                  "PLAY": "#eab308",
-                  "LISTEN": "#9333ea",
-                  "LOOK": "#06b6d4",
-                  "SITDOWN": "#ec4899",
-                  "STANDUP": "#10b981",
-                  "COMEHERE": "#f43f5e",
-                  "BEQUIET": "#6b7280",
-                  "OPEN": "#84cc16",
-                  "CLOSE": "#8b5cf6",
-                  "REPEAT": "#f59e0b",
                   "GO": "#14b8a6",
                   "STOP": "#dc2626",
+                  "DRINK": "#2563eb",
+                  "EAT": "#ea580c",
+                  "LISTEN": "#9333ea",
+                  "LOOK": "#06b6d4",
+                  "PLAY": "#eab308",
+                  "SIT": "#ec4899",
+                  "SLEEP": "#4f46e5",
+                  "READ": "#10b981",
+                  "DRAW": "#f59e0b",
+                  "SING": "#f43f5e",
+                  "OPEN": "#84cc16",
+                  "CLOSE": "#8b5cf6",
                 };
                 const balloonColor = balloonColorMap[balloon.word] || "#4b5563";
                 const bannerStyle = {
@@ -525,7 +506,7 @@ export default function ActionsWordPopGame() {
                       <ActionBalloonShape word={balloon.word} shape={balloon.shape} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {formatWordWithSpaces(balloon.word)}
+                        {wordPopBalloonLabel(balloon.word)}
                       </div>
                     </div>
                   </button>

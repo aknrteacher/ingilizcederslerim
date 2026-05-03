@@ -33,7 +33,7 @@ export default function ColorsMatchingGame() {
     { word: "purple", file: "purple.png", turkish: "mor" },
     { word: "pink", file: "pink.png", turkish: "pembe" },
     { word: "brown", file: "brown.png", turkish: "kahverengi" },
-    { word: "gray", file: "gray.png", turkish: "gri" },
+    { word: "grey", file: "grey.png", turkish: "gri" },
     { word: "white", file: "white.png", turkish: "beyaz" },
     { word: "black", file: "black.png", turkish: "siyah" },
   ];

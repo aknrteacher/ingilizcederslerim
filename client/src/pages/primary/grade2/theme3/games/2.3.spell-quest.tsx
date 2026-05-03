@@ -9,6 +9,7 @@ import confetti from "canvas-confetti";
 import "@/styles/2.1.spell-quest.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
+import { getSpellQuestDisplayWord, speakSpellQuestAnswer } from "@/lib/spellQuestSpeak";
 
 interface VocabWord {
   word: string; // For spelling (no spaces, uppercase)
@@ -50,11 +51,6 @@ const vocabulary: VocabWord[] = [
   { word: "WELLDONE", displayWord: "well done", turkish: "aferin", file: "well done.png" },
 ];
 
-// Display multi-word vocabulary with spaces (from file name)
-const getDisplayWord = (wordKey: string) => {
-  const v = vocabulary.find((x) => x.word === wordKey);
-  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
-};
 
 const letterColors = [
   "bg-gradient-to-br from-pink-400 to-pink-600",
@@ -143,14 +139,6 @@ export default function SpellQuestGame2_3() {
     setShowHint(false);
   };
 
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.8;
-    utterance.pitch = 1.1;
-    window.speechSynthesis?.speak(utterance);
-  };
-
   const handleLetterClick = (letter: { letter: string; id: number; color: string }) => {
     if (isCorrect) return;
     
@@ -184,7 +172,7 @@ export default function SpellQuestGame2_3() {
         successAudio.play().catch(() => {});
         
         // Speak the display word (original format)
-        speakWord(currentWord.displayWord);
+        speakSpellQuestAnswer(currentWord.word, currentWord.file);
         
         // Celebration
         confetti({
@@ -344,7 +332,7 @@ export default function SpellQuestGame2_3() {
                     variant="outline"
                     size="icon"
                     className="sound-btn"
-                    onClick={() => speakWord(currentWord.displayWord)}
+                    onClick={() => speakSpellQuestAnswer(currentWord.word, currentWord.file)}
                   >
                     <Volume2 className="h-4 w-4" />
                   </Button>
@@ -364,6 +352,8 @@ export default function SpellQuestGame2_3() {
               {/* Spelling Area */}
               <div className="spelling-area">
                 {/* Answer slots */}
+                <div className="english-spell-prompt text-center font-bold text-lg sm:text-xl tracking-wide text-slate-800 mb-3 px-2">{getSpellQuestDisplayWord(currentWord.word, currentWord.file)}</div>
+
                 <div className="answer-slots">
                   {getAnswerSlots().map((slot, displayIndex) => {
                     if (slot.type === 'space') {
@@ -445,7 +435,7 @@ export default function SpellQuestGame2_3() {
                     >
                       <div className="success-stars">⭐ ⭐ ⭐</div>
                       <h2 className="success-title">Perfect!</h2>
-                      <p className="success-word">{getDisplayWord(currentWord.word)}</p>
+                      <p className="success-word">{getSpellQuestDisplayWord(currentWord.word, currentWord.file)}</p>
                       <Button
                         className="next-btn"
                         onClick={nextWord}

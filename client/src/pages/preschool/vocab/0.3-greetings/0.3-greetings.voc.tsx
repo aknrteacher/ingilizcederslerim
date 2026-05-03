@@ -15,6 +15,13 @@ interface VocabularyCard {
   turkish: string;
 }
 
+/** Card `word` is shown as-is; `imageFile` is the PNG basename (may differ, e.g. no ? in filenames). */
+type GreetingsCardSource = {
+  word: string;
+  imageFile: string;
+  turkish: string;
+};
+
 export default function GreetingsVocabulary() {
   const { currentTheme } = useTheme();
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -43,21 +50,21 @@ export default function GreetingsVocabulary() {
     setShowIntroCard(true);
   };
 
-  // Greetings vocabulary data
-  const imageFiles = [
-    { word: "hello", file: "hello.png", turkish: "merhaba" },
-    { word: "hi", file: "hi.png", turkish: "selam" },
-    { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
-    { word: "good morning", file: "good morning.png", turkish: "günaydın" },
-    { word: "good afternoon", file: "good afternoon.png", turkish: "iyi öğleden sonra" },
-    { word: "good night", file: "good night.png", turkish: "iyi geceler" },
-    { word: "thank you", file: "thank you.png", turkish: "teşekkür ederim" },
-    { word: "how are you?", file: "how are you.png", turkish: "nasılsın?" },
-    { word: "I am fine", file: "I am fine.png", turkish: "iyiyim" },
-    { word: "please", file: "please.png", turkish: "lütfen" },
-    { word: "sorry", file: "sorry.png", turkish: "özür dilerim" },
-    { word: "yes", file: "yes.png", turkish: "evet" },
-    { word: "no", file: "no.png", turkish: "hayır" },
+  // Greetings vocabulary data (image paths use imageFile, not word — e.g. "how are you?" → how are you.png)
+  const imageFiles: GreetingsCardSource[] = [
+    { word: "hello", imageFile: "hello.png", turkish: "merhaba" },
+    { word: "hi", imageFile: "hi.png", turkish: "selam" },
+    { word: "goodbye", imageFile: "goodbye.png", turkish: "hoşça kalın" },
+    { word: "good morning", imageFile: "good morning.png", turkish: "günaydın" },
+    { word: "good afternoon", imageFile: "good afternoon.png", turkish: "iyi öğleden sonra" },
+    { word: "good night", imageFile: "good night.png", turkish: "iyi geceler" },
+    { word: "thank you", imageFile: "thank you.png", turkish: "teşekkür ederim" },
+    { word: "how are you?", imageFile: "how are you.png", turkish: "nasılsın?" },
+    { word: "I am fine", imageFile: "I am fine.png", turkish: "iyiyim" },
+    { word: "please", imageFile: "please.png", turkish: "lütfen" },
+    { word: "sorry", imageFile: "sorry.png", turkish: "özür dilerim" },
+    { word: "yes", imageFile: "yes.png", turkish: "evet" },
+    { word: "no", imageFile: "no.png", turkish: "hayır" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];
@@ -116,7 +123,7 @@ export default function GreetingsVocabulary() {
   useEffect(() => {
     const vocabData = imageFiles.map((item) => ({
       word: item.word,
-      imageUrl: `/images/preschool/vocab/0.3-greetings/${item.file}`,
+      imageUrl: `/images/preschool/vocab/0.3-greetings/${item.imageFile}`,
       turkish: item.turkish,
     }));
     console.log("Vocabulary loaded:", vocabData);

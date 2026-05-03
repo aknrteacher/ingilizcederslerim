@@ -9,6 +9,7 @@ import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.crossword.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
+import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 0.1 (Colours)
 const vocabulary = [
@@ -20,7 +21,7 @@ const vocabulary = [
   { word: "PURPLE", clue: "Mor", file: "purple.png" },
   { word: "PINK", clue: "Pembe", file: "pink.png" },
   { word: "BROWN", clue: "Kahverengi", file: "brown.png" },
-  { word: "GRAY", clue: "Gri", file: "gray.png" },
+  { word: "GREY", clue: "Gri", file: "grey.png" },
   { word: "WHITE", clue: "Beyaz", file: "white.png" },
   { word: "BLACK", clue: "Siyah", file: "black.png" },
 ];
@@ -73,14 +74,6 @@ export default function ColorsCrosswordGame() {
       const vocab = vocabulary.find(v => v.word === pw.word);
       return vocab?.file ? `/images/preschool/vocab/0.2-colours/${vocab.file}` : null;
   }).filter(Boolean) as string[];
-
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.9;
-    window.speechSynthesis?.speak(utterance);
-  };
-
 
   const shareGame = () => {
     const text = `I just solved the Colours Word Cross! Can you beat it? 🎨`;
@@ -306,9 +299,9 @@ export default function ColorsCrosswordGame() {
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play failed", e));
 
-        // Speak the word
-        const wordText = vocabulary.find(v => v.word === newlySolved[0])?.word;
-        if (wordText) speakWord(wordText);
+        // Speak the word (use natural phrase from image filename when multi-word)
+        const solvedEntry = vocabulary.find(v => v.word === newlySolved[0]);
+        if (solvedEntry) speakCrosswordAnswer(solvedEntry.word, solvedEntry.file);
     }
     
     let correctCount = 0;

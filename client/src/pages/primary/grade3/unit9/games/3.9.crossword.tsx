@@ -9,6 +9,7 @@ import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import "@/styles/3.1.crossword.css"; // Reusing styles
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
+import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 3.9 (Unit 9: Weather)
 const vocabulary = [
@@ -92,14 +93,6 @@ export default function CrosswordGame() {
       const vocab = vocabulary.find(v => v.word === pw.word);
       return vocab?.file ? `/images/primary/3.9/${vocab.file}` : null;
   }).filter(Boolean) as string[];
-
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.9;
-    window.speechSynthesis?.speak(utterance);
-  };
-
 
   const shareGame = () => {
     const text = `I just solved the Unit 9 Word Cross! Can you beat it? 🧩`;
@@ -325,9 +318,9 @@ export default function CrosswordGame() {
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play failed", e));
 
-        // Speak the word
-        const wordText = vocabulary.find(v => v.word === newlySolved[0])?.word;
-        if (wordText) speakWord(wordText);
+        // Speak the word (use natural phrase from image filename when multi-word)
+        const solvedEntry = vocabulary.find(v => v.word === newlySolved[0]);
+        if (solvedEntry) speakCrosswordAnswer(solvedEntry.word, solvedEntry.file);
     }
     
     let correctCount = 0;

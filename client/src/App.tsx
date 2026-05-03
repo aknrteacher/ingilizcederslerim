@@ -371,6 +371,7 @@ import ClassroomMonitoring from "@/pages/classroom-monitoring";
 import InClass from "@/pages/inclass";
 import ClassMonitor from "@/pages/class-monitor";
 import AdminFlashcardImagesPage from "@/pages/admin/flashcard-images";
+import AdminFlashcardImages2Page from "@/pages/admin/flashcard-images2";
 
 function Router() {
   return (
@@ -750,6 +751,13 @@ function Router() {
         {() => (
           <AdminGate>
             <AdminFlashcardImagesPage />
+          </AdminGate>
+        )}
+      </Route>
+      <Route path="/admin/flashcard-images2">
+        {() => (
+          <AdminGate>
+            <AdminFlashcardImages2Page />
           </AdminGate>
         )}
       </Route>

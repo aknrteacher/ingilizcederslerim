@@ -9,26 +9,24 @@ import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.crossword.css";
 import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
+import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 0.4 (Actions) - convert multi-word to single word for crossword
 const vocabulary = [
-  { word: "RUN", clue: "Koşmak", file: "run.png" },
-  { word: "JUMP", clue: "Zıplamak", file: "jump.png" },
-  { word: "EAT", clue: "Yemek", file: "eat.png" },
-  { word: "DRINK", clue: "İçmek", file: "drink.png" },
-  { word: "SLEEP", clue: "Uyumak", file: "sleep.png" },
-  { word: "PLAY", clue: "Oynamak", file: "play.png" },
-  { word: "LISTEN", clue: "Dinlemek", file: "listen.png" },
-  { word: "LOOK", clue: "Bakmak", file: "look.png" },
-  { word: "SITDOWN", clue: "Oturmak", file: "sit down.png" },
-  { word: "STANDUP", clue: "Ayağa kalkmak", file: "stand up.png" },
-  { word: "COMEHERE", clue: "Buraya gel", file: "come here.png" },
-  { word: "BEQUIET", clue: "Sessiz ol", file: "be quiet.png" },
-  { word: "OPEN", clue: "Açmak", file: "open.png" },
-  { word: "CLOSE", clue: "Kapatmak", file: "close.png" },
-  { word: "REPEAT", clue: "Tekrarlamak", file: "repeat.png" },
   { word: "GO", clue: "Gitmek", file: "go.png" },
   { word: "STOP", clue: "Durmak", file: "stop.png" },
+  { word: "DRINK", clue: "İçmek", file: "drink.png" },
+  { word: "EAT", clue: "Yemek", file: "eat.png" },
+  { word: "LISTEN", clue: "Dinlemek", file: "listen.png" },
+  { word: "LOOK", clue: "Bakmak", file: "look.png" },
+  { word: "PLAY", clue: "Oynamak", file: "play.png" },
+  { word: "SIT", clue: "Oturmak", file: "sit.png" },
+  { word: "SLEEP", clue: "Uyumak", file: "sleep.png" },
+  { word: "READ", clue: "Okumak", file: "read.png" },
+  { word: "DRAW", clue: "Çizmek", file: "draw.png" },
+  { word: "SING", clue: "Şarkı söylemek", file: "sing.png" },
+  { word: "OPEN", clue: "Açmak", file: "open.png" },
+  { word: "CLOSE", clue: "Kapatmak", file: "close.png" },
 ];
 
 interface Cell {
@@ -79,14 +77,6 @@ export default function ActionsCrosswordGame() {
       const vocab = vocabulary.find(v => v.word === pw.word);
       return vocab?.file ? `/images/preschool/vocab/0.4-actions/${vocab.file}` : null;
   }).filter(Boolean) as string[];
-
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.9;
-    window.speechSynthesis?.speak(utterance);
-  };
-
 
   const shareGame = () => {
     const text = `I just solved the Actions Word Cross! Can you beat it? 🏃`;
@@ -312,9 +302,9 @@ export default function ActionsCrosswordGame() {
         audio.volume = 0.5;
         audio.play().catch(e => console.log("Audio play failed", e));
 
-        // Speak the word
-        const wordText = vocabulary.find(v => v.word === newlySolved[0])?.word;
-        if (wordText) speakWord(wordText);
+        // Speak the word (use natural phrase from image filename when multi-word)
+        const solvedEntry = vocabulary.find(v => v.word === newlySolved[0]);
+        if (solvedEntry) speakCrosswordAnswer(solvedEntry.word, solvedEntry.file);
     }
     
     let correctCount = 0;

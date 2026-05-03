@@ -1,0 +1,23 @@
+---
+description: Crossword grid tokens vs Web Speech — use shared helper so phrases sound natural
+globs: client/src/**/*crossword*.tsx, client/src/lib/crosswordSpeak.ts
+alwaysApply: false
+---
+
+# Crossword: grid word vs pronunciation
+
+## Grid rule (unchanged)
+
+- Vocab **`word`** is the crossword token: usually **uppercase**, **spaces removed** (e.g. `HOWAREYOU`, `GOODMORNING`).
+- Vocab **`file`** is the image basename on disk (often **includes spaces**, e.g. `good morning.png`, `how are you.png`).
+
+## Pronunciation rule
+
+- **Never** pass the grid token alone to `SpeechSynthesisUtterance` when a **`file`** exists — the engine misreads concatenated phrases.
+- Use **`speakCrosswordAnswer(gridWord, file)`** from `@/lib/crosswordSpeak` when a word is solved (or **`getCrosswordSpeakText`** if you only need the string).
+- Logic: if `file`’s basename **contains a space**, TTS uses that basename **without extension** as the spoken phrase (natural spelling). Otherwise it uses the basename **lowercased** (single-word answers).
+
+## Adding / editing crosswords
+
+- Keep phrase images named with **spaces** in the filename when the learner should hear separate words (`have got.png`, `medium height.png`).
+- If the spoken phrase cannot match the filename (rare), extend `@/lib/crosswordSpeak` or add an optional `speakAs` field **only** after agreeing on a convention — default remains filename-derived.

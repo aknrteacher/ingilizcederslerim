@@ -1,0 +1,56 @@
+---
+description: Word Pop (all games) — phrase display, Turkish-aligned ?!, natural TTS via wordPopSpeak
+globs:
+  - "client/src/**/*word-pop*.tsx"
+  - "client/src/lib/wordPopSpeak.ts"
+alwaysApply: true
+---
+
+# Word Pop — project-wide standards
+
+Applies to every **`*.word-pop.tsx`** page and **`client/src/lib/wordPopSpeak.ts`**.
+
+## Canonical library — `@/lib/wordPopSpeak`
+
+Do **not** pass **`balloon.word`** / **`currentWord.word`** (grid tokens like **`HI`**, **`NO`**, **`HOWAREYOU`**) directly to **`SpeechSynthesisUtterance`**. Raw grid keys garble phrases or trigger unwanted letter-by-letter reading for common words — route audio through **`speakWordPopAnswer`** so speak text is derived from the vocab **`file`** basename via **`getCrosswordSpeakText`** (typically lowercase for single-token files).
+
+### Words vs spelled acronyms (**HI** vs **USA**)
+
+There is a real conflict:
+
+- **Greetings / short lexical words** (**HI**, **NO**, etc.) should sound like whole words. Using basename-derived lowercase (**`hi.png`** → “hi”) matches that goal.
+- **Real acronyms** (**USA**, **UK**, **NASA** if spelled letter-by-letter in class) should **not** automatically become lowercase — the engine would say “usa” as a word instead of **U‑S‑A**.
+
+**Agent / contributor workflow**
+
+1. When adding or changing vocabulary where the grid token is **short**, **all caps**, or **could be either a word or an acronym**, **stop and ask the curriculum owner** which TTS behavior they want (spoken word vs spelled letters), unless the project has already adopted an explicit per-entry flag or naming convention for that item.
+2. Do **not** assume one global rule covers every future item; treating **USA** like **HI** without confirmation is wrong for typical classroom acronym pronunciation.
+
+Until a coded convention exists (e.g. optional **`ttsSpellLetters`** / **`speakAs`** on vocab rows implemented in **`wordPopSpeak`**), acronym pronunciation is **product/editorial**, not something to infer from token shape alone.
+
+| Helper | Use |
+|--------|-----|
+| **`getWordPopDisplayWord(gridWord, imageFile, turkish?)`** | Banner labels, balloons, any learner-visible English derived from the vocab row. Uses **`getSpellQuestDisplayWord`** (basename → spaced uppercase) plus optional closing punctuation (below). |
+| **`getWordPopSpeakText(gridWord, imageFile, turkish?)`** | Same phrase logic as speech, lowercase for TTS (via **`getCrosswordSpeakText`**). Underscores in basenames are turned into spaces for reading. |
+| **`speakWordPopAnswer(gridWord, imageFile, turkish?, options?)`** | Default pronunciation path after correct pops / hint speaker. Prefer **`entry.file`** + **`entry.turkish`** from the **`vocabulary`** row matching **`gridWord`**. |
+
+### Speech rate
+
+**`speakWordPopAnswer`** defaults to **`rate: 0.8`** (primary). Preschool Word Pop passes **`{ rate: 0.7 }`** where games previously used slower playback.
+
+## Closing punctuation (? !)
+
+Filenames omit **`?`** (e.g. **`how are you.png`**). When the **Turkish** gloss ends with **`?`** or **`!`** and the English label does not already end with that character, **`mirrorClosingPunctuationFromTurkish`** appends it — e.g. **`Nasılsın?`** → displayed/spoken English **`…YOU?`**.
+
+Keep Turkish gloss punctuation honest for curriculum questions so English stays aligned.
+
+## Wire-up checklist
+
+- Resolve the vocab row: **`const entry = vocabulary.find((x) => x.word === gridWord)`**.
+- Labels: **`getWordPopDisplayWord(gridWord, entry?.file, entry?.turkish)`** (not raw **`entry.word`** when basename carries spaces / nicer wording).
+- Audio: **`speakWordPopAnswer(gridWord, entry?.file, entry?.turkish)`** or with **`{ rate: 0.7 }`** for preschool.
+
+## Anti-patterns
+
+- **`new SpeechSynthesisUtterance(balloon.word)`** or **`speakWord(compressedKey)`** without **`wordPopSpeak`**.
+- Duplicating **`file.replace(/\\.png$/i).toUpperCase()`** display helpers instead of **`getWordPopDisplayWord`** (loses Turkish **`?!`** mirroring and diverges from Spell Quest basename rules).

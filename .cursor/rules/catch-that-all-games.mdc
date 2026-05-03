@@ -1,0 +1,34 @@
+---
+description: Catch That gameplay, pacing tiers, basket coords, preschool/G2 free TTS
+globs:
+  - "client/src/**/*catch-that*.tsx"
+  - "client/src/lib/catch-that-speech.ts"
+  - "client/src/lib/catch-that-sounds.ts"
+alwaysApply: false
+---
+
+# Catch That (all grades)
+
+## Pacing by grade (do not flatten)
+
+Each unit keeps its **authored** `spawnInterval`, `fallSpeed`, and any progressive helpers (`getSpawnInterval`, `getFallSpeed`). **Preschool and grade 2** stay **slower**; **grades 3–4** stay **faster**. Do not copy one tier’s timings onto another when fixing bugs or rolling out UX changes.
+
+## Basket and playfield
+
+- Basket horizontal position is driven from **play area** bounds only: `playAreaRef` + `getBoundingClientRect()`, `basketPositionRef`, and `setBasketPct` clamping (~10–90%).
+- Avoid deriving basket position from the full page / sidebar layout.
+
+## Round flow
+
+- On a **correct** catch, advance to the **next word immediately** (e.g. `queueMicrotask(() => nextWord())`); no “next word in X seconds” countdown overlay.
+
+## Preschool + grade 2: free target pronunciation
+
+- Once per target word change (while the round is active), speak the answer **without** score or hint penalty via **`speakCatchThatTargetWord`** from `@/lib/catch-that-speech`.
+- Use **`formatWordForSpeech`** (or equivalent) when compact vocab keys need spaced phrases for TTS.
+- **Grades 3–4:** do **not** add this automatic pronunciation unless product explicitly asks.
+
+## Shared helpers
+
+- Prefer **`@/lib/catch-that-speech`** for the free hint TTS so behavior stays consistent (cancel prior utterance, English voice).
+- Prize feedback: **`@/lib/catch-that-sounds`** — **`extra-heart`** / **`extra-time`** → bell (`playCatchThatPositiveRewardSound`); **`bomb`** / **`minus-time`** → error with wrong.mp3 fallback (`playCatchThatNegativeRewardSound`), aligned with wrong-catch behavior.

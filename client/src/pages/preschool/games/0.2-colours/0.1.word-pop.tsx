@@ -5,6 +5,7 @@ import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimi
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import { getWordPopDisplayWord, speakWordPopAnswer } from "@/lib/wordPopSpeak";
 import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.word-pop.css";
 import "@/styles/preschool-game-header.css";
@@ -19,7 +20,7 @@ const vocabulary = [
   { word: "PURPLE", turkish: "Mor", file: "purple.png" },
   { word: "PINK", turkish: "Pembe", file: "pink.png" },
   { word: "BROWN", turkish: "Kahverengi", file: "brown.png" },
-  { word: "GRAY", turkish: "Gri", file: "gray.png" },
+  { word: "GREY", turkish: "Gri", file: "grey.png" },
   { word: "WHITE", turkish: "Beyaz", file: "white.png" },
   { word: "BLACK", turkish: "Siyah", file: "black.png" },
 ];
@@ -33,12 +34,17 @@ const colorBalloonMap: Record<string, { color: string, textColor: string }> = {
   "PURPLE": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
   "PINK": { color: "from-pink-400 to-pink-500", textColor: "text-white" },
   "BROWN": { color: "from-amber-700 to-amber-900", textColor: "text-white" },
-  "GRAY": { color: "from-gray-400 to-gray-600", textColor: "text-white" },
+  "GREY": { color: "from-gray-400 to-gray-600", textColor: "text-white" },
   "WHITE": { color: "from-gray-100 to-white", textColor: "text-gray-800" },
   "BLACK": { color: "from-gray-700 to-gray-900", textColor: "text-white" },
 };
 
 const balloonShapes = ["round", "oval", "heart", "star"];
+
+const wordPopBalloonLabel = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return getWordPopDisplayWord(wordKey, v?.file, v?.turkish);
+};
 
 interface Balloon {
   id: string;
@@ -123,18 +129,13 @@ export default function ColorsWordPopGame() {
   const correctPoints = 10;
   const noHintBonus = 5;
 
-  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+  const speakWord = useCallback((gridWord: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
       setHintsUsed(prev => prev + 1);
     }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.7;
-      window.speechSynthesis.speak(utterance);
-    }
+    const entry = vocabulary.find((x) => x.word === gridWord);
+    speakWordPopAnswer(gridWord, entry?.file, entry?.turkish, { rate: 0.7 });
   }, [gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {
@@ -453,7 +454,7 @@ export default function ColorsWordPopGame() {
                   "PURPLE": "#9333ea",
                   "PINK": "#ec4899",
                   "BROWN": "#92400e",
-                  "GRAY": "#4b5563",
+                  "GREY": "#4b5563",
                   "WHITE": "#1f2937",
                   "BLACK": "#111827",
                 };
@@ -489,7 +490,7 @@ export default function ColorsWordPopGame() {
                       <ColorBalloonShape word={balloon.word} shape={balloon.shape} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {balloon.word}
+                        {wordPopBalloonLabel(balloon.word)}
                       </div>
                     </div>
                   </button>

@@ -5,6 +5,7 @@ import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimi
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import { getWordPopDisplayWord, speakWordPopAnswer } from "@/lib/wordPopSpeak";
 import { PreschoolGameHeader } from "@/components/PreschoolGameHeader";
 import "@/styles/0.1.word-pop.css";
 import "@/styles/preschool-game-header.css";
@@ -37,6 +38,11 @@ const numberBalloonMap: Record<string, { color: string, textColor: string }> = {
 };
 
 const balloonShapes = ["round", "oval", "heart", "star"];
+
+const wordPopBalloonLabel = (wordKey: string) => {
+  const v = vocabulary.find((x) => x.word === wordKey);
+  return getWordPopDisplayWord(wordKey, v?.file, v?.turkish);
+};
 
 interface Balloon {
   id: string;
@@ -121,18 +127,13 @@ export default function NumbersWordPopGame() {
   const correctPoints = 10;
   const noHintBonus = 5;
 
-  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+  const speakWord = useCallback((gridWord: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
       setHintsUsed(prev => prev + 1);
     }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.7;
-      window.speechSynthesis.speak(utterance);
-    }
+    const entry = vocabulary.find((x) => x.word === gridWord);
+    speakWordPopAnswer(gridWord, entry?.file, entry?.turkish, { rate: 0.7 });
   }, [gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {
@@ -486,7 +487,7 @@ export default function NumbersWordPopGame() {
                       <NumberBalloonShape word={balloon.word} shape={balloon.shape} />
                       <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-0.5 h-8 bg-gray-400" />
                       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2" style={bannerStyle}>
-                        {balloon.word}
+                        {wordPopBalloonLabel(balloon.word)}
                       </div>
                     </div>
                   </button>

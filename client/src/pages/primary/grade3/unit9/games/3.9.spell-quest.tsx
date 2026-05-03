@@ -9,6 +9,7 @@ import confetti from "canvas-confetti";
 import "@/styles/3.1.spell-quest.css";
 import "@/styles/primary-school-game-header.css";
 import "@/styles/primary-school-game-footer.css";
+import { buildSpellQuestAnswerSlots, getSpellQuestDisplayWord, speakSpellQuestAnswer } from "@/lib/spellQuestSpeak";
 
 interface VocabWord {
   word: string;
@@ -49,13 +50,7 @@ const vocabulary: VocabWord[] = [
   { word: "VERY", turkish: "Çok", file: "very.png" },
 ];
 
-// Display multi-word vocabulary with spaces (from file name)
-const getDisplayWord = (wordKey: string) => {
-  const v = vocabulary.find((x) => x.word === wordKey);
-  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
-};
 
-const getSpeakableEnglish = (v: VocabWord) => v.file.replace(/\.png$/i, "").trim();
 
 const letterColors = [
   "bg-gradient-to-br from-pink-400 to-pink-600",
@@ -122,14 +117,6 @@ export default function SpellQuestGame() {
     setShowHint(false);
   };
 
-  const speakWord = (word: string) => {
-    window.speechSynthesis?.cancel();
-    const utterance = new SpeechSynthesisUtterance(word);
-    utterance.rate = 0.8;
-    utterance.pitch = 1.1;
-    window.speechSynthesis?.speak(utterance);
-  };
-
   const handleLetterClick = (letter: { letter: string; id: number; color: string }) => {
     if (isCorrect) return;
     
@@ -163,7 +150,7 @@ export default function SpellQuestGame() {
         successAudio.play().catch(() => {});
         
         // Speak the word
-        speakWord(getSpeakableEnglish(currentWord));
+        speakSpellQuestAnswer(currentWord.word, currentWord.file);
         
         // Celebration
         confetti({
@@ -323,7 +310,7 @@ export default function SpellQuestGame() {
                     variant="outline"
                     size="icon"
                     className="sound-btn"
-                    onClick={() => speakWord(getSpeakableEnglish(currentWord))}
+                    onClick={() => speakSpellQuestAnswer(currentWord.word, currentWord.file)}
                   >
                     <Volume2 className="h-4 w-4" />
                   </Button>
@@ -343,30 +330,42 @@ export default function SpellQuestGame() {
               {/* Spelling Area */}
               <div className="spelling-area">
                 {/* Answer slots */}
+                <div className="english-spell-prompt text-center font-bold text-lg sm:text-xl tracking-wide text-slate-800 mb-3 px-2">{getSpellQuestDisplayWord(currentWord.word, currentWord.file)}</div>
+
                 <div className="answer-slots">
-                  {currentWord.word.split("").map((_, index) => (
-                    <motion.div
-                      key={index}
-                      className={`answer-slot ${selectedLetters[index] ? "filled" : ""} ${isCorrect ? "correct" : ""} ${isWrong ? "wrong" : ""}`}
-                      onClick={() => selectedLetters[index] && handleRemoveLetter(index)}
-                      whileHover={selectedLetters[index] ? { scale: 1.05 } : {}}
-                      whileTap={selectedLetters[index] ? { scale: 0.95 } : {}}
-                    >
-                      <AnimatePresence mode="wait">
-                        {selectedLetters[index] && (
-                          <motion.span
-                            key={selectedLetters[index].id}
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            exit={{ scale: 0, rotate: 180 }}
-                            className={`slot-letter ${selectedLetters[index].color}`}
-                          >
-                            {selectedLetters[index].letter}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-                  ))}
+                  {buildSpellQuestAnswerSlots(currentWord.word, currentWord.file).map((slot, displayIndex) =>
+                    slot.kind === "gap" ? (
+                      <div
+                        key={`spell-gap-${displayIndex}`}
+                        className="answer-slot space-slot"
+                        aria-hidden
+                      >
+                        <span className="space-indicator" />
+                      </div>
+                    ) : (
+                      <motion.div
+                        key={slot.letterIndex}
+                        className={`answer-slot ${selectedLetters[slot.letterIndex] ? "filled" : ""} ${isCorrect ? "correct" : ""} ${isWrong ? "wrong" : ""}`}
+                        onClick={() => selectedLetters[slot.letterIndex] && handleRemoveLetter(slot.letterIndex)}
+                        whileHover={selectedLetters[slot.letterIndex] ? { scale: 1.05 } : {}}
+                        whileTap={selectedLetters[slot.letterIndex] ? { scale: 0.95 } : {}}
+                      >
+                        <AnimatePresence mode="wait">
+                          {selectedLetters[slot.letterIndex] && (
+                            <motion.span
+                              key={selectedLetters[slot.letterIndex].id}
+                              initial={{ scale: 0, rotate: -180 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              exit={{ scale: 0, rotate: 180 }}
+                              className={`slot-letter ${selectedLetters[slot.letterIndex].color}`}
+                            >
+                              {selectedLetters[slot.letterIndex].letter}
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    )
+                  )}
                 </div>
 
                 {/* Scrambled letters */}
@@ -413,7 +412,7 @@ export default function SpellQuestGame() {
                     >
                       <div className="success-stars">⭐ ⭐ ⭐</div>
                       <h2 className="success-title">Perfect!</h2>
-                      <p className="success-word">{getDisplayWord(currentWord.word)}</p>
+                      <p className="success-word">{getSpellQuestDisplayWord(currentWord.word, currentWord.file)}</p>
                       <Button
                         className="next-btn"
                         onClick={nextWord}

@@ -5,6 +5,7 @@ import { ArrowLeft, Share2, Zap, Volume2, Trophy, Star, Heart, Maximize2, Minimi
 import { useLocation } from "wouter";
 import confetti from "canvas-confetti";
 import { motion, AnimatePresence } from "framer-motion";
+import { getWordPopDisplayWord, speakWordPopAnswer } from "@/lib/wordPopSpeak";
 import { PrimarySchoolGameHeader } from "@/components/PrimarySchoolGameHeader";
 import "@/styles/4.6.word-pop.css";
 import "@/styles/primary-school-game-header.css";
@@ -48,7 +49,7 @@ const vocabulary = [
 // Display multi-word vocabulary with spaces (from file name)
 const getDisplayWord = (wordKey: string) => {
   const v = vocabulary.find((x) => x.word === wordKey);
-  return v ? v.file.replace(/\.png$/i, "").toUpperCase() : wordKey;
+  return getWordPopDisplayWord(wordKey, v?.file, v?.turkish);
 };
 
 const balloonStyles = [
@@ -151,18 +152,13 @@ export default function WordPopGame4_9() {
   const correctPoints = 10;
   const noHintBonus = 5;
 
-  const speakWord = useCallback((text: string, applyPenalty: boolean = false) => {
+  const speakWord = useCallback((gridWord: string, applyPenalty: boolean = false) => {
     if (applyPenalty && gameStarted && !gameOver && !gameWon) {
       setScore(prev => Math.max(0, prev - hintPenalty));
       setHintsUsed(prev => prev + 1);
     }
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
-    }
+    const entry = vocabulary.find((x) => x.word === gridWord);
+    speakWordPopAnswer(gridWord, entry?.file, entry?.turkish);
   }, [gameStarted, gameOver, gameWon]);
 
   const revealTurkish = useCallback(() => {

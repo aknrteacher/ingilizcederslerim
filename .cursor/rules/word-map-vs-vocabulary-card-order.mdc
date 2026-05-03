@@ -1,0 +1,15 @@
+---
+description: Word map uses alphabetical word order; kelime-kartlari vocab keeps its own teaching order — both are valid and need not match
+alwaysApply: true
+---
+
+# Word Map Order vs Vocabulary Card Order
+
+For preschool topics (and elsewhere when applicable):
+
+- **Admin Word Map** (`wordMap.ts` / `/admin/word-map`) lists words in **alphabetical order** (English).
+- **`/pre-school/kelime-kartlari/...` vocabulary cards** use their **own intentional order** for pedagogy or UX.
+
+These two orders **do not need to match**. Treat differing order as **normal**, not a bug or something to “sync” unless the user explicitly asks to align sequences.
+
+When comparing coverage (same lemma set, Turkish glosses, punctuation like `?`), **ignore order** unless the task is specifically about reordering one surface.
