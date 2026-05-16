@@ -27,14 +27,19 @@ export default function OurBodyMatchingGame() {
   const allVocabulary = [
     { word: "body", file: "body.png", turkish: "vücut" },
     { word: "head", file: "head.png", turkish: "kafa" },
-    { word: "eyes", file: "eyes.png", turkish: "gözler" },
-    { word: "ears", file: "ears.png", turkish: "kulaklar" },
-    { word: "nose", file: "nose.png", turkish: "burun" },
-    { word: "mouth", file: "mouth.png", turkish: "ağız" },
-    { word: "hands", file: "hands.png", turkish: "eller" },
-    { word: "feet", file: "feet.png", turkish: "ayaklar" },
     { word: "arms", file: "arms.png", turkish: "kollar" },
     { word: "legs", file: "legs.png", turkish: "bacaklar" },
+    { word: "feet", file: "feet.png", turkish: "ayaklar" },
+    { word: "toe", file: "toe.png", turkish: "ayak parmağı" },
+    { word: "hands", file: "hands.png", turkish: "eller" },
+    { word: "finger", file: "finger.png", turkish: "parmak" },
+    { word: "hair", file: "hair.png", turkish: "saç" },
+    { word: "face", file: "face.png", turkish: "yüz" },
+    { word: "ears", file: "ears.png", turkish: "kulaklar" },
+    { word: "nose", file: "nose.png", turkish: "burun" },
+    { word: "eyes", file: "eyes.png", turkish: "gözler" },
+    { word: "mouth", file: "mouth.png", turkish: "ağız" },
+    { word: "teeth", file: "teeth.png", turkish: "dişler" },
   ];
 
   const selectRandomCards = (count: number) => {

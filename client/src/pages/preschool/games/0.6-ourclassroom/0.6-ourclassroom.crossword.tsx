@@ -13,6 +13,9 @@ import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 0.6 (Our Classroom)
 const vocabulary = [
+  { word: "CLASSROOM", clue: "sınıf", file: "classroom.png" },
+  { word: "TEACHER", clue: "öğretmen", file: "teacher.png" },
+  { word: "STUDENT", clue: "öğrenci", file: "student.png" },
   { word: "BOOK", clue: "kitap", file: "book.png" },
   { word: "NOTEBOOK", clue: "defter", file: "notebook.png" },
   { word: "PENCIL", clue: "kalem", file: "pencil.png" },

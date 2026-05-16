@@ -13,16 +13,21 @@ import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 
 // Vocabulary from 0.10 (Around Us)
 const vocabulary = [
-  { word: "WORLD", clue: "dünya", file: "world.png" },
-  { word: "SUN", clue: "güneş", file: "sun.png" },
-  { word: "MOON", clue: "ay", file: "moon.png" },
-  { word: "SKY", clue: "gökyüzü", file: "sky.png" },
-  { word: "CLOUDS", clue: "bulutlar", file: "clouds.png" },
-  { word: "WATER", clue: "su", file: "water.png" },
-  { word: "TREE", clue: "ağaç", file: "tree.png" },
   { word: "ANIMALS", clue: "hayvanlar", file: "animals.png" },
-  { word: "PEOPLE", clue: "insanlar", file: "people.png" },
   { word: "CITY", clue: "şehir", file: "city.png" },
+  { word: "CLOUDS", clue: "bulutlar", file: "clouds.png" },
+  { word: "FLOWER", clue: "çiçek", file: "flower.png" },
+  { word: "HOUSE", clue: "ev", file: "house.png" },
+  { word: "GRASS", clue: "çimen", file: "grass.png" },
+  { word: "MOON", clue: "ay", file: "moon.png" },
+  { word: "PEOPLE", clue: "insanlar", file: "people.png" },
+  { word: "RAIN", clue: "yağmur", file: "rain.png" },
+  { word: "SKY", clue: "gökyüzü", file: "sky.png" },
+  { word: "STAR", clue: "yıldız", file: "star.png" },
+  { word: "SUN", clue: "güneş", file: "sun.png" },
+  { word: "TREE", clue: "ağaç", file: "tree.png" },
+  { word: "WATER", clue: "su", file: "water.png" },
+  { word: "WORLD", clue: "dünya", file: "world.png" },
 ];
 
 interface Cell {

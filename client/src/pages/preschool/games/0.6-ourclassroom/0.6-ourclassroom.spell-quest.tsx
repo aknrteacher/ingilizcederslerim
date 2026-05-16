@@ -18,14 +18,16 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "TOY", turkish: "oyuncak", file: "toys.png" },
-  { word: "BALL", turkish: "top", file: "ball.png" },
-  { word: "BOX", turkish: "kutu", file: "box.png" },
-  { word: "DOLL", turkish: "bebek", file: "doll.png" },
-  { word: "CAR", turkish: "araba", file: "car.png" },
-  { word: "PUZZLE", turkish: "yapboz", file: "puzzle.png" },
-  { word: "COMPUTER", turkish: "bilgisayar", file: "computer.png" },
-  { word: "PHONE", turkish: "telefon", file: "phone.png" },
+  { word: "CLASSROOM", turkish: "sınıf", file: "classroom.png" },
+  { word: "TEACHER", turkish: "öğretmen", file: "teacher.png" },
+  { word: "STUDENT", turkish: "öğrenci", file: "student.png" },
+  { word: "BAG", turkish: "çanta", file: "bag.png" },
+  { word: "BOOK", turkish: "kitap", file: "book.png" },
+  { word: "CHAIR", turkish: "sandalye", file: "chair.png" },
+  { word: "DESK", turkish: "sıra", file: "desk.png" },
+  { word: "NOTEBOOK", turkish: "defter", file: "notebook.png" },
+  { word: "PENCIL", turkish: "kalem", file: "pencil.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
 ];
 
 const letterColors = [
@@ -170,16 +172,16 @@ export default function ThingsSpellQuestGame() {
   };
 
   const shareGame = () => {
-    const text = `I scored ${score} points on Spell Quest Things! Can you beat my score? 👋`;
+    const text = `I scored ${score} points on Spell Quest Our Classroom! Can you beat my score? 👋`;
     if (navigator.share) {
-      navigator.share({ title: "Spell Quest - Things", text, url: window.location.href });
+      navigator.share({ title: "Spell Quest - Our Classroom", text, url: window.location.href });
     } else {
       alert(text);
     }
   };
 
   const challengeFriend = () => {
-    const text = `Challenge me on Spell Quest Things! I scored ${score} points - can you do better? 🏆`;
+    const text = `Challenge me on Spell Quest Our Classroom! I scored ${score} points - can you do better? 🏆`;
     if (navigator.share) {
       navigator.share({ title: "Spell Quest Challenge", text, url: window.location.href });
     } else {
@@ -203,7 +205,7 @@ export default function ThingsSpellQuestGame() {
         <div className="spell-quest-container">
           <PreschoolGameHeader 
             gameName="Spell Quest"
-            description="Pre-School & 1st Grade - Theme: Things"
+            description="Pre-School & 1st Grade - Theme: Our Classroom"
             containerId="spell-quest-colors-game"
             icon="✨"
           />
@@ -239,7 +241,7 @@ export default function ThingsSpellQuestGame() {
                   key={currentWord.word}
                 >
                   <img 
-                    src={`/images/preschool/vocab/0.7-things/${currentWord.file}`} 
+                    src={`/images/preschool/vocab/0.6-ourclassroom/${currentWord.file}`} 
                     alt={currentWord.turkish}
                     className="word-image"
                   />
@@ -395,7 +397,7 @@ export default function ThingsSpellQuestGame() {
                   <Trophy className="trophy-icon" />
                 </div>
                 <h2 className="complete-title">Quest Complete!</h2>
-                <p className="complete-subtitle">You spelled all the things!</p>
+                <p className="complete-subtitle">You spelled all the classroom words!</p>
                 
                 <div className="final-stats">
                   <div className="final-stat">

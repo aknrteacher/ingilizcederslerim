@@ -18,16 +18,21 @@ interface VocabWord {
 }
 
 const vocabulary: VocabWord[] = [
-  { word: "WORLD", turkish: "dünya", file: "world.png" },
-  { word: "SUN", turkish: "güneş", file: "sun.png" },
-  { word: "MOON", turkish: "ay", file: "moon.png" },
-  { word: "SKY", turkish: "gökyüzü", file: "sky.png" },
-  { word: "CLOUDS", turkish: "bulutlar", file: "clouds.png" },
-  { word: "WATER", turkish: "su", file: "water.png" },
-  { word: "TREE", turkish: "ağaç", file: "tree.png" },
   { word: "ANIMALS", turkish: "hayvanlar", file: "animals.png" },
-  { word: "PEOPLE", turkish: "insanlar", file: "people.png" },
   { word: "CITY", turkish: "şehir", file: "city.png" },
+  { word: "CLOUDS", turkish: "bulutlar", file: "clouds.png" },
+  { word: "FLOWER", turkish: "çiçek", file: "flower.png" },
+  { word: "HOUSE", turkish: "ev", file: "house.png" },
+  { word: "GRASS", turkish: "çimen", file: "grass.png" },
+  { word: "MOON", turkish: "ay", file: "moon.png" },
+  { word: "PEOPLE", turkish: "insanlar", file: "people.png" },
+  { word: "RAIN", turkish: "yağmur", file: "rain.png" },
+  { word: "SKY", turkish: "gökyüzü", file: "sky.png" },
+  { word: "STAR", turkish: "yıldız", file: "star.png" },
+  { word: "SUN", turkish: "güneş", file: "sun.png" },
+  { word: "TREE", turkish: "ağaç", file: "tree.png" },
+  { word: "WATER", turkish: "su", file: "water.png" },
+  { word: "WORLD", turkish: "dünya", file: "world.png" },
 ];
 
 const letterColors = [
@@ -61,7 +66,7 @@ export default function AroundUsSpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 10);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 12);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);

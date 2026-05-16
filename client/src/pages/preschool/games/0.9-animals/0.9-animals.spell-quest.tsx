@@ -19,21 +19,20 @@ interface VocabWord {
 
 const vocabulary: VocabWord[] = [
   { word: "ANIMALS", turkish: "hayvanlar", file: "animals.png" },
-  { word: "CAT", turkish: "kedi", file: "cat.png" },
-  { word: "DOG", turkish: "köpek", file: "dog.png" },
   { word: "BEAR", turkish: "ayı", file: "bear.png" },
-  { word: "FROG", turkish: "kurbağa", file: "frog.png" },
-  { word: "ELEPHANT", turkish: "fil", file: "elephant.png" },
-  { word: "WHALE", turkish: "balina", file: "whale.png" },
-  { word: "FLAMINGO", turkish: "flamingo", file: "flamingo.png" },
-  { word: "RABBIT", turkish: "tavşan", file: "rabbit.png" },
-  { word: "MONKEY", turkish: "maymun", file: "monkey.png" },
-  { word: "SHEEP", turkish: "koyun", file: "sheep.png" },
-  { word: "HORSE", turkish: "at", file: "horse.png" },
-  { word: "COW", turkish: "inek", file: "cow.png" },
-  { word: "LION", turkish: "aslan", file: "lion.png" },
-  { word: "MOUSE", turkish: "fare", file: "mouse.png" },
+  { word: "CAT", turkish: "kedi", file: "cat.png" },
   { word: "CHICKEN", turkish: "tavuk", file: "chicken.png" },
+  { word: "COW", turkish: "inek", file: "cow.png" },
+  { word: "DOG", turkish: "köpek", file: "dog.png" },
+  { word: "ELEPHANT", turkish: "fil", file: "elephant.png" },
+  { word: "FLAMINGO", turkish: "flamingo", file: "flamingo.png" },
+  { word: "FROG", turkish: "kurbağa", file: "frog.png" },
+  { word: "HORSE", turkish: "at", file: "horse.png" },
+  { word: "MONKEY", turkish: "maymun", file: "monkey.png" },
+  { word: "MOUSE", turkish: "fare", file: "mouse.png" },
+  { word: "RABBIT", turkish: "tavşan", file: "rabbit.png" },
+  { word: "SHEEP", turkish: "koyun", file: "sheep.png" },
+  { word: "WHALE", turkish: "balina", file: "whale.png" },
 ];
 
 const letterColors = [
@@ -67,7 +66,7 @@ export default function AnimalsSpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 8);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 12);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);

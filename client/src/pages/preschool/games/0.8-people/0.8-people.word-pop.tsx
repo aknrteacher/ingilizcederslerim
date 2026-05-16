@@ -22,6 +22,7 @@ const vocabulary = [
   { word: "BROTHER", turkish: "erkek kardeş", file: "brother.png" },
   { word: "MAN", turkish: "adam", file: "man.png" },
   { word: "WOMAN", turkish: "kadın", file: "woman.png" },
+  { word: "BABY", turkish: "bebek", file: "baby.png" },
 ];
 
 const peopleBalloonMap: Record<string, { color: string, textColor: string }> = {
@@ -35,6 +36,7 @@ const peopleBalloonMap: Record<string, { color: string, textColor: string }> = {
   "BROTHER": { color: "from-emerald-400 to-emerald-600", textColor: "text-white" },
   "MAN": { color: "from-rose-400 to-rose-600", textColor: "text-white" },
   "WOMAN": { color: "from-indigo-400 to-indigo-600", textColor: "text-white" },
+  "BABY": { color: "from-lime-400 to-lime-600", textColor: "text-white" },
 };
 
 const balloonShapes = ["round", "oval", "heart", "star"];

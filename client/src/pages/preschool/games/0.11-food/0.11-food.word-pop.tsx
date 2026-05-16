@@ -15,13 +15,16 @@ const vocabulary = [
   { word: "FOOD", turkish: "yiyecek", file: "food.png" },
   { word: "APPLE", turkish: "elma", file: "apple.png" },
   { word: "BANANA", turkish: "muz", file: "banana.png" },
+  { word: "CAKE", turkish: "pasta", file: "cake.png" },
   { word: "ORANGE", turkish: "portakal", file: "orange.png" },
   { word: "GRAPES", turkish: "üzüm", file: "grapes.png" },
+  { word: "COOKIE", turkish: "kurabiye", file: "cookie.png" },
   { word: "MILK", turkish: "süt", file: "milk.png" },
   { word: "BREAD", turkish: "ekmek", file: "bread.png" },
   { word: "CHICKEN", turkish: "tavuk", file: "chicken.png" },
   { word: "EGG", turkish: "yumurta", file: "egg.png" },
   { word: "CHEESE", turkish: "peynir", file: "cheese.png" },
+  { word: "ICE-CREAM", turkish: "dondurma", file: "ice-cream.png" },
   { word: "OLIVE", turkish: "zeytin", file: "olive.png" },
 ];
 
@@ -29,13 +32,16 @@ const foodBalloonMap: Record<string, { color: string, textColor: string }> = {
   "FOOD": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
   "APPLE": { color: "from-red-400 to-red-600", textColor: "text-white" },
   "BANANA": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
+  "CAKE": { color: "from-fuchsia-400 to-fuchsia-600", textColor: "text-white" },
   "ORANGE": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
   "GRAPES": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
+  "COOKIE": { color: "from-amber-500 to-amber-700", textColor: "text-white" },
   "MILK": { color: "from-blue-100 to-blue-200", textColor: "text-gray-800" },
   "BREAD": { color: "from-amber-300 to-amber-500", textColor: "text-gray-800" },
   "CHICKEN": { color: "from-pink-300 to-pink-500", textColor: "text-white" },
   "EGG": { color: "from-yellow-100 to-yellow-200", textColor: "text-gray-800" },
   "CHEESE": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
+  "ICE-CREAM": { color: "from-cyan-300 to-cyan-500", textColor: "text-gray-800" },
   "OLIVE": { color: "from-green-600 to-green-800", textColor: "text-white" },
 };
 

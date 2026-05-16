@@ -28,6 +28,7 @@ const vocabulary: VocabWord[] = [
   { word: "BROTHER", turkish: "erkek kardeş", file: "brother.png" },
   { word: "MAN", turkish: "adam", file: "man.png" },
   { word: "WOMAN", turkish: "kadın", file: "woman.png" },
+  { word: "BABY", turkish: "bebek", file: "baby.png" },
 ];
 
 const letterColors = [
@@ -61,7 +62,7 @@ export default function PeopleSpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 10);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 11);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);

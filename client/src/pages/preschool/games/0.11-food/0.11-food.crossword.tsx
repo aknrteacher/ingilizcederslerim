@@ -16,13 +16,16 @@ const vocabulary = [
   { word: "FOOD", clue: "yiyecek", file: "food.png" },
   { word: "APPLE", clue: "elma", file: "apple.png" },
   { word: "BANANA", clue: "muz", file: "banana.png" },
+  { word: "CAKE", clue: "pasta", file: "cake.png" },
   { word: "ORANGE", clue: "portakal", file: "orange.png" },
   { word: "GRAPES", clue: "üzüm", file: "grapes.png" },
+  { word: "COOKIE", clue: "kurabiye", file: "cookie.png" },
   { word: "MILK", clue: "süt", file: "milk.png" },
   { word: "BREAD", clue: "ekmek", file: "bread.png" },
   { word: "CHICKEN", clue: "tavuk", file: "chicken.png" },
   { word: "EGG", clue: "yumurta", file: "egg.png" },
   { word: "CHEESE", clue: "peynir", file: "cheese.png" },
+  { word: "ICE-CREAM", clue: "dondurma", file: "ice-cream.png" },
   { word: "OLIVE", clue: "zeytin", file: "olive.png" },
 ];
 

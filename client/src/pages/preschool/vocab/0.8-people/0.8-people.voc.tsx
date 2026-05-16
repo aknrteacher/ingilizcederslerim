@@ -55,6 +55,7 @@ export default function PeopleVocabulary() {
     { word: "brother", file: "brother.png", turkish: "erkek kardeş" },
     { word: "man", file: "man.png", turkish: "adam" },
     { word: "woman", file: "woman.png", turkish: "kadın" },
+    { word: "baby", file: "baby.png", turkish: "bebek" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];

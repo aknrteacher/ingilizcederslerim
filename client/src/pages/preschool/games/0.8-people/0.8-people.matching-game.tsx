@@ -35,6 +35,7 @@ export default function PeopleMatchingGame() {
     { word: "brother", file: "brother.png", turkish: "erkek kardeş" },
     { word: "man", file: "man.png", turkish: "adam" },
     { word: "woman", file: "woman.png", turkish: "kadın" },
+    { word: "baby", file: "baby.png", turkish: "bebek" },
   ];
 
   const selectRandomCards = (count: number) => {
@@ -42,7 +43,7 @@ export default function PeopleMatchingGame() {
     return shuffled.slice(0, Math.min(count, allVocabulary.length));
   };
 
-  const [selectedCards, setSelectedCards] = useState(selectRandomCards(10));
+  const [selectedCards, setSelectedCards] = useState(selectRandomCards(11));
 
   const [wordCards, setWordCards] = useState<GameCard[]>([]);
   const [pictureCards, setPictureCards] = useState<GameCard[]>([]);
@@ -232,7 +233,7 @@ export default function PeopleMatchingGame() {
     setShowHatchingSequence(false);
     setHintCardId(null);
 
-    const newCards = selectRandomCards(10);
+    const newCards = selectRandomCards(11);
     setSelectedCards(newCards);
 
     const words: GameCard[] = newCards.map((item, idx) => ({

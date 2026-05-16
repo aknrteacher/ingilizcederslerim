@@ -12,25 +12,29 @@ import "@/styles/preschool-game-header.css";
 import "@/styles/preschool-game-footer.css";
 
 const vocabulary = [
-  { word: "TOY", turkish: "oyuncak", file: "toys.png" },
-  { word: "BALL", turkish: "top", file: "ball.png" },
-  { word: "BOX", turkish: "kutu", file: "box.png" },
-  { word: "DOLL", turkish: "bebek", file: "doll.png" },
-  { word: "CAR", turkish: "araba", file: "car.png" },
-  { word: "PUZZLE", turkish: "yapboz", file: "puzzle.png" },
-  { word: "COMPUTER", turkish: "bilgisayar", file: "computer.png" },
-  { word: "PHONE", turkish: "telefon", file: "phone.png" },
+  { word: "CLASSROOM", turkish: "sınıf", file: "classroom.png" },
+  { word: "TEACHER", turkish: "öğretmen", file: "teacher.png" },
+  { word: "STUDENT", turkish: "öğrenci", file: "student.png" },
+  { word: "BAG", turkish: "çanta", file: "bag.png" },
+  { word: "BOOK", turkish: "kitap", file: "book.png" },
+  { word: "CHAIR", turkish: "sandalye", file: "chair.png" },
+  { word: "DESK", turkish: "sıra", file: "desk.png" },
+  { word: "NOTEBOOK", turkish: "defter", file: "notebook.png" },
+  { word: "PENCIL", turkish: "kalem", file: "pencil.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
 ];
 
 const thingsBalloonMap: Record<string, { color: string, textColor: string }> = {
-  "TOY": { color: "from-blue-400 to-blue-600", textColor: "text-white" },
-  "BALL": { color: "from-red-400 to-red-600", textColor: "text-white" },
-  "BOX": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
-  "DOLL": { color: "from-pink-400 to-pink-600", textColor: "text-white" },
-  "CAR": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
-  "PUZZLE": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
-  "COMPUTER": { color: "from-cyan-400 to-cyan-600", textColor: "text-white" },
-  "PHONE": { color: "from-green-400 to-green-600", textColor: "text-white" },
+  "CLASSROOM": { color: "from-blue-400 to-blue-600", textColor: "text-white" },
+  "TEACHER": { color: "from-red-400 to-red-600", textColor: "text-white" },
+  "STUDENT": { color: "from-yellow-300 to-yellow-500", textColor: "text-gray-800" },
+  "BAG": { color: "from-pink-400 to-pink-600", textColor: "text-white" },
+  "BOOK": { color: "from-orange-400 to-orange-600", textColor: "text-white" },
+  "CHAIR": { color: "from-purple-400 to-purple-600", textColor: "text-white" },
+  "DESK": { color: "from-cyan-400 to-cyan-600", textColor: "text-white" },
+  "NOTEBOOK": { color: "from-green-400 to-green-600", textColor: "text-white" },
+  "PENCIL": { color: "from-indigo-400 to-indigo-600", textColor: "text-white" },
+  "TABLE": { color: "from-emerald-400 to-emerald-600", textColor: "text-white" },
 };
 
 const balloonShapes = ["round", "oval", "heart", "star"];
@@ -318,9 +322,9 @@ export default function ThingsWordPopGame() {
   }, []);
 
   const shareGame = () => {
-    const text = `I scored ${score} points in Word Pop Things! Can you beat my score? 🎈`;
+    const text = `I scored ${score} points in Word Pop Our Classroom! Can you beat my score? 🎈`;
     if (navigator.share) {
-      navigator.share({ title: "Word Pop Things - English Learning Game", text, url: window.location.href });
+      navigator.share({ title: "Word Pop Our Classroom - English Learning Game", text, url: window.location.href });
     } else {
       navigator.clipboard.writeText(text + " " + window.location.href);
     }
@@ -345,7 +349,7 @@ export default function ThingsWordPopGame() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PreschoolGameHeader 
             gameName="Word Pop"
-            description="Pre-School & 1st Grade - Theme: Things"
+            description="Pre-School & 1st Grade - Theme: Our Classroom"
             containerId="word-pop-colors-game"
             icon="🎈"
           />
@@ -398,7 +402,7 @@ export default function ThingsWordPopGame() {
             >
               <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-2xl bg-amber-50 flex items-center justify-center overflow-hidden mb-3 mx-auto">
                 <img 
-                  src={`/images/preschool/vocab/0.7-things/${currentWord.file}`} 
+                  src={`/images/preschool/vocab/0.6-ourclassroom/${currentWord.file}`} 
                   alt={currentWord.word}
                   className="w-28 h-28 sm:w-40 sm:h-40 object-contain"
                 />
@@ -540,7 +544,7 @@ export default function ThingsWordPopGame() {
                 </h2>
                 <p className="text-gray-600 mb-6">
                   {gameWon 
-                    ? `You completed all ${totalWords} things!` 
+                    ? `You completed all ${totalWords} classroom words!` 
                     : "Don't give up! Try again!"}
                 </p>
 

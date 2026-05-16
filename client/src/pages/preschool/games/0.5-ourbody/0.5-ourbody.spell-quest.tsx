@@ -20,14 +20,19 @@ interface VocabWord {
 const vocabulary: VocabWord[] = [
   { word: "BODY", turkish: "vücut", file: "body.png" },
   { word: "HEAD", turkish: "kafa", file: "head.png" },
-  { word: "EYES", turkish: "gözler", file: "eyes.png" },
-  { word: "EARS", turkish: "kulaklar", file: "ears.png" },
-  { word: "NOSE", turkish: "burun", file: "nose.png" },
-  { word: "MOUTH", turkish: "ağız", file: "mouth.png" },
-  { word: "HANDS", turkish: "eller", file: "hands.png" },
-  { word: "FEET", turkish: "ayaklar", file: "feet.png" },
   { word: "ARMS", turkish: "kollar", file: "arms.png" },
   { word: "LEGS", turkish: "bacaklar", file: "legs.png" },
+  { word: "FEET", turkish: "ayaklar", file: "feet.png" },
+  { word: "TOE", turkish: "ayak parmağı", file: "toe.png" },
+  { word: "HANDS", turkish: "eller", file: "hands.png" },
+  { word: "FINGER", turkish: "parmak", file: "finger.png" },
+  { word: "HAIR", turkish: "saç", file: "hair.png" },
+  { word: "FACE", turkish: "yüz", file: "face.png" },
+  { word: "EARS", turkish: "kulaklar", file: "ears.png" },
+  { word: "NOSE", turkish: "burun", file: "nose.png" },
+  { word: "EYES", turkish: "gözler", file: "eyes.png" },
+  { word: "MOUTH", turkish: "ağız", file: "mouth.png" },
+  { word: "TEETH", turkish: "dişler", file: "teeth.png" },
 ];
 
 const letterColors = [
@@ -61,7 +66,7 @@ export default function OurBodySpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 10);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 12);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);

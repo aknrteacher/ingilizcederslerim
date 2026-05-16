@@ -52,13 +52,16 @@ export default function FoodVocabulary() {
     { word: "food", file: "food.png", turkish: "yiyecek" },
     { word: "apple", file: "apple.png", turkish: "elma" },
     { word: "banana", file: "banana.png", turkish: "muz" },
+    { word: "cake", file: "cake.png", turkish: "pasta" },
     { word: "orange", file: "orange.png", turkish: "portakal" },
     { word: "grapes", file: "grapes.png", turkish: "üzüm" },
+    { word: "cookie", file: "cookie.png", turkish: "kurabiye" },
     { word: "milk", file: "milk.png", turkish: "süt" },
     { word: "bread", file: "bread.png", turkish: "ekmek" },
     { word: "chicken", file: "chicken.png", turkish: "tavuk" },
     { word: "egg", file: "egg.png", turkish: "yumurta" },
     { word: "cheese", file: "cheese.png", turkish: "peynir" },
+    { word: "ice-cream", file: "ice-cream.png", turkish: "dondurma" },
     { word: "olive", file: "olive.png", turkish: "zeytin" },
   ];
 

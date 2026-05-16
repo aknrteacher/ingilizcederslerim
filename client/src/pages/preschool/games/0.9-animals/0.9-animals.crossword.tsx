@@ -14,21 +14,20 @@ import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 // Vocabulary from 0.9 (Animals)
 const vocabulary = [
   { word: "ANIMALS", clue: "hayvanlar", file: "animals.png" },
-  { word: "CAT", clue: "kedi", file: "cat.png" },
-  { word: "DOG", clue: "köpek", file: "dog.png" },
   { word: "BEAR", clue: "ayı", file: "bear.png" },
-  { word: "FROG", clue: "kurbağa", file: "frog.png" },
-  { word: "ELEPHANT", clue: "fil", file: "elephant.png" },
-  { word: "WHALE", clue: "balina", file: "whale.png" },
-  { word: "FLAMINGO", clue: "flamingo", file: "flamingo.png" },
-  { word: "RABBIT", clue: "tavşan", file: "rabbit.png" },
-  { word: "MONKEY", clue: "maymun", file: "monkey.png" },
-  { word: "SHEEP", clue: "koyun", file: "sheep.png" },
-  { word: "HORSE", clue: "at", file: "horse.png" },
-  { word: "COW", clue: "inek", file: "cow.png" },
-  { word: "LION", clue: "aslan", file: "lion.png" },
-  { word: "MOUSE", clue: "fare", file: "mouse.png" },
+  { word: "CAT", clue: "kedi", file: "cat.png" },
   { word: "CHICKEN", clue: "tavuk", file: "chicken.png" },
+  { word: "COW", clue: "inek", file: "cow.png" },
+  { word: "DOG", clue: "köpek", file: "dog.png" },
+  { word: "ELEPHANT", clue: "fil", file: "elephant.png" },
+  { word: "FLAMINGO", clue: "flamingo", file: "flamingo.png" },
+  { word: "FROG", clue: "kurbağa", file: "frog.png" },
+  { word: "HORSE", clue: "at", file: "horse.png" },
+  { word: "MONKEY", clue: "maymun", file: "monkey.png" },
+  { word: "MOUSE", clue: "fare", file: "mouse.png" },
+  { word: "RABBIT", clue: "tavşan", file: "rabbit.png" },
+  { word: "SHEEP", clue: "koyun", file: "sheep.png" },
+  { word: "WHALE", clue: "balina", file: "whale.png" },
 ];
 
 interface Cell {

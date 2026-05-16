@@ -13,29 +13,29 @@ import { speakCatchThatTargetWord } from "@/lib/catch-that-speech";
 import { playCatchThatPositiveRewardSound, playCatchThatNegativeRewardSound } from "@/lib/catch-that-sounds";
 
 const vocabulary = [
-  { word: "TOY", turkish: "oyuncak", file: "toys.png" },
-  { word: "BALL", turkish: "top", file: "ball.png" },
-  { word: "BOX", turkish: "kutu", file: "box.png" },
-  { word: "DOLL", turkish: "bebek", file: "doll.png" },
-  { word: "CAR", turkish: "araba", file: "car.png" },
-  { word: "PUZZLE", turkish: "yapboz", file: "puzzle.png" },
-  { word: "COMPUTER", turkish: "bilgisayar", file: "computer.png" },
-  { word: "PHONE", turkish: "telefon", file: "phone.png" },
-  { word: "BED", turkish: "yatak", file: "bed.png" },
-  { word: "BOTTLE", turkish: "şişe", file: "bottle.png" },
+  { word: "CLASSROOM", turkish: "sınıf", file: "classroom.png" },
+  { word: "TEACHER", turkish: "öğretmen", file: "teacher.png" },
+  { word: "STUDENT", turkish: "öğrenci", file: "student.png" },
+  { word: "BAG", turkish: "çanta", file: "bag.png" },
+  { word: "BOOK", turkish: "kitap", file: "book.png" },
+  { word: "CHAIR", turkish: "sandalye", file: "chair.png" },
+  { word: "DESK", turkish: "sıra", file: "desk.png" },
+  { word: "NOTEBOOK", turkish: "defter", file: "notebook.png" },
+  { word: "PENCIL", turkish: "kalem", file: "pencil.png" },
+  { word: "TABLE", turkish: "masa", file: "table.png" },
 ];
 
 const thingMap: Record<string, { bg: string; text: string; border: string }> = {
-  "TOY": { bg: "bg-blue-500", text: "text-white", border: "border-blue-600" },
-  "BALL": { bg: "bg-red-500", text: "text-white", border: "border-red-600" },
-  "BOX": { bg: "bg-yellow-400", text: "text-gray-800", border: "border-yellow-500" },
-  "DOLL": { bg: "bg-pink-500", text: "text-white", border: "border-pink-600" },
-  "CAR": { bg: "bg-orange-500", text: "text-white", border: "border-orange-600" },
-  "PUZZLE": { bg: "bg-purple-500", text: "text-white", border: "border-purple-600" },
-  "COMPUTER": { bg: "bg-cyan-500", text: "text-white", border: "border-cyan-600" },
-  "PHONE": { bg: "bg-green-500", text: "text-white", border: "border-green-600" },
-  "BED": { bg: "bg-indigo-500", text: "text-white", border: "border-indigo-600" },
-  "BOTTLE": { bg: "bg-emerald-500", text: "text-white", border: "border-emerald-600" },
+  "CLASSROOM": { bg: "bg-blue-500", text: "text-white", border: "border-blue-600" },
+  "TEACHER": { bg: "bg-red-500", text: "text-white", border: "border-red-600" },
+  "STUDENT": { bg: "bg-yellow-400", text: "text-gray-800", border: "border-yellow-500" },
+  "BAG": { bg: "bg-pink-500", text: "text-white", border: "border-pink-600" },
+  "BOOK": { bg: "bg-orange-500", text: "text-white", border: "border-orange-600" },
+  "CHAIR": { bg: "bg-purple-500", text: "text-white", border: "border-purple-600" },
+  "DESK": { bg: "bg-cyan-500", text: "text-white", border: "border-cyan-600" },
+  "NOTEBOOK": { bg: "bg-green-500", text: "text-white", border: "border-green-600" },
+  "PENCIL": { bg: "bg-indigo-500", text: "text-white", border: "border-indigo-600" },
+  "TABLE": { bg: "bg-emerald-500", text: "text-white", border: "border-emerald-600" },
 };
 
 const formatWordForDisplay = (word: string): string => {
@@ -551,9 +551,9 @@ export default function ThingsCatchGame() {
   };
 
   const shareGame = () => {
-    const text = `I scored ${score} points in Catch That Things! Can you beat my score? 👋`;
+    const text = `I scored ${score} points in Catch That Our Classroom! Can you beat my score? 👋`;
     if (navigator.share) {
-      navigator.share({ title: "Catch That Things - English Learning Game", text, url: window.location.href });
+      navigator.share({ title: "Catch That Our Classroom - English Learning Game", text, url: window.location.href });
     } else {
       navigator.clipboard.writeText(text + " " + window.location.href);
     }
@@ -577,7 +577,7 @@ export default function ThingsCatchGame() {
         <div className="relative z-10 flex flex-col flex-1 min-h-0 p-2 sm:p-4">
           <PreschoolGameHeader 
             gameName="Catch That"
-            description="Pre-School & 1st Grade - Theme: Things"
+            description="Pre-School & 1st Grade - Theme: Our Classroom"
             containerId="color-catch-game"
             icon="🎯"
           />
@@ -627,7 +627,7 @@ export default function ThingsCatchGame() {
             >
               <div className={'w-32 h-32 sm:w-48 sm:h-48 ' + (isFullscreen ? 'w-96 h-96 ' : '') + 'rounded-2xl bg-amber-50 flex items-center justify-center overflow-hidden mb-3 mx-auto'}>
                 <img 
-                  src={'/images/preschool/vocab/0.7-things/' + currentWord.file} 
+                  src={'/images/preschool/vocab/0.6-ourclassroom/' + currentWord.file} 
                   alt={currentWord.word}
                   className={'w-28 h-28 sm:w-40 sm:h-40 ' + (isFullscreen ? 'w-80 h-80 ' : '') + 'object-contain'}
                 />
@@ -831,7 +831,7 @@ export default function ThingsCatchGame() {
                 </h2>
                 <p className="text-gray-600 mb-6">
                   {gameWon 
-                    ? `You caught all ${totalWords} things!` 
+                    ? `You caught all ${totalWords} classroom words!` 
                     : "Don't give up! Try again!"}
                 </p>
 

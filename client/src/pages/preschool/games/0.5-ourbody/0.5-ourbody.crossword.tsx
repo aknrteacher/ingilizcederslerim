@@ -15,14 +15,19 @@ import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 const vocabulary = [
   { word: "BODY", clue: "vücut", file: "body.png" },
   { word: "HEAD", clue: "kafa", file: "head.png" },
-  { word: "EYES", clue: "gözler", file: "eyes.png" },
-  { word: "EARS", clue: "kulaklar", file: "ears.png" },
-  { word: "NOSE", clue: "burun", file: "nose.png" },
-  { word: "MOUTH", clue: "ağız", file: "mouth.png" },
-  { word: "HANDS", clue: "eller", file: "hands.png" },
-  { word: "FEET", clue: "ayaklar", file: "feet.png" },
   { word: "ARMS", clue: "kollar", file: "arms.png" },
   { word: "LEGS", clue: "bacaklar", file: "legs.png" },
+  { word: "FEET", clue: "ayaklar", file: "feet.png" },
+  { word: "TOE", clue: "ayak parmağı", file: "toe.png" },
+  { word: "HANDS", clue: "eller", file: "hands.png" },
+  { word: "FINGER", clue: "parmak", file: "finger.png" },
+  { word: "HAIR", clue: "saç", file: "hair.png" },
+  { word: "FACE", clue: "yüz", file: "face.png" },
+  { word: "EARS", clue: "kulaklar", file: "ears.png" },
+  { word: "NOSE", clue: "burun", file: "nose.png" },
+  { word: "EYES", clue: "gözler", file: "eyes.png" },
+  { word: "MOUTH", clue: "ağız", file: "mouth.png" },
+  { word: "TEETH", clue: "dişler", file: "teeth.png" },
 ];
 
 interface Cell {

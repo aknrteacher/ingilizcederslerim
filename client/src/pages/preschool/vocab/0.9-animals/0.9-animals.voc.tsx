@@ -46,21 +46,20 @@ export default function AnimalsVocabulary() {
   // Animals vocabulary data
   const imageFiles = [
     { word: "animals", file: "animals.png", turkish: "hayvanlar" },
-    { word: "cat", file: "cat.png", turkish: "kedi" },
-    { word: "dog", file: "dog.png", turkish: "köpek" },
     { word: "bear", file: "bear.png", turkish: "ayı" },
-    { word: "frog", file: "frog.png", turkish: "kurbağa" },
-    { word: "elephant", file: "elephant.png", turkish: "fil" },
-    { word: "whale", file: "whale.png", turkish: "balina" },
-    { word: "flamingo", file: "flamingo.png", turkish: "flamingo" },
-    { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
-    { word: "monkey", file: "monkey.png", turkish: "maymun" },
-    { word: "sheep", file: "sheep.png", turkish: "koyun" },
-    { word: "horse", file: "horse.png", turkish: "at" },
-    { word: "cow", file: "cow.png", turkish: "inek" },
-    { word: "lion", file: "lion.png", turkish: "aslan" },
-    { word: "mouse", file: "mouse.png", turkish: "fare" },
+    { word: "cat", file: "cat.png", turkish: "kedi" },
     { word: "chicken", file: "chicken.png", turkish: "tavuk" },
+    { word: "cow", file: "cow.png", turkish: "inek" },
+    { word: "dog", file: "dog.png", turkish: "köpek" },
+    { word: "elephant", file: "elephant.png", turkish: "fil" },
+    { word: "flamingo", file: "flamingo.png", turkish: "flamingo" },
+    { word: "frog", file: "frog.png", turkish: "kurbağa" },
+    { word: "horse", file: "horse.png", turkish: "at" },
+    { word: "monkey", file: "monkey.png", turkish: "maymun" },
+    { word: "mouse", file: "mouse.png", turkish: "fare" },
+    { word: "rabbit", file: "rabbit.png", turkish: "tavşan" },
+    { word: "sheep", file: "sheep.png", turkish: "koyun" },
+    { word: "whale", file: "whale.png", turkish: "balina" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];

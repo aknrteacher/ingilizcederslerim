@@ -49,16 +49,21 @@ export default function AroundUsVocabulary() {
 
   // Around Us vocabulary data
   const imageFiles = [
-    { word: "world", file: "world.png", turkish: "dünya" },
-    { word: "sun", file: "sun.png", turkish: "güneş" },
-    { word: "moon", file: "moon.png", turkish: "ay" },
-    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
-    { word: "clouds", file: "clouds.png", turkish: "bulutlar" },
+    { word: "house", file: "house.png", turkish: "ev" },
+    { word: "people", file: "people.png", turkish: "insanlar" },
     { word: "water", file: "water.png", turkish: "su" },
     { word: "tree", file: "tree.png", turkish: "ağaç" },
+    { word: "flower", file: "flower.png", turkish: "çiçek" },
+    { word: "grass", file: "grass.png", turkish: "çimen" },
     { word: "animals", file: "animals.png", turkish: "hayvanlar" },
-    { word: "people", file: "people.png", turkish: "insanlar" },
     { word: "city", file: "city.png", turkish: "şehir" },
+    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
+    { word: "clouds", file: "clouds.png", turkish: "bulutlar" },
+    { word: "rain", file: "rain.png", turkish: "yağmur" },
+    { word: "world", file: "world.png", turkish: "dünya" },
+    { word: "moon", file: "moon.png", turkish: "ay" },
+    { word: "sun", file: "sun.png", turkish: "güneş" },
+    { word: "star", file: "star.png", turkish: "yıldız" },
   ];
 
   const reactionEmojis = ["👍", "🔥", "💯", "✅", "🤩", "🚀", "✨", "🧠", "💡"];

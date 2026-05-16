@@ -23,6 +23,7 @@ const vocabulary = [
   { word: "BROTHER", turkish: "erkek kardeş", file: "brother.png" },
   { word: "MAN", turkish: "adam", file: "man.png" },
   { word: "WOMAN", turkish: "kadın", file: "woman.png" },
+  { word: "BABY", turkish: "bebek", file: "baby.png" },
 ];
 
 const peopleMap: Record<string, { bg: string; text: string; border: string }> = {
@@ -36,6 +37,7 @@ const peopleMap: Record<string, { bg: string; text: string; border: string }> = 
   "BROTHER": { bg: "bg-emerald-500", text: "text-white", border: "border-emerald-600" },
   "MAN": { bg: "bg-rose-500", text: "text-white", border: "border-rose-600" },
   "WOMAN": { bg: "bg-indigo-500", text: "text-white", border: "border-indigo-600" },
+  "BABY": { bg: "bg-lime-500", text: "text-white", border: "border-lime-600" },
 };
 
 const formatWordForDisplay = (word: string): string => {

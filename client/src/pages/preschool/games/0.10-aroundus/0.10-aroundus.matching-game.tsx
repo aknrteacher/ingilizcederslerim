@@ -25,16 +25,21 @@ const getRandomHatchling = () => {
 export default function AroundUsMatchingGame() {
   const [, setLocation] = useLocation();
   const allVocabulary = [
-    { word: "world", file: "world.png", turkish: "dünya" },
-    { word: "sun", file: "sun.png", turkish: "güneş" },
-    { word: "moon", file: "moon.png", turkish: "ay" },
-    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
-    { word: "clouds", file: "clouds.png", turkish: "bulutlar" },
-    { word: "water", file: "water.png", turkish: "su" },
-    { word: "tree", file: "tree.png", turkish: "ağaç" },
     { word: "animals", file: "animals.png", turkish: "hayvanlar" },
-    { word: "people", file: "people.png", turkish: "insanlar" },
     { word: "city", file: "city.png", turkish: "şehir" },
+    { word: "clouds", file: "clouds.png", turkish: "bulutlar" },
+    { word: "flower", file: "flower.png", turkish: "çiçek" },
+    { word: "house", file: "house.png", turkish: "ev" },
+    { word: "grass", file: "grass.png", turkish: "çimen" },
+    { word: "moon", file: "moon.png", turkish: "ay" },
+    { word: "people", file: "people.png", turkish: "insanlar" },
+    { word: "rain", file: "rain.png", turkish: "yağmur" },
+    { word: "sky", file: "sky.png", turkish: "gökyüzü" },
+    { word: "star", file: "star.png", turkish: "yıldız" },
+    { word: "sun", file: "sun.png", turkish: "güneş" },
+    { word: "tree", file: "tree.png", turkish: "ağaç" },
+    { word: "water", file: "water.png", turkish: "su" },
+    { word: "world", file: "world.png", turkish: "dünya" },
   ];
 
   const selectRandomCards = (count: number) => {

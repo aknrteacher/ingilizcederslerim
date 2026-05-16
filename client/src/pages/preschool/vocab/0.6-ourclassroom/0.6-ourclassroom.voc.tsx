@@ -45,6 +45,9 @@ export default function OurClassroomVocabulary() {
 
   // Our Classroom vocabulary data
   const imageFiles = [
+    { word: "classroom", file: "classroom.png", turkish: "sınıf" },
+    { word: "teacher", file: "teacher.png", turkish: "öğretmen" },
+    { word: "student", file: "student.png", turkish: "öğrenci" },
     { word: "book", file: "book.png", turkish: "kitap" },
     { word: "notebook", file: "notebook.png", turkish: "defter" },
     { word: "pencil", file: "pencil.png", turkish: "kalem" },

@@ -21,13 +21,16 @@ const vocabulary: VocabWord[] = [
   { word: "FOOD", turkish: "yiyecek", file: "food.png" },
   { word: "APPLE", turkish: "elma", file: "apple.png" },
   { word: "BANANA", turkish: "muz", file: "banana.png" },
+  { word: "CAKE", turkish: "pasta", file: "cake.png" },
   { word: "ORANGE", turkish: "portakal", file: "orange.png" },
   { word: "GRAPES", turkish: "üzüm", file: "grapes.png" },
+  { word: "COOKIE", turkish: "kurabiye", file: "cookie.png" },
   { word: "MILK", turkish: "süt", file: "milk.png" },
   { word: "BREAD", turkish: "ekmek", file: "bread.png" },
   { word: "CHICKEN", turkish: "tavuk", file: "chicken.png" },
   { word: "EGG", turkish: "yumurta", file: "egg.png" },
   { word: "CHEESE", turkish: "peynir", file: "cheese.png" },
+  { word: "ICE-CREAM", turkish: "dondurma", file: "ice-cream.png" },
   { word: "OLIVE", turkish: "zeytin", file: "olive.png" },
 ];
 
@@ -62,7 +65,7 @@ export default function FoodSpellQuestGame() {
   }, []);
 
   const startNewGame = () => {
-    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 11);
+    const shuffled = [...vocabulary].sort(() => Math.random() - 0.5).slice(0, 12);
     setShuffledVocab(shuffled);
     setCurrentWordIndex(0);
     setScore(0);

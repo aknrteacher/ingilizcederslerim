@@ -23,6 +23,7 @@ const vocabulary = [
   { word: "BROTHER", clue: "erkek kardeş", file: "brother.png" },
   { word: "MAN", clue: "adam", file: "man.png" },
   { word: "WOMAN", clue: "kadın", file: "woman.png" },
+  { word: "BABY", clue: "bebek", file: "baby.png" },
 ];
 
 interface Cell {

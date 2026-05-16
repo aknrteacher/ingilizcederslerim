@@ -16,13 +16,16 @@ const vocabulary = [
   { word: "FOOD", turkish: "yiyecek", file: "food.png" },
   { word: "APPLE", turkish: "elma", file: "apple.png" },
   { word: "BANANA", turkish: "muz", file: "banana.png" },
+  { word: "CAKE", turkish: "pasta", file: "cake.png" },
   { word: "ORANGE", turkish: "portakal", file: "orange.png" },
   { word: "GRAPES", turkish: "üzüm", file: "grapes.png" },
+  { word: "COOKIE", turkish: "kurabiye", file: "cookie.png" },
   { word: "MILK", turkish: "süt", file: "milk.png" },
   { word: "BREAD", turkish: "ekmek", file: "bread.png" },
   { word: "CHICKEN", turkish: "tavuk", file: "chicken.png" },
   { word: "EGG", turkish: "yumurta", file: "egg.png" },
   { word: "CHEESE", turkish: "peynir", file: "cheese.png" },
+  { word: "ICE-CREAM", turkish: "dondurma", file: "ice-cream.png" },
   { word: "OLIVE", turkish: "zeytin", file: "olive.png" },
 ];
 
@@ -30,13 +33,16 @@ const foodMap: Record<string, { bg: string; text: string; border: string }> = {
   "FOOD": { bg: "bg-orange-500", text: "text-white", border: "border-orange-600" },
   "APPLE": { bg: "bg-red-500", text: "text-white", border: "border-red-600" },
   "BANANA": { bg: "bg-yellow-400", text: "text-gray-800", border: "border-yellow-500" },
+  "CAKE": { bg: "bg-fuchsia-500", text: "text-white", border: "border-fuchsia-600" },
   "ORANGE": { bg: "bg-orange-500", text: "text-white", border: "border-orange-600" },
   "GRAPES": { bg: "bg-purple-500", text: "text-white", border: "border-purple-600" },
+  "COOKIE": { bg: "bg-amber-600", text: "text-white", border: "border-amber-800" },
   "MILK": { bg: "bg-blue-100", text: "text-gray-800", border: "border-blue-200" },
   "BREAD": { bg: "bg-amber-300", text: "text-gray-800", border: "border-amber-500" },
   "CHICKEN": { bg: "bg-pink-300", text: "text-white", border: "border-pink-500" },
   "EGG": { bg: "bg-yellow-100", text: "text-gray-800", border: "border-yellow-200" },
   "CHEESE": { bg: "bg-yellow-300", text: "text-gray-800", border: "border-yellow-500" },
+  "ICE-CREAM": { bg: "bg-cyan-300", text: "text-gray-800", border: "border-cyan-500" },
   "OLIVE": { bg: "bg-green-600", text: "text-white", border: "border-green-800" },
 };
 
