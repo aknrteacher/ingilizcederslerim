@@ -1,4 +1,5 @@
-import { Switch, Route } from "wouter";
+import { useEffect } from "react";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,6 +7,14 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import NotFound from "@/pages/not-found";
+
+function RedirectTo({ href }: { href: string }) {
+  const [, setLocation] = useLocation();
+  useEffect(() => {
+    setLocation(href);
+  }, [href, setLocation]);
+  return null;
+}
 import Home from "@/pages/home";
 import MainLandingPage from "@/pages/landing-main";
 import PreschoolLandingPage from "@/pages/landing-preschool";
@@ -35,6 +44,7 @@ import VocabularyCards4_6 from "@/pages/primary/grade4/unit6/vocab/4.6.voc";
 import VocabularyCards4_7 from "@/pages/primary/grade4/unit7/vocab/4.7.voc";
 import VocabularyCards4_8 from "@/pages/primary/grade4/unit8/vocab/4.8.voc";
 import VocabularyCards4_9 from "@/pages/primary/grade4/unit9/vocab/4.9.voc";
+import VocabularyCards4_10 from "@/pages/primary/grade4/unit10/vocab/4.10.voc";
 import ColorsVocabulary from "@/pages/preschool/vocab/0.2-colours/0.1.voc";
 import NumbersVocabulary from "@/pages/preschool/vocab/0.1-numbers/0.1-numbers.voc";
 import AlphabetVocabulary from "@/pages/preschool/vocab/0.0-alphabet/0.1-alphabet.voc";
@@ -74,6 +84,7 @@ import PrimarySchoolGrade4Unit6GamesMenu from "@/pages/primary-school-grade4-uni
 import PrimarySchoolGrade4Unit7GamesMenu from "@/pages/primary-school-grade4-unit7-games-menu";
 import PrimarySchoolGrade4Unit8GamesMenu from "@/pages/primary-school-grade4-unit8-games-menu";
 import PrimarySchoolGrade4Unit9GamesMenu from "@/pages/primary-school-grade4-unit9-games-menu";
+import PrimarySchoolGrade4Unit10GamesMenu from "@/pages/primary-school-grade4-unit10-games-menu";
 import SongsLandingGrade4Unit8 from "@/pages/primary/grade4/unit8/songs/SongsLandingGrade4Unit8";
 import WhatsTheWeatherLikeTodaySong from "@/pages/primary/grade4/unit8/songs/WhatsTheWeatherLikeTodaySong";
 import MatchingGame from "@/pages/primary/grade2/theme1/games/2.1.matching-game";
@@ -263,6 +274,17 @@ import SayWhatGame4_9 from "@/pages/primary/grade4/unit9/games/4.9.say-what";
 import MemoryFlipGame4_9 from "@/pages/primary/grade4/unit9/games/4.9.memory-flip";
 import WordRaceGame4_9 from "@/pages/primary/grade4/unit9/games/4.9.word-race";
 import WordSnakeGame4_9 from "@/pages/primary/grade4/unit9/games/4.9.word-snake";
+// Grade 4 Unit 10 Games
+import MatchingGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.matching-game";
+import CrosswordGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.crossword";
+import SpellQuestGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.spell-quest";
+import WordPopGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.word-pop";
+import CatchThatGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.catch-that";
+import SayWhatGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.say-what";
+import MemoryFlipGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.memory-flip";
+import WordRaceGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.word-race";
+import WordSnakeGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.word-snake";
+import ColourThisGame4_10 from "@/pages/primary/grade4/unit10/games/4.10.color-sound";
 import WordPopGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.word-pop";
 import CatchThatGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.catch-that";
 import SayWhatGame3_1 from "@/pages/primary/grade3/unit1/games/3.1.say-what";
@@ -412,6 +434,7 @@ function Router() {
       <Route path="/primary-school/grade-4/unit-7/games" component={PrimarySchoolGrade4Unit7GamesMenu} />
       <Route path="/primary-school/grade-4/unit-8/games" component={PrimarySchoolGrade4Unit8GamesMenu} />
       <Route path="/primary-school/grade-4/unit-9/games" component={PrimarySchoolGrade4Unit9GamesMenu} />
+      <Route path="/primary-school/grade-4/unit-10/games" component={PrimarySchoolGrade4Unit10GamesMenu} />
       <Route path="/primary-school/grade-4/unit-8/songs" component={SongsLandingGrade4Unit8} />
       <Route
         path="/primary-school/grade-4/unit-8/songs/whats-the-weather-like-today"
@@ -437,6 +460,10 @@ function Router() {
       <Route path="/primary-school/grade-4/unit-7/4.7-vocab" component={VocabularyCards4_7} />
       <Route path="/primary-school/grade-4/unit-8/4.8-vocab" component={VocabularyCards4_8} />
       <Route path="/primary-school/grade-4/unit-9/4.9-vocab" component={VocabularyCards4_9} />
+      <Route path="/primary-school/grade-4/unit-10/4.10-vocab" component={VocabularyCards4_10} />
+      <Route path="/primary-school/grade-4/unit-10/vocab">
+        <RedirectTo href="/primary-school/grade-4/unit-10/4.10-vocab" />
+      </Route>
       <Route path="/primary-school/grade-4/unit-6/4.6-matching-game" component={MatchingGame4_6} />
       <Route path="/primary-school/grade-4/unit-6/crossword" component={CrosswordGame4_6} />
       <Route path="/primary-school/grade-4/unit-6/spell-quest" component={SpellQuestGame4_6} />
@@ -477,6 +504,16 @@ function Router() {
       <Route path="/primary-school/grade-4/unit-7/color-sound" component={ColourThisGame4_7} />
       <Route path="/primary-school/grade-4/unit-8/color-sound" component={ColourThisGame4_8} />
       <Route path="/primary-school/grade-4/unit-9/color-sound" component={ColourThisGame4_9} />
+      <Route path="/primary-school/grade-4/unit-10/4.10-matching-game" component={MatchingGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/crossword" component={CrosswordGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/spell-quest" component={SpellQuestGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/word-pop" component={WordPopGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/catch-that" component={CatchThatGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/say-what" component={SayWhatGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/memory-flip" component={MemoryFlipGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/word-race" component={WordRaceGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/word-snake" component={WordSnakeGame4_10} />
+      <Route path="/primary-school/grade-4/unit-10/color-sound" component={ColourThisGame4_10} />
       <Route path="/primary-school/grade-3/unit-1/3.1-matching-game" component={MatchingGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/crossword" component={CrosswordGame3_1} />
       <Route path="/primary-school/grade-3/unit-1/spell-quest" component={SpellQuestGame3_1} />

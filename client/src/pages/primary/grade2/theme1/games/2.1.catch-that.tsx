@@ -15,6 +15,9 @@ import { playCatchThatPositiveRewardSound, playCatchThatNegativeRewardSound } fr
 const vocabulary = [
   { word: "HELLO", turkish: "Merhaba", file: "hello.png" },
   { word: "GOODBYE", turkish: "Hoşça kalın", file: "goodbye.png" },
+  { word: "I", turkish: "Ben", file: "I.png" },
+  { word: "YOU", turkish: "Sen/siz", file: "you.png" },
+  { word: "WE", turkish: "Biz", file: "we.png" },
   { word: "SCHOOL", turkish: "Okul", file: "school.png" },
   { word: "CLASSROOM", turkish: "Sınıf", file: "classroom.png" },
   { word: "LIBRARY", turkish: "Kütüphane", file: "library.png" },

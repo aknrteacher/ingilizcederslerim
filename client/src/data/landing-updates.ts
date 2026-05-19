@@ -28,31 +28,31 @@ export interface LandingItem {
  */
 export const nowWorkingOnList: LandingItem[] = [
   {
-    title: "4. Sınıf Tüm Kelime Listesi",
-    href: "/primary-school/grade-4",
-    description: "4. sınıf tüm kelime listesi — ilk 5 ünite eksik.",
-    addedAt: "2026-03-22",
+    title: "UI Yükseltmeleri",
+    href: "/primary-school",
+    description: "Kartlar, oyun menüleri, gezinme ve genel arayüz iyileştirmeleri.",
+    addedAt: "2026-05-19",
     level: "primary-school",
   },
   {
-    title: "3. ve 4. Sınıf 9–10. Üniteler",
-    href: "/primary-school",
-    description: "3. ve 4. sınıflar 9. ve 10. üniteler kelime kartları ve oyunları.",
-    addedAt: "2026-03-22",
+    title: "Backend Mimarisi",
+    href: "/admin",
+    description: "Sunucu, API ve veri katmanı — daha sağlam ve ölçeklenebilir altyapı.",
+    addedAt: "2026-05-19",
+    level: "business-english",
+  },
+  {
+    title: "4. Sınıf Üniteler 1–5",
+    href: "/primary-school/grade-4",
+    description: "4. sınıf ilk 5 ünite için kelime kartları ve oyunlar.",
+    addedAt: "2026-05-19",
     level: "primary-school",
   },
   {
     title: "2. Sınıf ve Diğer Sınıflar İçin Şarkılar",
     href: "/primary-school/grade-2",
     description: "2. sınıf ve diğer sınıflar için şarkılar.",
-    addedAt: "2026-03-22",
-    level: "primary-school",
-  },
-  {
-    title: "Colouring ve QR Bağlantısı",
-    href: "/primary-school/grade-2/theme-1/worksheets/colouring",
-    description: "Colouring oyun ve doğru QR link.",
-    addedAt: "2026-03-22",
+    addedAt: "2026-05-19",
     level: "primary-school",
   },
 ];
@@ -62,6 +62,20 @@ export const nowWorkingOnList: LandingItem[] = [
  * Add new items at the top when you publish new content.
  */
 export const lastAddedList: LandingItem[] = [
+  {
+    title: "4. Sınıf Ünite 10: Food and Drinks",
+    href: "/primary-school/grade-4/unit-10/games",
+    description: "4. sınıf 10. ünite kelime kartları ve 10 kelime oyunu (Yiyecek ve İçecekler).",
+    addedAt: "2026-05-19",
+    level: "primary-school",
+  },
+  {
+    title: "4. Sınıf Ünite 9: My Friends",
+    href: "/primary-school/grade-4/unit-9/games",
+    description: "4. sınıf 9. ünite kelime kartları ve kelime oyunları (Arkadaşlarım).",
+    addedAt: "2026-05-19",
+    level: "primary-school",
+  },
   {
     title: "4. Sınıf Ünite 8: My Clothes",
     href: "/primary-school/grade-4/unit-8/games",

@@ -11,6 +11,9 @@ import "@/styles/primary-school-game-footer.css";
 const allVocabulary = [
   { word: "hello", file: "hello.png", turkish: "merhaba" },
   { word: "goodbye", file: "goodbye.png", turkish: "hoşça kalın" },
+  { word: "I", file: "I.png", turkish: "ben" },
+  { word: "You", file: "you.png", turkish: "sen/siz" },
+  { word: "We", file: "we.png", turkish: "biz" },
   { word: "How are you", file: "how are you.png", turkish: "nasılsın" },
   { word: "I am fine", file: "I m fine.png", turkish: "iyiyim" },
   { word: "school", file: "school.png", turkish: "okul" },

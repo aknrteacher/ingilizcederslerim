@@ -22,8 +22,9 @@ for (let u = 1; u <= 10; u++) {
   entries.push([id, `src/pages/primary/grade3/unit${u}/games/${id}.matching-game.tsx`]);
 }
 
-for (const u of [6, 7, 8, 9]) {
-  entries.push([`4.${u}`, `src/pages/primary/grade4/unit${u}/games/4.${u}.matching-game.tsx`]);
+for (const u of [6, 7, 8, 9, 10]) {
+  const id = u === 10 ? "4.10" : `4.${u}`;
+  entries.push([id, `src/pages/primary/grade4/unit${u}/games/${id}.matching-game.tsx`]);
 }
 
 function extractVocab(filePath) {
@@ -63,6 +64,9 @@ for (const [key, rel] of entries) {
 const theme1Manual = [
   { word: "hello", speakWord: "hello", file: "hello.png" },
   { word: "goodbye", speakWord: "goodbye", file: "goodbye.png" },
+  { word: "I", speakWord: "i", file: "I.png" },
+  { word: "You", speakWord: "you", file: "you.png" },
+  { word: "We", speakWord: "we", file: "we.png" },
   { word: "How are you", speakWord: "how are you", file: "how are you.png" },
   { word: "I am fine", speakWord: "I am fine", file: "I m fine.png" },
   { word: "school", speakWord: "school", file: "school.png" },
@@ -107,6 +111,21 @@ lines.push(`};`);
 lines.push("");
 lines.push(`export function getColourThisImageBase(unitId: string): string {`);
 lines.push(`  return \`/images/primary/\${unitId}\`;`);
+lines.push(`}`);
+lines.push("");
+lines.push(`/** Games menu URL for the same theme/unit as the Colour This game */`);
+lines.push(`export function getColourThisGamesMenuHref(unitId: string): string {`);
+lines.push(`  const dot = unitId.indexOf(".");`);
+lines.push(`  if (dot < 0) return "/primary-school";`);
+lines.push(`  const grade = unitId.slice(0, dot);`);
+lines.push(`  const rest = unitId.slice(dot + 1);`);
+lines.push(`  if (grade === "2") return \`/primary-school/grade-2/theme-\${rest}/games\`;`);
+lines.push(`  if (grade === "3") {`);
+lines.push(`    const unitNum = rest === "10" ? "10" : String(Number(rest));`);
+lines.push(`    return \`/primary-school/grade-3/unit-\${unitNum}/games\`;`);
+lines.push(`  }`);
+lines.push(`  if (grade === "4") return \`/primary-school/grade-4/unit-\${rest}/games\`;`);
+lines.push(`  return "/primary-school";`);
 lines.push(`}`);
 lines.push("");
 

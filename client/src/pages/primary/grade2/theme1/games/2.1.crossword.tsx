@@ -15,6 +15,9 @@ import { speakCrosswordAnswer } from "@/lib/crosswordSpeak";
 const vocabulary = [
   { word: "HELLO", clue: "Merhaba", file: "hello.png" },
   { word: "GOODBYE", clue: "Hoşça kalın", file: "goodbye.png" },
+  { word: "I", clue: "Ben", file: "I.png" },
+  { word: "YOU", clue: "Sen/siz", file: "you.png" },
+  { word: "WE", clue: "Biz", file: "we.png" },
   { word: "SCHOOL", clue: "Okul", file: "school.png" },
   { word: "CLASSROOM", clue: "Sınıf", file: "classroom.png" },
   { word: "LIBRARY", clue: "Kütüphane", file: "library.png" },

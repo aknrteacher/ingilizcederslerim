@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { type LevelTheme } from "@/context/ThemeContext"
+import { grade4VocabHref } from "@/lib/primarySchoolPaths"
 
 // Navigation item structure
 type SearchableItem = {
@@ -81,7 +82,7 @@ function flattenNavItems(): SearchableItem[] {
   for (let i = 1; i <= 10; i++) {
     items.push(
       { title: `Ünite ${i}`, href: `/primary-school/grade-4/unit-${i}/games`, category: "4. Sınıf", theme: "primary-school" },
-      { title: `Kelime Kartları - Ünite ${i}`, href: `/primary-school/grade-4/unit-${i}/vocab`, category: `4. Sınıf - Ünite ${i}`, theme: "primary-school" },
+      { title: `Kelime Kartları - Ünite ${i}`, href: grade4VocabHref(i), category: `4. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Oyunlar - Ünite ${i}`, href: `/primary-school/grade-4/unit-${i}/games`, category: `4. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Şarkılar - Ünite ${i}`, href: `/primary-school/grade-4/unit-${i}/songs`, category: `4. Sınıf - Ünite ${i}`, theme: "primary-school" },
       { title: `Hikayeler - Ünite ${i}`, href: `/primary-school/grade-4/unit-${i}/stories`, category: `4. Sınıf - Ünite ${i}`, theme: "primary-school" },

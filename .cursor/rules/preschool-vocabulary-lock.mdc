@@ -1,0 +1,48 @@
+---
+description: LOCKED preschool word lists (0.0–0.11) — implement from core; ask user before any changes
+globs: client/src/data/wordMap.ts, client/src/pages/preschool/vocab/**/*.tsx, client/src/pages/preschool/games/**/*.tsx
+alwaysApply: false
+---
+
+# Preschool Vocabulary Lock (Ingilizce Derslerim — Implementation)
+
+**Status:** LOCKED (audited and synced with **core**, May 2026).
+
+**core** (`Desktop/core`) is the **source of truth** for preschool vocabulary. This repo **implements** that source on the site.
+
+## Locked scope — topics 0.0–0.11
+
+Same 12 topics and **169 words** as in core’s `Preschool and 1st Grade Full Vocabulary List.txt`.
+
+### Locked surfaces (keep in sync with core)
+
+| Surface | Path |
+|---------|------|
+| Word Map | `client/src/data/wordMap.ts` — **preschool** `themes` only (`0.0-alphabet` … `0.11-food`) |
+| Vocabulary cards | `client/src/pages/preschool/vocab/**/*.voc.tsx` — `imageFiles` / word + `turkish` entries |
+| Preschool games | `client/src/pages/preschool/games/**/*.tsx` — embedded word lists for each topic |
+
+**Primary school** sections of `wordMap.ts` (Grade 2–4) are **not** covered by this lock.
+
+Display **order** on voc cards vs Word Map may differ by design — see `word-map-vs-vocabulary-card-order.mdc`. This lock is about **which words** and **Turkish glosses**, not card order.
+
+## Required before any edit
+
+**STOP and ask the user for explicit confirmation** before you:
+
+- Add, remove, or rename a word (English or Turkish) for any preschool topic
+- Change which topic a word belongs to
+- Change `wordMap.ts` preschool `words` arrays, voc `imageFiles`, or game vocabulary arrays
+
+Do **not** change these lists proactively, refactor them, or “sync” them without the user approving the vocabulary change.
+
+## Workflow when vocabulary must change
+
+1. **Confirm with the user** what is changing and why.
+2. Prefer updating **core** first (both file copies), then mirroring here.
+3. Update **all** locked surfaces for that topic so Word Map, voc cards, and games stay aligned.
+4. Do not edit only one surface unless the user explicitly limits scope.
+
+## If the user asks to unlock
+
+Only treat lists as editable after the user clearly approves changes to preschool vocabulary (e.g. “yes, update the word lists”).

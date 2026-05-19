@@ -6,6 +6,9 @@ export const COLOUR_THIS_VOCAB: Record<string, ColourThisVocabItem[]> = {
   "2.1": [
     { word: "hello", speakWord: "hello", file: "hello.png" },
     { word: "goodbye", speakWord: "goodbye", file: "goodbye.png" },
+    { word: "I", speakWord: "i", file: "I.png" },
+    { word: "You", speakWord: "you", file: "you.png" },
+    { word: "We", speakWord: "we", file: "we.png" },
     { word: "How are you", speakWord: "how are you", file: "how are you.png" },
     { word: "I am fine", speakWord: "I am fine", file: "I m fine.png" },
     { word: "school", speakWord: "school", file: "school.png" },
@@ -688,6 +691,43 @@ export const COLOUR_THIS_VOCAB: Record<string, ColourThisVocabItem[]> = {
     { word: "have got", speakWord: "have got", file: "have got.png" },
     { word: "has got", speakWord: "has got", file: "has got.png" },
   ],
+  "4.10": [
+    { word: "food", speakWord: "food", file: "food.png" },
+    { word: "bread", speakWord: "bread", file: "bread.png" },
+    { word: "butter", speakWord: "butter", file: "butter.png" },
+    { word: "cheese", speakWord: "cheese", file: "cheese.png" },
+    { word: "cake", speakWord: "cake", file: "cake.png" },
+    { word: "honey", speakWord: "honey", file: "honey.png" },
+    { word: "meat", speakWord: "meat", file: "meat.png" },
+    { word: "olives", speakWord: "olives", file: "olives.png" },
+    { word: "pasta", speakWord: "pasta", file: "pasta.png" },
+    { word: "soup", speakWord: "soup", file: "soup.png" },
+    { word: "chicken", speakWord: "chicken", file: "chicken.png" },
+    { word: "fish", speakWord: "fish", file: "fish.png" },
+    { word: "chips", speakWord: "chips", file: "chips.png" },
+    { word: "egg", speakWord: "egg", file: "egg.png" },
+    { word: "salad", speakWord: "salad", file: "salad.png" },
+    { word: "yoghurt", speakWord: "yoghurt", file: "yoghurt.png" },
+    { word: "drink", speakWord: "drink", file: "drink.png" },
+    { word: "water", speakWord: "water", file: "water.png" },
+    { word: "tea", speakWord: "tea", file: "tea.png" },
+    { word: "lemonade", speakWord: "lemonade", file: "lemonade.png" },
+    { word: "juice", speakWord: "juice", file: "juice.png" },
+    { word: "fruit", speakWord: "fruit", file: "fruit.png" },
+    { word: "banana", speakWord: "banana", file: "banana.png" },
+    { word: "pear", speakWord: "pear", file: "pear.png" },
+    { word: "grapes", speakWord: "grapes", file: "grapes.png" },
+    { word: "watermelon", speakWord: "watermelon", file: "watermelon.png" },
+    { word: "apricot", speakWord: "apricot", file: "apricot.png" },
+    { word: "cherry", speakWord: "cherry", file: "cherry.png" },
+    { word: "breakfast", speakWord: "breakfast", file: "breakfast.png" },
+    { word: "lunch", speakWord: "lunch", file: "lunch.png" },
+    { word: "dinner", speakWord: "dinner", file: "dinner.png" },
+    { word: "hungry", speakWord: "hungry", file: "hungry.png" },
+    { word: "thirsty", speakWord: "thirsty", file: "thirsty.png" },
+    { word: "want", speakWord: "want", file: "want.png" },
+    { word: "delicious", speakWord: "delicious", file: "delicious.png" },
+  ],
 };
 
 export function getColourThisImageBase(unitId: string): string {
@@ -708,3 +748,4 @@ export function getColourThisGamesMenuHref(unitId: string): string {
   if (grade === "4") return `/primary-school/grade-4/unit-${rest}/games`;
   return "/primary-school";
 }
+

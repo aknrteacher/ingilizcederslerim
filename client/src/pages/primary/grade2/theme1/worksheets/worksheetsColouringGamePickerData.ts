@@ -19,6 +19,7 @@ import topic4_6 from "@/assets/4.6game.png";
 import topic4_7 from "@/assets/4.7game.png";
 import topic4_8 from "@/assets/4.8game.png";
 import topic4_9 from "@/assets/4.9game.png";
+import topic4_10 from "@/assets/food.png";
 
 export type GradeId = "2" | "3" | "4";
 
@@ -178,6 +179,13 @@ const GRADE_4_TOPICS: TopicOption[] = [
     label: "Unit 9: My Friends",
     basePath: "/primary-school/grade-4/unit-9",
     topicImage: topic4_9,
+  },
+  {
+    id: 10,
+    topicValue: "4.10",
+    label: "Unit 10: Food and Drinks",
+    basePath: "/primary-school/grade-4/unit-10",
+    topicImage: topic4_10,
   },
 ];
 
