@@ -17,12 +17,21 @@ type ColourZoneDef = { id: string; hintColorId: string };
 type PictureZoneHint = { id: string; cx: number; cy: number; r: number };
 type WordLayout = { logicalW: number; logicalH: number; fontSize: number; text: string };
 type LetterBounds = { left: number; right: number; ch: string };
+type ZoneSketchData = {
+  flashPhase: number;
+  targetX: number;
+  targetY: number;
+  pixels: number[];
+  fillScores: number[];
+};
 
 export type ColourThisGameProps = {
   vocab: ColourThisVocabItem[];
   imageBasePath: string;
   /** Back link to the theme/unit games menu */
   gamesMenuHref: string;
+  /** How picture targets are selected */
+  interactionMode?: "hint-circles" | "full-region";
 };
 
 const MIN_PICTURE_ZONES = 2;
@@ -282,18 +291,20 @@ function computeAutoZonesFromImage(data: Uint8ClampedArray, w: number, h: number
   }
 
   const masks: Record<string, Uint8Array> = {};
+  const zonePixels: Record<string, number[]> = {};
   const hints: PictureZoneHint[] = [];
   const zoneDefs: ColourZoneDef[] = [];
   for (let zi = 0; zi < picked.length; zi++) {
     const { comp, pi: pickedPi } = picked[zi];
     const id = `z${zi}`;
     masks[id] = maskFromPixels(comp.pixels, w, h);
+    zonePixels[id] = comp.pixels;
     const hint = hintFromComponent(comp, w, h, data, pickedPi);
     hint.id = id;
     hints.push(hint);
     zoneDefs.push({ id, hintColorId: PALETTE[pickedPi].id });
   }
-  return { masks, hints, zoneDefs };
+  return { masks, zonePixels, hints, zoneDefs };
 }
 
 function findHintByProximity(
@@ -443,6 +454,17 @@ function buildLetterFillableMasks(fillable: Uint8Array, w: number, h: number, dp
   return masks.map((m) => (maskHasAnyPixels(m) ? removeCounterSpaces(m, w, h) : m));
 }
 
+function areWordLettersFilled(bounds: LetterBounds[], masks: Uint8Array[], filled: Record<number, boolean>): boolean {
+  let needed = 0;
+  for (let i = 0; i < bounds.length; i++) {
+    if (bounds[i].ch === " ") continue;
+    if (!maskHasAnyPixels(masks[i])) continue;
+    needed++;
+    if (!filled[i]) return false;
+  }
+  return needed > 0;
+}
+
 /* ─── sparkle drawing ─── */
 function drawSparkle(ctx: CanvasRenderingContext2D, x: number, y: number, size: number, alpha: number) {
   ctx.save();
@@ -461,8 +483,188 @@ function drawSparkle(ctx: CanvasRenderingContext2D, x: number, y: number, size: 
   ctx.restore();
 }
 
+function clamp01(v: number): number {
+  if (v < 0) return 0;
+  if (v > 1) return 1;
+  return v;
+}
+
+function buildZoneSketchData(zonePixels: number[], w: number, h: number): ZoneSketchData | null {
+  if (!zonePixels.length) return null;
+
+  let minX = w, maxX = 0, minY = h, maxY = 0;
+  let sx = 0, sy = 0;
+  for (const p of zonePixels) {
+    const x = p % w;
+    const y = (p / w) | 0;
+    sx += x;
+    sy += y;
+    if (x < minX) minX = x;
+    if (x > maxX) maxX = x;
+    if (y < minY) minY = y;
+    if (y > maxY) maxY = y;
+  }
+  const cx0 = sx / zonePixels.length;
+  const cy0 = sy / zonePixels.length;
+
+  const boxW = Math.max(8, maxX - minX + 1);
+  const boxH = Math.max(8, maxY - minY + 1);
+  const flashPhase = Math.random();
+
+  // Fill order follows the dominant zone axis with tiny deterministic jitter.
+  const horizontal = boxW >= boxH;
+  const dirX = horizontal ? 1 : 0;
+  const dirY = horizontal ? 0 : 1;
+  let minProj = Infinity;
+  let maxProj = -Infinity;
+  const projs = new Array<number>(zonePixels.length);
+  for (let i = 0; i < zonePixels.length; i++) {
+    const p = zonePixels[i];
+    const x = p % w;
+    const y = (p / w) | 0;
+    const proj = (x - cx0) * dirX + (y - cy0) * dirY;
+    projs[i] = proj;
+    if (proj < minProj) minProj = proj;
+    if (proj > maxProj) maxProj = proj;
+  }
+  const span = Math.max(1e-4, maxProj - minProj);
+  const fillScores = new Array<number>(zonePixels.length);
+  for (let i = 0; i < zonePixels.length; i++) {
+    const p = zonePixels[i];
+    const x = p % w;
+    const y = (p / w) | 0;
+    // Stable pseudo-random jitter from pixel coordinates.
+    const noise = ((((x * 73856093) ^ (y * 19349663)) >>> 0) % 997) / 997;
+    const n = (projs[i] - minProj) / span;
+    fillScores[i] = clamp01(n * 0.88 + noise * 0.12);
+  }
+
+  return { flashPhase, targetX: cx0, targetY: cy0, pixels: zonePixels, fillScores };
+}
+
+function drawSmallArrowClue(
+  ctx: CanvasRenderingContext2D,
+  targetX: number,
+  targetY: number,
+  imageCenterX: number,
+  imageCenterY: number,
+  color: string,
+  t: number,
+  phase: number,
+  thick = false,
+) {
+  let dx = targetX - imageCenterX;
+  let dy = targetY - imageCenterY;
+  let dist = Math.hypot(dx, dy);
+  if (dist < 1) {
+    const a = phase * Math.PI * 2;
+    dx = Math.cos(a);
+    dy = Math.sin(a);
+    dist = 1;
+  }
+
+  const ux = dx / dist;
+  const uy = dy / dist;
+  const px = -uy;
+  const py = ux;
+  const slide = thick ? 0 : Math.sin(t * 2.1) * 6;
+  const baseX = targetX + ux * slide;
+  const baseY = targetY + uy * slide;
+  const tailX = baseX - ux * (thick ? 30 : 22);
+  const tailY = baseY - uy * (thick ? 30 : 22);
+  const tipX = baseX - ux * 3;
+  const tipY = baseY - uy * 3;
+  const headBackX = tipX - ux * (thick ? 10 : 7);
+  const headBackY = tipY - uy * (thick ? 10 : 7);
+  const wingX = px * (thick ? 8 : 6.5);
+  const wingY = py * (thick ? 8 : 6.5);
+
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  // Draw a normal arrow: shaft plus V-shaped head, with an outline for contrast.
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = thick ? 10 : 7;
+  ctx.beginPath();
+  ctx.moveTo(tailX, tailY);
+  ctx.lineTo(tipX, tipY);
+  ctx.moveTo(tipX, tipY);
+  ctx.lineTo(headBackX + wingX, headBackY + wingY);
+  ctx.moveTo(tipX, tipY);
+  ctx.lineTo(headBackX - wingX, headBackY - wingY);
+  ctx.stroke();
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = thick ? 7 : 4.5;
+  ctx.beginPath();
+  ctx.moveTo(tailX, tailY);
+  ctx.lineTo(tipX, tipY);
+  ctx.moveTo(tipX, tipY);
+  ctx.lineTo(headBackX + wingX, headBackY + wingY);
+  ctx.moveTo(tipX, tipY);
+  ctx.lineTo(headBackX - wingX, headBackY - wingY);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function shouldHideArrowMomentarily(t: number, phase: number): boolean {
+  const cycleSec = 1.65;
+  const cycle = Math.floor((t + phase * 3.7) / cycleSec);
+  const local = ((t + phase * 3.7) % cycleSec) / cycleSec;
+  const roll = (((cycle * 1103515245 + Math.floor(phase * 10000) * 12345) >>> 0) % 100) / 100;
+  return roll < 0.34 && local > 0.12 && local < 0.28;
+}
+
+function drawTickClue(
+  ctx: CanvasRenderingContext2D,
+  targetX: number,
+  targetY: number,
+  color: string,
+  progress: number,
+) {
+  const pop = Math.sin(clamp01(progress) * Math.PI);
+  const size = 20 + pop * 6;
+  const centerX = targetX;
+  const centerY = targetY - 18;
+
+  // Standard upright check mark: short downstroke, longer rising stroke.
+  const x1 = centerX - size * 0.6;
+  const y1 = centerY;
+  const x2 = centerX - size * 0.18;
+  const y2 = centerY + size * 0.42;
+  const x3 = centerX + size * 0.72;
+  const y3 = centerY - size * 0.55;
+
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 11;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineTo(x3, y3);
+  ctx.stroke();
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 7;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.lineTo(x3, y3);
+  ctx.stroke();
+  ctx.restore();
+}
+
 /* ═══════════════════════════════ COMPONENT ═══════════════════════════════ */
-export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourThisGameProps) {
+export function ColourThisGame({
+  vocab,
+  imageBasePath,
+  gamesMenuHref,
+  interactionMode = "hint-circles",
+}: ColourThisGameProps) {
   const [, setLocation] = useLocation();
   const [index, setIndex] = useState(0);
   const item = vocab[index];
@@ -483,6 +685,9 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
   const pictureGrayBaseRef = useRef<ImageData | null>(null);
   const pictureColorOriginalRef = useRef<ImageData | null>(null);
   const pictureZoneMasksRef = useRef<Record<string, Uint8Array>>({});
+  const pictureZonePixelsRef = useRef<Record<string, number[]>>({});
+  const pictureZoneSketchRef = useRef<Record<string, ZoneSketchData>>({});
+  const pictureZoneFillAnimRef = useRef<Record<string, { startMs: number; durationMs: number }>>({});
   const pictureZoneHintsRef = useRef<PictureZoneHint[]>([]);
   const pictureZoneDoneRef = useRef(false);
   const pictureLoadGenRef = useRef(0);
@@ -493,9 +698,12 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
 
   const [hintFlashColorId, setHintFlashColorId] = useState("");
   const hintFlashTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const useFullRegionTargets = interactionMode === "full-region";
 
   const zoneFilledRef = useRef(zoneFilled);
   zoneFilledRef.current = zoneFilled;
+  const letterFilledRef = useRef(letterFilled);
+  letterFilledRef.current = letterFilled;
   const activeZoneDefsRef = useRef(activeZoneDefs);
   activeZoneDefsRef.current = activeZoneDefs;
   const colorIdRef = useRef(colorId);
@@ -622,25 +830,63 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     const loadId = ++pictureLoadGenRef.current;
     img.onload = () => {
       if (loadId !== pictureLoadGenRef.current) return;
-      const maxW = 720, maxH = 400;
-      let cw = img.naturalWidth, ch = img.naturalHeight;
-      const scale = Math.min(maxW / cw, maxH / ch, 1);
-      cw = Math.floor(cw * scale); ch = Math.floor(ch * scale);
+      const maxW = 720;
+      const maxH = 400;
+      const squareSide = 440;
+      let cw = img.naturalWidth;
+      let ch = img.naturalHeight;
+      if (useFullRegionTargets) {
+        cw = squareSide;
+        ch = squareSide;
+      } else {
+        const scale = Math.min(maxW / cw, maxH / ch, 1);
+        cw = Math.floor(cw * scale);
+        ch = Math.floor(ch * scale);
+      }
       canvas.width = cw; canvas.height = ch;
       const tmp = document.createElement("canvas");
       tmp.width = cw; tmp.height = ch;
       const tctx = tmp.getContext("2d");
       if (!tctx) return;
-      tctx.drawImage(img, 0, 0, cw, ch);
+      if (useFullRegionTargets) {
+        tctx.fillStyle = "#ffffff";
+        tctx.fillRect(0, 0, cw, ch);
+        const squareScale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+        const drawW = Math.floor(img.naturalWidth * squareScale);
+        const drawH = Math.floor(img.naturalHeight * squareScale);
+        const dx = Math.floor((cw - drawW) / 2);
+        const dy = Math.floor((ch - drawH) / 2);
+        tctx.drawImage(img, dx, dy, drawW, drawH);
+      } else {
+        tctx.drawImage(img, 0, 0, cw, ch);
+      }
       const colorData = tctx.getImageData(0, 0, cw, ch);
       pictureColorOriginalRef.current = new ImageData(new Uint8ClampedArray(colorData.data), cw, ch);
-      const { masks, hints, zoneDefs } = computeAutoZonesFromImage(colorData.data, cw, ch);
+      const { masks, zonePixels, hints, zoneDefs } = computeAutoZonesFromImage(colorData.data, cw, ch);
       pictureZoneMasksRef.current = masks;
+      pictureZonePixelsRef.current = zonePixels;
+      pictureZoneSketchRef.current = {};
+      for (const z of zoneDefs) {
+        const sk = buildZoneSketchData(zonePixels[z.id] ?? [], cw, ch);
+        if (sk) pictureZoneSketchRef.current[z.id] = sk;
+      }
+      pictureZoneFillAnimRef.current = {};
       pictureZoneHintsRef.current = hints;
       setActiveZoneDefs(zoneDefs);
       tctx.filter = "grayscale(1) contrast(1.06)";
-      tctx.clearRect(0, 0, cw, ch);
-      tctx.drawImage(img, 0, 0, cw, ch);
+      if (useFullRegionTargets) {
+        tctx.fillStyle = "#ffffff";
+        tctx.fillRect(0, 0, cw, ch);
+        const squareScale = Math.min(cw / img.naturalWidth, ch / img.naturalHeight);
+        const drawW = Math.floor(img.naturalWidth * squareScale);
+        const drawH = Math.floor(img.naturalHeight * squareScale);
+        const dx = Math.floor((cw - drawW) / 2);
+        const dy = Math.floor((ch - drawH) / 2);
+        tctx.drawImage(img, dx, dy, drawW, drawH);
+      } else {
+        tctx.clearRect(0, 0, cw, ch);
+        tctx.drawImage(img, 0, 0, cw, ch);
+      }
       tctx.filter = "none";
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, cw, ch);
@@ -653,7 +899,7 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
       setTimeout(() => speakWord(item.speakWord), 400);
     };
     img.src = `${imageBasePath}/${item.file}`;
-  }, [item.file, item.speakWord, imageBasePath]);
+  }, [item.file, item.speakWord, imageBasePath, useFullRegionTargets]);
 
   /* ── draw word outline ── */
   const drawWordOutline = useCallback(() => {
@@ -732,6 +978,9 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     pictureGrayBaseRef.current = null;
     pictureColorOriginalRef.current = null;
     pictureZoneMasksRef.current = {};
+    pictureZonePixelsRef.current = {};
+    pictureZoneSketchRef.current = {};
+    pictureZoneFillAnimRef.current = {};
     pictureZoneHintsRef.current = [];
     colorImgCanvasRef.current = null;
     paintedBaseRef.current = null;
@@ -753,42 +1002,94 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     return () => ro.disconnect();
   }, [drawWordOutline]);
 
-  const startWordHintAnim = useCallback((iterations: number) => {
+  const startWordHintAnim = useCallback((_iterations: number) => {
     if (wordHintRafRef.current !== null) { cancelAnimationFrame(wordHintRafRef.current); wordHintRafRef.current = null; }
     const canvas = wordCanvasRef.current;
     const ctx = canvas?.getContext("2d");
     const base = wordBaseImageRef.current;
     const layout = wordLayoutRef.current;
+    const masks = wordLetterMasksRef.current;
+    const bounds = wordLetterBoundsRef.current;
     const pal = PALETTE.find((p) => p.id === wordTargetColorId);
-    if (!canvas || !ctx || !base || !layout || !pal) return;
+    if (!canvas || !ctx || !base || !layout || !masks || !bounds || !pal) return;
 
     const trigger = ++wordHintTriggerRef.current;
-    const periodMs = 900;
-    const totalDuration = iterations * periodMs;
-    const dpr = wordDprRef.current;
+    const periodMs = 3400;
+    const tickDurationMs = 430;
     const start = performance.now();
+    let tickStartMs: number | null = null;
+    const [fr, fg, fb] = hexToRgb(pal.hex);
+    const getWordArrowPoint = () => {
+      // Word canvas has a persistent dpr transform — use logical coordinates here.
+      const wordBounds = bounds.filter((b, i) => b.ch !== " " && masks[i] && maskHasAnyPixels(masks[i]));
+      if (!wordBounds.length) return null;
+      const firstLetterLeft = Math.min(...wordBounds.map((b) => b.left));
+      const y = layout.logicalH * 0.5;
+      const x = firstLetterLeft - 10;
+      return { x, y, sourceX: x - 1 };
+    };
 
     const frame = (now: number) => {
       if (wordHintTriggerRef.current !== trigger) return;
       const elapsed = now - start;
-      if (elapsed >= totalDuration) {
+      const currentLetters = letterFilledRef.current;
+      if (areWordLettersFilled(bounds, masks, currentLetters)) {
+        if (tickStartMs === null) tickStartMs = now;
+        const tickProgress = clamp01((now - tickStartMs) / tickDurationMs);
+        const arrowPoint = getWordArrowPoint();
         try { ctx.putImageData(base, 0, 0); } catch { /* noop */ }
-        wordHintRafRef.current = null;
+        if (arrowPoint) {
+          // drawTickClue draws centered at (targetX, targetY - 18) — offset so center matches arrow.
+          drawTickClue(ctx, arrowPoint.x, arrowPoint.y + 18, pal.hex, tickProgress);
+        }
+        if (tickProgress < 1) {
+          wordHintRafRef.current = requestAnimationFrame(frame);
+        } else {
+          try { ctx.putImageData(base, 0, 0); } catch { /* noop */ }
+          wordHintRafRef.current = null;
+        }
         return;
       }
       const phase = (elapsed % periodMs) / periodMs;
-      const opacity = Math.sin(phase * Math.PI) * 0.5;
-      try { ctx.putImageData(base, 0, 0); } catch { /* noop */ }
-      if (opacity > 0.01) {
-        ctx.save();
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.globalAlpha = opacity;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.font = `${WORD_FONT_WEIGHT} ${layout.fontSize}px ${WORD_FONT_FAMILY}`;
-        ctx.fillStyle = pal.hex;
-        ctx.fillText(layout.text, layout.logicalW / 2, layout.logicalH / 2);
-        ctx.restore();
+      const previewProgress = phase < 0.78 ? phase / 0.78 : 1;
+      const id = new ImageData(new Uint8ClampedArray(base.data), canvas.width, canvas.height);
+      const clueAlpha = 0.58;
+      let hasTarget = false;
+
+      for (let li = 0; li < masks.length; li++) {
+        const mask = masks[li];
+        if (!mask || currentLetters[li] || bounds[li]?.ch === " ") continue;
+        hasTarget = true;
+        for (let p = 0; p < canvas.width * canvas.height; p++) {
+          if (!mask[p]) continue;
+          const x = p % canvas.width;
+          const y = (p / canvas.width) | 0;
+          const noise = ((((x * 73856093) ^ (y * 19349663)) >>> 0) % 997) / 997;
+          const score = clamp01((x / Math.max(1, canvas.width - 1)) * 0.88 + noise * 0.12);
+          if (score > previewProgress) continue;
+          const o = p * 4;
+          id.data[o] = Math.round(id.data[o] * (1 - clueAlpha) + fr * clueAlpha);
+          id.data[o + 1] = Math.round(id.data[o + 1] * (1 - clueAlpha) + fg * clueAlpha);
+          id.data[o + 2] = Math.round(id.data[o + 2] * (1 - clueAlpha) + fb * clueAlpha);
+          id.data[o + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(id, 0, 0);
+      if (hasTarget) {
+        const arrowPoint = getWordArrowPoint();
+        if (arrowPoint && !shouldHideArrowMomentarily(now / 1000, 0.61)) {
+          drawSmallArrowClue(
+            ctx,
+            arrowPoint.x,
+            arrowPoint.y,
+            arrowPoint.sourceX,
+            arrowPoint.y,
+            pal.hex,
+            now / 1000,
+            0,
+          );
+        }
       }
       wordHintRafRef.current = requestAnimationFrame(frame);
     };
@@ -881,26 +1182,134 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
       const curFilled = zoneFilledRef.current;
 
       let hasUnfilled = false;
-      for (const hint of hints) {
-        if (curFilled[hint.id]) continue;
-        hasUnfilled = true;
-        const z = zones.find((zon) => zon.id === hint.id);
-        const pal = PALETTE.find((p) => p.id === z?.hintColorId);
-        const hex = pal?.hex ?? "#888";
-        const cx = hint.cx * w, cy = hint.cy * h;
-        const baseRad = Math.max(13, hint.r * minDim);
-        const rad = baseRad * (1 + 0.13 * pulse);
+      if (useFullRegionTargets) {
+        const anims = pictureZoneFillAnimRef.current;
+        const sketchMap = pictureZoneSketchRef.current;
+        const composed = new ImageData(new Uint8ClampedArray(base.data), w, h);
+        const completedZoneIds: string[] = [];
+        const arrowClues: { x: number; y: number; color: string; phase: number; thick?: boolean }[] = [];
+        const tickClues: { x: number; y: number; color: string; progress: number }[] = [];
 
-        ctx.globalAlpha = 0.82 + 0.14 * pulse;
-        ctx.fillStyle = hex;
-        ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fill();
+        for (const zone of zones) {
+          const zoneId = zone.id;
+          const zoneAnim = anims[zoneId];
+          const sketch = sketchMap[zoneId];
+          if (curFilled[zoneId]) {
+            const pixels = sketch?.pixels ?? pictureZonePixelsRef.current[zoneId] ?? [];
+            for (const p of pixels) {
+              const o = p * 4;
+              composed.data[o] = orig.data[o];
+              composed.data[o + 1] = orig.data[o + 1];
+              composed.data[o + 2] = orig.data[o + 2];
+              composed.data[o + 3] = orig.data[o + 3];
+            }
+            continue;
+          }
 
+          if (!sketch) {
+            hasUnfilled = true;
+            continue;
+          }
+
+          const pal = PALETTE.find((p) => p.id === zone.hintColorId);
+          if (!pal || !sketch) continue;
+          const [fr, fg, fb] = hexToRgb(pal.hex);
+
+          if (zoneAnim) {
+            const elapsed = now - zoneAnim.startMs;
+            const progress = clamp01(elapsed / zoneAnim.durationMs);
+            for (const p of sketch.pixels) {
+              const o = p * 4;
+              composed.data[o] = orig.data[o];
+              composed.data[o + 1] = orig.data[o + 1];
+              composed.data[o + 2] = orig.data[o + 2];
+              composed.data[o + 3] = orig.data[o + 3];
+            }
+            if (progress < 1) {
+              hasUnfilled = true;
+              tickClues.push({ x: sketch.targetX, y: sketch.targetY, color: pal.hex, progress });
+              continue;
+            }
+            completedZoneIds.push(zoneId);
+            delete anims[zoneId];
+            continue;
+          }
+
+          // Clue animation: solid color progressively fills the target, then repeats.
+          const previewCycleSec = 3.4;
+          const cycle = ((t + sketch.flashPhase * 0.25) % previewCycleSec) / previewCycleSec;
+          const previewProgress = cycle < 0.78 ? cycle / 0.78 : 1;
+          hasUnfilled = true;
+          arrowClues.push({ x: sketch.targetX, y: sketch.targetY, color: pal.hex, phase: sketch.flashPhase });
+          for (let i = 0; i < sketch.pixels.length; i++) {
+            if (sketch.fillScores[i] > previewProgress) continue;
+            const p = sketch.pixels[i];
+            const o = p * 4;
+            const clueAlpha = 0.58;
+            composed.data[o] = Math.round(composed.data[o] * (1 - clueAlpha) + fr * clueAlpha);
+            composed.data[o + 1] = Math.round(composed.data[o + 1] * (1 - clueAlpha) + fg * clueAlpha);
+            composed.data[o + 2] = Math.round(composed.data[o + 2] * (1 - clueAlpha) + fb * clueAlpha);
+            composed.data[o + 3] = 255;
+          }
+        }
+        ctx.putImageData(composed, 0, 0);
+
+        for (const arrow of arrowClues) {
+          if (!arrow.thick && shouldHideArrowMomentarily(t, arrow.phase)) continue;
+          drawSmallArrowClue(
+            ctx,
+            arrow.x,
+            arrow.y,
+            w / 2,
+            h / 2,
+            arrow.color,
+            t,
+            arrow.phase,
+            arrow.thick,
+          );
+        }
+        for (const tick of tickClues) {
+          drawTickClue(
+            ctx,
+            tick.x,
+            tick.y,
+            tick.color,
+            tick.progress,
+          );
+        }
+
+        if (completedZoneIds.length) {
+          const colorMap = Object.fromEntries(
+            completedZoneIds.map((id) => {
+              const z = zones.find((x) => x.id === id);
+              const hex = PALETTE.find((p) => p.id === z?.hintColorId)?.hex ?? "#000";
+              return [id, hex];
+            }),
+          );
+          setZoneFilled((prev) => ({ ...prev, ...colorMap }));
+        }
+      } else {
+        for (const hint of hints) {
+          if (curFilled[hint.id]) continue;
+          hasUnfilled = true;
+          const z = zones.find((zon) => zon.id === hint.id);
+          const pal = PALETTE.find((p) => p.id === z?.hintColorId);
+          const hex = pal?.hex ?? "#888";
+          const cx = hint.cx * w, cy = hint.cy * h;
+          const baseRad = Math.max(13, hint.r * minDim);
+          const rad = baseRad * (1 + 0.13 * pulse);
+
+          ctx.globalAlpha = 0.82 + 0.14 * pulse;
+          ctx.fillStyle = hex;
+          ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.fill();
+
+          ctx.globalAlpha = 1;
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.stroke();
+        }
         ctx.globalAlpha = 1;
-        ctx.strokeStyle = "#000";
-        ctx.lineWidth = 1.6;
-        ctx.beginPath(); ctx.arc(cx, cy, rad, 0, Math.PI * 2); ctx.stroke();
       }
-      ctx.globalAlpha = 1;
 
       if (hasUnfilled) {
         circlePulseRafRef.current = requestAnimationFrame(frame);
@@ -913,7 +1322,7 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     return () => {
       if (circlePulseRafRef.current) { cancelAnimationFrame(circlePulseRafRef.current); circlePulseRafRef.current = null; }
     };
-  }, [activeZoneDefs, zoneFilled, pictureLoadVersion, pictureRevealed]);
+  }, [activeZoneDefs, zoneFilled, pictureLoadVersion, pictureRevealed, useFullRegionTargets]);
 
   /* ── all zones done → reveal animation ── */
   useEffect(() => {
@@ -963,10 +1372,28 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     if (!canvas || !zones.length || pictureRevealed) return;
     if (!hints.length || !pictureGrayBaseRef.current) return;
     const { x, y } = getPictureCoords(clientX, clientY);
-    const hitId = findHintByProximity(x, y, canvas.width, canvas.height, hints, filled);
+    const px = Math.max(0, Math.min(canvas.width - 1, Math.floor(x)));
+    const py = Math.max(0, Math.min(canvas.height - 1, Math.floor(y)));
+    const pixelIndex = py * canvas.width + px;
+
+    let hitId: string | null = null;
+    if (useFullRegionTargets) {
+      for (const zone of zones) {
+        if (filled[zone.id]) continue;
+        const mask = pictureZoneMasksRef.current[zone.id];
+        if (mask?.[pixelIndex]) {
+          hitId = zone.id;
+          break;
+        }
+      }
+    } else {
+      hitId = findHintByProximity(x, y, canvas.width, canvas.height, hints, filled);
+    }
+
     if (!hitId) { playWrongSound(); return; }
     const zoneDef = zones.find((z) => z.id === hitId);
     if (!zoneDef || filled[hitId]) return;
+    if (pictureZoneFillAnimRef.current[hitId]) return;
     if (currentColorId !== zoneDef.hintColorId) {
       playWrongSound();
       if (hintFlashTimerRef.current) clearTimeout(hintFlashTimerRef.current);
@@ -975,8 +1402,11 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
       return;
     }
     playSuccessSound();
-    const pal = PALETTE.find((p) => p.id === zoneDef.hintColorId) ?? PALETTE[0];
-    setZoneFilled((prev) => ({ ...prev, [hitId]: pal.hex }));
+    pictureZoneFillAnimRef.current[hitId] = {
+      startMs: performance.now(),
+      durationMs: 360,
+    };
+    setPictureLoadVersion((v) => v + 1);
   };
 
   /* ── interaction: word letter tap ── */
@@ -1020,7 +1450,12 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
     const ch = bounds[letterIdx].ch;
     if (ch && ch !== " ") {
       playLetterWav(ch);
-      setLetterFilled((prev) => ({ ...prev, [letterIdx]: true }));
+      setLetterFilled((prev) => {
+        const next = { ...prev, [letterIdx]: true };
+        letterFilledRef.current = next;
+        return next;
+      });
+      setTimeout(() => startWordHintAnim(0), 0);
     }
   };
 
@@ -1037,19 +1472,25 @@ export function ColourThisGame({ vocab, imageBasePath, gamesMenuHref }: ColourTh
         <div className="cs-container max-w-4xl mx-auto">
           <PrimarySchoolGameHeader
             gameName="Colour This"
-            description="Pick a pencil, tap the matching circles on the picture, then colour each letter."
+            description={
+              useFullRegionTargets
+                ? "Pick a pencil, tap the matching color area on the picture, then colour each letter."
+                : "Pick a pencil, tap the matching circles on the picture, then colour each letter."
+            }
             containerId="color-sound-game-root"
           />
 
           <div className="cs-body">
             {/* game row: picture + pencil sidebar */}
-            <div className="cs-game-row">
-              <canvas
-                ref={canvasRef}
-                className="cs-picture"
-                onMouseDown={(e) => runPictureZoneTap(e.clientX, e.clientY)}
-                onTouchStart={(e) => { e.preventDefault(); runPictureZoneTap(e.touches[0].clientX, e.touches[0].clientY); }}
-              />
+            <div className={`cs-game-row ${useFullRegionTargets ? "center-picture" : ""}`}>
+              <div className={`cs-picture-wrap ${useFullRegionTargets ? "square" : ""}`}>
+                <canvas
+                  ref={canvasRef}
+                  className={`cs-picture ${useFullRegionTargets ? "square" : ""}`}
+                  onMouseDown={(e) => runPictureZoneTap(e.clientX, e.clientY)}
+                  onTouchStart={(e) => { e.preventDefault(); runPictureZoneTap(e.touches[0].clientX, e.touches[0].clientY); }}
+                />
+              </div>
               <div className="cs-pencil-sidebar">
                 <div className="cs-pencil-col">
                   {PALETTE.map((c) => {

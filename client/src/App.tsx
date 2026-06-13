@@ -30,6 +30,8 @@ import VocabularyCards2_3 from "@/pages/primary/grade2/theme3/vocab/2.3.voc";
 import VocabularyCards2_4 from "@/pages/primary/grade2/theme4/vocab/2.4.voc";
 import VocabularyCards2_5 from "@/pages/primary/grade2/theme5/vocab/2.5.voc";
 import VocabularyCards2_6 from "@/pages/primary/grade2/theme6/vocab/2.6.voc";
+import TestVocabularyCards from "@/pages/primary/test/test.voc";
+import TestColourSoundGame from "@/pages/primary/test/test.color-sound";
 import VocabularyCards3_1 from "@/pages/primary/grade3/unit1/vocab/3.1.voc";
 import VocabularyCards3_2 from "@/pages/primary/grade3/unit2/vocab/3.2.voc";
 import VocabularyCards3_3 from "@/pages/primary/grade3/unit3/vocab/3.3.voc";
@@ -446,6 +448,8 @@ function Router() {
       <Route path="/primary-school/grade-2/theme-4/2.4-vocab" component={VocabularyCards2_4} />
       <Route path="/primary-school/grade-2/theme-5/2.5-vocab" component={VocabularyCards2_5} />
       <Route path="/primary-school/grade-2/theme-6/2.6-vocab" component={VocabularyCards2_6} />
+      <Route path="/primary-school/test-vocab" component={TestVocabularyCards} />
+      <Route path="/primary-school/test-color-sound" component={TestColourSoundGame} />
       <Route path="/primary-school/grade-3/unit-1/3.1-vocab" component={VocabularyCards3_1} />
       <Route path="/primary-school/grade-3/unit-2/3.2-vocab" component={VocabularyCards3_2} />
       <Route path="/primary-school/grade-3/unit-3/3.3-vocab" component={VocabularyCards3_3} />

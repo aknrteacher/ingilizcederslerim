@@ -23,21 +23,51 @@
   display: flex;
   gap: 0;
   align-items: stretch;
+  justify-content: center;
 }
 
-/* ── picture canvas ── */
-.cs-picture {
-  display: block;
+/* ── picture frame + canvas ── */
+.cs-picture-wrap {
   flex: 1;
   min-width: 0;
-  height: auto;
-  max-height: min(54vh, 440px);
-  border-radius: 14px;
-  cursor: pointer;
-  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px 0 0 14px;
   box-shadow: 0 6px 24px rgba(15, 60, 90, 0.09);
   border: 1px solid rgba(0, 0, 0, 0.06);
   background: #fff;
+  overflow: hidden;
+}
+
+.cs-picture-wrap.square {
+  flex: 0 1 auto;
+  aspect-ratio: 1 / 1;
+  width: min(72vw, 460px);
+  max-width: min(72vw, 460px);
+}
+
+.cs-game-row.center-picture::before {
+  content: "";
+  flex-shrink: 0;
+  width: 82px;
+}
+
+.cs-picture {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(54vh, 440px);
+  cursor: pointer;
+  touch-action: none;
+  background: transparent;
+}
+
+.cs-picture.square {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1 / 1;
 }
 
 /* ── pencil sidebar (right of image) ── */
@@ -88,8 +118,8 @@
 }
 
 .cs-pencil-sidebar .cs-pencil.active {
-  animation: cs-pencil-pulse 0.7s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px var(--pencil-glow));
+  animation: cs-pencil-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 7px var(--pencil-glow));
   z-index: 5;
 }
 
@@ -107,10 +137,10 @@
 @keyframes cs-pencil-pulse {
   0%,
   100% {
-    transform: rotate(-90deg) translateY(0px) scale(1);
+    transform: rotate(-90deg) translateY(-8px) scale(1.12);
   }
   50% {
-    transform: rotate(-90deg) translateY(-12px) scale(1.07);
+    transform: rotate(-90deg) translateY(-8px) scale(1.26);
   }
 }
 
@@ -231,9 +261,17 @@
 
 /* ── responsive: small screens → pencils smaller ── */
 @media (max-width: 640px) {
+  .cs-picture-wrap.square {
+    max-width: min(82vw, 360px);
+  }
+
   .cs-pencil-sidebar {
     width: 60px;
     padding: 4px 2px;
+  }
+
+  .cs-game-row.center-picture::before {
+    width: 60px;
   }
 
   .cs-pencil-sidebar .cs-pencil {

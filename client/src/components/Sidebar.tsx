@@ -77,6 +77,8 @@ const levelItems = [
       { title: "2. Sınıf", items: grade2Themes },
       { title: "3. Sınıf", items: grade3Units },
       { title: "4. Sınıf", items: grade4Units },
+      { title: "Test Kelime Kartları", href: "/primary-school/test-vocab" },
+      { title: "Test Colour This", href: "/primary-school/test-color-sound" },
     ]
   },
   { title: "Ortaokul", theme: "secondary-school" as LevelTheme },

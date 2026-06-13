@@ -1,0 +1,38 @@
+---
+description: Colour This test SVG game is the template for future color-sound iterations
+globs:
+  - "client/src/components/games/ColourThisGame.tsx"
+  - "client/src/pages/**/*color-sound*.tsx"
+  - "client/src/data/*vocab*.ts"
+  - "client/public/images/**/*.svg"
+alwaysApply: false
+---
+
+# Colour This / Color Sound Template
+
+Use the current **test color-sound game** as the reference implementation when building or iterating color-sound games for other vocabulary card sets.
+
+## Canonical Reference
+
+- Template page: `client/src/pages/primary/test/test.color-sound.tsx`
+- Shared engine: `client/src/components/games/ColourThisGame.tsx`
+- Test data pattern: `client/src/data/test-primary-vocab.ts`
+- Prefer SVG image sets with full-region targets over PNG hint-circle behavior.
+
+## Current UX To Preserve
+
+- For SVG/full-region mode, clues use a semi-transparent progressive fill over each target color area.
+- Image target arrows are small, thick arrows that point at the target, move forward/backward in unison, and may briefly disappear randomly before returning.
+- When the correct picture color is applied, reveal the true color immediately; the arrow becomes a brief tick/check mark and disappears.
+- The square image area should stay centered against the pencil sidebar.
+- Selected pencil starts larger, pulses larger in place, and sits slightly left compared with the other pencils.
+
+## Word Clue Behavior
+
+- The word should also get a progressive semi-transparent fill clue for uncolored letters.
+- The word arrow belongs just to the left of the first letter and points right toward the word.
+- The word arrow stays until the whole word is colored correctly, then turns into a tick/check mark at the same spot and disappears.
+
+## Future Rollout Guidance
+
+When adapting other vocab sets, copy the test set’s interaction model first, then adjust only data/assets unless the user explicitly asks for a gameplay change.
