@@ -47,6 +47,10 @@ export function Layout({ children }: LayoutProps) {
             {children}
           </div>
         </main>
+
+        <footer className="shrink-0 border-t border-border/50 px-4 py-2 text-center text-[10px] text-muted-foreground sm:px-6">
+          Ingilizce Derslerim · v2026.07.09
+        </footer>
       </div>
     </div>
   )
