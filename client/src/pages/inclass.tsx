@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ChevronLeft, ChevronRight, Download, Plus, Users, Upload, Trash2, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { ClassroomBackendNote } from '@/components/classroom/ClassroomBackendNote';
 // @ts-ignore
 import jsPDF from 'jspdf';
 // @ts-ignore
@@ -704,6 +705,7 @@ export default function InClass() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
         <div className="max-w-4xl mx-auto">
+          <ClassroomBackendNote />
           <h1 className="text-4xl font-bold text-center mb-8 mt-8">In-Class Management</h1>
           
           {/* Mode Selection */}

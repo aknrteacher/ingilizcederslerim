@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Mic, MicOff, Users } from 'lucide-react';
 import { toast } from 'sonner';
+import { ClassroomBackendNote } from '@/components/classroom/ClassroomBackendNote';
 
 interface Class {
   id: string;
@@ -383,6 +384,7 @@ export default function ClassroomMonitoring() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
+        <ClassroomBackendNote />
         <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Classroom Monitoring</h1>
