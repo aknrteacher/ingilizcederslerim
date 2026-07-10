@@ -581,16 +581,16 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
   return (
     <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col ${isDefaultTheme ? 'bg-sidebar' : 'bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar'} text-sidebar-foreground transition-colors duration-300 ${isDefaultTheme ? '' : 'backdrop-blur-xl'}`}>
       {/* Logo Section */}
-      <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
+      <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} ${isDefaultTheme ? '' : 'bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md'}`}>
         <Link
           href="/"
-          className="relative group block text-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-primary"
+          className="relative group block text-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
           aria-label="Ingilizce Derslerim — Ana sayfa"
         >
           <h1 className={cn(
             "logo-jump text-3xl font-black text-center leading-none transition-all duration-500 font-serif tracking-tight group-hover:drop-shadow-lg",
             isDefaultTheme 
-              ? "text-sidebar-foreground" 
+              ? "text-white" 
               : (levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary")
           )}>
             ingilizce<br/>derslerim
@@ -775,12 +775,12 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
         >
             <div
               aria-hidden="true"
-              className="h-10 w-10 rounded-lg bg-gradient-to-br from-sidebar-primary to-sidebar-primary/70 flex items-center justify-center text-sidebar-primary-foreground font-bold text-sm flex-shrink-0 group-hover:shadow-lg transition-all duration-300"
+              className="h-10 w-10 rounded-lg bg-sidebar-accent flex items-center justify-center text-white font-bold text-sm flex-shrink-0 ring-1 ring-white/20 group-hover:shadow-lg transition-all duration-300"
             >
               JS
             </div>
             <div className="flex flex-col overflow-hidden min-w-0 flex-1 text-left">
-            <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-sidebar-primary transition-colors">Misafir Kullanıcı</span>
+            <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-white transition-colors">Misafir Kullanıcı</span>
           </div>
         </Link>
       </div>

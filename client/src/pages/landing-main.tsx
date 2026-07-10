@@ -31,8 +31,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-amber-400 dark:border-l-amber-500",
     iconBg: "bg-amber-100 dark:bg-amber-500/40",
     iconText: "text-amber-700 dark:text-amber-200",
-    label: "text-amber-600 dark:text-amber-400",
-    link: "text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300",
+    label: "text-amber-800 dark:text-amber-200",
+    link: "text-amber-900 dark:text-amber-100 hover:text-amber-950 dark:hover:text-white",
     blob: "text-amber-300/40 dark:text-amber-500/30",
     dots: "bg-amber-400/50 dark:bg-amber-500/40",
   },
@@ -40,8 +40,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-sky-400 dark:border-l-sky-500",
     iconBg: "bg-sky-100 dark:bg-sky-500/40",
     iconText: "text-sky-700 dark:text-sky-200",
-    label: "text-sky-600 dark:text-sky-400",
-    link: "text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300",
+    label: "text-sky-800 dark:text-sky-200",
+    link: "text-sky-900 dark:text-sky-100 hover:text-sky-950 dark:hover:text-white",
     blob: "text-sky-300/40 dark:text-sky-500/30",
     dots: "bg-sky-400/50 dark:bg-sky-500/40",
   },
@@ -49,8 +49,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-orange-400 dark:border-l-orange-500",
     iconBg: "bg-orange-100 dark:bg-orange-500/40",
     iconText: "text-orange-700 dark:text-orange-200",
-    label: "text-orange-600 dark:text-orange-400",
-    link: "text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300",
+    label: "text-orange-800 dark:text-orange-200",
+    link: "text-orange-900 dark:text-orange-100 hover:text-orange-950 dark:hover:text-white",
     blob: "text-orange-300/40 dark:text-orange-500/30",
     dots: "bg-orange-400/50 dark:bg-orange-500/40",
   },
@@ -58,8 +58,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-emerald-400 dark:border-l-emerald-500",
     iconBg: "bg-emerald-100 dark:bg-emerald-500/40",
     iconText: "text-emerald-700 dark:text-emerald-200",
-    label: "text-emerald-600 dark:text-emerald-400",
-    link: "text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300",
+    label: "text-emerald-800 dark:text-emerald-200",
+    link: "text-emerald-900 dark:text-emerald-100 hover:text-emerald-950 dark:hover:text-white",
     blob: "text-emerald-300/40 dark:text-emerald-500/30",
     dots: "bg-emerald-400/50 dark:bg-emerald-500/40",
   },
@@ -67,8 +67,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-violet-400 dark:border-l-violet-500",
     iconBg: "bg-violet-100 dark:bg-violet-500/40",
     iconText: "text-violet-700 dark:text-violet-200",
-    label: "text-violet-600 dark:text-violet-400",
-    link: "text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300",
+    label: "text-violet-800 dark:text-violet-200",
+    link: "text-violet-900 dark:text-violet-100 hover:text-violet-950 dark:hover:text-white",
     blob: "text-violet-300/40 dark:text-violet-500/30",
     dots: "bg-violet-400/50 dark:bg-violet-500/40",
   },
@@ -76,8 +76,8 @@ const LEVEL_ACCENTS: Record<
     border: "border-l-slate-400 dark:border-l-slate-500",
     iconBg: "bg-slate-100 dark:bg-slate-500/40",
     iconText: "text-slate-700 dark:text-slate-200",
-    label: "text-slate-600 dark:text-slate-400",
-    link: "text-slate-600 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300",
+    label: "text-slate-800 dark:text-slate-200",
+    link: "text-slate-900 dark:text-slate-100 hover:text-slate-950 dark:hover:text-white",
     blob: "text-slate-300/40 dark:text-slate-500/30",
     dots: "bg-slate-400/50 dark:bg-slate-500/40",
   },
@@ -133,14 +133,14 @@ function UpdateCard({
         </div>
         <div className="min-w-0 flex-1">
           {label ? (
-            <p className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs ${accent.label}`}>{label}</p>
+            <p className={`text-xs font-semibold uppercase tracking-wider ${accent.label}`}>{label}</p>
           ) : null}
           <h3 className={label ? "mt-0.5 line-clamp-2 text-sm font-semibold text-foreground sm:text-base" : "line-clamp-2 text-sm font-semibold text-foreground sm:text-base"}>{item.title}</h3>
           {item.description && (
-            <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{item.description}</p>
+            <p className="mt-0.5 line-clamp-2 text-xs text-foreground/70">{item.description}</p>
           )}
           {item.addedAt && (
-            <p className="mt-1 text-[10px] text-muted-foreground/80">{item.addedAt}</p>
+            <p className="mt-1 text-xs text-foreground/60">{item.addedAt}</p>
           )}
           <Button asChild variant="ghost" size="sm" className={`mt-1.5 -ml-2 h-8 text-xs sm:mt-2 ${accent.link}`}>
             <Link href={item.href} aria-label={`${item.title} — Git`}>

@@ -1,19 +1,6 @@
 import * as React from "react"
 import { Search } from "lucide-react"
 import { useLocation } from "wouter"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { type LevelTheme } from "@/context/ThemeContext"
 import { grade4VocabHref } from "@/lib/primarySchoolPaths"
@@ -112,10 +99,11 @@ export function SearchBox({ className }: SearchBoxProps) {
   const [open, setOpen] = React.useState(false)
   const [searchValue, setSearchValue] = React.useState("")
   const [, setLocation] = useLocation()
+  const containerRef = React.useRef<HTMLDivElement>(null)
 
   const filteredItems = React.useMemo(() => {
     if (!searchValue.trim()) {
-      return searchableItems.slice(0, 20) // Show top 20 items when no search
+      return searchableItems.slice(0, 20)
     }
 
     const query = searchValue.toLowerCase().trim()
@@ -126,7 +114,6 @@ export function SearchBox({ className }: SearchBoxProps) {
     })
   }, [searchValue])
 
-  // Group items by category
   const groupedItems = React.useMemo(() => {
     const groups: Record<string, SearchableItem[]> = {}
     filteredItems.forEach(item => {
@@ -144,69 +131,83 @@ export function SearchBox({ className }: SearchBoxProps) {
     setSearchValue("")
   }
 
-  const inputRef = React.useRef<HTMLInputElement>(null)
-
-  // Auto-focus the CommandInput when popover opens
   React.useEffect(() => {
-    if (open && inputRef.current) {
-      // Small delay to ensure the popover is fully rendered
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 100)
+    const handlePointerDown = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
     }
-  }, [open])
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown)
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown)
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [])
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <div className={cn("relative", className)}>
-        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
-        <PopoverTrigger asChild>
-          <input
-            type="search"
-            placeholder="Dersleri ara..."
-            aria-label="Dersleri ara"
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value)
-              setOpen(true)
-            }}
-            onFocus={() => setOpen(true)}
-            className="h-9 w-48 sm:w-64 rounded-md border border-input bg-background pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
-          />
-        </PopoverTrigger>
-      </div>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
-        <Command shouldFilter={false}>
-          <CommandInput 
-            ref={inputRef}
-            placeholder="Dersleri ara..." 
-            value={searchValue}
-            onValueChange={(value) => {
-              setSearchValue(value)
-            }}
-          />
-          <CommandList>
-            <CommandEmpty>
-              {searchValue.trim() ? "Sonuç bulunamadı." : "Aramak için yazın..."}
-            </CommandEmpty>
-            {Object.entries(groupedItems).map(([category, items]) => (
-              <CommandGroup key={category} heading={category}>
-                {items.map((item) => (
-                  <CommandItem
-                    key={item.href}
-                    value={item.title}
-                    onSelect={() => handleSelect(item.href)}
-                    className="cursor-pointer"
-                  >
-                    <span>{item.title}</span>
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <div ref={containerRef} className={cn("relative", className)}>
+      <label htmlFor="site-search" className="sr-only">
+        Dersleri ara
+      </label>
+      <Search
+        className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none z-10"
+        aria-hidden
+      />
+      <input
+        id="site-search"
+        type="search"
+        placeholder="Dersleri ara..."
+        value={searchValue}
+        onChange={(e) => {
+          setSearchValue(e.target.value)
+          setOpen(true)
+        }}
+        onFocus={() => setOpen(true)}
+        className="h-9 w-48 sm:w-64 rounded-md border border-input bg-background pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+      />
+
+      {open && (
+        <div
+          role="region"
+          aria-label="Arama sonuçları"
+          className="absolute top-full left-0 z-50 mt-1 w-full min-w-[12rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md"
+        >
+          <div className="max-h-[300px] overflow-y-auto p-1">
+            {filteredItems.length === 0 ? (
+              <p className="py-6 text-center text-sm text-muted-foreground">
+                {searchValue.trim() ? "Sonuç bulunamadı." : "Aramak için yazın..."}
+              </p>
+            ) : (
+              Object.entries(groupedItems).map(([category, items]) => (
+                <div key={category} className="overflow-hidden p-1">
+                  <p className="px-2 py-1.5 text-xs font-medium text-muted-foreground">{category}</p>
+                  <ul className="space-y-0.5">
+                    {items.map((item) => (
+                      <li key={`${item.href}-${item.title}`}>
+                        <button
+                          type="button"
+                          onClick={() => handleSelect(item.href)}
+                          className="w-full rounded-sm px-2 py-1.5 text-left text-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                        >
+                          {item.title}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
-
