@@ -162,8 +162,9 @@ export function SearchBox({ className }: SearchBoxProps) {
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
         <PopoverTrigger asChild>
           <input
-            type="text"
+            type="search"
             placeholder="Dersleri ara..."
+            aria-label="Dersleri ara"
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value)

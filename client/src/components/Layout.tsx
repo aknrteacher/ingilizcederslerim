@@ -31,8 +31,8 @@ export function Layout({ children }: LayoutProps) {
         <Header mobileMenuTrigger={
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label="Menüyü aç">
+                <Menu className="h-5 w-5" aria-hidden />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0 border-r">
@@ -48,7 +48,7 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </main>
 
-        <footer className="shrink-0 border-t border-border/50 px-4 py-2 text-center text-[10px] text-muted-foreground sm:px-6">
+        <footer className="shrink-0 border-t border-border/50 px-4 py-2 text-center text-xs text-muted-foreground sm:px-6">
           Ingilizce Derslerim · v2026.07.09
         </footer>
       </div>

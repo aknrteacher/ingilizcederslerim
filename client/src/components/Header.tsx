@@ -26,13 +26,13 @@ export function Header({ mobileMenuTrigger }: HeaderProps) {
           <SearchBox />
         </div>
         
-        <Button variant="ghost" size="icon" className="relative h-8 w-8 sm:h-10 sm:w-10">
-          <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-          <span className="absolute top-1 right-1 sm:top-2 sm:right-2 h-2 w-2 rounded-full bg-destructive"></span>
+        <Button variant="ghost" size="icon" className="relative h-8 w-8 sm:h-10 sm:w-10" aria-label="Bildirimler">
+          <Bell className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
+          <span className="absolute top-1 right-1 sm:top-2 sm:right-2 h-2 w-2 rounded-full bg-destructive" aria-hidden />
         </Button>
         
-        <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10 hidden sm:inline-flex">
-          <HelpCircle className="h-4 w-4 sm:h-5 sm:w-5" />
+        <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10 hidden sm:inline-flex" aria-label="Yardım">
+          <HelpCircle className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden />
         </Button>
       </div>
     </header>

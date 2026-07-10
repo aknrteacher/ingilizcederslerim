@@ -142,11 +142,11 @@ function UpdateCard({
           {item.addedAt && (
             <p className="mt-1 text-[10px] text-muted-foreground/80">{item.addedAt}</p>
           )}
-          <Link href={item.href}>
-            <Button variant="ghost" size="sm" className={`mt-1.5 -ml-2 h-8 text-xs sm:mt-2 ${accent.link}`}>
-              Git <ArrowRight className="ml-0.5 h-3.5 w-3.5" />
-            </Button>
-          </Link>
+          <Button asChild variant="ghost" size="sm" className={`mt-1.5 -ml-2 h-8 text-xs sm:mt-2 ${accent.link}`}>
+            <Link href={item.href} aria-label={`${item.title} — Git`}>
+              Git <ArrowRight className="ml-0.5 h-3.5 w-3.5" aria-hidden />
+            </Link>
+          </Button>
         </div>
       </div>
     </div>

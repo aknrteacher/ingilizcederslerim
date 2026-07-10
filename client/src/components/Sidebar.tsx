@@ -582,45 +582,54 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
     <div className={`flex ${isMobile ? 'h-full' : 'h-screen'} w-full flex-col ${isDefaultTheme ? 'bg-sidebar' : 'bg-gradient-to-b from-sidebar/90 via-sidebar/95 to-sidebar'} text-sidebar-foreground transition-colors duration-300 ${isDefaultTheme ? '' : 'backdrop-blur-xl'}`}>
       {/* Logo Section */}
       <div className={`flex items-center justify-center border-b border-sidebar-primary/20 px-4 py-4 ${isMobile ? 'h-20' : 'h-32'} bg-gradient-to-b from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md`}>
-        <div className="relative group">
+        <Link
+          href="/"
+          className="relative group block text-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-primary"
+          aria-label="Ingilizce Derslerim — Ana sayfa"
+        >
           <h1 className={cn(
-            "logo-jump text-3xl font-black text-center leading-none transition-all duration-500 cursor-pointer font-serif tracking-tight group-hover:drop-shadow-lg",
+            "logo-jump text-3xl font-black text-center leading-none transition-all duration-500 font-serif tracking-tight group-hover:drop-shadow-lg",
             isDefaultTheme 
               ? "text-sidebar-foreground" 
               : (levelColors[currentTheme] ? `bg-clip-text text-transparent bg-gradient-to-br ${levelColors[currentTheme].bg}` : "text-primary")
           )}>
             ingilizce<br/>derslerim
           </h1>
-          {/* Beta Tag */}
-          <span className="beta-wiggle absolute top-full left-1/2 -translate-x-1/2 -mt-1 bg-black text-white text-xs font-bold px-2 py-0.5 rounded-md shadow-lg">
+          <span className="beta-wiggle absolute top-full left-1/2 -translate-x-1/2 -mt-1 bg-black text-white text-xs font-bold px-2 py-0.5 rounded-md shadow-lg" aria-hidden>
             -beta-
           </span>
-        </div>
+        </Link>
       </div>
 
       {/* Top Icon Buttons */}
       <div className="flex items-center justify-center gap-1 px-2 sm:px-3 py-2 border-b border-sidebar-primary/20">
-        <Link href="/account/profile">
-          <a className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group" title="Hesabım">
-            <User className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
-          </a>
+        <Link
+          href="/account/profile"
+          className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group"
+          aria-label="Hesabım"
+        >
+          <User className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" aria-hidden />
         </Link>
         <button 
+          type="button"
           onClick={() => {
             setMenuStack([])
+            setLocation("/")
+            onItemClick?.()
           }}
           className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group" 
-          title="Ana Sayfa"
+          aria-label="Ana Sayfa"
         >
-          <Home className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          <Home className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" aria-hidden />
         </button>
         <button 
+          type="button"
           onClick={handleBack}
           disabled={menuStack.length === 0}
           className="p-1.5 rounded-md transition-all duration-300 hover:bg-sidebar-primary/25 group disabled:opacity-50 disabled:cursor-not-allowed" 
-          title="Geri"
+          aria-label="Geri"
         >
-          <ChevronLeft className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" />
+          <ChevronLeft className="h-4 w-4 text-sidebar-foreground group-hover:scale-110 transition-transform" aria-hidden />
         </button>
       </div>
 
@@ -638,32 +647,31 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                   
                   {item.items && item.items.length > 0 ? (
                      // Item with submenu (Level items or items with children) - navigate to landing page
-                    <Link href={item.href || "#"}>
-                      <a
-                        onClick={() => {
-                          // Navigate to landing page
-                          if (item.theme && item.href) {
-                            handleLevelClick(item.theme, item.href)
-                          }
-                        }}
-                        className={cn(
-                          "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
-                          "transition-all duration-300 group",
-                           item.theme 
-                            ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
-                            : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
-                          "cursor-pointer"
-                        )}
-                        style={getFallbackStyles(item.theme)}
-                      >
-                        <span className="truncate flex-1 text-left" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
-                        <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined} />
-                      </a>
+                    <Link
+                      href={item.href!}
+                      onClick={() => {
+                        if (item.theme && item.href) {
+                          handleLevelClick(item.theme, item.href)
+                        }
+                      }}
+                      className={cn(
+                        "flex w-full items-center justify-between px-4 py-2 rounded-lg font-bold text-sm",
+                        "transition-all duration-300 group",
+                         item.theme 
+                          ? `${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
+                          : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40",
+                        "cursor-pointer"
+                      )}
+                      style={getFallbackStyles(item.theme)}
+                    >
+                      <span className="truncate flex-1 text-left" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
+                      <ChevronDown className="h-5 w-5 flex-shrink-0 group-hover:translate-x-1 transition-transform" style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined} aria-hidden />
                     </Link>
                   ) : (
                     // Regular link item
-                    <Link href={item.href || "#"}>
-                      <a className={cn(
+                    <Link
+                      href={item.href!}
+                      className={cn(
                         "flex w-full items-center gap-3 rounded-lg transition-all duration-300 group",
                         item.theme 
                           ? `px-4 py-2 font-bold text-sm justify-center ${levelColors[item.theme].dark} ${levelColors[item.theme].darkText} border-4 ${levelColors[item.theme].light} shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 backdrop-blur-sm bg-opacity-80`
@@ -675,10 +683,9 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                       )}
                       onClick={() => item.theme && handleLevelClick(item.theme, item.href)}
                       style={getFallbackStyles(item.theme)}
-                      >
-                        {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                        <span className={cn("truncate", item.theme ? "" : "flex-1")} style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
-                      </a>
+                    >
+                      {item.icon && <item.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" aria-hidden />}
+                      <span className={cn("truncate", item.theme ? "" : "flex-1")} style={item.theme && needsFallback ? { color: fallbackInlineStyles[item.theme].color } : undefined}>{item.title}</span>
                     </Link>
                   )}
                 </React.Fragment>
@@ -731,24 +738,23 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
                          </button>
                       ) : (
                         // Link Item
-                        <Link href={subItem.href || "#"}>
-                          <a 
-                            onClick={() => handleSubmenuItemClick(subItem)}
-                            className={cn(
-                              "flex w-full items-center gap-3 px-4 py-2 rounded-lg font-bold text-sm",
-                              "transition-all duration-300 group submenu-item",
-                              "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
-                              activeSubmenuTheme && levelColors[activeSubmenuTheme]
-                                ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl backdrop-blur-sm bg-opacity-80`
-                                : (location === subItem.href
-                                    ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
-                                    : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
-                            )}
-                            style={{ animationDelay: `${index * 50}ms`, ...getFallbackStyles(activeSubmenuTheme) }}
-                          >
-                            {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />}
-                            <span className="flex-1 truncate" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined}>{subItem.title}</span>
-                          </a>
+                        <Link
+                          href={subItem.href!}
+                          onClick={() => handleSubmenuItemClick(subItem)}
+                          className={cn(
+                            "flex w-full items-center gap-3 px-4 py-2 rounded-lg font-bold text-sm",
+                            "transition-all duration-300 group submenu-item",
+                            "hover:shadow-lg hover:scale-105 hover:-translate-y-0.5",
+                            activeSubmenuTheme && levelColors[activeSubmenuTheme]
+                              ? `${levelColors[activeSubmenuTheme].dark} ${levelColors[activeSubmenuTheme].darkText} border-4 ${levelColors[activeSubmenuTheme].light} shadow-lg hover:shadow-2xl backdrop-blur-sm bg-opacity-80`
+                              : (location === subItem.href
+                                  ? "bg-sidebar-primary/40 text-sidebar-primary-foreground shadow-lg border border-sidebar-primary/60"
+                                  : "bg-sidebar-primary/10 text-sidebar-foreground border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40")
+                          )}
+                          style={{ animationDelay: `${index * 50}ms`, ...getFallbackStyles(activeSubmenuTheme) }}
+                        >
+                          {subItem.icon && <subItem.icon className="h-5 w-5 flex-shrink-0 group-hover:scale-110 transition-transform duration-300" aria-hidden />}
+                          <span className="flex-1 truncate" style={activeSubmenuTheme && needsFallback ? { color: fallbackInlineStyles[activeSubmenuTheme].color } : undefined}>{subItem.title}</span>
                         </Link>
                       )}
                     </React.Fragment>
@@ -762,14 +768,21 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
 
       {/* User Profile Floating Card */}
       <div className="border-t border-sidebar-primary/20 p-3 sm:p-4 bg-gradient-to-t from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm group hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 bg-sidebar-primary/10 border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40">
-          <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-sidebar-primary to-sidebar-primary/70 flex items-center justify-center text-sidebar-primary-foreground font-bold text-sm flex-shrink-0 group-hover:shadow-lg transition-all duration-300">
-            JS
-          </div>
-          <div className="flex flex-col overflow-hidden min-w-0 flex-1 text-left">
+        <Link
+          href="/account/profile"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm group hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 bg-sidebar-primary/10 border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+          onClick={() => onItemClick?.()}
+        >
+            <div
+              aria-hidden="true"
+              className="h-10 w-10 rounded-lg bg-gradient-to-br from-sidebar-primary to-sidebar-primary/70 flex items-center justify-center text-sidebar-primary-foreground font-bold text-sm flex-shrink-0 group-hover:shadow-lg transition-all duration-300"
+            >
+              JS
+            </div>
+            <div className="flex flex-col overflow-hidden min-w-0 flex-1 text-left">
             <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-sidebar-primary transition-colors">Misafir Kullanıcı</span>
           </div>
-        </button>
+        </Link>
       </div>
     </div>
   )
