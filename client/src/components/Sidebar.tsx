@@ -770,7 +770,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
       <div className="border-t border-sidebar-primary/20 p-3 sm:p-4 bg-gradient-to-t from-sidebar-accent/5 via-transparent to-transparent backdrop-blur-md">
         <Link
           href="/account/profile"
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm group hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 bg-sidebar-primary/10 border border-sidebar-primary/20 hover:bg-sidebar-primary/25 hover:border-sidebar-primary/40"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm group hover:shadow-lg hover:scale-[1.02] bg-white/10 border border-white/20 hover:bg-white/15 hover:border-white/30"
           onClick={() => onItemClick?.()}
         >
             <div
@@ -780,7 +780,7 @@ export function Sidebar({ isMobile = false, onItemClick }: SidebarProps) {
               JS
             </div>
             <div className="flex flex-col overflow-hidden min-w-0 flex-1 text-left">
-            <span className="text-xs font-semibold truncate text-sidebar-foreground group-hover:text-white transition-colors">Misafir Kullanıcı</span>
+            <span className="text-xs font-semibold truncate text-white">Misafir Kullanıcı</span>
           </div>
         </Link>
       </div>
