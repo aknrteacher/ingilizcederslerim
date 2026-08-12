@@ -9,8 +9,6 @@ export default function AdminDashboard() {
   };
 
   const adminPages = [
-    { name: 'Flashcard Images', path: '/admin/flashcard-images' },
-    { name: 'Flashcard Images (Legacy prompts)', path: '/admin/flashcard-images2' },
     { name: 'Word Map', path: '/admin/word-map' },
     { name: 'Learning Areas Map', path: '/admin/learning-areas-map' },
     { name: 'Workflow', path: '/admin/workflow' },
