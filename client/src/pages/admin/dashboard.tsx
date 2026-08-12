@@ -47,7 +47,7 @@ export default function AdminDashboard() {
 
         <main className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-neutral-500 text-[10px] uppercase tracking-wide mb-6">
-            Password: AdminGate.tsx → ADMIN_SECRET
+            Restricted tools for site maintenance
           </p>
 
           <div className="mb-8">
